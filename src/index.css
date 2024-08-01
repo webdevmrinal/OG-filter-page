@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.category-button {
+  @apply border border-zinc-500 w-[160px] h-[30px] rounded-full text-sm flex-shrink-0;
+}
