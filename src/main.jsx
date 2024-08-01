@@ -1,12 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import App from "./App.jsx";
+import CssBaseline from "@mui/material/CssBaseline";
 import "./index.css";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#25387c",
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <div className="bg-zinc-200 p-4 h-screen w-screen">
-      <App />
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div className="bg-zinc-200 p-4 h-screen w-screen overflow-x-hidden">
+        <App />
+      </div>
+    </ThemeProvider>
   </React.StrictMode>
 );
