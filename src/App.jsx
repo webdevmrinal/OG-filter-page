@@ -275,12 +275,15 @@ const ExpertCard = ({ expert, onKnowMore }) => {
         </Button>
         <Box>
           <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-            <Chip
-              label={expert.category}
-              variant="outlined"
-              color="primary"
-              size="small"
-            />
+            {expert.category.split(",").map((category, index) => (
+              <Chip
+                key={index}
+                label={category.trim()}
+                variant="outlined"
+                color="primary"
+                size="small"
+              />
+            ))}
             <Chip
               label={expert.industry}
               variant="outlined"
