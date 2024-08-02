@@ -365,10 +365,7 @@ const ExpertPopup = ({ expert, onClose }) => {
           {expert.about}
         </Typography>
         <Link
-          to={`/profile/${expert.email
-            .replace(/@/, "-")
-            .replace(/\./g, "-")
-            .toLowerCase()}`}
+          to={`/profile/${expert.profile_url}`}
           style={{ textDecoration: "none" }}
           state={{ expertEmail: expert.email }}
         >
