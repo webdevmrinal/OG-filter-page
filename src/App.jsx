@@ -115,37 +115,6 @@ function App() {
     }
   }, [selectedCategory]);
 
-  // const handleCategoryClick = async (category) => {
-  //   if (selectedCategory === category) {
-  //     setSelectedCategory(null);
-  //     // setExperts([]);
-  //   } else {
-  //     setSelectedCategory(category);
-  //     // setLoading(true);
-  //     try {
-  //       const response = await axios.post(
-  //         "https://academy.opengrowth.com/api/search_mentor",
-  //         {
-  //           email: "akriti@opengrowth.com",
-  //           start: 0,
-  //           end: 10,
-  //           key: `0_popular_tags_${category}`,
-  //           search: category,
-  //           search_with: "tags",
-  //           action: "",
-  //           token: "kKRyYp5DebEw0fP",
-  //         }
-  //       );
-  //       setExperts(response.data);
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching experts:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
-
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
       setSelectedCategory(null);
