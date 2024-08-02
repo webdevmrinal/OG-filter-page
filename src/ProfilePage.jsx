@@ -11,6 +11,10 @@ import {
   Paper,
   Tabs,
   Tab,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Divider,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -19,6 +23,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import WorkIcon from "@mui/icons-material/Work";
 import PersonIcon from "@mui/icons-material/Person";
 import FolderIcon from "@mui/icons-material/Folder";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { useParams, useLocation } from "react-router-dom";
 import GetTime from "./GetTime";
@@ -54,6 +59,18 @@ const ProfilePage = () => {
   const [tabValue, setTabValue] = useState(0);
 
   console.log(expertEmail);
+
+  const accordionData = [
+    { title: "About me", content: profileData.about },
+    { title: "Address", content: `Country: ${profileData.country}` },
+    {
+      title: "Education",
+      content: `Degree: ${profileData.edu}\nCollege: ${profileData.other_college}`,
+    },
+    { title: "Area of Interest", content: profileData.interest },
+    { title: "Industry", content: profileData.industry },
+    { title: "Experience", content: profileData.experience },
+  ];
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -138,7 +155,7 @@ const ProfilePage = () => {
       </Box>
       {showGetTime && <GetTime setShowGetTime={setShowGetTime} />}
       <Box sx={{ display: "flex", gap: 3, my: 3 }}>
-        <Paper sx={{ flex: 1, p: 2, borderRadius: 3 }}>
+        <Paper sx={{ flex: 1, p: 2, borderRadius: 3, alignSelf: "flex-start" }}>
           <Typography variant="h6" gutterBottom>
             About
           </Typography>
@@ -183,7 +200,7 @@ const ProfilePage = () => {
             </ListItem>
           </List>
         </Paper>
-        <Paper sx={{ flex: 2, p: 2, borderRadius: 3 }}>
+        {/* <Paper sx={{ flex: 2, p: 2, borderRadius: 3 }}>
           <Typography variant="h6" gutterBottom>
             About me
           </Typography>
@@ -194,6 +211,31 @@ const ProfilePage = () => {
           >
             {profileData.about}
           </Typography>
+        </Paper> */}
+        <Paper
+          elevation={1}
+          sx={{
+            height: "max-content",
+            flex: 2,
+            borderRadius: 3,
+            overflow: "hidden",
+            bgcolor: "transparent",
+            border: "none",
+            mx: 2,
+          }}
+        >
+          {accordionData.map((item, index) => (
+            <Accordion key={index}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>{item.title}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography style={{ whiteSpace: "pre-line" }}>
+                  {item.content}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
         </Paper>
       </Box>
     </Box>
