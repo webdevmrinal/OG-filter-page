@@ -19,6 +19,7 @@ import {
 import { styled } from "@mui/system";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
 
 const initialCategories = [
   "Expert",
@@ -363,9 +364,18 @@ const ExpertPopup = ({ expert, onClose }) => {
         <Typography variant="body1" sx={{ mt: 3 }}>
           {expert.about}
         </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 3 }}>
-          View Profile
-        </Button>
+        <Link
+          to={`/profile/${expert.email
+            .replace(/@/, "-")
+            .replace(/\./g, "-")
+            .toLowerCase()}`}
+          style={{ textDecoration: "none" }}
+          state={{ expertEmail: expert.email }}
+        >
+          <Button variant="contained" color="primary" sx={{ mt: 3 }}>
+            View Profile
+          </Button>
+        </Link>
       </DialogContent>
     </Dialog>
   );
