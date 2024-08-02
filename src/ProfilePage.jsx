@@ -20,9 +20,14 @@ import { styled } from "@mui/system";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SchoolIcon from "@mui/icons-material/School";
 import BusinessIcon from "@mui/icons-material/Business";
+import SendIcon from "@mui/icons-material/Send";
 import WorkIcon from "@mui/icons-material/Work";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import PersonIcon from "@mui/icons-material/Person";
 import FolderIcon from "@mui/icons-material/Folder";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { useParams, useLocation } from "react-router-dom";
@@ -60,18 +65,6 @@ const ProfilePage = () => {
 
   console.log(expertEmail);
 
-  const accordionData = [
-    { title: "About me", content: profileData.about },
-    { title: "Address", content: `Country: ${profileData.country}` },
-    {
-      title: "Education",
-      content: `Degree: ${profileData.edu}\nCollege: ${profileData.other_college}`,
-    },
-    { title: "Area of Interest", content: profileData.interest },
-    { title: "Industry", content: profileData.industry },
-    { title: "Experience", content: profileData.experience },
-  ];
-
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -100,7 +93,20 @@ const ProfilePage = () => {
   };
 
   console.log("expert", profileData);
+
   if (!profileData) return;
+
+  const accordionData = [
+    { title: "About me", content: profileData.about },
+    { title: "Address", content: `Country: ${profileData.country}` },
+    {
+      title: "Education",
+      content: `Degree: ${profileData.edu}\nCollege: ${profileData.other_college}`,
+    },
+    { title: "Area of Interest", content: profileData.interest },
+    { title: "Industry", content: profileData.industry },
+    { title: "Experience", content: profileData.experience },
+  ];
   return (
     <Box>
       <Box
@@ -131,35 +137,45 @@ const ProfilePage = () => {
             </Box>
           </Box>
         </GradientBox>
-        <TabsContainer>
+        <TabsContainer height={"3.9em"}>
           <Tabs
             value={tabValue}
             onChange={handleTabChange}
             aria-label="profile tabs"
           >
-            <Tab label="Profile" />
-            <Tab label="Course" />
+            <Tab icon={<AccountBoxIcon />} iconPosition="start" label="Profile"/>
+            <Tab icon={<MenuBookIcon />} iconPosition="start" label="Course" />
           </Tabs>
         </TabsContainer>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, mr: 2 }}>
-        <Button variant="contained" color="primary" sx={{ mr: 1 }}>
-          Follow Me
+        <Button
+          startIcon={<PersonAddIcon />}
+          variant="contained"
+          color="primary"
+          sx={{ mr: 1 }}
+        >
+          Follow
         </Button>
-        <Button variant="outlined" sx={{ mr: 1 }}>
-          Send A Message
+        <Button startIcon={<SendIcon />} variant="outlined" sx={{ mr: 1 }}>
+          Message
         </Button>
-        <Button variant="outlined" onClick={() => setShowGetTime(true)}>
+        <Button
+          startIcon={<EventNoteIcon />}
+          variant="outlined"
+          onClick={() => setShowGetTime(true)}
+        >
           Request Time
         </Button>
       </Box>
       {showGetTime && <GetTime setShowGetTime={setShowGetTime} />}
       <Box sx={{ display: "flex", gap: 3, my: 3 }}>
-        <Paper sx={{ flex: 1, p: 2, borderRadius: 3, alignSelf: "flex-start" }}>
-          <Typography variant="h6" gutterBottom>
+        <Paper sx={{ flex: 1, borderRadius: 3, alignSelf: "flex-start" }}>
+          <Typography px={3} pt={2} variant="h6" gutterBottom>
             About
           </Typography>
-          <List dense>
+          <Divider />
+          <List dense sx={{ padding: "0 .75em", my: 2 }}>
             <ListItem>
               <ListItemIcon>
                 <LocationOnIcon />
@@ -213,11 +229,11 @@ const ProfilePage = () => {
           </Typography>
         </Paper> */}
         <Paper
-          elevation={1}
+          elevation={0}
           sx={{
             height: "max-content",
+            width: "max-content",
             flex: 2,
-            borderRadius: 3,
             overflow: "hidden",
             bgcolor: "transparent",
             border: "none",
@@ -230,7 +246,10 @@ const ProfilePage = () => {
                 <Typography>{item.title}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography style={{ whiteSpace: "pre-line" }}>
+                <Typography
+                  style={{ whiteSpace: "pre-line" }}
+                  color={"text.secondary"}
+                >
                   {item.content}
                 </Typography>
               </AccordionDetails>

@@ -119,7 +119,7 @@ const GetTime = ({ setShowGetTime }) => {
       >
         <Box>
           <Typography variant="h6" component="span">
-            ₹2999 • Session
+            ₹49,999 • Session
           </Typography>
           <Rating value={5} readOnly size="small" sx={{ ml: 1 }} />
           <Typography variant="body2" component="span" sx={{ ml: 1 }}>
