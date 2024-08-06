@@ -11,7 +11,7 @@ import {
   Rating,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import Summary from "./Summary";
+import GetTime from "./GetTime";
 
 const ScrollableBox = styled(Box)({
   display: "flex",
@@ -23,18 +23,11 @@ const ScrollableBox = styled(Box)({
   "scrollbar-width": "none",
 });
 
-const ConfirmationBox = styled(Paper)({
-  backgroundColor: '#dff0d8',
-  padding: '16px',
-  borderRadius: '8px',
-  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-});
-
-const GetTime = ({ setShowGetTime, professorName }) => {
+const SelectTime = ({ setShowGetTime, professorName }) => {
   const [duration, setDuration] = useState("15");
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [isGift, setIsGift] = useState(false);
-  const [view, setView] = useState("selection");
+  const [showGetTime1, setShowGetTime1] = useState(false);
 
   const handleDurationChange = (event, newDuration) => {
     if (newDuration !== null) {
@@ -48,82 +41,18 @@ const GetTime = ({ setShowGetTime, professorName }) => {
     );
   };
 
-  const handleSelectAll = () => {
-    setSelectedTimes(times);
-  };
-
-  const handleRequest = () => {
-    setView("summary");
-  };
-
-  const handleCancel = () => {
-    setView("selection");
-  };
-
-  const handleConfirm = () => {
-    const appointment = {
-      professorName,
-      duration,
-      selectedTimes,
-      isGift,
-      date: new Date().toLocaleString(),
-    };
-
-    const existingAppointments = JSON.parse(localStorage.getItem('appointments')) || [];
-    localStorage.setItem('appointments', JSON.stringify([...existingAppointments, appointment]));
-
-    setView("confirmation");
-  };
-
   const times = ["7-8p", "8-9p", "9-10p", "10-11p", "11-12a"];
 
   return (
-    <>
-      {view === "confirmation" ? (
-        <ConfirmationBox>
-          <Typography variant="h5" gutterBottom color="green">
-            Request Submitted
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom color="green">
-            Your appointment request has been submitted successfully!
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom color="green">
-            Professor: {professorName}
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom color="green">
-            Call Duration: {duration} minutes
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom color="green">
-            Selected Times: {selectedTimes.join(", ")}
-          </Typography>
-          {isGift && (
-            <Typography variant="subtitle1" gutterBottom color="green">
-              This is a gift.
-            </Typography>
-          )}
-          <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
-            <Button variant="contained" color="primary" onClick={() => setShowGetTime(false)}>
-              Close
-            </Button>
-          </Box>
-        </ConfirmationBox>
-      ) : view === "summary" ? (
-        <Summary
-          professorName={professorName}
-          selectedTimes={selectedTimes}
-          duration={duration}
-          isGift={isGift}
-          onCancel={handleCancel}
-          onConfirm={handleConfirm}
-        />
+    <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
+      {showGetTime1 ? (
+        <GetTime setShowGetTime1={setShowGetTime1} professorName={professorName} />
       ) : (
         <>
           <Typography variant="h5" gutterBottom>
-            Request a time
+            Book a Video Call
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            1) Select the call duration:
-          </Typography>
+
           <ToggleButtonGroup
             value={duration}
             exclusive
@@ -143,6 +72,7 @@ const GetTime = ({ setShowGetTime, professorName }) => {
               All Access - 60 Min
             </ToggleButton>
           </ToggleButtonGroup>
+
           <FormControlLabel
             control={
               <Checkbox
@@ -153,9 +83,7 @@ const GetTime = ({ setShowGetTime, professorName }) => {
             label="Tap to send this as a gift"
             sx={{ mt: 2 }}
           />
-          <Typography variant="subtitle1" sx={{ mt: 3 }}>
-            2) Select all of the times you're available for a video session
-          </Typography>
+
           <Box
             sx={{
               display: "flex",
@@ -165,10 +93,16 @@ const GetTime = ({ setShowGetTime, professorName }) => {
             }}
           >
             <Typography variant="subtitle2">Wednesday 8/7</Typography>
-            <Button size="small" onClick={handleSelectAll}>
-              Select all
-            </Button>
+            <div>
+              <Typography variant="subtitle2">
+                Looking for a time not listed?
+              </Typography>
+              <Button size="small" onClick={() => setShowGetTime1(true)}>
+                Tap here to see available slots
+              </Button>
+            </div>
           </Box>
+
           <ScrollableBox>
             {times.map((time) => (
               <ToggleButton
@@ -182,6 +116,7 @@ const GetTime = ({ setShowGetTime, professorName }) => {
               </ToggleButton>
             ))}
           </ScrollableBox>
+
           <Box
             sx={{
               display: "flex",
@@ -192,7 +127,7 @@ const GetTime = ({ setShowGetTime, professorName }) => {
           >
             <Box>
               <Typography variant="h6" component="span">
-                ₹49,999 • Session
+                ₹4,999 • Session
               </Typography>
               <Rating value={5} readOnly size="small" sx={{ ml: 1 }} />
               <Typography variant="body2" component="span" sx={{ ml: 1 }}>
@@ -208,15 +143,15 @@ const GetTime = ({ setShowGetTime, professorName }) => {
               >
                 Cancel
               </Button>
-              <Button variant="contained" color="primary" onClick={handleRequest}>
+              <Button variant="contained" color="primary">
                 Request
               </Button>
             </Box>
           </Box>
         </>
       )}
-    </>
+    </Paper>
   );
 };
 
-export default GetTime;
+export default SelectTime;

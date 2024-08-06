@@ -31,7 +31,7 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { useParams, useLocation } from "react-router-dom";
-import GetTime from "./GetTime";
+import SelectTime from "./SelectTime";
 
 const GradientBox = styled(Box)({
   background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
@@ -50,8 +50,15 @@ const ProfileAvatar = styled(Avatar)({
 
 const TabsContainer = styled(Box)({
   display: "flex",
-  justifyContent: "flex-end",
+  justifyContent: "space-between",
+  alignItems: "center",
   borderBottom: "1px solid #e0e0e0",
+});
+
+const ButtonContainer = styled(Box)({
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
 });
 
 const ProfilePage = () => {
@@ -60,10 +67,8 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const expertEmail = location.state?.expertEmail;
-  const [showGetTime, setShowGetTime] = useState(false);
   const [tabValue, setTabValue] = useState(0);
-
-  console.log(expertEmail);
+  const [expanded, setExpanded] = useState(true); // Initialize as true to keep it open
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -75,7 +80,6 @@ const ProfilePage = () => {
           }
         );
         setProfileData(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       } finally {
@@ -92,9 +96,11 @@ const ProfilePage = () => {
     setTabValue(newValue);
   };
 
-  console.log("expert", profileData);
+  const handleAccordionChange = () => {
+    setExpanded(!expanded);
+  };
 
-  if (!profileData) return;
+  if (!profileData) return null;
 
   const accordionData = [
     { title: "About me", content: profileData.about },
@@ -107,6 +113,7 @@ const ProfilePage = () => {
     { title: "Industry", content: profileData.industry },
     { title: "Experience", content: profileData.experience },
   ];
+
   return (
     <Box>
       <Box
@@ -137,38 +144,46 @@ const ProfilePage = () => {
             </Box>
           </Box>
         </GradientBox>
-        <TabsContainer height={"3.9em"}>
+        <TabsContainer>
           <Tabs
             value={tabValue}
             onChange={handleTabChange}
             aria-label="profile tabs"
           >
-            <Tab icon={<AccountBoxIcon />} iconPosition="start" label="Profile"/>
-            <Tab icon={<MenuBookIcon />} iconPosition="start" label="Course" />
           </Tabs>
+          <ButtonContainer>
+            <Button
+              startIcon={<PersonAddIcon />}
+              variant="contained"
+              color="primary"
+              sx={{ mr: 1 }}
+            >
+              Follow
+            </Button>
+            <Button startIcon={<SendIcon />} variant="outlined" sx={{ mr: 1 }}>
+              Message
+            </Button>
+            <Button
+              startIcon={<EventNoteIcon />}
+              variant="outlined"
+              onClick={handleAccordionChange}
+            >
+              Request a Time
+            </Button>
+          </ButtonContainer>
         </TabsContainer>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, mr: 2 }}>
-        <Button
-          startIcon={<PersonAddIcon />}
-          variant="contained"
-          color="primary"
-          sx={{ mr: 1 }}
-        >
-          Follow
-        </Button>
-        <Button startIcon={<SendIcon />} variant="outlined" sx={{ mr: 1 }}>
-          Message
-        </Button>
-        <Button
-          startIcon={<EventNoteIcon />}
-          variant="outlined"
-          onClick={() => setShowGetTime(true)}
-        >
-          Request Time
-        </Button>
-      </Box>
-      {showGetTime && <GetTime setShowGetTime={setShowGetTime} />}
+
+      {/* Place the Accordion here, just below the header */}
+      <Accordion expanded={expanded} onChange={handleAccordionChange}>
+        <AccordionDetails>
+          <SelectTime
+            setShowGetTime={setExpanded}
+            professorName={profileData.name} // Pass the professor's name to SelectTime
+          />
+        </AccordionDetails>
+      </Accordion>
+
       <Box sx={{ display: "flex", gap: 3, my: 3 }}>
         <Paper sx={{ flex: 1, borderRadius: 3, alignSelf: "flex-start" }}>
           <Typography px={3} pt={2} variant="h6" gutterBottom>
@@ -216,18 +231,6 @@ const ProfilePage = () => {
             </ListItem>
           </List>
         </Paper>
-        {/* <Paper sx={{ flex: 2, p: 2, borderRadius: 3 }}>
-          <Typography variant="h6" gutterBottom>
-            About me
-          </Typography>
-          <Typography
-            variant="body1"
-            fontSize={".95em"}
-            sx={{ color: "text.secondary" }}
-          >
-            {profileData.about}
-          </Typography>
-        </Paper> */}
         <Paper
           elevation={0}
           sx={{

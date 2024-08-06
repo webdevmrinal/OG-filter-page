@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -9,17 +9,18 @@ import {
   CardMedia,
   Chip,
   CircularProgress,
+  Grid,
   Dialog,
   DialogTitle,
   IconButton,
   DialogContent,
-  Avatar,
-  Grid,
+  Avatar
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link } from "react-router-dom";
+import Appointments from "./Appointments";
 
 const initialCategories = [
   "Expert",
@@ -55,12 +56,27 @@ const ScrollableBox = styled(Box)(({ theme }) => ({
   },
 }));
 
+const CategoryButton = styled(Button)(({ active }) => ({
+  borderRadius: "1.5em",
+  textTransform: "none",
+  fontWeight: active ? "bold" : "normal",
+  backgroundColor: active ? "#000000" : "#e0e0e0", 
+  color: active ? "white" : "#000000",
+  padding: "0.4em 1.2em",
+  boxShadow: active ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
+  "&:hover": {
+    backgroundColor: active ? "#333333" : "#d5d5d5",
+  },
+}));
+
 function App() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState(initialCategories);
   const [selectedExpert, setSelectedExpert] = useState(null);
+  const [showGetTime, setShowGetTime] = useState(false);
+  const navigate = useNavigate(); // For navigation
 
   const fetchExperts = useCallback(async (category = null) => {
     setLoading(true);
@@ -136,6 +152,7 @@ function App() {
         borderRadius: "10px",
         boxShadow: 1,
         width: "100%",
+        position: "relative",
       }}
     >
       <Typography variant="h6" fontWeight="bold" sx={{ p: 2 }}>
@@ -148,17 +165,17 @@ function App() {
         </Typography>
         <ScrollableBox>
           {categories.map((category) => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "contained" : "outlined"}
-              color="primary"
-              size="small"
-              sx={{ flexShrink: 0 }}
-              onClick={() => handleCategoryClick(category)}
-              endIcon={selectedCategory === category ? <CloseIcon /> : null}
+            <CategoryButton
+            key={category}
+            active={selectedCategory === category}
+            variant="contained"
+            size="small"
+            sx={{ flexShrink: 0 }}
+            onClick={() => handleCategoryClick(category)}
+            endIcon={selectedCategory === category ? <CloseIcon /> : null}
             >
               {category}
-            </Button>
+            </CategoryButton>
           ))}
         </ScrollableBox>
       </Box>
@@ -193,12 +210,34 @@ function App() {
         expert={selectedExpert}
         onClose={() => setSelectedExpert(null)}
       />
+
+      {/* Button on the right side */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/appointments')}
+        >
+          List of Appointments
+        </Button>
+        {showGetTime && (
+          <SelectTime
+            setShowGetTime={setShowGetTime}
+            professorName={profileData.name} // Pass the professor's name to SelectTime
+          />
+        )}
+      </Box>
     </Card>
   );
 }
 
 const ExpertCard = ({ expert, onKnowMore }) => {
-  console.log(expert);
   return (
     <Card
       sx={{
@@ -221,37 +260,39 @@ const ExpertCard = ({ expert, onKnowMore }) => {
           backgroundPosition: "center",
         }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            padding: "4px 8px",
-            borderRadius: "4px",
-          }}
-        >
-          <Typography variant="subtitle2" fontWeight="bold">
-            {expert.slot} slots available
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 16,
-            left: 16,
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            padding: "4px 8px",
-            borderRadius: "4px",
-          }}
-        >
-          <Typography variant="subtitle1" fontWeight="bold">
-            {expert.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {expert.industry}
-          </Typography>
-        </Box>
+        <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: 16,
+              right: 16,
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              padding: "4px 8px",
+              borderRadius: "4px",
+            }}
+          >
+            <Typography variant="subtitle2" fontWeight="bold">
+              {expert.slot} slots available
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 16,
+              left: 16,
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              padding: "4px 8px",
+              borderRadius: "4px",
+            }}
+          >
+            <Typography variant="subtitle1" fontWeight="bold">
+              {expert.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {expert.industry}
+            </Typography>
+          </Box>
+        </Link>
       </CardMedia>
       <CardContent>
         <Typography
@@ -318,15 +359,19 @@ const ExpertPopup = ({ expert, onClose }) => {
       </DialogTitle>
       <DialogContent dividers>
         <Box sx={{ display: "flex", gap: 3 }}>
-          <Avatar
-            src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
-            alt={expert.name}
-            sx={{ width: 120, height: 120 }}
-          />
+          <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+            <Avatar
+              src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+              alt={expert.name}
+              sx={{ width: 120, height: 120 }}
+            />
+          </Link>
           <Box>
-            <Typography variant="h5" gutterBottom>
-              {expert.name}
-            </Typography>
+            <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+              <Typography variant="h5" gutterBottom>
+                {expert.name}
+              </Typography>
+            </Link>
             <Typography variant="subtitle1" color="text.secondary">
               {expert.industry}
             </Typography>
