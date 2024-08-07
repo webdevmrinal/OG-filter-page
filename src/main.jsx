@@ -6,6 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import "./index.css";
 import ProfilePage from "./ProfilePage.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AppointmentDashboard from "./AppointmentDashboard.jsx";
 
 const theme = createTheme({
   palette: {
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/profile/:expertName" element={<ProfilePage />} />
+            <Route path="/appointments" element={<AppointmentDashboard />} />
           </Routes>
         </Router>
       </div>
