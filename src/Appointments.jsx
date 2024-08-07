@@ -29,9 +29,10 @@ const AppointmentsPage = () => {
 
   return (
     <Box sx={{ p: 4, width: '100vw', height: '100vh', overflow: 'auto', backgroundColor: '#fff' }}>
-      <Typography variant="h4" gutterBottom sx={{ mb: 4, color: '#000' }}>
+      <Typography variant="h6" gutterBottom sx={{ mb: 2, color: '#000' }}>
         Appointments
       </Typography>
+      <Divider sx={{ mb: 2 }} />
       {appointments.length > 0 ? (
         <Grid container spacing={3}>
           {appointments.map((appointment, index) => (

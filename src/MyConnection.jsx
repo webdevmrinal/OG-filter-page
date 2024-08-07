@@ -1,43 +1,40 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Grid, Card, CardContent, Typography, Avatar, Button, CircularProgress, Box,Tab, Tabs } from '@mui/material';
+import { Grid, Card, CardContent, Typography, CardMedia, Button, CircularProgress, Box, Tab, Tabs, Divider } from '@mui/material';
 import axios from 'axios';
 import { styled } from '@mui/system';
 import Header from './Header';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-    width: 445,
-    height: 350,
-    margin: theme.spacing(2),
-    padding: theme.spacing(2),
-    boxShadow: theme.shadows[3],
-    borderRadius: '10px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    transition: "0.3s",
-    '&:hover': {
-      transform: "translateY(-3px)",
-      boxShadow: theme.shadows[6],
-    },
+  width: 445,
+  height: 450,
+  margin: theme.spacing(2),
+  boxShadow: theme.shadows[3],
+  borderRadius: '10px',
+  display: 'flex',
+  flexDirection: 'column',
+  transition: "0.3s",
+  '&:hover': {
+    transform: "translateY(-3px)",
+    boxShadow: theme.shadows[6],
+  },
 }));
 
-const HeadingBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  padding: theme.spacing(2),
-  borderRadius: '5px',
-  boxShadow: theme.shadows[3],
-  marginBottom: theme.spacing(4),
+const ExpertCard = styled(Card)(({ theme }) => ({
+  width: '29em',
+  height: '32em',
+  flexShrink: 0,
   display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: 'fit-content',
-  marginLeft: '16px'
+  flexDirection: 'column',
+  borderRadius: '.8em',
+  boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',
+  marginBottom: theme.spacing(4),
 }));
 
 const MyConnections = () => {
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState(0);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -84,47 +81,49 @@ const MyConnections = () => {
     fetchExperts();
   }, [fetchExperts]);
 
+  const truncateText = (text, maxLength = 100) => {
+    return text?.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  };
+
   if (loading) {
     return <CircularProgress style={{ display: 'block', margin: '20px auto' }} />;
   }
-
-  const truncateText = (text, maxLength = 150) => {
-    if (text?.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
-    }
-    return text;
-  };
 
   return (
     <>
       <Header />
       <Box sx={{ padding: 2, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="My Connections" />
-          
-        </Tabs>
-      </Box>    
-        <Grid container spacing={2} justifyContent="center">
+        <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 4 }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="My Connections" />
+          </Tabs>
+        </Box>
+        <Grid container spacing={1} justifyContent="center">
           {experts.map((expert, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
-              <StyledCard>
-                <Avatar src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`} alt={expert.name} sx={{ width: 90, height: 90, margin: 'auto' }} />
+              <ExpertCard>
+                <CardMedia
+                  component="img"
+                  image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+                  alt={expert.name}
+                  sx={{ height: 330, width: '100%', objectFit: 'cover' }}
+                />
                 <CardContent>
                   <Typography gutterBottom variant="h6">
                     {expert.name}
                   </Typography>
+                  <Divider sx={{ width: '92%', mb: 1, alignSelf: 'center' }} />
                   <Typography variant="body2" color="text.secondary">
-                    {truncateText(expert.about)}
+                    {truncateText(expert.about, 100)}
                   </Typography>
-                  <Typography variant="body2">
-                    Interactions: 9 {/* Assuming 'interactions' is part of your data */}
+                  <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold', mt: 2 }}>
+                    Interactions: 9
                   </Typography>
-                  <Button variant="contained" color="primary" sx={{ marginTop: 2 }}>
+                  <Button color="primary" sx={{ px: 0 }}>
                     Know More
                   </Button>
                 </CardContent>
-              </StyledCard>
+              </ExpertCard>
             </Grid>
           ))}
         </Grid>
