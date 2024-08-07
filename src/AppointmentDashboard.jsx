@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -14,6 +14,9 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import BlockIcon from "@mui/icons-material/Block";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RejectedRequestComponent from "./RejectedRequestComponent";
+import AttendedAppointments from "./AttendedAppointments";
+import axios from "axios";
 
 const appointmentsData = [
   { id: 1, name: "Vanshika Yadav", time: "02:29 PM - 02:59 PM" },
@@ -25,14 +28,34 @@ const appointmentsData = [
   { id: 7, name: "Rahul Kumar", time: "09:15 PM - 09:45 PM" },
 ];
 
-const StyledTab = styled(Tab)({
-  textTransform: "none",
-  minWidth: 0,
-  fontWeight: "normal",
-  color: "#5c5c5c",
-  "&.Mui-selected": {
-    fontWeight: "bold",
+const StyledTabs = styled(Tabs)({
+  "& .MuiTab-root": {
+    textTransform: "none",
+    minHeight: "48px",
+    padding: "6px 16px",
+    fontWeight: "normal",
+    fontSize: "14px",
+    color: "#5f6368",
+    "&:hover": {
+      color: "#202124",
+      opacity: 1,
+    },
+    "&.Mui-selected": {
+      color: "#25387c",
+      fontWeight: "medium",
+    },
   },
+});
+
+const StyledTab = styled(Tab)({
+  "& .MuiSvgIcon-root": {
+    marginRight: "8px",
+  },
+});
+
+const iconStyle = (color) => ({
+  color: color,
+  marginRight: "8px",
 });
 
 const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
@@ -45,68 +68,113 @@ const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
   border: isSelected ? "1px solid #25387c" : "1px solid transparent",
   backgroundColor: isSelected ? "#f5f5f5" : "transparent",
   "&:hover": {
-    border: isSelected ? "1px solid #1976d2" : "1px solid #e0e0e0",
-    backgroundColor: isSelected ? "transparent" : "#f5f5f5",
+    border: isSelected ? "1px solid #25387c" : "1px solid #e0e0e0",
+    backgroundColor: isSelected ? "#f5f5f5" : "#f5f5f5",
   },
 }));
 
 const AppointmentDashboard = () => {
   const [value, setValue] = useState(0);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [tabCounts, setTabCounts] = useState({
+    attended: 0,
+    pending: 0,
+    rejected: 0,
+    upcoming: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          "https://academy.opengrowth.com/api/get_tab_request_count",
+          {
+            user: "mentor",
+            m_id: "1",
+          }
+        );
+        setTabCounts(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const renderContent = () => {
+    switch (value) {
+      case 0:
+        return (
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Upcoming Appointments
+            </Typography>
+            {appointmentsData.map((appointment) => (
+              <AppointmentItemComp
+                key={appointment.id}
+                id={appointment.id}
+                name={appointment.name}
+                time={appointment.time}
+                isSelected={selectedAppointment === appointment.id}
+                setSelectedAppointment={setSelectedAppointment}
+              />
+            ))}
+            <Typography
+              variant="body2"
+              sx={{ mt: 2, textAlign: "center", color: "text.secondary" }}
+            >
+              You have seen it all
+            </Typography>
+          </Box>
+        );
+      case 1:
+        return <Typography sx={{ p: 3 }}>No pending requests.</Typography>;
+      case 2:
+        return <RejectedRequestComponent />;
+      case 3:
+        return <AttendedAppointments />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Box sx={{ width: "100%", bgcolor: "#f4f7f9", minHeight: "100vh", p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", p: 2 }}>
-        <Tabs value={value} onChange={handleChange} sx={{ mb: 2 }}>
+        <StyledTabs
+          value={value}
+          onChange={handleChange}
+          aria-label="appointment tabs"
+        >
           <StyledTab
-            icon={<CalendarTodayIcon />}
+            icon={<CalendarTodayIcon sx={iconStyle("#34a853")} />}
             iconPosition="start"
-            label={"Upcoming Appoinments (" + appointmentsData.length + ")"}
-            color="#ffffff"
+            label={`Upcoming Appoinments (${tabCounts.upcoming})`}
           />
           <StyledTab
-            icon={<HourglassEmptyIcon />}
+            icon={<HourglassEmptyIcon sx={iconStyle("#fbbc04")} />}
             iconPosition="start"
-            label="Pending Request (0)"
+            label={`Pending Request (${tabCounts.pending})`}
           />
           <StyledTab
-            icon={<BlockIcon />}
+            icon={<BlockIcon sx={iconStyle("#ea4335")} />}
             iconPosition="start"
-            label="Rejected Request (52)"
+            label={`Rejected Request (${tabCounts.rejected})`}
           />
           <StyledTab
-            icon={<CheckCircleIcon />}
+            icon={<CheckCircleIcon sx={iconStyle("primary.main")} />}
             iconPosition="start"
-            label="Attended Appointments (43)"
+            label={`Attended Appointments (${tabCounts.attended})`}
           />
-        </Tabs>
+        </StyledTabs>
       </Box>
       <Paper elevation={0} sx={{ borderRadius: 2, overflow: "hidden" }}>
-        <Box sx={{ p: 3 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Upcoming Appoinments
-          </Typography>
-          {appointmentsData.map((appointment) => (
-            <AppointmentItemComp
-              key={appointment.id}
-              id={appointment.id}
-              name={appointment.name}
-              time={appointment.time}
-              isSelected={selectedAppointment === appointment.id}
-              setSelectedAppointment={setSelectedAppointment}
-            />
-          ))}
-          <Typography
-            variant="body2"
-            sx={{ mt: 2, textAlign: "center", color: "text.secondary" }}
-          >
-            You have seen it all
-          </Typography>
-        </Box>
+        {renderContent()}
       </Paper>
     </Box>
   );
