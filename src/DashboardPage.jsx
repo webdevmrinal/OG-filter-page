@@ -15,6 +15,7 @@ import {
   IconButton,
   DialogContent,
   Chip,
+  CardMedia
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -181,6 +182,7 @@ const DashboardPage = () => {
       el.style.height = '70vh';
     });
   }, []);
+  
 
   return (
     <>
@@ -223,7 +225,37 @@ const DashboardPage = () => {
             </Tabs>
           </Box>
           <AppointmentsPage tab={appointmentTab} />
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', mt: 2 }}>
+      {experts.slice(0, 3).map((expert, index) => (
+        <Card key={index} sx={{ width: 300, mb: 2, boxShadow: "none", borderRadius: "12px", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <CardMedia
+            component="img"
+            image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+            alt={expert.name}
+            sx={{ width: "100%", height: 250, position: 'relative' }}
+          />
+            <Box>
+              <Typography variant="subtitle1">{expert.name}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {expert.industry}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                {truncateText(expert.about)}
+              </Typography>
+              <Button
+                size="small"
+                onClick={() => handleExpertClick(expert)}
+                sx={{ mt: 1 }}
+              >
+                Know More
+            </Button>
+            </Box>
+          {/* </CardContent> */}
+        </Card>
+      ))}
+    </Box>
         </Box>
+        
         <SidebarSection>
           <Typography variant="h6">OpenGrowth Experts</Typography>
           <Divider sx={{ mb: 2 }} />

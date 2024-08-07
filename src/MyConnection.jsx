@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Grid, Card, CardContent, Typography, Avatar, Button, CircularProgress, Box } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Avatar, Button, CircularProgress, Box,Tab, Tabs } from '@mui/material';
 import axios from 'axios';
 import { styled } from '@mui/system';
 import Header from './Header';
@@ -37,6 +37,10 @@ const HeadingBox = styled(Box)(({ theme }) => ({
 const MyConnections = () => {
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const fetchExperts = useCallback(async (category = null) => {
     setLoading(true);
@@ -95,9 +99,12 @@ const MyConnections = () => {
     <>
       <Header />
       <Box sx={{ padding: 2, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-          <Typography sx={{ color: 'white', fontWeight: 'bold' }}>
-            My Connections
-          </Typography>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="My Connections" />
+          
+        </Tabs>
+      </Box>    
         <Grid container spacing={2} justifyContent="center">
           {experts.map((expert, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
