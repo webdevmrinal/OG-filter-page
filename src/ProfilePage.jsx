@@ -150,17 +150,22 @@ const ProfilePage = () => {
             onChange={handleTabChange}
             aria-label="profile tabs"
           >
+            {/* Add your Tab components here */}
           </Tabs>
           <ButtonContainer>
             <Button
               startIcon={<PersonAddIcon />}
-              variant="contained"
+              variant="outlined"  // Changed to outlined to match the other buttons
               color="primary"
               sx={{ mr: 1 }}
             >
               Follow
             </Button>
-            <Button startIcon={<SendIcon />} variant="outlined" sx={{ mr: 1 }}>
+            <Button
+              startIcon={<SendIcon />}
+              variant="outlined"
+              sx={{ mr: 1 }}
+            >
               Message
             </Button>
             <Button

@@ -72,7 +72,7 @@ const CategoryButton = styled(Button)(({ theme, active }) => ({
   whiteSpace: "nowrap",
 }));
 
-function App() {
+function ExpertPage2() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -398,4 +398,4 @@ const ExpertPopup = ({ expert, onClose }) => {
   );
 };
 
-export default App;
+export default ExpertPage2;

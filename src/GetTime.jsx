@@ -24,10 +24,21 @@ const ScrollableBox = styled(Box)({
 });
 
 const ConfirmationBox = styled(Paper)({
-  backgroundColor: '#dff0d8',
   padding: '16px',
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  backgroundColor: '#ffffff', // Default background
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+});
+
+const SuccessMessage = styled(Typography)({
+  backgroundColor: '#dff0d8',
+  padding: '16px',
+  borderRadius: '8px',
+  color: '#3c763d', // Green text color
+  fontWeight: 'bold',
 });
 
 const GetTime = ({ setShowGetTime, professorName }) => {
@@ -75,29 +86,42 @@ const GetTime = ({ setShowGetTime, professorName }) => {
     setView("confirmation");
   };
 
-  const times = ["7-8p", "8-9p", "9-10p", "10-11p", "11-12a"];
+  const getDateString = (date) => date.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
+
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const dayAfterTomorrow = new Date(today);
+  dayAfterTomorrow.setDate(today.getDate() + 2);
+
+  const formattedToday = getDateString(today);
+  const formattedTomorrow = getDateString(tomorrow);
+  const formattedDayAfter = getDateString(dayAfterTomorrow);
+
+  const times = {
+    [formattedToday]: ["7-8p", "8-9p", "9-10p", "10-11p", "11-12a"],
+    [formattedTomorrow]: ["7-8p", "8-9p", "9-10p", "10-11p", "11-12a"],
+    [formattedDayAfter]: ["7-8p", "8-9p", "9-10p", "10-11p", "11-12a"]
+  };
 
   return (
     <>
       {view === "confirmation" ? (
         <ConfirmationBox>
-          <Typography variant="h5" gutterBottom color="green">
-            Request Submitted
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom color="green">
-            Your appointment request has been submitted successfully!
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom color="green">
+          <SuccessMessage variant="h5" gutterBottom>
+            Your request has been submitted successfully!
+          </SuccessMessage>
+          <Typography variant="subtitle1" gutterBottom>
             Professor: {professorName}
           </Typography>
-          <Typography variant="subtitle1" gutterBottom color="green">
+          <Typography variant="subtitle1" gutterBottom>
             Call Duration: {duration} minutes
           </Typography>
-          <Typography variant="subtitle1" gutterBottom color="green">
+          <Typography variant="subtitle1" gutterBottom>
             Selected Times: {selectedTimes.join(", ")}
           </Typography>
           {isGift && (
-            <Typography variant="subtitle1" gutterBottom color="green">
+            <Typography variant="subtitle1" gutterBottom>
               This is a gift.
             </Typography>
           )}
@@ -164,13 +188,13 @@ const GetTime = ({ setShowGetTime, professorName }) => {
               mb: 2,
             }}
           >
-            <Typography variant="subtitle2">Wednesday 8/7</Typography>
+            <Typography variant="subtitle2">{formattedToday}</Typography>
             <Button size="small" onClick={handleSelectAll}>
               Select all
             </Button>
           </Box>
           <ScrollableBox>
-            {times.map((time) => (
+            {times[formattedToday].map((time) => (
               <ToggleButton
                 key={time}
                 value={time}

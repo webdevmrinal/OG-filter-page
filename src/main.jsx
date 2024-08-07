@@ -5,8 +5,13 @@ import App from "./App.jsx";
 import CssBaseline from "@mui/material/CssBaseline";
 import "./index.css";
 import ProfilePage from "./ProfilePage.jsx";
-import Appointments from "./Appointments.jsx"; // Import the AppointmentsPage component
+import Appointments from "./Appointments.jsx";
+import ExpertPage from "./ExpertPage.jsx";
+import ExpertPage2 from "./ExpertPage2.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import DashboardPage from "./DashboardPage.jsx";
+import MyConnections from "./MyConnection.jsx";
+import AppointmentDashboard from "./AppointmentDashboard.jsx";
 
 const theme = createTheme({
   palette: {
@@ -25,7 +30,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/profile/:expertName" element={<ProfilePage />} />
-            <Route path="/appointments" element={<Appointments />} /> {/* Add this line */}
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/expertPage" element={<ExpertPage />} />
+            <Route path="/expertPage2" element={<ExpertPage2 />} />
+            <Route path="/dashboardpage" element={<DashboardPage />} />
+            <Route path="/connections" element={<MyConnections />} />
+            <Route path="/appointmentpage" element={<AppointmentDashboard />} />
           </Routes>
         </Router>
       </div>
