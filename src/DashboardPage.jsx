@@ -224,11 +224,57 @@ const DashboardPage = () => {
         <HeaderSection>
           <Box
             sx={{
-              background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              //   background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              background: `#28419d`,
               color: theme.palette.common.white,
               borderRadius: theme.shape.borderRadius,
               py: 6,
               px: 4,
+              position: "relative",
+              overflow: "visible",
+              "&:before": {
+                content: '""',
+                position: "absolute",
+                top: -60,
+                left: -400,
+                width: "50%",
+                height: "50%",
+                borderRadius: "100%",
+                background: "#ff98cf",
+                opacity: 0.5,
+                filter: "blur(65px)",
+                mixBlendMode: "screen",
+                animation: "wiggleTop 5s infinite ease-in-out",
+              },
+              "&:after": {
+                content: '""',
+                position: "absolute",
+                bottom: -80,
+                right: -400,
+                width: "50%",
+                height: "50%",
+                background: "#0cfae6",
+                filter: "blur(75px)",
+                borderRadius: "50%",
+                mixBlendMode: "screen",
+                animation: "wiggleBottom 5s infinite ease-in-out",
+              },
+              "@keyframes wiggleTop": {
+                "0%, 100%": {
+                  top: -10,
+                },
+                "50%": {
+                  top: -70,
+                },
+              },
+              "@keyframes wiggleBottom": {
+                "0%, 100%": {
+                  bottom: -30,
+                },
+                "50%": {
+                  bottom: -80,
+                },
+              },
             }}
           >
             <Typography variant="h4" gutterBottom fontWeight={"600"}>
