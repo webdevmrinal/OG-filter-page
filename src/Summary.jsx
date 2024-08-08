@@ -1,57 +1,47 @@
 import React, { useCallback, useEffect, useState} from "react";
 import { Box, Typography, Button, Chip, Divider, Avatar } from "@mui/material";
+import { useParams, useLocation } from "react-router-dom";
 
 const Summary = ({ professorName, selectedTimes, duration, isGift, date, onCancel, onConfirm }) => {
     
-  const [experts, setExperts] = useState([]);
+  const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const expertEmail = location.state?.expertEmail;
 
-    const fetchExperts = useCallback(async (category = null) => {
-        setLoading(true);
-        try {
-          let response;
-          if (category) {
-            response = await axios.post(
-              "https://academy.opengrowth.com/api/search_mentor",
-              {
-                email: "akriti@opengrowth.com",
-                start: 0,
-                end: 10,
-                key: `0_popular_tags_${category}`,
-                search: category,
-                search_with: "tags",
-                action: "",
-                token: "kKRyYp5DebEw0fP",
-              }
-            );
-          } else {
-            response = await axios.post(
-              "https://academy.opengrowth.com/api/get_all_mentors",
-              {
-                id: "akriti@opengrowth.com",
-                start: 0,
-                end: 10,
-                key: "0_all_mentors_0_to_10",
-              }
-            );
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await axios.post(
+          "https://academy.opengrowth.com/api/get_user",
+          {
+            email: expertEmail,
           }
-          console.log("API Response:", response.data);
-          setExperts(response.data);
-        } catch (error) {
-          console.error("Error fetching experts:", error);
-        } finally {
-          setLoading(false);
-        }
-      }, []);
+        );
+        setProfileData(response.data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (expertEmail) {
+      fetchProfileData();
+    }
+  }, [expertEmail]);
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', p: 2 }}>
       <Box
         sx={{
-          maxWidth: '600px',
-          width: '100%',
-          bgcolor: 'background.paper',
-          p: 3,
-          boxShadow: 1,
+            padding: "16px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+            backgroundColor: "#ffffff",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
         }}
       >
         <Typography variant="h6" gutterBottom sx={{alignItems: 'center'}}>
@@ -59,16 +49,16 @@ const Summary = ({ professorName, selectedTimes, duration, isGift, date, onCance
         </Typography>
         <Divider sx={{ width: "92%", mb: 2, alignSelf: "center" }} />
         <Avatar
-                        src={`https://academy.opengrowth.com/assets/images/users/${experts.img}`}
-                        alt={experts.name}
-                        sx={{ width: 60, height: 60, mr: 2 }}
-                      />
+            src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
+            alt={profileData?.name}
+            sx={{ width: 60, height: 60, mr: 2 }}
+        />
         <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
           {professorName}
         </Typography>
         <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-            Dates and Times:
+            Dates/Times: 
           </Typography>
           {selectedTimes.map((timeSlot, index) => (
             <Box key={index} sx={{ display: 'flex', gap: 1 }}>
