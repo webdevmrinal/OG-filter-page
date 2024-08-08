@@ -5,21 +5,26 @@ import {
   Paper,
   Avatar,
   Button,
-  CircularProgress,
   TextField,
   Link,
   Divider,
+  Skeleton,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
 
 const RejectedItem = styled(Box)(({ theme }) => ({
   display: "flex",
-  padding: "25px 16px",
-  //   borderBottom: "1px solid #e0e0e0",
-  //   "&:last-child": {
-  //     borderBottom: "none",
-  //   },
+  padding: "15px 16px",
+  margin: "1em 0",
+  borderRadius: "8px",
+  transition: "all 0.3s ease",
+  border: "1px solid #e0e0e0",
+  backgroundColor: "white",
+  "&:hover": {
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    transform: "translateY(-2px)",
+  },
 }));
 
 const AvatarWrapper = styled(Box)(({ theme }) => ({
@@ -37,6 +42,24 @@ const ReasonBox = styled(Box)(({ theme }) => ({
   flexShrink: 0,
   flexBasis: 0,
 }));
+
+const RejectedItemSkeleton = () => (
+  <RejectedItem>
+    <Skeleton
+      variant="circular"
+      width={56}
+      height={56}
+      sx={{ mr: 2 }}
+      animation="wave"
+    />
+    <Box sx={{ flexGrow: 1 }}>
+      <Skeleton variant="text" width="40%" animation="wave" />
+      <Skeleton variant="text" width="60%" animation="wave" />
+      <Skeleton variant="text" width="30%" animation="wave" />
+      <Skeleton variant="text" width="50%" animation="wave" />
+    </Box>
+  </RejectedItem>
+);
 
 const RejectedRequestComponent = () => {
   const [rejectedItems, setRejectedItems] = useState([]);
@@ -138,8 +161,10 @@ const RejectedRequestComponent = () => {
           ))}
         </Box>
         {loading ? (
-          <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
-            <CircularProgress/>
+          <Box sx={{ px: 3, py: 1 }}>
+            <RejectedItemSkeleton />
+            <RejectedItemSkeleton />
+            <RejectedItemSkeleton />
           </Box>
         ) : (
           <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
