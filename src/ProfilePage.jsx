@@ -32,7 +32,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { useParams, useLocation } from "react-router-dom";
 import SelectTime from "./SelectTime";
-import { addDays, format } from "date-fns";
 
 const GradientBox = styled(Box)({
   background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
@@ -69,7 +68,7 @@ const ProfilePage = () => {
   const location = useLocation();
   const expertEmail = location.state?.expertEmail;
   const [tabValue, setTabValue] = useState(0);
-  const [expanded, setExpanded] = useState(true); // Initialize as true to keep it open
+  const [expanded, setExpanded] = useState(true);
 
   useEffect(() => {
     const fetchProfileData = async () => {
