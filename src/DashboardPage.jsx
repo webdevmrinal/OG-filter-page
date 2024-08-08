@@ -15,7 +15,8 @@ import {
     IconButton,
     DialogContent,
     Chip,
-    CardMedia
+    CardMedia,
+    ButtonBase
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -49,7 +50,7 @@ const HeaderSection = styled(Box)(({ theme }) => ({
     textAlign: "center",
 }));
 
-const EngagementCard = styled(Card)(({ theme }) => ({
+const EngagementCard = styled(ButtonBase)(({ theme }) => ({
     width: "48%",
     backgroundColor: "#fdf3e7",
     padding: theme.spacing(2),
@@ -61,6 +62,13 @@ const EngagementCard = styled(Card)(({ theme }) => ({
     gap: theme.spacing(2),
     boxShadow: "none",
     borderRadius: "12px",
+    '&:hover': {
+        backgroundColor: "#f3e5ab",
+      boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+      transform: "translateY(-2px)",
+      border: "2px solid rgba(37, 56, 124, 0.5)", 
+    },
+    transition: "background-color 0.3s ease"
 }));
 
 const SidebarSection = styled(Box)(({ theme }) => ({
@@ -70,6 +78,16 @@ const SidebarSection = styled(Box)(({ theme }) => ({
     flexDirection: "column",
     gap: theme.spacing(2),
 }));
+const appointments = [
+    {
+        id: 1,
+        name: 'Vanshika Yadav',
+        description: 'test',
+        startDate: 'Thursday, August 08, 2024',
+        startTime: '02:29 PM',
+        endTime: '02:59 PM'
+    }
+];
 
 const CategoryButton = styled(Button)(({ theme, active }) => ({
     borderRadius: "1.5em",
@@ -249,10 +267,10 @@ const DashboardPage = () => {
                             boxShadow: "0 0 8px rgba(0,0,0,0.2)",
                         }}>
                             <Typography variant="h6" gutterBottom sx={{ width: '100%', mb: 2, pl: 5 }}>
-                                My Connections
+                                Experts you can connect
                             </Typography>
                             <Divider sx={{ width: '92%', mb: 2, alignSelf: 'center' }} />
-                            {experts.slice(0, 3).map((expert, index) => (
+                            {experts.slice(0, 6).map((expert, index) => (
                                 <Card key={index} sx={{
                                     width: 300, mb: 2, boxShadow: "none", borderRadius: "12px", display: 'flex', flexDirection: 'column', alignItems: 'center',
                                     height: '100%',
