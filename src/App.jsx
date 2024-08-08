@@ -40,7 +40,7 @@ const ScrollableBox = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: theme.spacing(2),
   overflowX: "auto",
-  padding: theme.spacing(1, 0),
+  padding: theme.spacing(1, 1),
   height: "3.5em",
   overflowY: "hidden",
   "&::-webkit-scrollbar": {
@@ -173,7 +173,7 @@ function App() {
               active={selectedCategory === category}
               variant="contained"
               size="small"
-              sx={{ flexShrink: 0 }}
+              sx={{ flexShrink: 0, pl: 2 }}
               onClick={() => handleCategoryClick(category)}
               endIcon={selectedCategory === category ? <CloseIcon /> : null}
             >
@@ -194,8 +194,9 @@ function App() {
           sx={{
             placeItems: "center",
             placeContent: "center",
-            mx: "auto",
             py: "1.5em",
+            ml: '12px',
+            width: '92vw'
           }}
         >
           {experts.map((expert, index) => (

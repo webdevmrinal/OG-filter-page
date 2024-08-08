@@ -1,23 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Card,
-  CardContent,
-  Avatar,
-  CircularProgress,
-  Tabs,
-  Tab,
-  Dialog,
-  DialogTitle,
-  IconButton,
-  DialogContent,
-  Chip,
-  CardMedia,
-  ButtonBase,
-  useTheme,
+    Box,
+    Typography,
+    Button,
+    Divider,
+    Card,
+    CardContent,
+    Avatar,
+    CircularProgress,
+    Tabs,
+    Tab,
+    Dialog,
+    DialogTitle,
+    IconButton,
+    DialogContent,
+    Chip,
+    CardMedia,
+    ButtonBase,
+    Grid,
+    useTheme
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -42,6 +43,7 @@ const initialCategories = [
   "Seasoned Entrepreneur",
 ];
 
+
 const HeaderSection = styled(Box)(({ theme }) => ({
   //   backgroundColor: "#1e293b",
   color: "white",
@@ -52,24 +54,24 @@ const HeaderSection = styled(Box)(({ theme }) => ({
 }));
 
 const EngagementCard = styled(ButtonBase)(({ theme }) => ({
-  width: "48%",
-  backgroundColor: "#fdf3e7",
-  padding: theme.spacing(2),
-  textAlign: "center",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: theme.spacing(2),
-  boxShadow: "none",
-  borderRadius: "12px",
-  "&:hover": {
-    backgroundColor: "#f3e5ab",
-    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-    transform: "translateY(-2px)",
-    border: "2px solid rgba(37, 56, 124, 0.5)",
-  },
-  transition: "background-color 0.3s ease",
+    width: "48%",
+    backgroundColor: "#fdf3e7",
+    padding: theme.spacing(2),
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: theme.spacing(2),
+    boxShadow: "none",
+    borderRadius: "12px",
+    '&:hover': {
+        backgroundColor: "#f3e5ab",
+        boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+        transform: "translateY(-2px)",
+        border: "2px solid rgba(37, 56, 124, 0.5)",
+    },
+    transition: "background-color 0.3s ease"
 }));
 
 const SidebarSection = styled(Box)(({ theme }) => ({
@@ -80,15 +82,45 @@ const SidebarSection = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 const appointments = [
-  {
-    id: 1,
-    name: "Vanshika Yadav",
-    description: "test",
-    startDate: "Thursday, August 08, 2024",
-    startTime: "02:29 PM",
-    endTime: "02:59 PM",
-  },
+    {
+        id: 1,
+        name: 'Vanshika Yadav',
+        description: 'test',
+        startDate: 'Thursday, August 08, 2024',
+        startTime: '02:29 PM',
+        endTime: '02:59 PM',
+        status: 'Accepted'
+    }
 ];
+
+const ShimmerWrapper = styled('div')({
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#f6f7f8',
+    borderRadius: 8,
+  });
+  
+  const ShimmerEffect = styled('div')(({ theme }) => ({
+    width: '100%',
+    height: '100%',
+    animation: 'shimmer 1.5s infinite linear',
+    background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #e0e0e0 50%, ${theme.palette.background.default} 100%)`,
+    backgroundSize: '200% 100%',
+    "@keyframes shimmer": {
+      '0%': {
+        backgroundPosition: '-100% 0',
+      },
+      '100%': {
+        backgroundPosition: '100% 0',
+      },
+    }
+  }));
+  
+  const Shimmer = ({ width = '100%', height = 100 }) => (
+    <ShimmerWrapper style={{ width, height }}>
+      <ShimmerEffect />
+    </ShimmerWrapper>
+  );
 
 const CategoryButton = styled(Button)(({ theme, active }) => ({
   borderRadius: "1.5em",
@@ -103,6 +135,34 @@ const CategoryButton = styled(Button)(({ theme, active }) => ({
   width: "auto",
   whiteSpace: "nowrap",
 }));
+
+const AttendedItem = ({ item }) => (
+    <StyledAttendedItem>
+        <AvatarWrapper>
+            <Avatar
+                src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
+                sx={{ width: 56, height: 56, mr: 2 }}
+            />
+        </AvatarWrapper>
+        <Box>
+            <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                {item.mentee_name}
+            </Typography>
+            <Typography
+                variant="body1"
+                sx={{ color: "primary.main", fontWeight: "600" }}
+            >
+                {item.idea}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+                {item.date_title} | {item.time_title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+                Requirement: {item.query}
+            </Typography>
+        </Box>
+    </StyledAttendedItem>
+);
 
 const DashboardPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -174,6 +234,50 @@ const DashboardPage = () => {
       setCategories(initialCategories);
     }
   }, [selectedCategory]);
+    const handleAppointmentTabChange = (event, newValue) => {
+        setAppointmentTab(newValue);
+    };
+    useEffect(() => {
+        const elements = document.querySelectorAll('.css-ehiffo');
+        elements.forEach(el => {
+            el.style.width = '69vw';
+            el.style.height = '53vh';
+            el.style.borderRadius = '12px';
+            el.style.boxShadow = '0 0 8px rgba(0,0,0,0.2)';
+        });
+    }, []);
+    const appointmentCard = (appointment) => (
+        <Card sx={{
+            width: 250, boxShadow: 'none', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center',
+            padding: 2,
+            '&:hover': {
+                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                transform: "translateY(-1px)",
+            }
+        }}>
+            <Avatar sx={{ bgcolor: 'primary.main', mb: 2 }}>
+                <EventAvailableIcon />
+            </Avatar>
+            <Typography variant="subtitle2" sx={{ color: 'green', fontWeight: 'bold', mb: 1 }}>
+                {appointment.status}
+            </Typography>
+            <Typography variant="h6" sx={{ textAlign: 'center' }}>
+                {appointment.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
+                {appointment.description}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 1 }}>
+                {appointment.startDate}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 0.5 }}>
+                {appointment.startTime} - {appointment.endTime}
+            </Typography>
+            <Button sx={{ mt: 2 }}>
+                View Now
+            </Button>
+        </Card>
+    );
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
@@ -192,15 +296,11 @@ const DashboardPage = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const handleAppointmentTabChange = (event, newValue) => {
-    setAppointmentTab(newValue);
-  };
   useEffect(() => {
     const elements = document.querySelectorAll(".css-ehiffo");
     elements.forEach((el) => {
       el.style.width = "69vw";
-      el.style.height = "70vh";
+      el.style.height = "53vh";
       el.style.borderRadius = "12px";
       el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
     });
@@ -305,40 +405,63 @@ const DashboardPage = () => {
               </EngagementCard>
             </Box>
             <Box sx={{ marginBottom: 2 }}>
-              <Tabs
-                value={appointmentTab}
-                onChange={handleAppointmentTabChange}
-                aria-label="appointment tabs"
-              >
-                <Tab
-                  iconPosition="start"
-                  label={
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <EventAvailableIcon sx={{ color: "green" }} /> Upcoming
-                      Meetings
-                    </Box>
-                  }
-                />
-                <Tab
-                  iconPosition="start"
-                  label={
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <EventBusyIcon sx={{ color: "red" }} /> Rejected Meetings
-                    </Box>
-                  }
-                />
-                <Tab
-                  iconPosition="start"
-                  label={
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <EventNoteIcon sx={{ color: "blue" }} /> Attended Meetings
-                    </Box>
-                  }
-                />
-              </Tabs>
-            </Box>
+                            <Tabs value={appointmentTab} onChange={handleAppointmentTabChange} aria-label="appointment tabs">
+                                <Tab
+                                    iconPosition="start"
+                                    label={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}><EventAvailableIcon sx={{ color: 'green' }} /> Upcoming Meetings</Box>}
+                                />
+                                <Tab
+                                    iconPosition="start"
+                                    label={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}><EventBusyIcon sx={{ color: 'red' }} /> Rejected Meetings</Box>}
+                                />
+                                <Tab
+                                    iconPosition="start"
+                                    label={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}><EventNoteIcon sx={{ color: 'blue' }} /> Attended Meetings</Box>}
+                                />
+                            </Tabs>
+                        </Box>
+                        <Box sx={{
+                            p: 4, width: '100vw', height: '100vh', overflow: 'auto',
+                            backgroundColor: '#fff'
+                        }}>
+                            <Typography variant="h6" gutterBottom sx={{ mb: 2, color: '#000' }}>
+                                Appointments
+                            </Typography>
+                            <Divider sx={{ mb: 2 }} />
+                            {appointmentTab === 0 && (
+                                <Grid container spacing={2} sx={{
+                                    marginTop: 2, marginLeft: 1, width: '284px',
+                                    '& .MuiGrid-item': {
+                                        padding: '0 !important' // Removing padding from all grid items
+                                    }
 
-            <AppointmentsPage tab={appointmentTab} />
+                                }} >
+                                    {appointments.map((appointment) => (
+                                        <Box sx={{ display: "flex", gap: 2 }}>
+                                            <Grid item key={appointment.id} sx={{
+                                                boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                                                borderRadius: '8px',
+                                                border: '1px solid rgba(0,0,0,0.12)',
+                                                backgroundColor: '#fff',
+                                                maxWidth: 'calc(100% - 25px)',
+                                            }}>
+                                                {appointmentCard(appointment)}
+                                            </Grid>
+                                            <Grid item key={appointment.id} sx={{
+                                                boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                                                borderRadius: '8px',
+                                                border: '1px solid rgba(0,0,0,0.12)',
+                                                backgroundColor: '#fff',
+                                                maxWidth: 'calc(100% - 25px)',
+                                            }}>
+                                                {appointmentCard(appointment)}
+                                            </Grid>
+                                        </Box>
+                                    ))}
+                                </Grid>
+                            )}
+                        </Box>
+
 
             <Box
               sx={{
@@ -386,6 +509,7 @@ const DashboardPage = () => {
                       p: 1,
                       border: "1px solid #ccc",
                       boxSizing: "border-box",
+                      height: '22vh'
                     }}
                   >
                     <Typography
@@ -422,10 +546,10 @@ const DashboardPage = () => {
             <Typography variant="h6">OpenGrowth Experts</Typography>
             <Divider sx={{ mb: 2 }} />
             {loading ? (
-              <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-                <CircularProgress />
-              </Box>
-            ) : (
+    Array.from({ length: 4 }, (_, index) => (
+      <Shimmer key={index} height={150} /> // You can customize the height as needed
+    ))
+  ) : (
               experts.slice(0, 4).map(
                 (
                   expert,

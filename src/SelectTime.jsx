@@ -130,11 +130,11 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
   };
 
   const times = [
-    { label: "7-8p", available: true },
-    { label: "8-9p", available: false },
-    { label: "9-10p", available: true },
-    { label: "10-11p", available: true },
-    { label: "11-12a", available: false },
+    { label: "7pm-8pm", available: true },
+    { label: "8pm-9pm", available: false },
+    { label: "9pm-10pm", available: true },
+    { label: "10pm-11pm", available: true },
+    { label: "11pm-12am", available: false },
   ];
 
   const generateNext10Days = () => {
@@ -144,11 +144,11 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
       days.push({
         date: format(date, "EEEE, MMM d"),
         times: [
-          { label: "7-8p", available: Math.random() > 0.5 },
-          { label: "8-9p", available: Math.random() > 0.5 },
-          { label: "9-10p", available: Math.random() > 0.5 },
-          { label: "10-11p", available: Math.random() > 0.5 },
-          { label: "11-12a", available: Math.random() > 0.5 },
+          { label: "7pm-8pm", available: Math.random() > 0.5 },
+          { label: "8pm-9pm", available: Math.random() > 0.5 },
+          { label: "9pm-10pm", available: Math.random() > 0.5 },
+          { label: "10pm-11pm", available: Math.random() > 0.5 },
+          { label: "11pm-12am", available: Math.random() > 0.5 },
         ],
       });
     }
@@ -290,7 +290,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                         available={time.available}
                         selected={selectedTimes.includes(time.label)}
                         onChange={() => handleTimeToggle(time)}
-                        sx={{ mr: 1 }}
+                        sx={{ mr: 1, width:'7vw' }}
                       >
                         {time.label}
                       </TimeButton>

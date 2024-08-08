@@ -28,10 +28,11 @@ const StyledAttendedItem = styled(Box)(({ theme }) => ({
   borderRadius: "8px",
   transition: "all 0.3s ease",
   border: "1px solid #e0e0e0",
-  backgroundColor: "white",
+  backgroundColor: "#e0f7fa",
   "&:hover": {
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
+    backgroundColor: 'white'
   },
 }));
 
@@ -54,7 +55,7 @@ const AttendedItemSkeleton = () => (
 );
 
 const AttendedItem = ({ item }) => (
-  <StyledAttendedItem>
+  <StyledAttendedItem >
     <AvatarWrapper>
       <Avatar
         src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
@@ -122,9 +123,9 @@ const AttendedAppointments = () => {
       </Typography>
       <Divider />
 
-      <Box sx={{ px: 3, py: 1 }}>
+      <Box sx={{ px: 3, py: 1}}>
         {appointments.map((item) => (
-          <AttendedItem key={item.meet_id} item={item} />
+          <AttendedItem key={item.meet_id} item={item}/>
         ))}
       </Box>
       {loading ? (

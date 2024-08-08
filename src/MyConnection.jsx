@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Grid, Card, CardContent, Typography, CardMedia, Button, CircularProgress, Box, Tab, Tabs, Divider } from '@mui/material';
+import { Grid, Card, CardContent, Typography, CardMedia, Button, CircularProgress, Box, Tab, Tabs, Divider, Rating } from '@mui/material';
 import axios from 'axios';
 import { styled } from '@mui/system';
 import Header from './Header';
@@ -116,12 +116,17 @@ const MyConnections = () => {
                   <Typography variant="body2" color="text.secondary">
                     {truncateText(expert.about, 100)}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold', mt: 2 }}>
-                    Interactions: 9
-                  </Typography>
-                  <Button color="primary" sx={{ px: 0 }}>
-                    Know More
-                  </Button>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold' }}>
+                          Interactions: 9
+                      </Typography>
+                      <Button color="primary">
+                          Know More
+                      </Button>
+                  </Box>
+                  <Box sx={{ mt: -1, display: 'flex', alignItems: 'center' }}>
+                    <Rating name="read-only" value={3.5} readOnly />
+                  </Box>
                 </CardContent>
               </ExpertCard>
             </Grid>
