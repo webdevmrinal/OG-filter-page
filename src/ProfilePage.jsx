@@ -23,8 +23,8 @@ import BusinessIcon from "@mui/icons-material/Business";
 import SendIcon from "@mui/icons-material/Send";
 import WorkIcon from "@mui/icons-material/Work";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import PersonIcon from "@mui/icons-material/Person";
 import FolderIcon from "@mui/icons-material/Folder";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -32,6 +32,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { useParams, useLocation } from "react-router-dom";
 import SelectTime from "./SelectTime";
+import { addDays, format } from "date-fns";
 
 const GradientBox = styled(Box)({
   background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
@@ -149,23 +150,17 @@ const ProfilePage = () => {
             value={tabValue}
             onChange={handleTabChange}
             aria-label="profile tabs"
-          >
-            {/* Add your Tab components here */}
-          </Tabs>
+          ></Tabs>
           <ButtonContainer>
             <Button
               startIcon={<PersonAddIcon />}
-              variant="outlined"  // Changed to outlined to match the other buttons
+              variant="outlined"
               color="primary"
               sx={{ mr: 1 }}
             >
               Follow
             </Button>
-            <Button
-              startIcon={<SendIcon />}
-              variant="outlined"
-              sx={{ mr: 1 }}
-            >
+            <Button startIcon={<SendIcon />} variant="outlined" sx={{ mr: 1 }}>
               Message
             </Button>
             <Button
@@ -179,12 +174,11 @@ const ProfilePage = () => {
         </TabsContainer>
       </Box>
 
-      {/* Place the Accordion here, just below the header */}
       <Accordion expanded={expanded} onChange={handleAccordionChange}>
         <AccordionDetails>
           <SelectTime
             setShowGetTime={setExpanded}
-            professorName={profileData.name} // Pass the professor's name to SelectTime
+            professorName={profileData.name}
           />
         </AccordionDetails>
       </Accordion>
