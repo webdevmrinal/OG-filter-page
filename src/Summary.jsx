@@ -8,6 +8,7 @@ import {
   Avatar,
   ToggleButton,
   ToggleButtonGroup,
+  Rating
 } from "@mui/material";
 import { useParams, useLocation } from "react-router-dom";
 
@@ -55,18 +56,15 @@ const TimeButton = styled(ToggleButton)(({ theme }) => ({
 }));
 
 const DurationButton = styled(ToggleButton)(({ theme }) => ({
-  border: `1px solid ${theme.palette.primary.main}`,
+  border: `2px solid #e0e0e0`,
   color: theme.palette.primary.main,
   borderRadius: "4px",
   padding: theme.spacing(1, 2),
   marginRight: theme.spacing(1),
   marginBottom: theme.spacing(1),
   "&.Mui-selected": {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-    "&:hover": {
-      backgroundColor: theme.palette.primary.dark,
-    },
+    backgroundColor: '#e2e2e2',
+    color: theme.palette.common.black,
   },
 }));
 
@@ -84,6 +82,10 @@ const Summary = ({
   const location = useLocation();
   const expertEmail = location.state?.expertEmail;
 
+  const formatTimeSlot = (timeSlot) => {
+    const [date, time] = timeSlot.split("_");
+    return `${date} at ${time}`;
+  };
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -127,48 +129,57 @@ const Summary = ({
         <Typography variant="h5" gutterBottom>
           Confirm Your Request
         </Typography>
-        <Avatar
-          src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
-          alt={profileData?.name}
-          sx={{ width: 60, height: 60, mr: 2 }}
-        />
-        <Typography
-          variant="h6"
-          gutterBottom
-          sx={{ fontWeight: "bold", color: "primary.main" }}
-        >
-          {professorName}
-        </Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
-          Selected Times:
-        </Typography>
-        <Box sx={{ display: "flex", flexWrap: "wrap", mb: 2 }}>
-          {selectedTimes.map((timeSlot, index) => {
-            const [date, time] = timeSlot.split("_");
-            return (
-              <TimeButton key={index} value={time} selected>
-                {time}
-              </TimeButton>
-            );
-          })}
-        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Avatar
+                    src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
+                    alt={profileData?.name}
+                    sx={{ width: 60, height: 60, mr: 2 }}
+                />
+                <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ fontWeight: 'bold', color: 'primary.main' }}
+                >
+                    {professorName}
+                </Typography>
+            </Box>
 
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
-          Duration:
-        </Typography>
-        <ToggleButtonGroup
-          value={duration}
-          exclusive
-          aria-label="call duration"
-        >
-          <DurationButton
-            value={duration}
-            aria-label={`${duration} minutes`}
-            selected
-          >
-            {getDurationLabel(duration)}
-          </DurationButton>
-        </ToggleButtonGroup>
+            {/* Selected Times */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                    Selected Times:
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {selectedTimes.map((timeSlot, index) => {
+                        const [date, time] = timeSlot.split("_");
+                        return (
+                            <TimeButton key={index} value={time} disabled selected>
+                                {formatTimeSlot(timeSlot)}
+                            </TimeButton>
+                        );
+                    })}
+                </Box>
+            </Box>
+
+            {/* Duration */}
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                    Duration:
+                </Typography>
+                <ToggleButtonGroup
+                    value={duration}
+                    exclusive
+                    aria-label="call duration"
+                >
+                    <DurationButton
+                        value={duration}
+                        aria-label={`${duration} minutes`}
+                        disabled selected
+                    >
+                        {getDurationLabel(duration)}
+                    </DurationButton>
+                </ToggleButtonGroup>
+            </Box>
 
         {/* <SelectedDurationButton>
           {duration === "15"
@@ -191,14 +202,25 @@ const Summary = ({
         )}
 
         <Box
-          sx={{ mt: 3, display: "flex", justifyContent: "flex-end", gap: 2 }}
+          sx={{ mt: 3, display: "flex", justifyContent: "space-between", gap: 2 }}
         >
-          <Button variant="outlined" color="primary" onClick={onCancel}>
+          <Box>
+                  <Typography variant="h6" component="span">
+                    ₹4,999 • Session
+                  </Typography>
+                  <Rating value={5} readOnly size="small" sx={{ ml: 1 }} />
+                  <Typography variant="body2" component="span" sx={{ ml: 1 }}>
+                    5.0 (40)
+                  </Typography>
+                </Box>
+                <Box sx={{gap: 2 }}>
+          <Button variant="outlined" color="primary" onClick={onCancel} sx={{ mr: 2 }}>
             Cancel
           </Button>
           <Button variant="contained" color="primary" onClick={onConfirm}>
             Confirm
           </Button>
+          </Box>
         </Box>
       </Box>
     </StyledSummaryBox>

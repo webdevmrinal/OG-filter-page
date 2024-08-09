@@ -24,7 +24,7 @@ const RejectedItem = styled(Box)(({ theme }) => ({
   "&:hover": {
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
-    backgroundColor: 'white'
+    backgroundColor: '#f4f7f9'
   },
 }));
 
@@ -110,7 +110,7 @@ const RejectedRequestComponent = () => {
         <Divider />
         <Box sx={{ px: 3, py: 1 }}>
           {rejectedItems.map((item) => (
-            <RejectedItem key={item.meet_id} sx={{backgroundColor: '#ffe0e3'}}>
+            <RejectedItem key={item.meet_id} sx={{}}>
               <AvatarWrapper>
                 <Avatar
                   src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
