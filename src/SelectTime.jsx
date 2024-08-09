@@ -83,13 +83,14 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
     }
   };
 
-  const handleTimeToggle = (time) => {
+  const handleTimeToggle = (day, time) => {
     if (time.available) {
-      setSelectedTimes((prev) =>
-        prev.includes(time.label)
-          ? prev.filter((t) => t !== time.label)
-          : [...prev, time.label]
-      );
+      setSelectedTimes((prev) => {
+        const timeKey = `${day.date}_${time.label}`;
+        return prev.includes(timeKey)
+          ? prev.filter((t) => t !== timeKey)
+          : [...prev, timeKey];
+      });
     }
   };
 
@@ -128,6 +129,24 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
     setShowGetTime(false);
     setView("selection");
   };
+
+  function formatTimeRange(input) {
+    const formatTime = (time) => {
+      const [hour, period] = time.split(/(am|pm)/i);
+      return `${hour.padStart(2, "0").toUpperCase()}${period.toUpperCase()}`;
+    };
+
+    return input
+      .map((item) => {
+        const match = item.match(/(\d{1,2}[ap]m)-(\d{1,2}[ap]m)/i);
+        if (match) {
+          return `${formatTime(match[1])}-${formatTime(match[2])}`;
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .join(",");
+  }
 
   const times = [
     { label: "7pm-8pm", available: true },
@@ -171,8 +190,9 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
           <Typography variant="subtitle1" gutterBottom>
             Call Duration: {duration} minutes
           </Typography>
+          {console.log(selectedTimes, formatTimeRange(selectedTimes))}
           <Typography variant="subtitle1" gutterBottom>
-            Selected Times: {selectedTimes.join(", ")}
+            Selected Times: {formatTimeRange(selectedTimes)}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             Date: {date}
@@ -270,7 +290,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                       value={time.label}
                       available={time.available}
                       selected={selectedTimes.includes(time.label)}
-                      onChange={() => handleTimeToggle(time)}
+                      onChange={() => toggleToggle(time)}
                       sx={{ mr: 1 }}
                     >
                       {time.label}
@@ -285,12 +305,14 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                   <ScrollableBox>
                     {day.times.map((time) => (
                       <TimeButton
-                        key={time.label}
+                        key={`${day.date}_${time.label}`}
                         value={time.label}
                         available={time.available}
-                        selected={selectedTimes.includes(time.label)}
-                        onChange={() => handleTimeToggle(time)}
-                        sx={{ mr: 1, width:'7vw' }}
+                        selected={selectedTimes.includes(
+                          `${day.date}_${time.label}`
+                        )}
+                        onChange={() => handleTimeToggle(day, time)}
+                        sx={{ mr: 1, width: "max-content" }}
                       >
                         {time.label}
                       </TimeButton>
