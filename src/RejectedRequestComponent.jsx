@@ -18,6 +18,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Drawer,
 } from "@mui/material";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 
@@ -73,12 +74,48 @@ const RejectedItemSkeleton = () => (
   </RejectedItem>
 );
 
+const rejectionReasons = [
+  "Pending request rejected due to inactivity.",
+  "This will be revisited in the next quarter.",
+  "Request automatically declined after the deadline passed.",
+  "Please reschedule. Let's try this again next month.",
+  "Deferred to next year for further consideration.",
+  "Request rejected. Please try again next week.",
+  "Auto-rejected due to exceeded response time.",
+  "We'll address this in the next fiscal year.",
+  "Request declined. Please plan for a later date.",
+  "Pending approval expired and was automatically rejected.",
+];
+
 const RejectedRequestComponent = () => {
   const [rejectedItems, setRejectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [start, setStart] = useState(0);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [currentReason, setCurrentReason] = useState("");
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [currentReasons, setCurrentReasons] = useState([]);
+
+  // const fetchRejectedRequests = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.post(
+  //       "https://academy.opengrowth.com/api/get_user_specific_mentorship",
+  //       {
+  //         mentee_id: "1",
+  //         start: start,
+  //         end: 10,
+  //         user: "mentor",
+  //         mentorship_type: "rejected",
+  //         m_id: "1",
+  //         key: `1_upcoming_mentorship_${start}_to_10`,
+  //       }
+  //     );
+  //     setRejectedItems((prev) => [...prev, ...response.data]);
+  //     setStart((prev) => prev + 10);
+  //   } catch (error) {
+  //     console.error("Error fetching rejected requests:", error);
+  //   }
+  //   setLoading(false);
+  // };
 
   const fetchRejectedRequests = async () => {
     setLoading(true);
@@ -95,7 +132,11 @@ const RejectedRequestComponent = () => {
           key: `1_upcoming_mentorship_${start}_to_10`,
         }
       );
-      setRejectedItems((prev) => [...prev, ...response.data]);
+      const itemsWithRandomReasons = response.data.map((item) => ({
+        ...item,
+        reasons: getRandomReasons(),
+      }));
+      setRejectedItems((prev) => [...prev, ...itemsWithRandomReasons]);
       setStart((prev) => prev + 10);
     } catch (error) {
       console.error("Error fetching rejected requests:", error);
@@ -107,13 +148,18 @@ const RejectedRequestComponent = () => {
     fetchRejectedRequests();
   }, []);
 
-  const handleOpenDialog = (reason) => {
-    setCurrentReason(reason);
-    setOpenDialog(true);
+  const getRandomReasons = () => {
+    const count = Math.floor(Math.random() * 8) + 1;
+    return rejectionReasons.slice(0, count);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleOpenDrawer = (reasons) => {
+    setCurrentReasons(reasons);
+    setDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
   };
 
   return (
@@ -176,14 +222,28 @@ const RejectedRequestComponent = () => {
                     alignSelf: "center",
                   }}
                 >
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => handleOpenDialog(item.reject_reason)}
-                    sx={{ minWidth: "auto", whiteSpace: "nowrap" }}
-                  >
-                    View Reason
-                  </Button>
+                  {item.reasons.length <= 3 ? (
+                    <ReasonBox>
+                      <TextField
+                        fullWidth
+                        variant="outlined"
+                        label="Reasons"
+                        value={item.reasons.join("\n")}
+                        multiline
+                        rows={item.reasons.length}
+                        sx={{ mt: 1 }}
+                      />
+                    </ReasonBox>
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => handleOpenDrawer(item.reasons)}
+                      sx={{ minWidth: "auto", whiteSpace: "nowrap" }}
+                    >
+                      View More
+                    </Button>
+                  )}
                 </Box>
               </Box>
             </RejectedItem>
@@ -203,39 +263,32 @@ const RejectedRequestComponent = () => {
           </Box>
         )}
       </Box>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        {/* <DialogTitle>Rejection Reason</DialogTitle> */}
-        <DialogContent sx={{ p: "1em" }}>
+
+      <Drawer anchor="right" open={drawerOpen} onClose={handleCloseDrawer}>
+        <Box sx={{ width: 500, p: 2 }}>
+          <Typography variant="h6" gutterBottom>
+            Rejection Reasons
+          </Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ background: "#ebebeb", fontWeight: "600" }}
-                   iconPosition="start"
-                  >
-                    <EventBusyIcon sx={{ color: "red" }} />
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      background: "#ebebeb",
-                      fontWeight: "600",
-                      minWidth: "35em",
-                    }}
-                  >
-                    Rejection Reasons
-                  </TableCell>
+                  <TableCell>#</TableCell>
+                  <TableCell>Reasons</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>1</TableCell>
-                  <TableCell>{currentReason}</TableCell>
-                </TableRow>
+                {currentReasons.map((reason, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{reason}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
-        </DialogContent>
-      </Dialog>
+        </Box>
+      </Drawer>
     </Paper>
   );
 };
