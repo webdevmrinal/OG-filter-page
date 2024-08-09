@@ -9,6 +9,15 @@ import {
   Link,
   Divider,
   Skeleton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -24,7 +33,7 @@ const RejectedItem = styled(Box)(({ theme }) => ({
   "&:hover": {
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
-    backgroundColor: '#f4f7f9'
+    backgroundColor: "#f4f7f9",
   },
 }));
 
@@ -39,7 +48,7 @@ const AvatarWrapper = styled(Box)(({ theme }) => ({
 
 const ReasonBox = styled(Box)(({ theme }) => ({
   marginTop: "8px",
-  flexGrow: 0.4,
+  flexGrow: 0.45,
   flexShrink: 0,
   flexBasis: 0,
 }));
@@ -66,6 +75,8 @@ const RejectedRequestComponent = () => {
   const [rejectedItems, setRejectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [start, setStart] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [currentReason, setCurrentReason] = useState("");
 
   const fetchRejectedRequests = async () => {
     setLoading(true);
@@ -93,6 +104,15 @@ const RejectedRequestComponent = () => {
   useEffect(() => {
     fetchRejectedRequests();
   }, []);
+
+  const handleOpenDialog = (reason) => {
+    setCurrentReason(reason);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   return (
     <Paper
@@ -146,17 +166,23 @@ const RejectedRequestComponent = () => {
                     Requirement: {item.query}
                   </Typography>
                 </Box>
-                <ReasonBox>
-                  <TextField
-                    fullWidth
+                <Box
+                  flexGrow={"0.35"}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignSelf: "center",
+                  }}
+                >
+                  <Button
                     variant="outlined"
-                    label="Reason"
-                    value={item.reject_reason}
-                    multiline
-                    rows={2}
-                    sx={{ mt: 1 }}
-                  />
-                </ReasonBox>
+                    size="small"
+                    onClick={() => handleOpenDialog(item.reject_reason)}
+                    sx={{ minWidth: "auto", whiteSpace: "nowrap" }}
+                  >
+                    View Reason
+                  </Button>
+                </Box>
               </Box>
             </RejectedItem>
           ))}
@@ -175,6 +201,37 @@ const RejectedRequestComponent = () => {
           </Box>
         )}
       </Box>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        {/* <DialogTitle>Rejection Reason</DialogTitle> */}
+        <DialogContent sx={{ p: "1em" }}>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ background: "#ebebeb", fontWeight: "600" }}>
+                    #
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      background: "#ebebeb",
+                      fontWeight: "600",
+                      minWidth: "35em",
+                    }}
+                  >
+                    Rejection Reasons
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>1</TableCell>
+                  <TableCell>{currentReason}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+      </Dialog>
     </Paper>
   );
 };
