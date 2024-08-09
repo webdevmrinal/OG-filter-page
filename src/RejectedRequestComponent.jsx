@@ -19,6 +19,8 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
+import EventBusyIcon from "@mui/icons-material/EventBusy";
+
 import { styled } from "@mui/system";
 import axios from "axios";
 
@@ -208,8 +210,10 @@ const RejectedRequestComponent = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ background: "#ebebeb", fontWeight: "600" }}>
-                    #
+                  <TableCell sx={{ background: "#ebebeb", fontWeight: "600" }}
+                   iconPosition="start"
+                  >
+                    <EventBusyIcon sx={{ color: "red" }} />
                   </TableCell>
                   <TableCell
                     sx={{

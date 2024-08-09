@@ -18,7 +18,7 @@ import {
     CardMedia,
     ButtonBase,
     Grid,
-    useTheme
+    useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -121,6 +121,20 @@ const ShimmerWrapper = styled('div')({
       <ShimmerEffect />
     </ShimmerWrapper>
   );
+
+  const TimeButton = styled(Button)(({ theme }) => ({
+    borderRadius: "1.2em",
+  textTransform: "none",
+  fontWeight: "normal",
+  backgroundColor: "#f4f7f9",
+  color: "#000000",
+//   boxShadow: active ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
+//   "&:hover": {
+//     backgroundColor: active ? "#333333" : "#d5d5d5",
+//   },
+  width: "auto",
+  whiteSpace: "nowrap",
+  }));
 
 const CategoryButton = styled(Button)(({ theme, active }) => ({
   borderRadius: "1.5em",
@@ -248,31 +262,45 @@ const DashboardPage = () => {
     }, []);
     const appointmentCard = (appointment) => (
         <Card sx={{
-            width: 250, boxShadow: 'none', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center',
-            padding: 2,
-            '&:hover': {
-                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                transform: "translateY(-1px)",
-            }
+                width: 250,
+                boxShadow: 'none',
+                borderRadius: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: 2,
+                position: 'relative', // Establishing positioning context
+                '&:hover': {
+                    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                    transform: "translateY(-1px)",
+                }
         }}>
             <Avatar sx={{ bgcolor: 'primary.main', mb: 2 }}>
                 <EventAvailableIcon />
             </Avatar>
+            <Box sx={{ position: 'absolute', top: 10, right: 8, zIndex: 1 }}>
             <Typography variant="subtitle2" sx={{ color: 'green', fontWeight: 'bold', mb: 1 }}>
                 {appointment.status}
             </Typography>
+            </Box>
             <Typography variant="h6" sx={{ textAlign: 'center' }}>
                 {appointment.name}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
                 {appointment.description}
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 1 }}>
+
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <TimeButton variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 1 }}>
                 {appointment.startDate}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 0.5 }}>
+            </TimeButton>
+            </Box>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <TimeButton variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 0.5 }}>
                 {appointment.startTime} - {appointment.endTime}
-            </Typography>
+            </TimeButton>
+            </Box>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}></Box>
             <Button sx={{ mt: 2 }}>
                 View Now
             </Button>
@@ -432,7 +460,7 @@ const DashboardPage = () => {
                                 <Grid container spacing={2} sx={{
                                     marginTop: 2, marginLeft: 1, width: '284px',
                                     '& .MuiGrid-item': {
-                                        padding: '0 !important' // Removing padding from all grid items
+                                        padding: '0 !important'
                                     }
 
                                 }} >

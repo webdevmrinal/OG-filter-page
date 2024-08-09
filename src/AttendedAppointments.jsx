@@ -28,11 +28,11 @@ const StyledAttendedItem = styled(Box)(({ theme }) => ({
   borderRadius: "8px",
   transition: "all 0.3s ease",
   border: "1px solid #e0e0e0",
-  backgroundColor: "#e0f7fa",
+  backgroundColor: "#fffff",
   "&:hover": {
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
-    backgroundColor: 'white'
+    backgroundColor: '#f4f7f9'
   },
 }));
 
@@ -121,7 +121,7 @@ const AttendedAppointments = () => {
       <Typography variant="h5" sx={{ p: 3, fontWeight: "bold" }}>
         Attended Appointments
       </Typography>
-      <Divider />
+      <Divider sx={{ width: "100%", alignSelf: "center" }} />
 
       <Box sx={{ px: 3, py: 1}}>
         {appointments.map((item) => (

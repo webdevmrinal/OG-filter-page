@@ -70,7 +70,7 @@ const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
   backgroundColor: isSelected ? "#f5f5f5" : "transparent",
   boxShadow: isSelected ? "0 2px 4px rgba(0,0,0,0.15)" : "none",
   "&:hover": {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f4f7f9",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
   },
@@ -191,7 +191,7 @@ const AppointmentItemComp = ({
     <AppointmentItem
       isSelected={isSelected}
       onClick={() => setSelectedAppointment(id)}
-      sx={{ cursor: "pointer", backgroundColor: '#dcfae5' }}
+      sx={{ cursor: "pointer", backgroundColor: '#fffff' }}
     >
       <Avatar
         src="https://academy.opengrowth.com/assets/images/users/user_791_student_collaborate.png"
