@@ -49,11 +49,25 @@ const AvatarWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ReasonBox = styled(Box)(({ theme }) => ({
-  marginTop: "8px",
-  flexGrow: 0.45,
-  flexShrink: 0,
-  flexBasis: 0,
+// const ReasonBox = styled(Box)(({ theme }) => ({
+//   marginTop: "8px",
+//   flexGrow: 0.45,
+//   flexShrink: 0,
+//   flexBasis: 0,
+// }));
+
+const TruncatedText = styled(Typography)(({ theme }) => ({
+  marginRight: theme.spacing(1),
+  fontSize: "1em",
+}));
+
+const ViewMoreButton = styled(Button)(({ theme }) => ({
+  textTransform: "none",
+  textDecoration: "underline",
+  padding: 0,
+  minWidth: "auto",
+  fontSize: "1em",
+  verticalAlign: "baseline",
 }));
 
 const RejectedItemSkeleton = () => (
@@ -76,15 +90,17 @@ const RejectedItemSkeleton = () => (
 
 const rejectionReasons = [
   "Pending request rejected due to inactivity.",
+  "After a thorough review of your pending request, it has been determined that due to an extended period of inactivity, we are unable to proceed with the current application. It is essential for requests to be actively managed and updated to ensure timely processing. Unfortunately, due to the lack of recent updates and engagement, your request has been rejected. We encourage you to submit a new request if you wish to pursue this matter further. Please ensure that future requests are actively monitored to avoid similar issues.",
   "This will be revisited in the next quarter.",
+  "We appreciate your recent submission, but due to unforeseen scheduling conflicts and current workload, we are unable to address your request at this moment. To facilitate a more effective review and processing, we kindly ask you to reschedule and submit your request again next month. We aim to provide a thorough and attentive response, and rescheduling will allow us to allocate the necessary resources and time. Please refer to our rescheduling guidelines and select an appropriate time for the next submission.",
   "Request automatically declined after the deadline passed.",
   "Please reschedule. Let's try this again next month.",
+  "Your current request has been acknowledged and is important to us. However, due to the ongoing priorities and allocations for the current quarter, we are unable to process it at this time. We will revisit and reassess your request during the next quarter's review cycle. Please note that the next quarter begins on [specific date], and we will be in touch with you once the review process begins. In the meantime, if there are any updates or changes to your request, feel free to inform us.",
   "Deferred to next year for further consideration.",
   "Request rejected. Please try again next week.",
   "Auto-rejected due to exceeded response time.",
   "We'll address this in the next fiscal year.",
   "Request declined. Please plan for a later date.",
-  "Pending approval expired and was automatically rejected.",
 ];
 
 const RejectedRequestComponent = () => {
@@ -93,6 +109,7 @@ const RejectedRequestComponent = () => {
   const [start, setStart] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentReasons, setCurrentReasons] = useState([]);
+  const [expandedReasons, setExpandedReasons] = useState({});
 
   // const fetchRejectedRequests = async () => {
   //   setLoading(true);
@@ -162,6 +179,21 @@ const RejectedRequestComponent = () => {
     setDrawerOpen(false);
   };
 
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
+    }
+    return text;
+  };
+
+  const toggleReason = (index) => {
+    setExpandedReasons((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
   return (
     <Paper
       elevation={0}
@@ -222,28 +254,14 @@ const RejectedRequestComponent = () => {
                     alignSelf: "center",
                   }}
                 >
-                  {item.reasons.length <= 3 ? (
-                    <ReasonBox>
-                      <TextField
-                        fullWidth
-                        variant="outlined"
-                        label="Reasons"
-                        value={item.reasons.join("\n")}
-                        multiline
-                        rows={item.reasons.length}
-                        sx={{ mt: 1 }}
-                      />
-                    </ReasonBox>
-                  ) : (
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => handleOpenDrawer(item.reasons)}
-                      sx={{ minWidth: "auto", whiteSpace: "nowrap" }}
-                    >
-                      View More
-                    </Button>
-                  )}
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleOpenDrawer(item.reasons)}
+                    sx={{ minWidth: "auto", whiteSpace: "nowrap" }}
+                  >
+                    View More
+                  </Button>
                 </Box>
               </Box>
             </RejectedItem>
@@ -281,7 +299,25 @@ const RejectedRequestComponent = () => {
                 {currentReasons.map((reason, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{reason}</TableCell>
+                    <TableCell>
+                      {reason.split(" ").length > 30 ? (
+                        <>
+                          <TruncatedText>
+                            {expandedReasons[index]
+                              ? reason
+                              : truncateText(reason, 30)}
+                          </TruncatedText>
+                          <ViewMoreButton
+                            onClick={() => toggleReason(index)}
+                            color="primary"
+                          >
+                            {expandedReasons[index] ? "View less" : "View more"}
+                          </ViewMoreButton>
+                        </>
+                      ) : (
+                        reason
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
