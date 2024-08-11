@@ -379,16 +379,16 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                     onConfirm={handleConfirm}
                 />
             ) : (
-                <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
+                <>
                     {showGetTime1 ? (
                         <GetTime
                             setShowGetTime1={setShowGetTime1}
                             professorName={professorName}
                         />
                     ) : (
-                        <>
+                        <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
                             <Typography variant="h5" gutterBottom>
-                                Book a Video Call
+                                Request a Video Call
                             </Typography>
 
                             <ToggleButtonGroup
@@ -530,9 +530,9 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                     </Button>
                                 </Box>
                             </Box>
-                        </>
+                        </Paper>
                     )}
-                </Paper>
+                </>
             )}
         </Box>
     );
