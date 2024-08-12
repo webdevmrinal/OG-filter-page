@@ -4,6 +4,8 @@ import axios from 'axios';
 import { styled } from '@mui/system';
 import Header from './Header';
 
+import { Link, useNavigate } from "react-router-dom";
+
 const StyledCard = styled(Card)(({ theme }) => ({
   width: 445,
   height: 450,
@@ -101,6 +103,11 @@ const MyConnections = () => {
         <Grid container spacing={1} justifyContent="center">
           {experts.map((expert, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
+              <Link
+          to={`/detail/${expert.profile_url}`}
+          style={{ textDecoration: "none" }}
+          state={{ expertEmail: expert.email }}
+        >
               <ExpertCard>
                 <CardMedia
                   component="img"
@@ -129,6 +136,7 @@ const MyConnections = () => {
                   </Box>
                 </CardContent>
               </ExpertCard>
+              </Link>
             </Grid>
           ))}
         </Grid>

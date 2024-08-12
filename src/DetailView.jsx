@@ -9,10 +9,12 @@ import {
   Card,
   Avatar,
   Divider,
+  Button,
+  Rating
 } from "@mui/material";
 import axios from "axios";
 import Header from "./Header";
-import { useLocation } from "react-router-dom";
+import {useLocation } from "react-router-dom";
 import { styled } from "@mui/system";
 import {
   Timeline,
@@ -25,8 +27,8 @@ import {
 } from "@mui/lab";
 
 const ProfileAvatar = styled(Avatar)({
-  width: 120,
-  height: 120,
+  width: 250,
+  height: 250,
   border: "4px solid white",
 });
 
@@ -63,13 +65,15 @@ const DetailView = () => {
   const { id } = useParams();
   const [details, setDetails] = useState(null);
   const [tabIndex, setTabIndex] = useState(0);
+  
+  const [profileData, setProfileData] = useState(null);
 
   // Static notes data
   const notes =
     "Here are all the detailed notes that were discussed during the session. These include key points, action items, and follow-up dates.";
 
   //   const [profileData, setProfileData] = useState(null);
-  const profileData = {
+  const profileData1 = {
     name: "John Doe",
     status: "Expert",
     img: "avatar.jpg",
@@ -79,12 +83,12 @@ const DetailView = () => {
   };
 
   const timelineItems = [
-    { time: "09:00AM", message: "Connected call about project update" },
-    { time: "09:30AM", message: "Discussed new project requirements" },
-    { time: "10:30AM", message: "Reviewed budget allocation for Q4" },
-    { time: "11:00AM", message: "Scheduled meeting with the client" },
+    { time: "Sept 9, 2024", message: "Connected call about project update" },
+    { time: "Sept 9, 2024", message: "Discussed new project requirements" },
+    { time: "Sept 9, 2024", message: "Reviewed budget allocation for Q4" },
+    { time: "Sept 9, 2024", message: "Scheduled meeting with the client" },
     {
-      time: "11:30AM",
+      time: "Sept 9, 2024",
       message: "Followed up on action items from last meeting",
     },
   ];
@@ -92,119 +96,131 @@ const DetailView = () => {
   const location = useLocation();
   const expertEmail = location.state?.expertEmail;
 
-  //   useEffect(() => {
-  //     const fetchProfileData = async () => {
-  //       try {
-  //         const response = await axios.post(
-  //           "https://academy.opengrowth.com/api/get_user",
-  //           {
-  //             email: expertEmail,
-  //           }
-  //         );
-  //         setProfileData(response.data);
-  //       } catch (error) {
-  //         console.error("Error fetching profile data:", error);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-
-  //     if (expertEmail) {
-  //       fetchProfileData();
-  //     }
-  //   }, [expertEmail]);
+    useEffect(() => {
+    const fetchProfileData = async () => {
+        try {
+          const response = await axios.post(
+            "https://academy.opengrowth.com/api/get_user",
+            {
+              email: expertEmail,
+            }
+          );
+          setProfileData(response.data);
+        } catch (error) {
+          console.error("Error fetching profile data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      if (expertEmail) {
+        fetchProfileData();
+      }
+    }, [expertEmail]);
+    console.log(profileData);
 
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
+  };
+
+  const truncateText = (text, maxLength = 100) => {
+    return text?.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
   return (
     <>
       <Header />
       <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
-        <Card
-          variant="outlined"
-          sx={{
-            margin: 2,
-            padding: 2,
-            backgroundColor: "#fff",
-            color: "Black",
-            height: "17rem",
-            position: "relative",
-            overflow: "visible",
-          }}
-        >
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{ width: "100%", mb: 1, pl: 5 }}
-          >
-            Event Details
+      <Card
+  variant="outlined"
+  sx={{
+    margin: 2,
+    padding: 2,
+    backgroundColor: "#fff",
+    color: "Black",
+    height: "26rem",
+    position: "relative",
+    overflow: "visible",
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+  }}
+>
+  <Typography variant="h6" sx={{ width: "100%", padding: '1px 1px 0px 4px' }}>
+    Event Details
+  </Typography>
+  <Divider sx={{ width: "100%", mb: 2 }} />
+  <Box sx={{ height: 'calc(100% - 68px)' }}>
+    <Box sx={{ width: "109em", padding: 2 }}>
+      <Box display="flex" alignItems="center">
+        <Box display={'flex'} flexDirection={"column"}>
+        <ProfileAvatar
+          src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
+          alt={profileData?.name}
+        />
+        <Box display={'flex'} sx={{mt: 2}}>
+        <Rating value={5} readOnly size="small" sx={{ mt: '1px', ml: '2.5em' }} />
+        <Typography variant="body2" component="span" sx={{ ml: 1 }}>
+            5.0 (40)
+        </Typography>
+        </Box>
+        </Box>
+        <Box sx={{ ml: 4 , width:'65em'}}>
+          <Typography variant="h5">{profileData?.name}</Typography>
+          <Typography variant="body1">
+            {profileData?.experience}
           </Typography>
-          <Divider sx={{ width: "100%", mb: 2, alignSelf: "center" }} />
-          <Box
-            display="flex"
-            alignItems="center"
-            sx={{
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "calc(100% - 24px)",
-            }}
-          >
-            <ProfileAvatar
-              src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
-              alt={profileData?.name}
-            />
-            <Box sx={{ ml: 2, mt: 2 }}>
-              <Typography variant="h5">{profileData?.name}</Typography>
-              <Typography variant="subtitle1">{profileData?.status}</Typography>
-              <Typography variant="body1">Date: {profileData?.date}</Typography>
-              <Typography variant="body1">Time: {profileData?.time}</Typography>
-              <Typography variant="body1">
-                Requirement: {profileData?.requirement}
-              </Typography>
-            </Box>
-          </Box>
-        </Card>
-
-        <Card variant="outlined" sx={{ margin: 2 }}>
+          <Typography variant="subtitle1">{profileData?.industry}, {profileData?.country}</Typography>
+          <Typography variant="body1">
+            {truncateText(profileData?.about, 200)}
+            <Button color="primary">
+              Know More
+            </Button>
+          </Typography>
+          <Box sx={{ width: "50%",display:'flex', paddingTop: 2 , gap:1}}>
+          <Typography variant="body1" sx={{fontWeight: 'bold'}}>
+         Requirement: 
+      </Typography>
+      <Typography variant="body1">
+         {profileData1?.requirement}
+      </Typography>
+      </Box>
+      <Typography variant="body1">
+         Connected: 5 Times
+      </Typography>
+      </Box>
+      </Box>
+    </Box>
+   
+  </Box>
+</Card>
+        <Card variant="outlined" sx={{ margin: 2,boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
           <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
             <Tab label="Notes" id="tab-0" aria-controls="tabpanel-0" />
             <Tab label="Details" id="tab-1" aria-controls="tabpanel-1" />
           </Tabs>
           <TabPanel value={tabIndex} index={0}>
-            <Paper elevation={0} sx={{ borderRadius: 2, overflow: "hidden" }}>
-              <Typography variant="h6" component="h2">
-                Discussed Notes:
-              </Typography>
-              <Typography variant="h6" component="h4">
-                Date/Time:
-              </Typography>
+          <Typography variant="h6" component="h2">
+            Discussed Notes:
+          </Typography>
+          <Divider sx={{ width: "100%", mb: 2, alignSelf: "center" }} />
+        {[...Array(5)].map((_, i) => (
 
+          <Card key={i} elevation={3} sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+            <Box sx={{ p: 2 }}>
+              <Box display={'flex'} sx={{gap:0.5}}>
+              <Typography variant="body1" component="h5" fontWeight={'bold'}>
+                Date/Time: 
+              </Typography>
+              <Typography variant="body1" component="h5">
+                Thursday, Sept 9, 2024/ 9:00pm - 10:00pm
+              </Typography>
+              </Box>
               <Typography variant="body1" sx={{ mt: 2 }}>
                 {notes}
               </Typography>
-            </Paper>
-            <Typography variant="h6" component="h2" sx={{ mt: 2 }}>
-              Discussed Notes:
-            </Typography>
-            <Typography variant="body1" sx={{ mt: 2 }}>
-              {notes}
-            </Typography>
-            <Typography variant="h6" component="h2" sx={{ mt: 2 }}>
-              Discussed Notes:
-            </Typography>
-            <Typography variant="body1" sx={{ mt: 2 }}>
-              {notes}
-            </Typography>
-            <Typography variant="h6" component="h2" sx={{ mt: 2 }}>
-              Discussed Notes:
-            </Typography>
-            <Typography variant="body1" sx={{ mt: 2 }}>
-              {notes}
-            </Typography>
-          </TabPanel>
+            </Box>
+          </Card>
+        ))}
+      </TabPanel>
           <TabPanel value={tabIndex} index={1}>
             <Typography variant="h6" component="h2">
               Additional Details:
@@ -213,7 +229,7 @@ const DetailView = () => {
               {timelineItems.map((item, index) => (
                 <TimelineItemStyled key={index}>
                   <TimelineOppositeContent sx={{ flex: 0.05 }}>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" sx={{width: '6em', py: "5px", px: 0}}>
                       {item.time}
                     </Typography>
                   </TimelineOppositeContent>
@@ -223,7 +239,7 @@ const DetailView = () => {
                       <TimelineConnector />
                     )}
                   </TimelineSeparator>
-                  <TimelineContent sx={{ py: "12px", px: 2 }}>
+                  <TimelineContent sx={{ py: "5px", px: 2 }}>
                     <Typography variant="body1">{item.message}</Typography>
                   </TimelineContent>
                 </TimelineItemStyled>
@@ -232,7 +248,7 @@ const DetailView = () => {
           </TabPanel>
         </Card>
       </Paper>
-    </>
+     </>
   );
 };
 

@@ -36,7 +36,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/dashboardpage" element={<DashboardPage />} />
           <Route path="/connections" element={<MyConnections />} />
           <Route path="/appointmentpage" element={<AppointmentDashboard />} />
-          <Route path="/detail" element={<DetailPage />} />
+          <Route path="/detail/:expertName" element={<DetailPage />} />
         </Routes>
       </Router>
     </div>
