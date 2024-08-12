@@ -13,6 +13,7 @@ import DashboardPage from "./DashboardPage.jsx";
 import MyConnections from "./MyConnection.jsx";
 import AppointmentDashboard from "./AppointmentDashboard.jsx";
 import DetailPage from "./DetailView.jsx";
+import TransactionHistory from "./TransactionHistory.jsx";
 
 const theme = createTheme({
   palette: {
@@ -37,6 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/connections" element={<MyConnections />} />
           <Route path="/appointmentpage" element={<AppointmentDashboard />} />
           <Route path="/detail/:expertName" element={<DetailPage />} />
+          <Route path="/transaction" element={<TransactionHistory />} />
         </Routes>
       </Router>
     </div>

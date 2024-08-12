@@ -10,7 +10,8 @@ import {
   Avatar,
   Divider,
   Button,
-  Rating
+  Rating,
+  Chip
 } from "@mui/material";
 import axios from "axios";
 import Header from "./Header";
@@ -25,12 +26,26 @@ import {
   TimelineDot,
   TimelineOppositeContent,
 } from "@mui/lab";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import CalendarToday from "@mui/icons-material/CalendarToday";
+import InfoIcon from '@mui/icons-material/Info';
 
 const ProfileAvatar = styled(Avatar)({
-  width: 250,
-  height: 250,
+  width: 225,
+  height: 225,
   border: "4px solid white",
 });
+
+const GradientBox = styled(Box)({
+    background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
+    height: "370px",
+    position: "relative",
+    display: "flex",
+    alignItems: "flex-end",
+    padding: "24px",
+    borderRadius: '12px'
+  });
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -138,7 +153,7 @@ const DetailView = () => {
     padding: 2,
     backgroundColor: "#fff",
     color: "Black",
-    height: "26rem",
+    height: "29rem",
     position: "relative",
     overflow: "visible",
     boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
@@ -148,49 +163,52 @@ const DetailView = () => {
     Event Details
   </Typography>
   <Divider sx={{ width: "100%", mb: 2 }} />
-  <Box sx={{ height: 'calc(100% - 68px)' }}>
-    <Box sx={{ width: "109em", padding: 2 }}>
-      <Box display="flex" alignItems="center">
+  <GradientBox position={"relative"}>
+  <Box sx={{ height: 'calc(100% - 12px)', color: 'white' ,translate: "0 -50%"}} display="flex"
+            alignItems="center"
+            position={"absolute"}
+            bottom={"-47%"}
+            >
+    <Box sx={{ width: "82em", padding: 2 }}>
+      <Box display="flex" alignItems="flex-start">
         <Box display={'flex'} flexDirection={"column"}>
         <ProfileAvatar
           src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
           alt={profileData?.name}
         />
-        <Box display={'flex'} sx={{mt: 2}}>
-        <Rating value={5} readOnly size="small" sx={{ mt: '1px', ml: '2.5em' }} />
-        <Typography variant="body2" component="span" sx={{ ml: 1 }}>
+        <Box display={'flex'} sx={{mt: 1}}>
+        <Rating value={5} readOnly size="small" sx={{ mt: '0px', ml: '2.5em' }} />
+        <Typography variant="body2" component="span" sx={{ ml: 1, color: "black" }}>
             5.0 (40)
         </Typography>
         </Box>
+        
         </Box>
         <Box sx={{ ml: 4 , width:'65em'}}>
+          <Box display={'flex'} sx={{gap: 1}}>
+          <BadgeOutlinedIcon sx={{height: '1.2em'}} />
           <Typography variant="h5">{profileData?.name}</Typography>
-          <Typography variant="body1">
+          </Box>
+          <Typography variant="subtitle1">
             {profileData?.experience}
           </Typography>
-          <Typography variant="subtitle1">{profileData?.industry}, {profileData?.country}</Typography>
-          <Typography variant="body1">
-            {truncateText(profileData?.about, 200)}
-            <Button color="primary">
+          <Typography variant="body1">{profileData?.industry}, {profileData?.country}</Typography>
+          <Box display={'flex'} gap={1}sx={{mt: 2}}>
+          <InfoIcon />
+          <Typography variant="body1" >
+            {truncateText(profileData?.about, 400)}
+            <Button color="primary" sx={{px: 0, color: 'white'}}>
               Know More
             </Button>
-          </Typography>
-          <Box sx={{ width: "50%",display:'flex', paddingTop: 2 , gap:1}}>
-          <Typography variant="body1" sx={{fontWeight: 'bold'}}>
-         Requirement: 
-      </Typography>
-      <Typography variant="body1">
-         {profileData1?.requirement}
-      </Typography>
-      </Box>
-      <Typography variant="body1">
-         Connected: 5 Times
-      </Typography>
+          </Typography> 
+          </Box>
+          <Chip label="Connected: 5 Times" sx={{ mt: 1, fontWeight: "bold", color:'white'}} />
       </Box>
       </Box>
     </Box>
    
   </Box>
+  </GradientBox>
 </Card>
         <Card variant="outlined" sx={{ margin: 2,boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
           <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
@@ -206,15 +224,18 @@ const DetailView = () => {
 
           <Card key={i} elevation={3} sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
             <Box sx={{ p: 2 }}>
-              <Box display={'flex'} sx={{gap:0.5}}>
-              <Typography variant="body1" component="h5" fontWeight={'bold'}>
-                Date/Time: 
+              
+              <Typography variant="h6" >
+                Topics discussed: Discuss project scope and timeline
               </Typography>
-              <Typography variant="body1" component="h5">
-                Thursday, Sept 9, 2024/ 9:00pm - 10:00pm
+              <Box display={'flex'} sx={{gap:0.5}}>
+              <CalendarToday sx={{width: '15px', pb: 1}}/>
+              <Typography variant="subtitle2" component="h5">
+                
+                Thursday, Sept 9, 2024 / 9:00pm - 10:00pm
               </Typography>
               </Box>
-              <Typography variant="body1" sx={{ mt: 2 }}>
+              <Typography variant="body1" sx={{ mt: 1}}>
                 {notes}
               </Typography>
             </Box>
