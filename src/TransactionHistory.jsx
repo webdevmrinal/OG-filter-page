@@ -22,10 +22,10 @@ const TransactionHistory = () => {
           display: 'flex',
           flexDirection: 'column'
         }}>
-          <Typography variant="h6" sx={{ width: "100%", padding: '1px 1px 0px 4px' }}>
+          <Typography variant="h6" sx={{ width: "100%", padding: '1px 0px 0px 4px' }}>
             Your Spendings
           </Typography>
-          <Divider sx={{ width: "100%", my: 1 }} />
+          <Divider sx={{ width: "100%", mb: 2 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Avatar src="https://example.com/your-photo.jpg" sx={{ width: 120, height: 120, marginRight: 2 }} />
@@ -54,7 +54,8 @@ const TransactionHistory = () => {
               paddingLeft: 1,
               borderLeft: `10px solid ${transaction.isPositive ? 'green' : 'red'}`,
               mx: 3,
-              mt: 3
+              mt: 3,
+              borderRadius: 2, boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
             }}>
               <Box sx={{ padding: 2, flex: 1 }}>
                 <Typography variant="body1" color="text.secondary">{transaction.date}</Typography>

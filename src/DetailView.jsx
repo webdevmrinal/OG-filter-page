@@ -30,6 +30,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import InfoIcon from '@mui/icons-material/Info';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 const ProfileAvatar = styled(Avatar)({
   width: 225,
@@ -192,7 +193,7 @@ const DetailView = () => {
           <Typography variant="subtitle1">
             {profileData?.experience}
           </Typography>
-          <Typography variant="body1">{profileData?.industry}, {profileData?.country}</Typography>
+          <Typography variant="body1">{profileData?.industry}, <LocationOnOutlinedIcon sx={{width:'0.8em',height:'0.6em'}}/>{profileData?.country}</Typography>
           <Box display={'flex'} gap={1}sx={{mt: 2}}>
           <InfoIcon />
           <Typography variant="body1" >
