@@ -111,29 +111,6 @@ const RejectedRequestComponent = () => {
   const [currentReasons, setCurrentReasons] = useState([]);
   const [expandedReasons, setExpandedReasons] = useState({});
 
-  // const fetchRejectedRequests = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await axios.post(
-  //       "https://academy.opengrowth.com/api/get_user_specific_mentorship",
-  //       {
-  //         mentee_id: "1",
-  //         start: start,
-  //         end: 10,
-  //         user: "mentor",
-  //         mentorship_type: "rejected",
-  //         m_id: "1",
-  //         key: `1_upcoming_mentorship_${start}_to_10`,
-  //       }
-  //     );
-  //     setRejectedItems((prev) => [...prev, ...response.data]);
-  //     setStart((prev) => prev + 10);
-  //   } catch (error) {
-  //     console.error("Error fetching rejected requests:", error);
-  //   }
-  //   setLoading(false);
-  // };
-
   const fetchRejectedRequests = async () => {
     setLoading(true);
     try {
@@ -205,12 +182,12 @@ const RejectedRequestComponent = () => {
     >
       <Box>
         <Typography variant="h6" sx={{ p: 3, fontWeight: "bold" }}>
-          Rejected Request
+          Rejected Requests
         </Typography>
         <Divider />
         <Box sx={{ px: 3, py: 1 }}>
-          {rejectedItems.map((item) => (
-            <RejectedItem key={item.meet_id} sx={{}}>
+          {rejectedItems.map((item, index) => (
+            <RejectedItem key={item.meet_id}>
               <AvatarWrapper>
                 <Avatar
                   src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
@@ -245,20 +222,28 @@ const RejectedRequestComponent = () => {
                   <Typography variant="body2" color="text.secondary">
                     Requirement: {item.query}
                   </Typography>
+                  
                 </Box>
                 <Box
                   flexGrow={"0.35"}
                   sx={{
-                    display: "flex",
+                    width: 0,
+                    paddingLeft: '20em',
                     justifyContent: "flex-end",
                     alignSelf: "center",
                   }}
                 >
+                  <Typography variant="body2" color="text.secondary">
+                    Reason:
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {truncateText(item.reasons[0], 100)}
+                  </Typography>
                   <Button
-                    variant="outlined"
-                    size="small"
+                    
                     onClick={() => handleOpenDrawer(item.reasons)}
-                    sx={{ minWidth: "auto", whiteSpace: "nowrap" }}
+                    size="small"
+                    sx={{ mb: 1, fontSize: ".75em", px: 0 }}
                   >
                     View More
                   </Button>
@@ -283,7 +268,7 @@ const RejectedRequestComponent = () => {
       </Box>
 
       <Drawer anchor="right" open={drawerOpen} onClose={handleCloseDrawer}>
-        <Box sx={{ width: 500, p: 2 }}>
+        <Box sx={{ width :500, p: 2 }}>
           <Typography variant="h6" gutterBottom>
             Rejection Reasons
           </Typography>
@@ -328,5 +313,6 @@ const RejectedRequestComponent = () => {
     </Paper>
   );
 };
+
 
 export default RejectedRequestComponent;

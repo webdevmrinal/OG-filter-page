@@ -21,6 +21,9 @@ import { addDays, format } from "date-fns";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PhoneIphoneOutlined from "@mui/icons-material/PhoneIphoneOutlined";
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import EventIcon from '@mui/icons-material/Event';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 
 const DateButton = styled(ToggleButton)(({ theme }) => ({
   border: `2px solid #e0e0e0`,
@@ -204,12 +207,8 @@ const GetTime = ({ setShowGetTime, professorName }) => {
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [cardDetails, setCardDetails] = useState('');
     const [showPromoCode, setShowPromoCode] = useState(false);
     const [promoCode, setPromoCode] = useState('');
-    const [cardNumber, setCardNumber] = useState('');
-    const [expiryDate, setExpiryDate] = useState('');
-    const [cvv, setCvv] = useState('');
     const handleApplyPromoCode = () => {
       console.log('Promo Code Applied:', promoCode);
     };
@@ -249,6 +248,10 @@ const GetTime = ({ setShowGetTime, professorName }) => {
           sx={{ mb: 2 }}
         />
         </Box>
+        
+        
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+        <Box>
         {!showPromoCode ? (
         <Button
           variant="text"
@@ -264,7 +267,7 @@ const GetTime = ({ setShowGetTime, professorName }) => {
           onChange={(e) => setPromoCode(e.target.value)}
           fullWidth
           variant="outlined"
-          sx={{ mb: 2 }}
+          sx={{ mb: 2, width: '41.8em' }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -280,45 +283,98 @@ const GetTime = ({ setShowGetTime, professorName }) => {
           }}
         />
       )}
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-        <TextField
-          label="Card Number"
-          value={cardNumber}
-          onChange={(e) => setCardNumber(e.target.value)}
-          fullWidth
-          variant="outlined"
-          placeholder="1234 5678 9101 1121"
-        />
-        <TextField
-          label="Expiry Date"
-          value={expiryDate}
-          onChange={(e) => setExpiryDate(e.target.value)}
-          fullWidth
-          variant="outlined"
-          placeholder="MM/YY"
-        />
-        <Tooltip title="Last three digits on back of your card" placement="top" arrow>
-          <TextField
-            label="CVV"
-            value={cvv}
-            onChange={(e) => setCvv(e.target.value)}
-            fullWidth
-            variant="outlined"
-            placeholder="CVV"
-          />
-        </Tooltip>
       </Box>
-        <Box sx={{display: "flex", justifyContent: "flex-end"}}>
+      <Box>
           <Button variant="" color="primary" onClick={() => setView('mobileInput')}>
             Go Back
           </Button>
-          <Button variant="contained" color="primary" onClick={() => setView('confirmation')}>
+          <Button variant="contained" color="primary" onClick={() => setView('payment')}>
             Confirm your slot
           </Button>
         </Box> 
+        </Box>
       </Paper>
     );
   };
+
+  const PaymentComponent = ({ }) => {
+    const [cardNumber, setCardNumber] = useState('');
+    const [expiryDate, setExpiryDate] = useState('');
+    const [cvv, setCvv] = useState('');
+
+    return (
+        <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
+            <Typography variant="h5" gutterBottom>
+                Payment Details
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+                Enter your card information to proceed with payment:
+            </Typography>
+            <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    label="Card Number"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    placeholder="1234 5678 9012 3456"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <CreditCardIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                    <TextField
+                        sx={{ flexGrow: 1 }}
+                        variant="outlined"
+                        label="Expiry Date"
+                        value={expiryDate}
+                        onChange={(e) => setExpiryDate(e.target.value)}
+                        placeholder="MM/YY"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <EventIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <Tooltip title="Last three digits on back of your card" placement="top" arrow>
+                    <TextField
+                        sx={{ flexGrow: 1 }}
+                        variant="outlined"
+                        label="CVV"
+                        value={cvv}
+                        onChange={(e) => setCvv(e.target.value)}
+                        placeholder="123"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <VpnKeyIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    </Tooltip>
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
+                    <Button color="primary" onClick={() => setView('userdetails')}>
+                        Go Back
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={() => setView('confirmation')}>
+                        Pay Now
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={() => setView('confirmation')}>
+                        Pay Later
+                    </Button>
+                </Box>
+            </Box>
+        </Paper>
+    );
+};
 
   const handleDurationChange = (event, newDuration) => {
     if (newDuration !== null) {
@@ -562,6 +618,9 @@ const getDurationLabel = (duration) => {
       ) : 
       view === "userdetails" ? (
         <UserDetailsForm />
+      ) : 
+      view === "payment" ? (
+        <PaymentComponent />
       ) :
       (
         <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
