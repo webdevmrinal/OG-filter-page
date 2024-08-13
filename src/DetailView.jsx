@@ -223,7 +223,13 @@ const DetailView = () => {
           <Divider sx={{ width: "100%", mb: 2, alignSelf: "center" }} />
         {[...Array(5)].map((_, i) => (
 
-          <Card key={i} elevation={3} sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+          <Card key={i} elevation={3} sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+            "&:hover": {
+                  backgroundColor: "#f4f7f9",
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                  transform: "translateY(-2px)",
+                },
+           }}>
             <Box sx={{ p: 2 }}>
               
               <Typography variant="h6" >
@@ -231,9 +237,9 @@ const DetailView = () => {
               </Typography>
               <Box display={'flex'} sx={{gap:0.5}}>
               <CalendarToday sx={{width: '15px', pb: 1}}/>
-              <Typography variant="subtitle2" component="h5">
+              <Typography variant="subtitle2" component="h5" color={'text.secondary'}>
                 
-                Thursday, Sept 9, 2024 / 9:00pm - 10:00pm
+                Thursday, Sept 9, 2024 | 9:00pm - 10:00pm
               </Typography>
               </Box>
               <Typography variant="body1" sx={{ mt: 1}}>
@@ -247,6 +253,7 @@ const DetailView = () => {
             <Typography variant="h6" component="h2">
               Additional Details:
             </Typography>
+            <Divider sx={{ width: "100%", mb: 2, px: 0, ml: 0 }} />
             <LeftAlignedTimeline>
               {timelineItems.map((item, index) => (
                 <TimelineItemStyled key={index}>

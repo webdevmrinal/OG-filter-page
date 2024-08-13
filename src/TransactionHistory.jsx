@@ -11,7 +11,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const GradientBox = styled(Box)({
   background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
-  height: "200px",
+  height: "165px",
   position: "relative",
   display: "flex",
   alignItems: "flex-end",
@@ -74,7 +74,7 @@ const TransactionHistory = () => {
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
               <Avatar
                 src="https://example.com/your-photo.jpg"
-                sx={{ width: 130, height: 130, marginRight: 2 }}
+                sx={{ width: 110, height: 110, marginRight: 2 }}
               />
               <Box sx={{ color: "white" }}>
                 <Typography variant="h5">John Doe</Typography>
@@ -83,18 +83,19 @@ const TransactionHistory = () => {
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ textAlign: "right", color: "white" }}>
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                Total Spending:
-              </Typography>
-              <Typography variant="h6">$425,000</Typography>
-            </Box>
+            
           </Box>
         </GradientBox>
         <Card
           variant="outlined"
           sx={{ boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}
         >
+          <Box sx={{  color: "black" , ml: 2.5, display: 'flex', mt: 2, gap: 1.5}}>
+              <Typography variant="h6" sx={{ }}>
+                Total Spending:
+              </Typography>
+              <Typography variant="h6">$425,000</Typography>
+            </Box>
           <Typography
             variant="h6"
             sx={{ width: "100%", padding: "1px 1px 0px 4px", mt: 2, ml: 2 }}
@@ -118,6 +119,11 @@ const TransactionHistory = () => {
                 mt: 3,
                 borderRadius: 2,
                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                "&:hover": {
+                  backgroundColor: "#f4f7f9",
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                  transform: "translateY(-2px)",
+                },
               }}
             >
               <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 1, ml: 1.5, borderRadius: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", width: '90px', height: '95px' }}>
@@ -131,25 +137,28 @@ const TransactionHistory = () => {
               </Box>
               <Box sx={{ padding: 2, flex: 1, ml: 0.5 }}>
                 
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1, gap:0.3 }}>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1, gap:0.3, 
+                        paddingTop: '3px', }}>
                   <Chip
                     label={transaction.isPositive ? "Payment Successful" : "Payment Declined"}
 
                     icon={transaction.isPositive ? <CheckCircleOutlineIcon sx={{mb: 0.3}}/> : <ErrorOutlineIcon sx={{mb: 0}} />}
                     size="small"
                     sx={{
-                      backgroundColor: '#fff',
-                      color: transaction.isPositive ? '#81c784' : '#e57373',
+                      Color: 'white',
+                      backgroundColor: transaction.isPositive ? '#81c784' : '#e57373',
                       mb: 1,
                       height: '20px',
                       fontSize: '0.7rem',
                       '& .MuiChip-icon': {
-                        color: transaction.isPositive ? '#81c784' : '#e57373',
+                        color: "white",
+                        backgroundColor: transaction.isPositive ? '#81c784' : '#e57373',
                         fontSize: '16px',
                       },
                       '& .MuiChip-label': {
-                        paddingLeft: '4px',
-                        paddingRight: '4px',
+                        color: "white",
+                        paddingLeft: '8px',
+                        paddingRight: '8px',
                       },
                       boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)'
                     }}
@@ -164,7 +173,7 @@ const TransactionHistory = () => {
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
                 <CalendarTodayIcon sx={{ width: '18px', pb: 0.9, mr: 0.6 }} />
-                  <Typography variant="subtitle2">
+                  <Typography variant="subtitle2" color={'text.secondary'}>
                     {transaction.datetime}
                   </Typography>
                 </Box>
@@ -186,11 +195,11 @@ const TransactionHistory = () => {
               <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
                 <Avatar
                   src="https://example.com/avatar1.jpg"
-                  sx={{ width: 60, height: 60, zIndex: 2, ml: -1, mt: -1 }}
+                  sx={{ width: 60, height: 60, zIndex: 2, ml: -1, mt: 0 }}
                 />
                 <Avatar
                   src="https://example.com/avatar2.jpg"
-                  sx={{ width: 60, height: 60, zIndex: 1, ml: -2, mb: -1 }}
+                  sx={{ width: 60, height: 60, zIndex: 1, ml: -2, mb: 0 }}
                 />
               </Box>
             </Card>
