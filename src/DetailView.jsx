@@ -14,6 +14,7 @@ import {
   Chip,
   Collapse,
   IconButton,
+  Tooltip
 } from "@mui/material";
 import axios from "axios";
 import Header from "./Header";
@@ -43,8 +44,11 @@ const SessionPaper = styled(Paper)(({ theme }) => ({
   marginBottom: theme.spacing(2),
   transition: "box-shadow 0.3s",
   cursor: "pointer",
+  backgroundColor: 'white',
   "&:hover": {
-    boxShadow: theme.shadows[4],
+    backgroundColor: "#f4f7f9",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+    transform: "translateY(-2px)",
   },
 }));
 
@@ -72,7 +76,7 @@ const getSessionColor = (title) => {
   //   }
   // }
 
-  return '#e6f3ff'; // default color
+  return '#fff'; // default color
   // return '#f0f0f0'; // default color
 };
 
@@ -577,8 +581,9 @@ const DetailView = () => {
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
             <Typography variant="h6" component="h2">
-              Connection History:
+              Details:
             </Typography>
+            <Divider sx={{ width: "100%", mb: 2, px: 1 }} />
             <Timeline>
               {connectionData.map((dateData, dateIndex) => (
                 <TimelineItem key={dateIndex}>
@@ -587,37 +592,56 @@ const DetailView = () => {
                       display="flex"
                       alignItems="center"
                       onClick={() => toggleDate(dateData.date)}
+                      sx={{pt: 0.8 }}
                     >
-                      <EventIcon sx={{ mr: 1, color: "#3f51b5" }} />
+                      <EventIcon sx={{  color: "black", pb: 0.5, ml: 0.5 }} />
                       <Typography
                         variant="body2"
-                        sx={{ color: "#3f51b5", fontWeight: "bold" }}
+                        sx={{ color: "black", width: '7em' }}
                       >
                         {formatDate(dateData.date)}
                       </Typography>
                     </ClickableBox>
                   </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot sx={{ bgcolor: "#3f51b5" }} />
-                    <TimelineConnector sx={{ bgcolor: "#3f51b5" }} />
+                  <TimelineSeparator sx={{pt:0.5}}>
+                    <TimelineDot sx={{ bgcolor: "text.secondary" }} />
+                    <TimelineConnector sx={{ bgcolor: "text.secondary" }} />
                   </TimelineSeparator>
-                  <TimelineContent>
+                  <TimelineContent sx={{"&:hover": {
+                  backgroundColor: "#f4f7f9",
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                  transform: "translateY(-2px)",
+                  }, gap: 1}}>
                     <ClickableBox
                       display="flex"
                       alignItems="center"
                       justifyContent="space-between"
                       onClick={() => toggleDate(dateData.date)}
+                      sx={{p:0,
+                        
+                      }}
                     >
-                      <Typography variant="h6" sx={{ color: "#3f51b5" }}>
-                        Sessions
+                      <Typography variant="h6" sx={{  }}>
+                        Connected for Enterpreneur Topic
                       </Typography>
-                      <IconButton size="small">
-                        {expandedDates[dateData.date] ? (
-                          <ExpandLessIcon />
-                        ) : (
-                          <ExpandMoreIcon />
-                        )}
-                      </IconButton>
+                      <Tooltip title="Click to see full details" placement="top">
+                        <IconButton
+                          size="small"
+                          sx={{
+                            "&:hover": {
+                              bgcolor: "rgba(0, 0, 0, 0.04)",
+                              borderRadius: "50%",
+                            },
+                          }}
+                        >
+                          {expandedDates[dateData.date] ? (
+                            <ExpandLessIcon />
+                          ) : (
+                            <ExpandMoreIcon />
+                          )}
+                        </IconButton>
+                      </Tooltip>
+                      
                     </ClickableBox>
                     <Collapse in={expandedDates[dateData.date]}>
                       <Box sx={{ ml: 2, mt: 1 }}>
@@ -633,12 +657,12 @@ const DetailView = () => {
                                 sx={{
                                   mr: 1,
                                   fontSize: "small",
-                                  color: "#3f51b5",
+                                  color: "#000",
                                 }}
                               />
                               <Typography
-                                variant="body2"
-                                sx={{ color: "#3f51b5", fontWeight: "bold" }}
+                                variant="caption"
+                                sx={{ color: "#000" }}
                               >
                                 {session.time}
                               </Typography>

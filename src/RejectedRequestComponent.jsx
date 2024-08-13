@@ -20,7 +20,7 @@ import {
   TableBody,
   Drawer,
 } from "@mui/material";
-import EventBusyIcon from "@mui/icons-material/EventBusy";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -216,9 +216,12 @@ const RejectedRequestComponent = () => {
                       {item.idea}
                     </Typography>
                   </Link>
+                  <Box display={'flex'}>
+                  <CalendarTodayIcon sx={{width: '0.6em', height: '0.7em', mr: 0.3, color: 'text.secondary'}}/>
                   <Typography variant="body2" color="text.secondary">
                     {item.date_title} | {item.time_title}
                   </Typography>
+                  </Box>
                   <Typography variant="body2" color="text.secondary">
                     Requirement: {item.query}
                   </Typography>
@@ -233,7 +236,7 @@ const RejectedRequestComponent = () => {
                     alignSelf: "center",
                   }}
                 >
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body1" color="text.primary">
                     Reason:
                   </Typography>
                   <Typography variant="body2" color="text.secondary">

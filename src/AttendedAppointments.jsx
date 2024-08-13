@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 const AvatarWrapper = styled(Box)(({ theme }) => ({
   transition: "transform 0.3s ease-in-out",
@@ -72,9 +73,12 @@ const AttendedItem = ({ item }) => (
       >
         {item.idea}
       </Typography>
+      <Box display={'flex'}>
+      <CalendarTodayIcon sx={{width: '0.6em', height: '0.7em', mr: 0.3, color: 'text.secondary'}}/>
       <Typography variant="body2" color="text.secondary">
         {item.date_title} | {item.time_title}
       </Typography>
+      </Box>
       <Typography variant="body2" color="text.secondary">
         Requirement: {item.query}
       </Typography>

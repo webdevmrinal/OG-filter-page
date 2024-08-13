@@ -18,6 +18,7 @@ import RejectedRequestComponent from "./RejectedRequestComponent";
 import AttendedAppointments from "./AttendedAppointments";
 import axios from "axios";
 import Header from "./Header";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 const appointmentsData = [
   { id: 1, name: "Vanshika Yadav", time: "02:29 PM - 02:59 PM" },
@@ -201,9 +202,12 @@ const AppointmentItemComp = ({
         <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
           {name}
         </Typography>
+        <Box display={'flex'}>
+        <CalendarTodayIcon sx={{width: '0.6em', height: '0.7em', mr: 0.3, color: 'text.secondary'}}/>
         <Typography variant="body2" color="text.secondary">
           Thursday, August 08, 2024 | {time}
         </Typography>
+        </Box>
         <Typography variant="body2" color="text.secondary">
           Requirement : Specific requirement details here
         </Typography>
