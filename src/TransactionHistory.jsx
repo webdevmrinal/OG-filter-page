@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Box, Typography, Divider, Avatar } from "@mui/material";
+import { Card, Box, Typography, Divider, Avatar, Chip } from "@mui/material";
 import Header from "./Header";
 import { styled } from "@mui/system";
 
@@ -11,7 +11,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const GradientBox = styled(Box)({
   background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
-  height: "250px",
+  height: "200px",
   position: "relative",
   display: "flex",
   alignItems: "flex-end",
@@ -71,10 +71,10 @@ const TransactionHistory = () => {
               width: "100%",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
               <Avatar
                 src="https://example.com/your-photo.jpg"
-                sx={{ width: 120, height: 120, marginRight: 2 }}
+                sx={{ width: 130, height: 130, marginRight: 2 }}
               />
               <Box sx={{ color: "white" }}>
                 <Typography variant="h5">John Doe</Typography>
@@ -112,7 +112,7 @@ const TransactionHistory = () => {
                 marginY: 1,
                 paddingLeft: 1,
                 borderLeft: `10px solid ${
-                  transaction.isPositive ? "green" : "red"
+                  transaction.isPositive ? "#a5d6a7" : "#ef9a9a"
                 }`,
                 mx: 3,
                 mt: 3,
@@ -120,55 +120,63 @@ const TransactionHistory = () => {
                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
               }}
             >
-              <Box sx={{ padding: 2, flex: 1 }}>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-                  <CalendarTodayIcon sx={{ mr: 1, color: "text.secondary" }} />
-                  <Typography variant="body1" color="text.secondary">
-                    {transaction.date}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-                  {transaction.isPositive ? (
-                    <CheckCircleOutlineIcon sx={{ mr: 1, color: "green" }} />
-                  ) : (
-                    <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
-                  )}
-                  <Typography
-                    variant="subtitle2"
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 1, ml: 1.5, borderRadius: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", width: '90px', height: '95px' }}>
+                <Typography variant="caption" sx={{ alignSelf: "flex-start", color: "text.secondary", mt: 1, ml: 0.5 }}>
+                  Booked on
+                </Typography>
+                <CalendarTodayIcon sx={{ color: "text.secondary", width: '18px', mt: 1 }} />
+                <Typography variant="body1" color= "text.secondary" fontWeight={'bold'} >
+                  {transaction.date}
+                </Typography>
+              </Box>
+              <Box sx={{ padding: 2, flex: 1, ml: 0.5 }}>
+                
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1, gap:0.3 }}>
+                  <Chip
+                    label={transaction.isPositive ? "Payment Successful" : "Payment Declined"}
+
+                    icon={transaction.isPositive ? <CheckCircleOutlineIcon sx={{mb: 0.3}}/> : <ErrorOutlineIcon sx={{mb: 0}} />}
+                    size="small"
                     sx={{
-                      fontWeight: "bold",
-                      color: transaction.isPositive ? "green" : "red",
+                      backgroundColor: '#fff',
+                      color: transaction.isPositive ? '#81c784' : '#e57373',
+                      mb: 1,
+                      height: '20px',
+                      fontSize: '0.7rem',
+                      '& .MuiChip-icon': {
+                        color: transaction.isPositive ? '#81c784' : '#e57373',
+                        fontSize: '16px',
+                      },
+                      '& .MuiChip-label': {
+                        paddingLeft: '4px',
+                        paddingRight: '4px',
+                      },
+                      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)'
                     }}
-                  >
-                    {transaction.isPositive
-                      ? "Payment Successful"
-                      : "Payment Declined"}
-                  </Typography>
+                  />
                 </Box>
+
                 <Typography
-                  variant="body1"
-                  sx={{ pl: 4, pb:1 ,color: "text.secondary", fontStyle: "italic", fontSize:".8em", lineHeight:0 }}
+                  variant="h6"
+                  sx={{ pl: 0.3, pb:1 ,lineHeight:0 , mt: 1.5}}
                 >
                   {transaction.description}
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                  <AccessTimeIcon sx={{ mr: 1, color: "text.secondary" }} />
-                  <Typography variant="body2">
+                <CalendarTodayIcon sx={{ width: '18px', pb: 0.9, mr: 0.6 }} />
+                  <Typography variant="subtitle2">
                     {transaction.datetime}
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
                   <AttachMoneyIcon
                     sx={{
-                      mr: 1,
-                      color: transaction.isPositive ? "green" : "red",
+                      mr: 0.1, width: '18px', pb: 0.3
                     }}
                   />
                   <Typography
                     variant="body1"
                     sx={{
-                      fontWeight: "bold",
-                      color: transaction.isPositive ? "green" : "red",
                     }}
                   >
                     {transaction.amount}

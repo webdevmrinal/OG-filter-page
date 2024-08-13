@@ -251,9 +251,12 @@ const DetailView = () => {
               {timelineItems.map((item, index) => (
                 <TimelineItemStyled key={index}>
                   <TimelineOppositeContent sx={{ flex: 0.05 }}>
+                    <Box display={'flex'}>
+                    <CalendarToday sx={{width: '15px', pb: 0}} />
                     <Typography variant="body2" sx={{width: '6em', py: "5px", px: 0}}>
                       {item.time}
                     </Typography>
+                    </Box>
                   </TimelineOppositeContent>
                   <TimelineSeparator>
                     <TimelineDot />
@@ -262,7 +265,7 @@ const DetailView = () => {
                     )}
                   </TimelineSeparator>
                   <TimelineContent sx={{ py: "5px", px: 2 }}>
-                    <Typography variant="body1">{item.message}</Typography>
+                    <Typography variant="subtitle1">{item.message}</Typography>
                   </TimelineContent>
                 </TimelineItemStyled>
               ))}
