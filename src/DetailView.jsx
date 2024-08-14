@@ -560,6 +560,11 @@ const DetailView = () => {
                   mb: 2,
                   borderRadius: 2,
                   boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                  "&:hover": {
+                  backgroundColor: "#f4f7f9",
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                  transform: "translateY(-2px)",
+                  },
                 }}
               >
                 <Box sx={{ p: 2 }}>
