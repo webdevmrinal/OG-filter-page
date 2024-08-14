@@ -37,3 +37,7 @@
   border-radius: 20px;
   border: 3px solid var(--scroll-bar-bg-color);
 }
+
+.MuiToolbar-root {
+  padding-left: 0 !important;
+}
