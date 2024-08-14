@@ -126,7 +126,7 @@ const AttendedAppointments = () => {
       <Typography variant="h6" sx={{ px: 3, py: 1}}>
         Attended Appointments
       </Typography>
-      <Divider sx={{ width: "98%", alignSelf: "center", mb: 1 }} />
+      <Divider sx={{ width: "96%", alignSelf: "center", mb: 1, ml: 3 }} />
 
       <Box sx={{ px: 3, py: 1}}>
         {appointments.map((item) => (

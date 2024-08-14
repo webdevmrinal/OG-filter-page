@@ -88,7 +88,7 @@ const ProfileAvatar = styled(Avatar)({
 
 const GradientBox = styled(Box)({
   // background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
-  background: "linear-gradient(to bottom, #b0b0b0, #4ea3a0)",
+  background: "linear-gradient(to top, #89929bcc, #475a6dcc)",
   height: "285px",
   position: "relative",
   display: "flex",
@@ -574,7 +574,7 @@ const DetailView = () => {
                   <Box display={"flex"} sx={{ gap: 0.5 }}>
                     <CalendarTodayIcon sx={{ width: "0.5em", pb: 0.6, color: 'text.secondary' }} />
                     <Typography variant="subtitle2" component="h5" color={'text.secondary'}>
-                      Thursday, Sept 9, 2024 / 9:00pm - 10:00pm
+                      Thursday, Sept 9, 2024 | 9:00pm - 10:00pm
                     </Typography>
                   </Box>
                   <Typography variant="body2" sx={{ mt: 1 , color: 'text.secondary'}}>

@@ -11,7 +11,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const GradientBox = styled(Box)({
   // background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
-  background: "linear-gradient(to bottom, #b0b0b0, #4ea3a0)",
+  background: "linear-gradient(to top, #89929bcc, #475a6dcc)",
   height: "165px",
   position: "relative",
   display: "flex",
