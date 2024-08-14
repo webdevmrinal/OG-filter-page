@@ -233,7 +233,7 @@ function App() {
         {showGetTime && (
           <SelectTime
             setShowGetTime={setShowGetTime}
-            professorName={profileData.name} // Pass the professor's name to SelectTime
+            professorName={profileData.name}
           />
         )}
       </Box>

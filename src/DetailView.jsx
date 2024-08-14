@@ -17,7 +17,7 @@ import {
   Tooltip
 } from "@mui/material";
 import axios from "axios";
-import Header from "./Header";
+// import Header from "./Header";
 import { useLocation } from "react-router-dom";
 import { styled } from "@mui/system";
 import {
@@ -46,7 +46,7 @@ const SessionPaper = styled(Paper)(({ theme }) => ({
   cursor: "pointer",
   backgroundColor: 'white',
   "&:hover": {
-    backgroundColor: "#f4f7f9",
+    backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
   },
@@ -87,8 +87,9 @@ const ProfileAvatar = styled(Avatar)({
 });
 
 const GradientBox = styled(Box)({
-  background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
-  height: "370px",
+  // background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
+  background: "linear-gradient(to bottom, #b0b0b0, #4ea3a0)",
+  height: "285px",
   position: "relative",
   display: "flex",
   alignItems: "flex-end",
@@ -448,19 +449,18 @@ const DetailView = () => {
 
   return (
     <>
-      <Header />
-      <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
-        <Card
+      {/* <Header /> */}
+        <Box
           variant="outlined"
           sx={{
-            margin: 2,
+            // margin: 2,
             padding: 2,
             backgroundColor: "#fff",
             color: "Black",
-            height: "29rem",
+            height: "24rem",
             position: "relative",
             overflow: "visible",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+            // boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
           }}
         >
           <Typography
@@ -507,20 +507,20 @@ const DetailView = () => {
                   </Box>
                   <Box sx={{ ml: 4, width: "65em" }}>
                     <Box display={"flex"} sx={{ gap: 1 }}>
-                      <BadgeOutlinedIcon sx={{ height: "1.2em" }} />
+                      {/* <BadgeOutlinedIcon sx={{ height: "1.2em" }} /> */}
                       <Typography variant="h5">{profileData?.name}</Typography>
                     </Box>
-                    <Typography variant="subtitle1">
+                    <Typography variant="h6">
                       {profileData?.experience}
                     </Typography>
-                    <Typography variant="body1">
+                    <Typography variant="subtitle1">
                       {profileData?.industry},{" "}
                       <LocationOnOutlinedIcon
                         sx={{ width: "0.8em", height: "0.6em" }}
                       />
                       {profileData?.country}
                     </Typography>
-                    <Box display={"flex"} gap={1} sx={{ mt: 2 }}>
+                    <Box display={"flex"} gap={1} sx={{ mt: 1 }}>
                       <InfoIcon />
                       <Typography variant="body1">
                         {truncateText(profileData?.about, 400)}
@@ -538,17 +538,17 @@ const DetailView = () => {
               </Box>
             </Box>
           </GradientBox>
-        </Card>
+        </Box>
         <Card
           variant="outlined"
-          sx={{ margin: 2, boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}
+          sx={{ margin: '0.1em 1em 1em 1.1em', boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}
         >
           <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
             <Tab label="Notes" id="tab-0" aria-controls="tabpanel-0" />
             <Tab label="Details" id="tab-1" aria-controls="tabpanel-1" />
           </Tabs>
           <TabPanel value={tabIndex} index={0}>
-            <Typography variant="h6" component="h2">
+            <Typography variant="h6">
               Discussed Notes:
             </Typography>
             <Divider sx={{ width: "100%", mb: 2, alignSelf: "center" }} />
@@ -561,23 +561,23 @@ const DetailView = () => {
                   borderRadius: 2,
                   boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                   "&:hover": {
-                  backgroundColor: "#f4f7f9",
+                  backgroundColor: "#0000000a",
                   boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
                   transform: "translateY(-2px)",
                   },
                 }}
               >
                 <Box sx={{ p: 2 }}>
-                  <Typography variant="h6">
+                  <Typography variant="subtitle1">
                     Topics discussed: Discuss project scope and timeline
                   </Typography>
                   <Box display={"flex"} sx={{ gap: 0.5 }}>
-                    <CalendarTodayIcon sx={{ width: "15px", pb: 1 }} />
-                    <Typography variant="subtitle2" component="h5">
+                    <CalendarTodayIcon sx={{ width: "0.5em", pb: 0.6, color: 'text.secondary' }} />
+                    <Typography variant="subtitle2" component="h5" color={'text.secondary'}>
                       Thursday, Sept 9, 2024 / 9:00pm - 10:00pm
                     </Typography>
                   </Box>
-                  <Typography variant="body1" sx={{ mt: 1 }}>
+                  <Typography variant="body2" sx={{ mt: 1 , color: 'text.secondary'}}>
                     {notes}
                   </Typography>
                 </Box>
@@ -613,7 +613,7 @@ const DetailView = () => {
                     <TimelineConnector sx={{ bgcolor: "text.secondary" }} />
                   </TimelineSeparator>
                   <TimelineContent sx={{"&:hover": {
-                  backgroundColor: "#f4f7f9",
+                  // backgroundColor: "#0000000a",
                   boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
                   transform: "translateY(-2px)",
                   }, gap: 1}}>
@@ -634,7 +634,7 @@ const DetailView = () => {
                           size="small"
                           sx={{
                             "&:hover": {
-                              bgcolor: "rgba(0, 0, 0, 0.04)",
+                              // bgcolor: "#0000000a",
                               borderRadius: "50%",
                             },
                           }}
@@ -709,7 +709,6 @@ const DetailView = () => {
             </Timeline>
           </TabPanel>
         </Card>
-      </Paper>
     </>
   );
 };

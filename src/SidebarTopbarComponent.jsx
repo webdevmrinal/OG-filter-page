@@ -16,9 +16,9 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   Dashboard as DashboardIcon,
-  Group as GroupIcon,
+  Person as PersonIcon,
   School as SchoolIcon,
-  Forum as ForumIcon,
+  People as PeopleIcon,
   Book as BookIcon,
   Message as MessageIcon,
   Settings as SettingsIcon,
@@ -99,18 +99,16 @@ const SidebarTopbarComponent = () => {
   };
 
   const menuItems = [
-    { text: "Dashboard", icon: <DashboardIcon color="primary" /> },
-    { text: "Experts on Demand", icon: <GroupIcon color="primary" /> },
-    { text: "Courses", icon: <SchoolIcon color="primary" /> },
-    { text: "Community", icon: <ForumIcon color="primary" /> },
-    { text: "Blogs", icon: <BookIcon color="primary" /> },
-    { text: "Messages", icon: <MessageIcon color="primary" /> },
-    { text: "Account Settings", icon: <SettingsIcon color="primary" /> },
-    { text: "Logout", icon: <ExitToAppIcon color="primary" /> },
+    { text: "Dashboard", icon: <DashboardIcon /> },
+    { text: "Experts on Demand", icon: <PersonIcon /> },
+    { text: "Courses", icon: <SchoolIcon/> },
+    { text: "Messages", icon: <MessageIcon /> },
+    { text: "Account Settings", icon: <SettingsIcon /> },
+    { text: "Logout", icon: <ExitToAppIcon /> },
   ];
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", height:'60px' }}>
       <AppBar
         position="fixed"
         sx={{
@@ -245,7 +243,7 @@ const SidebarTopbarComponent = () => {
                   sx={{
                     minWidth: drawerWidth,
                     opacity: open ? 1 : 0,
-                    color: "primary",
+                    // color: "primary",
                     "& .MuiListItemText-primary": {
                       fontSize: "0.875rem",
                     },

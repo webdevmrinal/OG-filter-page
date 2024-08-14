@@ -31,12 +31,12 @@ const RejectedItem = styled(Box)(({ theme }) => ({
   margin: "1em 0",
   borderRadius: "8px",
   transition: "all 0.3s ease",
-  border: "1px solid #e0e0e0",
-  backgroundColor: "white",
+  backgroundColor:"transparent",
+  boxShadow:"0 2px 4px rgba(0,0,0,0.15)",
   "&:hover": {
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    backgroundColor: "#0000000a",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
-    backgroundColor: "#f4f7f9",
   },
 }));
 
@@ -181,10 +181,10 @@ const RejectedRequestComponent = () => {
       }}
     >
       <Box>
-        <Typography variant="h6" sx={{ p: 3, fontWeight: "bold" }}>
+        <Typography variant="h6" sx={{ px: 3, py: 1 }}>
           Rejected Requests
         </Typography>
-        <Divider />
+        <Divider sx={{ width: "97%", alignSelf: "center", ml: '24px' }}/>
         <Box sx={{ px: 3, py: 1 }}>
           {rejectedItems.map((item, index) => (
             <RejectedItem key={item.meet_id}>
@@ -200,7 +200,7 @@ const RejectedRequestComponent = () => {
                 >
                   <Typography
                     variant="subtitle1"
-                    sx={{ fontWeight: "bold", color: "#3f51b5" }}
+                    sx={{ }}
                   >
                     {item.mentee_name}
                   </Typography>
@@ -210,19 +210,19 @@ const RejectedRequestComponent = () => {
                     color="inherit"
                   >
                     <Typography
-                      variant="body1"
-                      sx={{ fontWeight: "bold", color: "#333" }}
+                      variant="subtitle2"
+                      sx={{ }}
                     >
                       {item.idea}
                     </Typography>
                   </Link>
-                  <Box display={'flex'}>
-                  <CalendarTodayIcon sx={{width: '0.6em', height: '0.7em', mr: 0.3, color: 'text.secondary'}}/>
+                  <Box display={'flex'} mt={0.1}>
+                  <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.4, color: 'text.secondary'}}/>
                   <Typography variant="body2" color="text.secondary">
                     {item.date_title} | {item.time_title}
                   </Typography>
                   </Box>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" mt={1}>
                     Requirement: {item.query}
                   </Typography>
                   
@@ -239,7 +239,7 @@ const RejectedRequestComponent = () => {
                   <Typography variant="body1" color="text.primary">
                     Reason:
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" mt={0.5}>
                     {truncateText(item.reasons[0], 100)}
                   </Typography>
                   <Button

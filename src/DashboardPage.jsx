@@ -27,7 +27,7 @@ import AppointmentsPage from "./Appointments";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import Header from "./Header";
+// import Header from "./Header";
 
 const initialCategories = [
   "Expert",
@@ -336,7 +336,7 @@ const DashboardPage = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Box sx={{ backgroundColor: "#f4f6f8", minHeight: "100vh", p: 3 }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 1 }}>
           <Tabs

@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Box, Typography, Divider, Avatar, Chip } from "@mui/material";
-import Header from "./Header";
+// import Header from "./Header";
 import { styled } from "@mui/system";
 
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -10,7 +10,8 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const GradientBox = styled(Box)({
-  background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
+  // background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
+  background: "linear-gradient(to bottom, #b0b0b0, #4ea3a0)",
   height: "165px",
   position: "relative",
   display: "flex",
@@ -25,42 +26,42 @@ const TransactionHistory = () => {
       date: "May 12",
       description: "Booked a session with Ajinkya Chikte",
       datetime: "Thursday, Sept 9, 2024/ 9:00pm - 10:00pm",
-      amount: "+$32",
+      amount: "32",
       isPositive: true,
     },
     {
       date: "May 8",
       description: "Booked a session with Ajinkya Chikte",
       datetime: "Thursday, Sept 9, 2024/ 9:00pm - 10:00pm",
-      amount: "+$436",
+      amount: "436",
       isPositive: true,
     },
     {
       date: "Apr 27",
       description: "Payment unsuccessful for the session of Vinay Kumar",
       datetime: "Thursday, Sept 9, 2024/ 9:00pm - 10:00pm",
-      amount: "-$345",
+      amount: "345",
       isPositive: false,
     },
     {
       date: "Apr 19",
       description: "Booked a session with Ajinkya Chikte",
       datetime: "Thursday, Sept 9, 2024/ 9:00pm - 10:00pm",
-      amount: "+$654",
+      amount: "654",
       isPositive: true,
     },
     {
       date: "Apr 12",
       description: "Payment unsuccessful for the session of Vinay Kumar",
       datetime: "Thursday, Sept 9, 2024/ 9:00pm - 10:00pm",
-      amount: "-$145",
+      amount: "145",
       isPositive: false,
     },
   ];
 
   return (
-    <Box>
-      <Header />
+    // <Box>
+    //   <Header />
       <Box sx={{ backgroundColor: "#f4f4f4", minHeight: "100vh", padding: 2 }}>
         <GradientBox sx={{ marginBottom: 2 }}>
           <Box
@@ -88,7 +89,7 @@ const TransactionHistory = () => {
         </GradientBox>
         <Card
           variant="outlined"
-          sx={{ boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}
+          sx={{ boxShadow: "0 4px 12px rgba(0,0,0,0.2)", marginTop: '2em' }}
         >
           <Box sx={{  color: "black" , ml: 2.5, display: 'flex', mt: 2, gap: 1.5}}>
               <Typography variant="h6" sx={{ }}>
@@ -120,14 +121,14 @@ const TransactionHistory = () => {
                 borderRadius: 2,
                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                 "&:hover": {
-                  backgroundColor: "#f4f7f9",
+                  backgroundColor: "#0000000a",
                   boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
                   transform: "translateY(-2px)",
                 },
               }}
             >
               <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 1, ml: 1.5, borderRadius: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", width: '90px', height: '95px' }}>
-                <Typography variant="caption" sx={{ alignSelf: "flex-start", color: "text.secondary", mt: 1, ml: 0.5 }}>
+                <Typography variant="caption" sx={{ alignSelf: "center", color: "text.secondary", mt: 1, ml: 0.5 }}>
                   Booked on
                 </Typography>
                 <CalendarTodayIcon sx={{ color: "text.secondary", width: '18px', mt: 1 }} />
@@ -166,13 +167,13 @@ const TransactionHistory = () => {
                 </Box>
 
                 <Typography
-                  variant="h6"
-                  sx={{ pl: 0.3, pb:1 ,lineHeight:0 , mt: 1.5}}
+                  variant="subtitle1"
+                  sx={{ pl: 0.3, pb:1 ,lineHeight:0 , mt: 2}}
                 >
                   {transaction.description}
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                <CalendarTodayIcon sx={{ width: '18px', pb: 0.9, mr: 0.6 }} />
+                <CalendarTodayIcon sx={{ width: '0.55em', pb: 0.4, mr: 0.6 }} />
                   <Typography variant="subtitle2" color={'text.secondary'}>
                     {transaction.datetime}
                   </Typography>
@@ -180,12 +181,12 @@ const TransactionHistory = () => {
                 <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
                   <AttachMoneyIcon
                     sx={{
-                      mr: 0.1, width: '18px', pb: 0.3
+                      mr: 0, width: '0.7em', pb: 0.2
                     }}
                   />
                   <Typography
-                    variant="body1"
-                    sx={{
+                    variant="h6"
+                    sx={{ 
                     }}
                   >
                     {transaction.amount}
@@ -206,7 +207,7 @@ const TransactionHistory = () => {
           ))}
         </Card>
       </Box>
-    </Box>
+    // </Box>
   );
 };
 

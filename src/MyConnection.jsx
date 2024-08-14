@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, CardMedia, Button, CircularProgress, Box, Tab, Tabs, Divider, Rating } from '@mui/material';
 import axios from 'axios';
 import { styled } from '@mui/system';
-import Header from './Header';
+// import Header from './Header';
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -18,6 +18,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   '&:hover': {
     transform: "translateY(-3px)",
     boxShadow: theme.shadows[6],
+    backgroundColor: '#0000000a',
   },
 }));
 
@@ -93,7 +94,7 @@ const MyConnections = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Box sx={{ padding: 2, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 4 }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">

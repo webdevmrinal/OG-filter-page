@@ -17,7 +17,7 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import RejectedRequestComponent from "./RejectedRequestComponent";
 import AttendedAppointments from "./AttendedAppointments";
 import axios from "axios";
-import Header from "./Header";
+// import Header from "./Header";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 const appointmentsData = [
@@ -67,11 +67,10 @@ const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
   margin: "8px 0",
   borderRadius: "8px",
   transition: "all 0.3s ease",
-  border: isSelected ? "2px solid #25387c" : "1px solid #e0e0e0",
   backgroundColor: isSelected ? "#f5f5f5" : "transparent",
-  boxShadow: isSelected ? "0 2px 4px rgba(0,0,0,0.15)" : "none",
+  boxShadow:"0 2px 4px rgba(0,0,0,0.15)",
   "&:hover": {
-    backgroundColor: "#f4f7f9",
+    backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
   },
@@ -114,11 +113,11 @@ const AppointmentDashboard = () => {
     switch (value) {
       case 0:
         return (
-          <Box sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>
+          <Box sx={{ px: 3, py: 1 }}>
+            <Typography variant="h6" sx={{ mb: 1 }}>
               Upcoming Appointments
             </Typography>
-            <Divider sx={{ width: "100%", mb: 2, alignSelf: "center" }} />
+            <Divider sx={{ width: "100%", mb: 3, alignSelf: "center" }} />
             {appointmentsData.map((appointment) => (
               <AppointmentItemComp
                 key={appointment.id}
@@ -148,7 +147,7 @@ const AppointmentDashboard = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Box sx={{ width: "100%", bgcolor: "#f4f7f9", minHeight: "100vh", p: 3 }}>
         <Box sx={{ display: "flex", p: 2, borderColor: "divider" }}>
           <StyledTabs
@@ -192,23 +191,23 @@ const AppointmentItemComp = ({
     <AppointmentItem
       isSelected={isSelected}
       onClick={() => setSelectedAppointment(id)}
-      sx={{ cursor: "pointer", backgroundColor: '#fffff' }}
+      sx={{ cursor: "pointer", backgroundColor: '#fffff', mt: 2 }}
     >
       <Avatar
         src="https://academy.opengrowth.com/assets/images/users/user_791_student_collaborate.png"
         sx={{ bgcolor: "#3f51b5", mr: 2, height: "80px", width: "80px" }}
       />
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+        <Typography variant="subtitle1" sx={{}}>
           {name}
         </Typography>
         <Box display={'flex'}>
-        <CalendarTodayIcon sx={{width: '0.6em', height: '0.7em', mr: 0.3, color: 'text.secondary'}}/>
+        <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.3, color: 'text.secondary'}}/>
         <Typography variant="body2" color="text.secondary">
           Thursday, August 08, 2024 | {time}
         </Typography>
         </Box>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" mt={1}>
           Requirement : Specific requirement details here
         </Typography>
       </Box>

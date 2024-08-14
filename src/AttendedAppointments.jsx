@@ -25,15 +25,16 @@ const StyledAttendedItem = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: "16px",
-  margin: "8px 0",
+  margin: "8px 16px 16px 0",
+  
   borderRadius: "8px",
   transition: "all 0.3s ease",
-  border: "1px solid #e0e0e0",
-  backgroundColor: "#fffff",
+  backgroundColor:"transparent",
+  boxShadow:"0 2px 4px rgba(0,0,0,0.15)",
   "&:hover": {
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    backgroundColor: "#0000000a",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
-    backgroundColor: '#f4f7f9'
   },
 }));
 
@@ -63,23 +64,23 @@ const AttendedItem = ({ item }) => (
         sx={{ width: 56, height: 56, mr: 2 }}
       />
     </AvatarWrapper>
-    <Box>
-      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+    <Box >
+      <Typography variant="subtitle1" sx={{ }}>
         {item.mentee_name}
       </Typography>
       <Typography
-        variant="body1"
-        sx={{ color: "primary.main", fontWeight: "600" }}
+        variant="subtitle2"
+        sx={{ }}
       >
         {item.idea}
       </Typography>
-      <Box display={'flex'}>
-      <CalendarTodayIcon sx={{width: '0.6em', height: '0.7em', mr: 0.3, color: 'text.secondary'}}/>
+      <Box display={'flex'} mt={0.1}>
+      <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.5, color: 'text.secondary', paddingTop: '1px'}}/>
       <Typography variant="body2" color="text.secondary">
         {item.date_title} | {item.time_title}
       </Typography>
       </Box>
-      <Typography variant="body2" color="text.secondary">
+      <Typography variant="body2" color="text.secondary" sx={{mt: 1}}>
         Requirement: {item.query}
       </Typography>
     </Box>
@@ -122,10 +123,10 @@ const AttendedAppointments = () => {
       elevation={0}
       sx={{ borderRadius: 2, border: "1px solid lightgray" }}
     >
-      <Typography variant="h5" sx={{ p: 3, fontWeight: "bold" }}>
+      <Typography variant="h6" sx={{ px: 3, py: 1}}>
         Attended Appointments
       </Typography>
-      <Divider sx={{ width: "100%", alignSelf: "center" }} />
+      <Divider sx={{ width: "98%", alignSelf: "center", mb: 1 }} />
 
       <Box sx={{ px: 3, py: 1}}>
         {appointments.map((item) => (
