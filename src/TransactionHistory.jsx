@@ -4,7 +4,7 @@ import { Card, Box, Typography, Divider, Avatar, Chip } from "@mui/material";
 import { styled } from "@mui/system";
 
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -80,7 +80,7 @@ const TransactionHistory = () => {
               <Box sx={{ color: "white" }}>
                 <Typography variant="h5">John Doe</Typography>
                 <Typography variant="subtitle1">
-                  React Developer, India
+                  React Developer,<LocationOnOutlinedIcon  sx={{ width: "0.8em", height: "0.6em" }}/>India
                 </Typography>
               </Box>
             </Box>
@@ -178,10 +178,10 @@ const TransactionHistory = () => {
                     {transaction.datetime}
                   </Typography>
                 </Box>
-                <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                <Box sx={{ display: "flex", alignItems: "center", mt: 0.2 }}>
                   <AttachMoneyIcon
                     sx={{
-                      mr: 0, width: '0.7em', pb: 0.2
+                      mr: 0, width: '0.8em', pb: 0.1
                     }}
                   />
                   <Typography

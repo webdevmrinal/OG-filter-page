@@ -43,6 +43,7 @@ const RejectedItem = styled(Box)(({ theme }) => ({
 const AvatarWrapper = styled(Box)(({ theme }) => ({
   transition: "transform 0.3s ease-in-out",
   cursor: "pointer",
+  alignSelf: 'center',
 
   "&:hover": {
     transform: "scale(1.1)",
@@ -236,7 +237,7 @@ const RejectedRequestComponent = () => {
                     alignSelf: "center",
                   }}
                 >
-                  <Typography variant="body1" color="text.primary">
+                  <Typography variant="body2" color="text.primary">
                     Reason:
                   </Typography>
                   <Typography variant="body2" color="text.secondary" mt={0.5}>

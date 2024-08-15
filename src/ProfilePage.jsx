@@ -167,6 +167,7 @@ const ProfilePage = () => {
               startIcon={<EventNoteIcon />}
               variant="outlined"
               onClick={handleAccordionChange}
+              sx={{ mr: 2 }}
             >
               Request a Time
             </Button>

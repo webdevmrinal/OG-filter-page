@@ -652,6 +652,7 @@ const getDurationLabel = (duration) => {
               <Checkbox
                 checked={isGift}
                 onChange={(e) => setIsGift(e.target.checked)}
+                sx={{pr:1, pl:1, ml: 2}}
               />
             }
             label="Tap to send this as a gift"
@@ -662,22 +663,14 @@ const getDurationLabel = (duration) => {
           </Typography>
           <Box
               sx={{
-                width: "100%",
                 display: "flex",
                 justifyContent: "flex-end",
-                alignItems: "center",
-                mb: 2,
+                alignItems: "flex-start",
             }}
         >
-            <Box>
-                <Button size="small" onClick={handleSelectAll}>
-                Select All
-                </Button>
-            </Box>
-           </Box>
-         
+         <Box>
           {visibleDays.map((day, index) => (
-          <Box key={index} sx={{ mb: 2 }}>
+          <Box key={index} sx={{ mb: 2 , mt: 1,}}>
             <Typography variant="subtitle2">{day.date}</Typography>
             <ScrollableBox>
               {day.times.map((time) => (
@@ -689,7 +682,7 @@ const getDurationLabel = (duration) => {
                       `${day.date}_${time.label}`
                   )}
                   onChange={() => handleTimeToggle(day, time)}
-                  sx={{ mr: 1, width: "max-content" }}
+                  sx={{ mr: 1, mt: 0.7, width: "max-content" }}
               >
                   {time.label}
                 </TimeButton>
@@ -697,6 +690,23 @@ const getDurationLabel = (duration) => {
             </ScrollableBox>
           </Box>
     ))}
+    </Box>
+          <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                mb: 2,
+            }}
+          >
+            <Box>
+                <Button size="small" onClick={handleSelectAll}>
+                Select All
+                </Button>
+            </Box>
+           </Box>
+           </Box>
     <Box sx={{ mt: 2 }}>
         <Button
           variant="text"

@@ -416,30 +416,12 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                     <Checkbox
                                         checked={isGift}
                                         onChange={(e) => setIsGift(e.target.checked)}
+                                        sx={{ml: 2, paddingRight: 1, pl: 1}}
                                     />
                                 }
                                 label="Tap to send this as a gift"
-                                sx={{ mt: 2 }}
+                                sx={{ mt: 2}}
                             />
-
-                            <Box
-                                sx={{
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                    alignItems: "center",
-                                    mb: 2,
-                                }}
-                            >
-                                <Box>
-                                    <Typography variant="subtitle2">
-                                        Looking for a time not listed?
-                                    </Typography>
-                                    <Button size="small" onClick={() => setShowGetTime1(true)}>
-                                        Tap here to see available slots
-                                    </Button>
-                                </Box>
-                            </Box>
 
                             {/* <Box>
                 <Typography variant="subtitle2">Wednesday 8/7</Typography>
@@ -457,8 +439,8 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                     </TimeButton>
                   ))}
                 </ScrollableBox>
-              </Box> */}
-
+              </Box> */}   <Box display={'flex'} sx={{marginTop: 2}}>
+                            <Box>
                             {visibleDays.map((day, index) => (
                                 <Box key={index} sx={{ mb: 2 }}>
                                     <Typography variant="subtitle2">{day.date}</Typography>
@@ -472,7 +454,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                                     `${day.date}_${time.label}`
                                                 )}
                                                 onChange={() => handleTimeToggle(day, time)}
-                                                sx={{ mr: 1, width: "max-content" }}
+                                                sx={{ mr: 1,mt: 0.7, width: "max-content" }}
                                             >
                                                 {time.label}
                                             </TimeButton>
@@ -480,6 +462,26 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                     </ScrollableBox>
                                 </Box>
                             ))}
+                            </Box>
+                            <Box
+                                sx={{
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                    alignItems: "flex-start",
+                                    mb: 2,
+                                }}
+                            >
+                                <Box>
+                                    <Typography variant="subtitle2">
+                                        Looking for a time not listed?
+                                    </Typography>
+                                    <Button size="small" onClick={() => setShowGetTime1(true)}>
+                                        Tap here to see available slots
+                                    </Button>
+                                </Box>
+                            </Box>
+                            </Box>
 
                             <Box sx={{ mt: 2 }}>
                                 <Button
