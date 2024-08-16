@@ -1,24 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-    Box,
-    Typography,
-    Button,
-    Divider,
-    Card,
-    CardContent,
-    Avatar,
-    CircularProgress,
-    Tabs,
-    Tab,
-    Dialog,
-    DialogTitle,
-    IconButton,
-    DialogContent,
-    Chip,
-    CardMedia,
-    ButtonBase,
-    Grid,
-    useTheme,
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Card,
+  CardContent,
+  Avatar,
+  CircularProgress,
+  Tabs,
+  Tab,
+  Dialog,
+  DialogTitle,
+  IconButton,
+  DialogContent,
+  Chip,
+  CardMedia,
+  ButtonBase,
+  Grid,
+  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -27,6 +27,7 @@ import AppointmentsPage from "./Appointments";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import bannerImg2 from "./assets/file2.png";
 // import Header from "./Header";
 
 const initialCategories = [
@@ -43,7 +44,6 @@ const initialCategories = [
   "Seasoned Entrepreneur",
 ];
 
-
 const HeaderSection = styled(Box)(({ theme }) => ({
   //   backgroundColor: "#1e293b",
   color: "white",
@@ -54,24 +54,24 @@ const HeaderSection = styled(Box)(({ theme }) => ({
 }));
 
 const EngagementCard = styled(ButtonBase)(({ theme }) => ({
-    width: "48%",
-    backgroundColor: "#fdf3e7",
-    padding: theme.spacing(2),
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: theme.spacing(2),
-    boxShadow: "none",
-    borderRadius: "12px",
-    '&:hover': {
-        backgroundColor: "#f3e5ab",
-        boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-        transform: "translateY(-2px)",
-        border: "2px solid rgba(37, 56, 124, 0.5)",
-    },
-    transition: "background-color 0.3s ease"
+  width: "48%",
+  backgroundColor: "#fdf3e7",
+  padding: theme.spacing(2),
+  textAlign: "center",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: theme.spacing(2),
+  boxShadow: "none",
+  borderRadius: "12px",
+  "&:hover": {
+    backgroundColor: "#f3e5ab",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+    transform: "translateY(-2px)",
+    border: "2px solid rgba(37, 56, 124, 0.5)",
+  },
+  transition: "background-color 0.3s ease",
 }));
 
 const SidebarSection = styled(Box)(({ theme }) => ({
@@ -82,59 +82,59 @@ const SidebarSection = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 const appointments = [
-    {
-        id: 1,
-        name: 'Vanshika Yadav',
-        description: 'test',
-        startDate: 'Thursday, August 08, 2024',
-        startTime: '02:29 PM',
-        endTime: '02:59 PM',
-        status: 'Accepted'
-    }
+  {
+    id: 1,
+    name: "Vanshika Yadav",
+    description: "test",
+    startDate: "Thursday, August 08, 2024",
+    startTime: "02:29 PM",
+    endTime: "02:59 PM",
+    status: "Accepted",
+  },
 ];
 
-const ShimmerWrapper = styled('div')({
-    overflow: 'hidden',
-    position: 'relative',
-    backgroundColor: '#f6f7f8',
-    borderRadius: 8,
-  });
-  
-  const ShimmerEffect = styled('div')(({ theme }) => ({
-    width: '100%',
-    height: '100%',
-    animation: 'shimmer 1.5s infinite linear',
-    background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #e0e0e0 50%, ${theme.palette.background.default} 100%)`,
-    backgroundSize: '200% 100%',
-    "@keyframes shimmer": {
-      '0%': {
-        backgroundPosition: '-100% 0',
-      },
-      '100%': {
-        backgroundPosition: '100% 0',
-      },
-    }
-  }));
-  
-  const Shimmer = ({ width = '100%', height = 100 }) => (
-    <ShimmerWrapper style={{ width, height }}>
-      <ShimmerEffect />
-    </ShimmerWrapper>
-  );
+const ShimmerWrapper = styled("div")({
+  overflow: "hidden",
+  position: "relative",
+  backgroundColor: "#f6f7f8",
+  borderRadius: 8,
+});
 
-  const TimeButton = styled(Button)(({ theme }) => ({
-    borderRadius: "1.2em",
+const ShimmerEffect = styled("div")(({ theme }) => ({
+  width: "100%",
+  height: "100%",
+  animation: "shimmer 1.5s infinite linear",
+  background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #e0e0e0 50%, ${theme.palette.background.default} 100%)`,
+  backgroundSize: "200% 100%",
+  "@keyframes shimmer": {
+    "0%": {
+      backgroundPosition: "-100% 0",
+    },
+    "100%": {
+      backgroundPosition: "100% 0",
+    },
+  },
+}));
+
+const Shimmer = ({ width = "100%", height = 100 }) => (
+  <ShimmerWrapper style={{ width, height }}>
+    <ShimmerEffect />
+  </ShimmerWrapper>
+);
+
+const TimeButton = styled(Button)(({ theme }) => ({
+  borderRadius: "1.2em",
   textTransform: "none",
   fontWeight: "normal",
   backgroundColor: "#f4f7f9",
   color: "#000000",
-//   boxShadow: active ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
-//   "&:hover": {
-//     backgroundColor: active ? "#333333" : "#d5d5d5",
-//   },
+  //   boxShadow: active ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
+  //   "&:hover": {
+  //     backgroundColor: active ? "#333333" : "#d5d5d5",
+  //   },
   width: "auto",
   whiteSpace: "nowrap",
-  }));
+}));
 
 const CategoryButton = styled(Button)(({ theme, active }) => ({
   borderRadius: "1.5em",
@@ -151,31 +151,31 @@ const CategoryButton = styled(Button)(({ theme, active }) => ({
 }));
 
 const AttendedItem = ({ item }) => (
-    <StyledAttendedItem>
-        <AvatarWrapper>
-            <Avatar
-                src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
-                sx={{ width: 56, height: 56, mr: 2 }}
-            />
-        </AvatarWrapper>
-        <Box>
-            <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                {item.mentee_name}
-            </Typography>
-            <Typography
-                variant="body1"
-                sx={{ color: "primary.main", fontWeight: "600" }}
-            >
-                {item.idea}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                {item.date_title} | {item.time_title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                Requirement: {item.query}
-            </Typography>
-        </Box>
-    </StyledAttendedItem>
+  <StyledAttendedItem>
+    <AvatarWrapper>
+      <Avatar
+        src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
+        sx={{ width: 56, height: 56, mr: 2 }}
+      />
+    </AvatarWrapper>
+    <Box>
+      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+        {item.mentee_name}
+      </Typography>
+      <Typography
+        variant="body1"
+        sx={{ color: "primary.main", fontWeight: "600" }}
+      >
+        {item.idea}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {item.date_title} | {item.time_title}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        Requirement: {item.query}
+      </Typography>
+    </Box>
+  </StyledAttendedItem>
 );
 
 const DashboardPage = () => {
@@ -248,64 +248,79 @@ const DashboardPage = () => {
       setCategories(initialCategories);
     }
   }, [selectedCategory]);
-    const handleAppointmentTabChange = (event, newValue) => {
-        setAppointmentTab(newValue);
-    };
-    useEffect(() => {
-        const elements = document.querySelectorAll('.css-ehiffo');
-        elements.forEach(el => {
-            el.style.width = '69vw';
-            el.style.height = '53vh';
-            el.style.borderRadius = '12px';
-            el.style.boxShadow = '0 0 8px rgba(0,0,0,0.2)';
-        });
-    }, []);
-    const appointmentCard = (appointment) => (
-        <Card sx={{
-                width: 250,
-                boxShadow: 'none',
-                borderRadius: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                padding: 2,
-                position: 'relative', // Establishing positioning context
-                '&:hover': {
-                    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                    transform: "translateY(-1px)",
-                }
-        }}>
-            <Avatar sx={{ bgcolor: 'primary.main', mb: 2 }}>
-                <EventAvailableIcon />
-            </Avatar>
-            <Box sx={{ position: 'absolute', top: 10, right: 8, zIndex: 1 }}>
-            <Typography variant="subtitle2" sx={{ color: 'green', fontWeight: 'bold', mb: 1 }}>
-                {appointment.status}
-            </Typography>
-            </Box>
-            <Typography variant="h6" sx={{ textAlign: 'center' }}>
-                {appointment.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-                {appointment.description}
-            </Typography>
+  const handleAppointmentTabChange = (event, newValue) => {
+    setAppointmentTab(newValue);
+  };
+  useEffect(() => {
+    const elements = document.querySelectorAll(".css-ehiffo");
+    elements.forEach((el) => {
+      el.style.width = "69vw";
+      el.style.height = "53vh";
+      el.style.borderRadius = "12px";
+      el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
+    });
+  }, []);
+  const appointmentCard = (appointment) => (
+    <Card
+      sx={{
+        width: 250,
+        boxShadow: "none",
+        borderRadius: 2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 2,
+        position: "relative", // Establishing positioning context
+        "&:hover": {
+          boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+          transform: "translateY(-1px)",
+        },
+      }}
+    >
+      <Avatar sx={{ bgcolor: "primary.main", mb: 2 }}>
+        <EventAvailableIcon />
+      </Avatar>
+      <Box sx={{ position: "absolute", top: 10, right: 8, zIndex: 1 }}>
+        <Typography
+          variant="subtitle2"
+          sx={{ color: "green", fontWeight: "bold", mb: 1 }}
+        >
+          {appointment.status}
+        </Typography>
+      </Box>
+      <Typography variant="h6" sx={{ textAlign: "center" }}>
+        {appointment.name}
+      </Typography>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{ textAlign: "center" }}
+      >
+        {appointment.description}
+      </Typography>
 
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <TimeButton variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 1 }}>
-                {appointment.startDate}
-            </TimeButton>
-            </Box>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <TimeButton variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 0.5 }}>
-                {appointment.startTime} - {appointment.endTime}
-            </TimeButton>
-            </Box>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}></Box>
-            <Button sx={{ mt: 2 }}>
-                View Now
-            </Button>
-        </Card>
-    );
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+        <TimeButton
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center", mt: 1 }}
+        >
+          {appointment.startDate}
+        </TimeButton>
+      </Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+        <TimeButton
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center", mt: 0.5 }}
+        >
+          {appointment.startTime} - {appointment.endTime}
+        </TimeButton>
+      </Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}></Box>
+      <Button sx={{ mt: 2 }}>View Now</Button>
+    </Card>
+  );
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
@@ -352,7 +367,6 @@ const DashboardPage = () => {
         <HeaderSection>
           <Box
             sx={{
-              background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
               background: `#28419d`,
               color: theme.palette.common.white,
               borderRadius: theme.shape.borderRadius,
@@ -362,7 +376,7 @@ const DashboardPage = () => {
               overflow: "visible",
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between", // Ensures the image is on the right side
+              justifyContent: "space-between",
               "&:before": {
                 content: '""',
                 position: "absolute",
@@ -408,30 +422,28 @@ const DashboardPage = () => {
               },
             }}
           >
+            <Box
+              sx={{
+                position: "absolute",
+                right: 10,
+                width: "260px",
+                height: "150px",
+                borderRadius: theme.shape.borderRadius,
+                backgroundImage: `url(${bannerImg2})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
             <Box>
-              <Typography variant="h4" gutterBottom fontWeight={"600"}>
+              <Typography variant="h4" gutterBottom fontWeight="600">
                 Welcome, OpenGrowth
               </Typography>
               <Typography variant="body1">
-                Your expertise is the driving force on OpenGrowth - let's continue
-                shaping success together.
+                Your expertise is the driving force on OpenGrowth - let's
+                continue shaping success together.
               </Typography>
             </Box>
-            <img
-              src="https://media.istockphoto.com/id/1206796363/photo/ai-machine-learning-hands-of-robot-and-human-touching-on-big-data-network-connection.jpg?s=2048x2048&w=is&k=20&c=NMisrXtMr49zx-Oix-7aCbd9LyoSRqaS-fjGo9qzGLk="
-              alt="Free Unsplash Image"
-              style={{
-                width: '150px',
-                height: '150px',
-                borderRadius: theme.shape.borderRadius,
-                marginLeft: theme.spacing(4),
-                mixBlendMode: 'screen',  // Blends the image with the background
-                opacity: 0.7,            // Adjust the opacity for better blending
-              }}
-            />
           </Box>
-
-
         </HeaderSection>
         <Box sx={{ display: "flex" }}>
           <Box sx={{ flexGrow: 1, width: "69vw" }}>
@@ -452,63 +464,104 @@ const DashboardPage = () => {
               </EngagementCard>
             </Box>
             <Box sx={{ marginBottom: 2 }}>
-                            <Tabs value={appointmentTab} onChange={handleAppointmentTabChange} aria-label="appointment tabs">
-                                <Tab
-                                    iconPosition="start"
-                                    label={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}><EventAvailableIcon sx={{ color: 'green' }} /> Upcoming Meetings</Box>}
-                                />
-                                <Tab
-                                    iconPosition="start"
-                                    label={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}><EventBusyIcon sx={{ color: 'red' }} /> Rejected Meetings</Box>}
-                                />
-                                <Tab
-                                    iconPosition="start"
-                                    label={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}><EventNoteIcon sx={{ color: 'blue' }} /> Attended Meetings</Box>}
-                                />
-                            </Tabs>
-                        </Box>
-                        <Box sx={{
-                            pl: 4, pr: 4, pt: 1, pb: 0, width: '69vw', height: '54vh', overflow: 'auto',
-                            backgroundColor: '#fff'
-                        }}>
-                            <Typography variant="h6" gutterBottom sx={{ mb: 1, color: '#000' }}>
-                                Appointments
-                            </Typography>
-                            <Divider sx={{ mb: 2 }} />
-                            {appointmentTab === 0 && (
-                                <Grid container spacing={2} sx={{
-                                    marginTop: 2, marginLeft: 1, width: '284px',
-                                    '& .MuiGrid-item': {
-                                        padding: '0 !important'
-                                    }
-
-                                }} >
-                                    {appointments.map((appointment) => (
-                                        <Box sx={{ display: "flex", gap: 2 }}>
-                                            <Grid item key={appointment.id} sx={{
-                                                boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                                                borderRadius: '8px',
-                                                border: '1px solid rgba(0,0,0,0.12)',
-                                                backgroundColor: '#fff',
-                                                maxWidth: 'calc(100% - 25px)',
-                                            }}>
-                                                {appointmentCard(appointment)}
-                                            </Grid>
-                                            <Grid item key={appointment.id} sx={{
-                                                boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                                                borderRadius: '8px',
-                                                border: '1px solid rgba(0,0,0,0.12)',
-                                                backgroundColor: '#fff',
-                                                maxWidth: 'calc(100% - 25px)',
-                                            }}>
-                                                {appointmentCard(appointment)}
-                                            </Grid>
-                                        </Box>
-                                    ))}
-                                </Grid>
-                            )}
-                        </Box>
-
+              <Tabs
+                value={appointmentTab}
+                onChange={handleAppointmentTabChange}
+                aria-label="appointment tabs"
+              >
+                <Tab
+                  iconPosition="start"
+                  label={
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <EventAvailableIcon sx={{ color: "green" }} /> Upcoming
+                      Meetings
+                    </Box>
+                  }
+                />
+                <Tab
+                  iconPosition="start"
+                  label={
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <EventBusyIcon sx={{ color: "red" }} /> Rejected Meetings
+                    </Box>
+                  }
+                />
+                <Tab
+                  iconPosition="start"
+                  label={
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <EventNoteIcon sx={{ color: "blue" }} /> Attended Meetings
+                    </Box>
+                  }
+                />
+              </Tabs>
+            </Box>
+            <Box
+              sx={{
+                pl: 4,
+                pr: 4,
+                pt: 1,
+                pb: 0,
+                width: "69vw",
+                height: "54vh",
+                overflow: "auto",
+                backgroundColor: "#fff",
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ mb: 1, color: "#000" }}
+              >
+                Appointments
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              {appointmentTab === 0 && (
+                <Grid
+                  container
+                  spacing={2}
+                  sx={{
+                    marginTop: 2,
+                    marginLeft: 1,
+                    width: "284px",
+                    "& .MuiGrid-item": {
+                      padding: "0 !important",
+                    },
+                  }}
+                >
+                  {appointments.map((appointment) => (
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      <Grid
+                        item
+                        key={appointment.id}
+                        sx={{
+                          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                          borderRadius: "8px",
+                          border: "1px solid rgba(0,0,0,0.12)",
+                          backgroundColor: "#fff",
+                          maxWidth: "calc(100% - 25px)",
+                        }}
+                      >
+                        {appointmentCard(appointment)}
+                      </Grid>
+                      <Grid
+                        item
+                        key={appointment.id}
+                        sx={{
+                          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                          borderRadius: "8px",
+                          border: "1px solid rgba(0,0,0,0.12)",
+                          backgroundColor: "#fff",
+                          maxWidth: "calc(100% - 25px)",
+                        }}
+                      >
+                        {appointmentCard(appointment)}
+                      </Grid>
+                    </Box>
+                  ))}
+                </Grid>
+              )}
+            </Box>
 
             <Box
               sx={{
@@ -556,7 +609,7 @@ const DashboardPage = () => {
                       p: 1,
                       border: "1px solid #ccc",
                       boxSizing: "border-box",
-                      height: '22vh'
+                      height: "22vh",
                     }}
                   >
                     <Typography
@@ -592,53 +645,53 @@ const DashboardPage = () => {
           <SidebarSection>
             <Typography variant="h6">OpenGrowth Experts</Typography>
             <Divider sx={{ mb: 2 }} />
-            {loading ? (
-    Array.from({ length: 4 }, (_, index) => (
-      <Shimmer key={index} height={150} /> // You can customize the height as needed
-    ))
-  ) : (
-              experts.slice(0, 4).map(
-                (
-                  expert,
-                  index // Display only the first four experts
-                ) => (
-                  <Card
-                    key={index}
-                    sx={{ mb: 2, boxShadow: "none", borderRadius: "12px" }}
-                  >
-                    <CardContent sx={{ display: "flex", alignItems: "center" }}>
-                      <Avatar
-                        src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
-                        alt={expert.name}
-                        sx={{ width: 60, height: 60, mr: 2 }}
-                      />
-                      <Box>
-                        <Typography variant="subtitle1">
-                          {expert.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {expert.industry}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ mt: 0.5 }}
-                        >
-                          {truncateText(expert.about)}
-                        </Typography>
-                        <Button
-                          size="small"
-                          onClick={() => handleExpertClick(expert)}
-                          sx={{ mt: 1 }}
-                        >
-                          Know More
-                        </Button>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                )
-              )
-            )}
+            {loading
+              ? Array.from({ length: 4 }, (_, index) => (
+                  <Shimmer key={index} height={150} /> // You can customize the height as needed
+                ))
+              : experts.slice(0, 4).map(
+                  (
+                    expert,
+                    index // Display only the first four experts
+                  ) => (
+                    <Card
+                      key={index}
+                      sx={{ mb: 2, boxShadow: "none", borderRadius: "12px" }}
+                    >
+                      <CardContent
+                        sx={{ display: "flex", alignItems: "center" }}
+                      >
+                        <Avatar
+                          src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+                          alt={expert.name}
+                          sx={{ width: 60, height: 60, mr: 2 }}
+                        />
+                        <Box>
+                          <Typography variant="subtitle1">
+                            {expert.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {expert.industry}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ mt: 0.5 }}
+                          >
+                            {truncateText(expert.about)}
+                          </Typography>
+                          <Button
+                            size="small"
+                            onClick={() => handleExpertClick(expert)}
+                            sx={{ mt: 1 }}
+                          >
+                            Know More
+                          </Button>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  )
+                )}
             <Button sx={{ alignSelf: "flex-end" }} size="small">
               View All
             </Button>

@@ -99,16 +99,16 @@ const SidebarTopbarComponent = () => {
   };
 
   const menuItems = [
-    { text: "Dashboard", icon: <DashboardIcon /> },
-    { text: "Experts on Demand", icon: <PersonIcon /> },
-    { text: "Courses", icon: <SchoolIcon/> },
-    { text: "Messages", icon: <MessageIcon /> },
-    { text: "Account Settings", icon: <SettingsIcon /> },
-    { text: "Logout", icon: <ExitToAppIcon /> },
+    { text: "Dashboard", icon: <DashboardIcon />, route: "/dashboardpage" },
+    { text: "Experts on Demand", icon: <PersonIcon />, route: "/expertPage" },
+    { text: "Courses", icon: <SchoolIcon />, route: null },
+    { text: "Messages", icon: <MessageIcon />, route: null },
+    { text: "Account Settings", icon: <SettingsIcon />, route: null },
+    { text: "Logout", icon: <ExitToAppIcon />, route: null },
   ];
 
   return (
-    <Box sx={{ display: "flex", height:'60px' }}>
+    <Box sx={{ display: "flex", height: "60px" }}>
       <AppBar
         position="fixed"
         sx={{
@@ -182,7 +182,6 @@ const SidebarTopbarComponent = () => {
             borderBottom: "1px solid #dedede",
             overflow: "hidden",
             boxShadow: "0px 2px 4px -1px rgba(0,0,0,0.1)",
-            
           }}
         >
           <Link to={"/"}>
@@ -219,37 +218,43 @@ const SidebarTopbarComponent = () => {
               </ListItemIcon>
             </ListItem>
             {menuItems.map((item) => (
-              <ListItem
-                button
+              <Link
                 key={item.text}
-                sx={{
-                  display: "flex",
-                  py: 0.5,
-                  px: 2.5,
-                }}
+                to={item.route}
+                onClick={handleDrawerToggle}
+                style={{ color: "initial", textDecoration: "none" }}
               >
-                <ListItemIcon
+                <ListItem
+                  button
                   sx={{
-                    my: 2,
-                    minWidth: 0,
-                    mr: open ? 2 : "auto",
-                    justifyContent: "center",
+                    display: "flex",
+                    py: 0.5,
+                    px: 2.5,
                   }}
                 >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{
-                    minWidth: drawerWidth,
-                    opacity: open ? 1 : 0,
-                    // color: "primary",
-                    "& .MuiListItemText-primary": {
-                      fontSize: "0.875rem",
-                    },
-                  }}
-                />
-              </ListItem>
+                  <ListItemIcon
+                    sx={{
+                      my: 2,
+                      minWidth: 0,
+                      mr: open ? 2 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.text}
+                    sx={{
+                      minWidth: drawerWidth,
+                      opacity: open ? 1 : 0,
+                      // color: "primary",
+                      "& .MuiListItemText-primary": {
+                        fontSize: "0.875rem",
+                      },
+                    }}
+                  />
+                </ListItem>
+              </Link>
             ))}
           </List>
         </Box>
