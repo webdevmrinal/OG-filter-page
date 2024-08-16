@@ -88,7 +88,7 @@ const ProfileAvatar = styled(Avatar)({
 
 const GradientBox = styled(Box)({
   // background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
-  background: "linear-gradient(to top, #89929bcc, #475a6dcc)",
+  background: "linear-gradient(to top, #505f96, #25387c)",
   height: "285px",
   position: "relative",
   display: "flex",
@@ -499,7 +499,7 @@ const DetailView = () => {
                       <Typography
                         variant="body2"
                         component="span"
-                        sx={{ ml: 1, color: "black" }}
+                        sx={{ ml: 1, }}
                       >
                         5.0 (40)
                       </Typography>

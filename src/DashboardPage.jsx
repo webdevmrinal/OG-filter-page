@@ -352,7 +352,7 @@ const DashboardPage = () => {
         <HeaderSection>
           <Box
             sx={{
-              //   background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
               background: `#28419d`,
               color: theme.palette.common.white,
               borderRadius: theme.shape.borderRadius,
@@ -360,6 +360,9 @@ const DashboardPage = () => {
               px: 4,
               position: "relative",
               overflow: "visible",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between", // Ensures the image is on the right side
               "&:before": {
                 content: '""',
                 position: "absolute",
@@ -405,14 +408,30 @@ const DashboardPage = () => {
               },
             }}
           >
-            <Typography variant="h4" gutterBottom fontWeight={"600"}>
-              Welcome, OpenGrowth
-            </Typography>
-            <Typography variant="body1">
-              Your expertise is the driving force on OpenGrowth - let's continue
-              shaping success together.
-            </Typography>
+            <Box>
+              <Typography variant="h4" gutterBottom fontWeight={"600"}>
+                Welcome, OpenGrowth
+              </Typography>
+              <Typography variant="body1">
+                Your expertise is the driving force on OpenGrowth - let's continue
+                shaping success together.
+              </Typography>
+            </Box>
+            <img
+              src="https://media.istockphoto.com/id/1206796363/photo/ai-machine-learning-hands-of-robot-and-human-touching-on-big-data-network-connection.jpg?s=2048x2048&w=is&k=20&c=NMisrXtMr49zx-Oix-7aCbd9LyoSRqaS-fjGo9qzGLk="
+              alt="Free Unsplash Image"
+              style={{
+                width: '150px',
+                height: '150px',
+                borderRadius: theme.shape.borderRadius,
+                marginLeft: theme.spacing(4),
+                mixBlendMode: 'screen',  // Blends the image with the background
+                opacity: 0.7,            // Adjust the opacity for better blending
+              }}
+            />
           </Box>
+
+
         </HeaderSection>
         <Box sx={{ display: "flex" }}>
           <Box sx={{ flexGrow: 1, width: "69vw" }}>
@@ -449,10 +468,10 @@ const DashboardPage = () => {
                             </Tabs>
                         </Box>
                         <Box sx={{
-                            p: 4, width: '100vw', height: '100vh', overflow: 'auto',
+                            pl: 4, pr: 4, pt: 1, pb: 0, width: '69vw', height: '54vh', overflow: 'auto',
                             backgroundColor: '#fff'
                         }}>
-                            <Typography variant="h6" gutterBottom sx={{ mb: 2, color: '#000' }}>
+                            <Typography variant="h6" gutterBottom sx={{ mb: 1, color: '#000' }}>
                                 Appointments
                             </Typography>
                             <Divider sx={{ mb: 2 }} />
