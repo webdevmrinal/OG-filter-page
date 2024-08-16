@@ -47,31 +47,32 @@ const initialCategories = [
 const HeaderSection = styled(Box)(({ theme }) => ({
   //   backgroundColor: "#1e293b",
   color: "white",
-  padding: theme.spacing(3),
+  padding: '12px 0px 12px 0px',
   borderRadius: theme.shape.borderRadius,
   marginBottom: theme.spacing(3),
   textAlign: "center",
 }));
 
 const EngagementCard = styled(ButtonBase)(({ theme }) => ({
-  width: "48%",
-  backgroundColor: "#fdf3e7",
-  padding: theme.spacing(2),
-  textAlign: "center",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: theme.spacing(2),
-  boxShadow: "none",
-  borderRadius: "12px",
+    width: "48%",
+    backgroundColor: "#fdf3e7",
+    padding: theme.spacing(2),
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: theme.spacing(2),
+    boxShadow: "none",
+    borderRadius: "12px",
   "&:hover": {
-    backgroundColor: "#f3e5ab",
+    backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-    transform: "translateY(-2px)",
-    border: "2px solid rgba(37, 56, 124, 0.5)",
+    transform: "translateY(-1px)",
+    border: '1px solid #0000000b',
+    color: 'black'
   },
-  transition: "background-color 0.3s ease",
+    transition: "background-color 0.3s ease"
 }));
 
 const SidebarSection = styled(Box)(({ theme }) => ({
@@ -281,12 +282,27 @@ const DashboardPage = () => {
         <EventAvailableIcon />
       </Avatar>
       <Box sx={{ position: "absolute", top: 10, right: 8, zIndex: 1 }}>
-        <Typography
-          variant="subtitle2"
-          sx={{ color: "green", fontWeight: "bold", mb: 1 }}
-        >
-          {appointment.status}
-        </Typography>
+      <Chip
+    label={appointment.status}
+    sx={{
+      Color: 'white',
+      backgroundColor:'#81c784',
+      mb: 1,
+      height: '20px',
+      fontSize: '0.7rem',
+      '& .MuiChip-icon': {
+        color: "white",
+        backgroundColor: '#81c784',
+        fontSize: '16px',
+      },
+      '& .MuiChip-label': {
+        color: "white",
+        paddingLeft: '8px',
+        paddingRight: '8px',
+      },
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)'
+    }}
+  />
       </Box>
       <Typography variant="h6" sx={{ textAlign: "center" }}>
         {appointment.name}
@@ -367,7 +383,8 @@ const DashboardPage = () => {
         <HeaderSection>
           <Box
             sx={{
-              background: `#28419d`,
+              background: `linear-gradient(to bottom, #25387c, #505f96)`,
+              // background: `#28419d`,
               color: theme.palette.common.white,
               borderRadius: theme.shape.borderRadius,
               py: 6,
@@ -376,21 +393,21 @@ const DashboardPage = () => {
               overflow: "visible",
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
-              "&:before": {
-                content: '""',
-                position: "absolute",
-                top: -60,
-                left: -400,
-                width: "50%",
-                height: "50%",
-                borderRadius: "100%",
-                background: "#ff98cf",
-                opacity: 0.5,
-                filter: "blur(65px)",
-                mixBlendMode: "screen",
-                animation: "wiggleTop 5s infinite ease-in-out",
-              },
+              justifyContent: "space-between", // Ensures the image is on the right side
+              // "&:before": {
+              //   content: '""',
+              //   position: "absolute",
+              //   top: -60,
+              //   left: -400,
+              //   width: "50%",
+              //   height: "50%",
+              //   borderRadius: "100%",
+              //   background: "#ff98cf",
+              //   opacity: 0.5,
+              //   filter: "blur(65px)",
+              //   mixBlendMode: "screen",
+              //   animation: "wiggleTop 5s infinite ease-in-out",
+              // },
               "&:after": {
                 content: '""',
                 position: "absolute",
@@ -448,22 +465,22 @@ const DashboardPage = () => {
         <Box sx={{ display: "flex" }}>
           <Box sx={{ flexGrow: 1, width: "69vw" }}>
             <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+              sx={{ display: "flex", justifyContent: "space-between", mb: 2, }}
             >
-              <EngagementCard sx={{ backgroundColor: "#b2e8a4" }}>
+              <EngagementCard sx={{ background: ` #25387c`, color: 'white' }}>
                 <Typography variant="h6">Fractional Engagements</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body1" >
                   Engage with experts for fractional consulting and advice.
                 </Typography>
               </EngagementCard>
-              <EngagementCard sx={{ backgroundColor: "#b2e8a4" }}>
+              <EngagementCard sx={{background: ` #25387c`, color: 'white'}}>
                 <Typography variant="h6">On Demand Engagement</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body1" >
                   Access on-demand expertise for immediate needs.
                 </Typography>
               </EngagementCard>
             </Box>
-            <Box sx={{ marginBottom: 2 }}>
+            <Box sx={{ marginBottom: 2,  }}>
               <Tabs
                 value={appointmentTab}
                 onChange={handleAppointmentTabChange}
@@ -505,7 +522,9 @@ const DashboardPage = () => {
                 width: "69vw",
                 height: "54vh",
                 overflow: "auto",
+                borderRadius: "12px",
                 backgroundColor: "#fff",
+                boxShadow: "0 0 8px rgba(0,0,0,0.2)",
               }}
             >
               <Typography

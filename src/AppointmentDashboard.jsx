@@ -195,7 +195,7 @@ const AppointmentItemComp = ({
     >
       <Avatar
         src="https://academy.opengrowth.com/assets/images/users/user_791_student_collaborate.png"
-        sx={{ bgcolor: "#3f51b5", mr: 2, height: "80px", width: "80px" }}
+        sx={{  mr: 2, height: "80px", width: "80px" }}
       />
       <Box sx={{ flexGrow: 1 }}>
         <Typography variant="subtitle1" sx={{}}>
@@ -214,7 +214,6 @@ const AppointmentItemComp = ({
       <Button
         variant="contained"
         sx={{
-          bgcolor: "#3f51b5",
           color: "white",
           textTransform: "none",
           "&:hover": { bgcolor: "#303f9f" },
