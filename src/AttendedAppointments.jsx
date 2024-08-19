@@ -27,10 +27,10 @@ const StyledAttendedItem = styled(Box)(({ theme }) => ({
   padding: "16px",
   margin: "8px 16px 16px 0",
   
-  borderRadius: "8px",
+  borderRadius: "4px",
   transition: "all 0.3s ease",
   backgroundColor:"transparent",
-  boxShadow:"0 2px 4px rgba(0,0,0,0.15)",
+  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
   "&:hover": {
     backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
@@ -61,7 +61,7 @@ const AttendedItem = ({ item }) => (
     <AvatarWrapper>
       <Avatar
         src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
-        sx={{ width: 56, height: 56, mr: 2 }}
+        sx={{ width: 90, height: 90, mr: 2 }}
       />
     </AvatarWrapper>
     <Box >
@@ -70,11 +70,11 @@ const AttendedItem = ({ item }) => (
       </Typography>
       <Typography
         variant="subtitle2"
-        sx={{ }}
+        sx={{}}
       >
         {item.idea}
       </Typography>
-      <Box display={'flex'} mt={0.1}>
+      <Box display={'flex'} mt={0.5}>
       <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.5, color: 'text.secondary', paddingTop: '1px'}}/>
       <Typography variant="body2" color="text.secondary">
         {item.date_title} | {item.time_title}

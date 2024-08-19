@@ -72,8 +72,8 @@ const DateButton = styled(ToggleButton)(({ theme }) => ({
 
 
 const TimeButton = styled(ToggleButton)(({ available }) => ({
-    border: `2px solid ${available ? "skyblue" : "#e0e0e0"}`,
-    color: available ? "skyblue" : "#e0e0e0",
+    border: `2px solid ${available ? "#505f96" : "#e0e0e0"}`,
+    color: available ? "#505f96" : "#e0e0e0",
     opacity: available ? 1 : 0.6,
     pointerEvents: available ? "auto" : "none",
     position: "relative",

@@ -156,7 +156,7 @@ const AttendedItem = ({ item }) => (
     <AvatarWrapper>
       <Avatar
         src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
-        sx={{ width: 56, height: 56, mr: 2 }}
+        sx={{ width: 90, height: 90, mr: 2 }}
       />
     </AvatarWrapper>
     <Box>
@@ -228,7 +228,7 @@ const DashboardPage = () => {
     }
   }, []);
 
-  const truncateText = (text, maxLength = 100) => {
+  const truncateText = (text, maxLength = 80) => {
     if (text?.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
@@ -308,7 +308,7 @@ const DashboardPage = () => {
         {appointment.name}
       </Typography>
       <Typography
-        variant="body2"
+        variant="subtitle1"
         color="text.secondary"
         sx={{ textAlign: "center" }}
       >
@@ -408,19 +408,19 @@ const DashboardPage = () => {
               //   mixBlendMode: "screen",
               //   animation: "wiggleTop 5s infinite ease-in-out",
               // },
-              "&:after": {
-                content: '""',
-                position: "absolute",
-                bottom: -80,
-                right: -400,
-                width: "50%",
-                height: "50%",
-                background: "#0cfae6",
-                filter: "blur(75px)",
-                borderRadius: "50%",
-                mixBlendMode: "screen",
-                animation: "wiggleBottom 5s infinite ease-in-out",
-              },
+              // "&:after": {
+              //   content: '""',
+              //   position: "absolute",
+              //   bottom: -80,
+              //   right: -400,
+              //   width: "50%",
+              //   height: "50%",
+              //   background: "#0cfae6",
+              //   filter: "blur(75px)",
+              //   borderRadius: "50%",
+              //   mixBlendMode: "screen",
+              //   animation: "wiggleBottom 5s infinite ease-in-out",
+              // },
               "@keyframes wiggleTop": {
                 "0%, 100%": {
                   top: -10,
@@ -455,7 +455,7 @@ const DashboardPage = () => {
               <Typography variant="h4" gutterBottom fontWeight="600">
                 Welcome, OpenGrowth
               </Typography>
-              <Typography variant="body1">
+              <Typography variant="h5">
                 Your expertise is the driving force on OpenGrowth - let's
                 continue shaping success together.
               </Typography>
@@ -465,17 +465,17 @@ const DashboardPage = () => {
         <Box sx={{ display: "flex" }}>
           <Box sx={{ flexGrow: 1, width: "69vw" }}>
             <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 2, }}
+              sx={{ display: "flex", justifyContent: "space-between", mb: 2,}}
             >
-              <EngagementCard sx={{ background: ` #25387c`, color: 'white' }}>
+              <EngagementCard sx={{ background: ` #f0f0f0`, color: 'black', boxShadow: "0 4px 6px rgba(0,0,0,0.2)", }}>
                 <Typography variant="h6">Fractional Engagements</Typography>
-                <Typography variant="body1" >
+                <Typography variant="subtitle1" >
                   Engage with experts for fractional consulting and advice.
                 </Typography>
               </EngagementCard>
-              <EngagementCard sx={{background: ` #25387c`, color: 'white'}}>
+              <EngagementCard sx={{background: ` #f0f0f0`, color: 'Black', boxShadow: "0 4px 6px rgba(0,0,0,0.2)",}}>
                 <Typography variant="h6">On Demand Engagement</Typography>
-                <Typography variant="body1" >
+                <Typography variant="subtitle1">
                   Access on-demand expertise for immediate needs.
                 </Typography>
               </EngagementCard>
@@ -524,7 +524,7 @@ const DashboardPage = () => {
                 overflow: "auto",
                 borderRadius: "12px",
                 backgroundColor: "#fff",
-                boxShadow: "0 0 8px rgba(0,0,0,0.2)",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
               }}
             >
               <Typography
@@ -554,7 +554,7 @@ const DashboardPage = () => {
                         item
                         key={appointment.id}
                         sx={{
-                          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                          boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
                           borderRadius: "8px",
                           border: "1px solid rgba(0,0,0,0.12)",
                           backgroundColor: "#fff",
@@ -567,7 +567,7 @@ const DashboardPage = () => {
                         item
                         key={appointment.id}
                         sx={{
-                          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                          boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
                           borderRadius: "8px",
                           border: "1px solid rgba(0,0,0,0.12)",
                           backgroundColor: "#fff",
@@ -587,11 +587,11 @@ const DashboardPage = () => {
                 display: "flex",
                 flexWrap: "wrap",
                 justifyContent: "space-evenly",
-                mt: 2,
+                mt: 4,
                 pt: 3,
                 borderRadius: "12px",
                 backgroundColor: "#fff",
-                boxShadow: "0 0 8px rgba(0,0,0,0.2)",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
               }}
             >
               <Typography
@@ -632,18 +632,18 @@ const DashboardPage = () => {
                     }}
                   >
                     <Typography
-                      variant="subtitle1"
+                      variant="h6"
                       sx={{ textAlign: "left", width: "100%" }}
                     >
                       {expert.name}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="subtitle1">
                       {expert.industry}
                     </Typography>
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ mt: 0.5 }}
+                      sx={{ mt: 0.8 }}
                     >
                       {truncateText(expert.about)}
                     </Typography>
@@ -666,12 +666,12 @@ const DashboardPage = () => {
             <Divider sx={{ mb: 2 }} />
             {loading
               ? Array.from({ length: 4 }, (_, index) => (
-                  <Shimmer key={index} height={150} /> // You can customize the height as needed
+                  <Shimmer key={index} height={150} />
                 ))
               : experts.slice(0, 4).map(
                   (
                     expert,
-                    index // Display only the first four experts
+                    index
                   ) => (
                     <Card
                       key={index}
@@ -683,19 +683,19 @@ const DashboardPage = () => {
                         <Avatar
                           src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
                           alt={expert.name}
-                          sx={{ width: 60, height: 60, mr: 2 }}
+                          sx={{ width: 90, height: 90, mr: 2 }}
                         />
                         <Box>
                           <Typography variant="subtitle1">
                             {expert.name}
                           </Typography>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="body2" >
                             {expert.industry}
                           </Typography>
                           <Typography
                             variant="body2"
                             color="text.secondary"
-                            sx={{ mt: 0.5 }}
+                            sx={{ mt: 0.8 }}
                           >
                             {truncateText(expert.about)}
                           </Typography>
@@ -755,7 +755,7 @@ const ExpertPopup = ({ expert, onClose }) => {
             <Typography variant="h5" gutterBottom>
               {expert.name}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
+            <Typography variant="subtitle1">
               {expert.industry}
             </Typography>
             <Chip label={expert.category} sx={{ mt: 1 }} />

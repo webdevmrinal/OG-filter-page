@@ -139,8 +139,8 @@ const ProfilePage = () => {
               <Typography variant="h5" fontWeight="bold" color="white">
                 {profileData.name}
               </Typography>
-              <Typography variant="subtitle1" color="white">
-                {profileData.status}
+              <Typography variant="h6" color="white">
+                {profileData.experience}
               </Typography>
             </Box>
           </Box>

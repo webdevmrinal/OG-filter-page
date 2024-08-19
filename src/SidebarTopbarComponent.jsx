@@ -135,18 +135,18 @@ const SidebarTopbarComponent = () => {
           </Box>
           <Search>
             <SearchIconWrapper>
-              <SearchIcon sx={{ color: "#4a4a4a" }} />
+              <SearchIcon sx={{ color: "#0000008a" }} />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search Courses"
               inputProps={{ "aria-label": "search" }}
-              sx={{ color: "#4a4a4a" }}
+              sx={{ color: "#0000008a" }}
             />
           </Search>
-          <IconButton sx={{ color: "#4a4a4a" }}>
+          <IconButton sx={{ color: "#0000008a" }}>
             <MessageIcon />
           </IconButton>
-          <IconButton sx={{ color: "#4a4a4a" }}>
+          <IconButton sx={{ color: "#0000008a" }}>
             <NotificationsIcon />
           </IconButton>
           <IconButton>

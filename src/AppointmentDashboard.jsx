@@ -65,10 +65,10 @@ const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
   alignItems: "center",
   padding: "16px",
   margin: "8px 0",
-  borderRadius: "8px",
+  borderRadius: "4px",
   transition: "all 0.3s ease",
   backgroundColor: isSelected ? "#f5f5f5" : "transparent",
-  boxShadow:"0 2px 4px rgba(0,0,0,0.15)",
+  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
   "&:hover": {
     backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",

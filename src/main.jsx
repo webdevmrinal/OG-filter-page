@@ -14,6 +14,7 @@ import DetailPage from "./DetailView.jsx";
 import TransactionHistory from "./TransactionHistory.jsx";
 import Layout from "./Layout.jsx";
 import App from "./App.jsx";
+import MyFollowers from "./MyFollowers.jsx";
 
 const theme = createTheme({
   palette: {
@@ -39,6 +40,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="appointmentpage" element={<AppointmentDashboard />} />
           <Route path="detail/:expertName" element={<DetailPage />} />
           <Route path="transaction" element={<TransactionHistory />} />
+          <Route path="followers" element={<MyFollowers />} />
         </Route>
       </Routes>
     </Router>
