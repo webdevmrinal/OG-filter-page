@@ -449,6 +449,19 @@ const DashboardPage = () => {
                 backgroundImage: `url(${bannerImg2})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                animation: `float 10s ease-in-out infinite`,
+                "@keyframes float": {
+                  "0%": {
+                    transform: "translateY(-5px)",
+                  },
+
+                  "50%": {
+                    transform: "translateY(5px)",
+                  },
+                  "100%": {
+                    transform: "translateY(-5px)",
+                  },
+                },
               }}
             />
             <Box>
