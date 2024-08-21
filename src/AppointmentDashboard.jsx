@@ -156,17 +156,17 @@ const AppointmentDashboard = () => {
             aria-label="appointment tabs"
           >
             <StyledTab
-              icon={<EventAvailableIcon sx={{ color: "green" }} />}
+              icon={<EventAvailableIcon sx={{ color: "#81c784" }} />}
               iconPosition="start"
               label={`Upcoming Appoinments (${tabCounts.upcoming})`}
             />
             <StyledTab
-              icon={<EventBusyIcon sx={{ color: "red" }} />}
+              icon={<EventBusyIcon sx={{ color: "#e57373" }} />}
               iconPosition="start"
               label={`Rejected Request (${tabCounts.rejected})`}
             />
             <StyledTab
-              icon={<EventNoteIcon sx={{ color: "blue" }} />}
+              icon={<EventNoteIcon sx={{ color: "#505f96" }} />}
               iconPosition="start"
               label={`Attended Appointments (${tabCounts.attended})`}
             />
@@ -191,7 +191,18 @@ const AppointmentItemComp = ({
     <AppointmentItem
       isSelected={isSelected}
       onClick={() => setSelectedAppointment(id)}
-      sx={{ cursor: "pointer", backgroundColor: '#fffff', mt: 2 }}
+      sx={{
+        display: 'flex', 
+        alignItems: 'flex-start', 
+        p: 2, 
+        boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+        height: '19vh',
+        "&:hover": {
+          backgroundColor: "#0000000a",
+          boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+          transform: "translateY(-2px)",
+        },
+      }}
     >
       <Avatar
         src="https://academy.opengrowth.com/assets/images/users/user_791_student_collaborate.png"
@@ -208,12 +219,13 @@ const AppointmentItemComp = ({
         </Typography>
         </Box>
         <Typography variant="body2" color="text.secondary" mt={1}>
-          Requirement : Specific requirement details here
+          Requirement : Specific requirement details here ,Specific requirement details here , Specific requirement details here, Specific requirement details here,Specific requirement details here
         </Typography>
       </Box>
       <Button
         variant="contained"
         sx={{
+          backgroundColor: '#505f96',
           color: "white",
           textTransform: "none",
           "&:hover": { bgcolor: "#303f9f" },

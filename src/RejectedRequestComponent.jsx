@@ -223,7 +223,7 @@ const RejectedRequestComponent = () => {
                     {item.date_title} | {item.time_title}
                   </Typography>
                   </Box>
-                  <Typography variant="body2" color="text.secondary" mt={1}>
+                  <Typography variant="body2" color="text.secondary" mt={1.2}>
                     Requirement: {item.query}
                   </Typography>
                   

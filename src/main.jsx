@@ -18,6 +18,8 @@ import MyFollowers from "./MyFollowers.jsx";
 import App2 from "./signup-login/App";
 import LoginPage from "./signup-login/LoginPage";
 import SignupPage from "./signup-login/SignupNew";
+import MyCourse from "./MyCourse.jsx";
+import CourseDescription from "./CourseDescription.jsx";
 
 const theme = createTheme({
   palette: {
@@ -47,6 +49,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="get-started" element={<App2 />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
+          <Route path="mycourse" element={<MyCourse />} />
+          <Route path="course/:courseId" element={<CourseDescription />} />
         </Route>
       </Routes>
     </Router>
