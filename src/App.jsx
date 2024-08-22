@@ -14,13 +14,14 @@ import {
   DialogTitle,
   IconButton,
   DialogContent,
-  Avatar
+  Avatar,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import Appointments from "./Appointments";
+import ExpertCarousel from "./homepage/ExpertCarousel";
 
 const initialCategories = [
   "Expert",
@@ -148,6 +149,8 @@ function App() {
     setSelectedExpert(expert);
   };
 
+  // return <ExpertCarousel experts={experts} />;
+
   return (
     <Card
       sx={{
@@ -162,8 +165,13 @@ function App() {
         Experts
       </Typography>
       <Divider />
-      <Box sx={{ px: 2, py: 1, overflow: "hidden",pl: 3 }}>
-        <Typography variant="div" fontWeight="semibold" fontSize={17} sx={{ pl: 2 }}>
+      <Box sx={{ px: 2, py: 1, overflow: "hidden", pl: 3 }}>
+        <Typography
+          variant="div"
+          fontWeight="semibold"
+          fontSize={17}
+          sx={{ pl: 2 }}
+        >
           Choose a category:
         </Typography>
         <ScrollableBox>
@@ -195,8 +203,8 @@ function App() {
             placeItems: "center",
             placeContent: "center",
             py: "1.5em",
-            ml: '12px',
-            width: '92vw'
+            ml: "12px",
+            width: "92vw",
           }}
         >
           {experts.map((expert, index) => (
@@ -226,7 +234,7 @@ function App() {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate('/appointments')}
+          onClick={() => navigate("/appointments")}
         >
           List of Appointments
         </Button>
@@ -264,7 +272,11 @@ const ExpertCard = ({ expert, onKnowMore }) => {
           backgroundPosition: "center",
         }}
       >
-        <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+        <Link
+          to={`/profile/${expert.profile_url}`}
+          state={{ expertEmail: expert.email }}
+          style={{ textDecoration: "none" }}
+        >
           <Box
             sx={{
               position: "absolute",
@@ -363,7 +375,11 @@ const ExpertPopup = ({ expert, onClose }) => {
       </DialogTitle>
       <DialogContent dividers>
         <Box sx={{ display: "flex", gap: 3 }}>
-          <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+          <Link
+            to={`/profile/${expert.profile_url}`}
+            state={{ expertEmail: expert.email }}
+            style={{ textDecoration: "none" }}
+          >
             <Avatar
               src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
               alt={expert.name}
@@ -371,7 +387,11 @@ const ExpertPopup = ({ expert, onClose }) => {
             />
           </Link>
           <Box>
-            <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+            <Link
+              to={`/profile/${expert.profile_url}`}
+              state={{ expertEmail: expert.email }}
+              style={{ textDecoration: "none" }}
+            >
               <Typography variant="h5" gutterBottom>
                 {expert.name}
               </Typography>

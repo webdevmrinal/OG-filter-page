@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
 .category-button {
   @apply border border-zinc-500 w-[160px] h-[30px] rounded-full text-sm flex-shrink-0;
 }
