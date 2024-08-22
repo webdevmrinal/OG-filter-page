@@ -20,7 +20,12 @@ const StyledCard = styled(Card)(({ theme }) => ({
   height: "400px", // Set a fixed height for all cards
   display: "flex",
   flexDirection: "column",
-  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+  "&:hover": {
+    backgroundColor: "#0000000a",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+    transform: "translateY(-2px)",
+  },
   borderRadius: "8px",
   overflow: "hidden",
 }));
@@ -108,7 +113,7 @@ const BlogCard = ({ image, title, author, authorImage, category }) => (
     <StyledCardMedia image={image} title={title} />
     <StyledCardContent>
       <Box>
-        <StyledTitle gutterBottom variant="h6" component="h2">
+        <StyledTitle gutterBottom variant="subtitle1" component="h2">
           {title}
         </StyledTitle>
         <AuthorBox>
@@ -177,23 +182,22 @@ const TrendingBlogs = ({ blogs }) => {
 
   console.log(blogs);
   return (
-    <Box sx={{ my: 6, overflow: "hidden" }}>
+    <Box sx={{ my: 6, overflow: "hidden", px: 2.5 }}>
       {" "}
-      {/* Add overflow: 'hidden' here */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           mb: 2,
-          px: 2, // Add horizontal padding
+          px: 2,
         }}
       >
         <Box>
-          <Typography variant="h4" component="h2" gutterBottom>
+          <Typography variant="h5" component="h2" gutterBottom>
             Trending blogs by our experts
           </Typography>
-          <Typography variant="body1" color="text.secondary">
+          <Typography variant="subtitle1" color="text.secondary">
             Read blogs recommended by OpenGrowth Expert Community
           </Typography>
         </Box>
@@ -218,6 +222,7 @@ const TrendingBlogs = ({ blogs }) => {
                 left: 0,
                 transform: "translateY(-50%)",
                 zIndex: 1,
+                
               }}
             >
               <NavigationButton onClick={handlePrev}>
@@ -231,6 +236,7 @@ const TrendingBlogs = ({ blogs }) => {
                 right: 0,
                 transform: "translateY(-50%)",
                 zIndex: 1,
+                
               }}
             >
               <NavigationButton onClick={handleNext}>

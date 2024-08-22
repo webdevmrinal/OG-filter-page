@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Card,
   CardMedia,
@@ -54,17 +54,21 @@ const JoinCommunityButton = styled(StyledButton)({
   },
 });
 
-const CategoryButton = styled(Button)(({ theme }) => ({
-  borderRadius: "20px",
+const CategoryButton = styled(Button)(({ theme ,active}) => ({
+    fontWeight: active ? "bold" : "normal",
+    backgroundColor: active ? "#000000" : "#e0e0e0",
+    color: active ? "white" : "#000000",
+    boxShadow: active ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
+    "&:hover": {
+      backgroundColor: active ? "#333333" : "#d5d5d5",
+    },
+    whiteSpace: "nowrap",
+
+  borderRadius: "1.5em",
   padding: "6px 16px",
   textTransform: "none",
-  color: theme.palette.primary.main,
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
   margin: "0 4px",
-  "&:hover": {
-    backgroundColor: theme.palette.action.hover,
-  },
+  
 }));
 
 const ViewAllButton = styled(Button)(({ theme }) => ({
@@ -88,6 +92,7 @@ const NavigationButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
+
 const ExpertCard = ({ name, industry, img }) => {
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
@@ -103,15 +108,21 @@ const ExpertCard = ({ name, industry, img }) => {
   return (
     <Card
       sx={{
+        flexShrink: 0,
+        display: "flex",
+        flexDirection: "column",
+        borderRadius: "0.3em",
         maxWidth: "100%",
         transition: "0.3s",
-        // filter: "grayscale(100%)",  //remove these commenet for hover effect
-        // "&:hover": {
-        //   filter: "grayscale(0%)",
-        // },
         position: "relative",
         margin: "0 10px",
         height: getCardHeight(),
+        boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+        "&:hover": {
+          backgroundColor: "#0000000a",
+          boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+          transform: "translateY(-2px)",
+        },
       }}
     >
       <CardMedia
@@ -124,30 +135,30 @@ const ExpertCard = ({ name, industry, img }) => {
       <Box
         sx={{
           position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "50%",
-          background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          padding: 2,
-          opacity: 0,
-          transition: "opacity 0.3s", //remove these comment for hover effect
-          "&:hover": {
-            opacity: 1,
-          },
+          bottom: 10,
+          left: 10,
+          backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent black background
+          borderRadius: "4px",
+          padding: "4px 8px",
         }}
       >
         <Typography
-          variant="h6"
-          component="div"
-          sx={{ color: "white", textAlign: "left" }}
+          sx={{
+            fontSize: "0.875rem", // smaller text size
+            fontWeight: 'bold',
+            color: "white",
+            textAlign: "left",
+          }}
         >
           {name}
         </Typography>
-        <Typography variant="body2" sx={{ color: "white", textAlign: "left" }}>
+        <Typography
+          sx={{
+            fontSize: "0.75rem", // even smaller text size
+            color: "white",
+            textAlign: "left",
+          }}
+        >
           {industry}
         </Typography>
       </Box>
@@ -226,7 +237,7 @@ const ExpertCarousel = ({ experts }) => {
   console.log(experts);
   return (
     <Box sx={{ mt: 2 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2,px: 3 }}>
         <Box>
           <OnDemandButton variant="outlined" sx={{ mr: 1 }}>
             On Demand Experts
@@ -265,6 +276,7 @@ const ExpertCarouselCategoryButtons = ({
   onPrev,
   onNext,
 }) => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
   return (
     <Box
       sx={{
@@ -275,12 +287,20 @@ const ExpertCarouselCategoryButtons = ({
         mb: 2,
       }}
     >
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap:2 }}>
-        {categories.map((category, index) => (
-          <CategoryButton key={index} onClick={() => onCategoryClick(category)}>
-            {category}
-          </CategoryButton>
-        ))}
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap:2, paddingLeft: '25px' }}>
+          {categories.map((category) => (
+            <CategoryButton
+              key={category}
+              active={selectedCategory === category}
+              variant="contained"
+              size="small"
+              sx={{ flexShrink: 0 }}
+              onClick={() => handleCategoryClick(category)}
+              endIcon={selectedCategory === category ? <CloseIcon /> : null}
+            >
+              {category}
+            </CategoryButton>
+          ))}
         <ViewAllButton onClick={onViewAll}>View All Experts</ViewAllButton>
       </Box>
       <Box sx={{display:"flex", gap:3, mx:2}}>
