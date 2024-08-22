@@ -26,6 +26,8 @@ import axios from "axios";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CommentIcon from '@mui/icons-material/Comment';
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { Line } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 // import Header from "./Header";
 
@@ -88,7 +90,50 @@ const OverlayText = styled(Box)(({ theme }) => ({
     fontSize: '0.85em',
     borderRadius: 4,
 }));
+const data = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    datasets: [
+      {
+        label: 'Course Completed',
+        data: [null, null, null, null, null, null, 2, null, null, null, null, null],
+        borderColor: '#00FF00',
+        backgroundColor: '#00FF00',
+        fill: false,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.4
+      },
+      {
+        label: 'Course Enrolled',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        borderColor: '#FFD700',
+        backgroundColor: '#FFD700',
+        fill: false,
+        pointRadius: 0,
+      }
+    ]
+  };
 
+  const options = {
+    maintainAspectRatio: false,  // Ensures that chart size is responsive to container dimensions
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 0.7
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        position: 'top'
+      },
+      tooltip: {
+        enabled: true
+      }
+    }
+  };
+    
 
 const ProgressLabel = styled(Typography)(({ theme }) => ({
     marginLeft: theme.spacing(1),
@@ -359,6 +404,7 @@ const CourseDashboard = () => {
                                 My Learning Curve
                             </Typography>
                             <Divider sx={{ width: "98%", mb: 2 }} />
+                            <Line data={data} options={options} style={{ height: "100%", width: "100%" }} />
                         </Box>
                         <Box
                             sx={{
