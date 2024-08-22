@@ -89,6 +89,7 @@ const OverlayText = styled(Box)(({ theme }) => ({
   fontSize: "0.85em",
   borderRadius: 4,
 }));
+
 const data = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
@@ -101,6 +102,7 @@ const data = {
         pointRadius: 0,
         pointHoverRadius: 0,
         borderWidth: 2,
+        tension: 0.4,
       },
       {
         label: 'Course Enrolled',
@@ -111,6 +113,7 @@ const data = {
         pointRadius: 0,
         pointHoverRadius: 7,
         borderWidth: 2,
+        tension: 0.4,
       }
     ]
   };
