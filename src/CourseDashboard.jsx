@@ -91,86 +91,107 @@ const OverlayText = styled(Box)(({ theme }) => ({
 }));
 
 const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [
-      {
-        label: 'Course Completed',
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        borderColor: '#00FF00',
-        backgroundColor: '#00FF00',
-        fill: false,
-        pointRadius: 0,
-        pointHoverRadius: 0,
-        borderWidth: 2,
-        tension: 0.4,
-      },
-      {
-        label: 'Course Enrolled',
-        data: [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0],
-        borderColor: '#FFD700',
-        backgroundColor: '#FFD700',
-        fill: false,
-        pointRadius: 0,
-        pointHoverRadius: 7,
-        borderWidth: 2,
-        tension: 0.4,
-      }
-    ]
-  };
+  labels: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ],
+  datasets: [
+    {
+      label: "Course Completed",
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      borderColor: "#00FF00",
+      backgroundColor: "#00FF00",
+      fill: false,
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      borderWidth: 5,
+      tension: 0.4,
+      shadowColor: "rgba(0, 0, 0, 0.3)",
+      shadowBlur: 10,
+      shadowOffsetX: 0,
+      shadowOffsetY: 4,
+    },
+    {
+      label: "Course Enrolled",
+      data: [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0],
+      borderColor: "#FFD700",
+      backgroundColor: "#FFD700",
+      fill: false,
+      pointRadius: 0,
+      pointHoverRadius: 7,
+      borderWidth: 5, 
+      tension: 0.4,
+      shadowColor: "rgba(0, 0, 0, 0.3)",
+      shadowBlur: 10,
+      shadowOffsetX: 0,
+      shadowOffsetY: 4,
+    },
+  ],
+};
 
-  const options = {
-    maintainAspectRatio: false,
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 2.2,  // Increased to add padding at the top
-        ticks: {
-          stepSize: 0.7,
-          callback: function(value) {
-            if (value === 0) return '0.0';
-            if (value === 0.7) return '0.7';
-            if (value === 1.4) return '1.3';
-            if (value === 2) return '2.0';
-            return '';
-          }
+const options = {
+  maintainAspectRatio: false,
+  responsive: true,
+  scales: {
+    y: {
+      beginAtZero: true,
+      max: 2.2,
+      ticks: {
+        stepSize: 0.7,
+        callback: function (value) {
+          if (value === 0) return "0.0";
+          if (value === 0.7) return "0.7";
+          if (value === 1.4) return "1.4";
+          if (value === 2.1) return "2.1";
+          return "";
         },
-        grid: {
-          drawBorder: false,
-          color: 'rgba(0, 0, 0, 0.1)',
-        }
       },
-      x: {
-        grid: {
-          display: false,
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        position: 'top'
+      grid: {
+        drawBorder: false,
+        color: "rgba(0, 0, 0, 0.1)",
       },
-      tooltip: {
-        enabled: true,
-        mode: 'index',
-        intersect: false,
-      }
     },
-    interaction: {
-      mode: 'nearest',
-      axis: 'x',
-      intersect: false
+    x: {
+      grid: {
+        display: false,
+      },
     },
-    elements: {
-      point: {
-        radius: 0,
-        hoverRadius: function(context) {
-          // Only show hover effect for non-zero values
-          return context.raw > 0 ? 7 : 0;
-        }
-      }
-    }
-  };
+  },
+  plugins: {
+    legend: {
+      display: false, // Hide default legend
+    },
+    tooltip: {
+      enabled: true,
+      mode: "index",
+      intersect: false,
+      position: "nearest",
+    },
+  },
+  interaction: {
+    mode: "nearest",
+    axis: "x",
+    intersect: false,
+  },
+  elements: {
+    point: {
+      radius: 0,
+      hoverRadius: function (context) {
+        return context.raw > 0 ? 7 : 0;
+      },
+    },
+  },
+};
 
 const ProgressLabel = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(1),
@@ -185,6 +206,7 @@ const SidebarSection = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   gap: theme.spacing(2),
 }));
+
 const courses = [
   {
     title: "Digital Marketing",
@@ -458,7 +480,41 @@ const CourseDashboard = () => {
             >
               <Typography variant="h6">My Learning Curve</Typography>
               <Divider sx={{ width: "98%", mb: 2 }} />
-              <Box sx={{ flexGrow: 1, position: "relative" }}>
+              <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    display: "flex",
+                    gap: 2,
+                  }}
+                >
+                  <Box sx={{ display: "flex", alignItems: "center", py: 2 }}>
+                    <Box
+                      sx={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: "50%",
+                        backgroundColor: "#00FF00",
+                        mr: 1,
+                      }}
+                    />
+                    <Typography variant="caption">Course Completed</Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box
+                      sx={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: "50%",
+                        backgroundColor: "#FFD700",
+                        mr: 1,
+                      }}
+                    />
+                    <Typography variant="caption">Course Enrolled</Typography>
+                  </Box>
+                </Box>
                 <Line
                   data={data}
                   options={options}
