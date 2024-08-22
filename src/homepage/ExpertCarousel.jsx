@@ -106,9 +106,10 @@ const ExpertCard = ({ name, industry, img }) => {
         maxWidth: "100%",
         transition: "0.3s",
         // filter: "grayscale(100%)",  //remove these commenet for hover effect
-        // "&:hover": {
-        //   filter: "grayscale(0%)",
-        // },
+        "&:hover": {
+          //   filter: "grayscale(0%)",
+          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+        },
         position: "relative",
         margin: "0 10px",
         height: getCardHeight(),
@@ -275,7 +276,7 @@ const ExpertCarouselCategoryButtons = ({
         mb: 2,
       }}
     >
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap:2 }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
         {categories.map((category, index) => (
           <CategoryButton key={index} onClick={() => onCategoryClick(category)}>
             {category}
@@ -283,7 +284,7 @@ const ExpertCarouselCategoryButtons = ({
         ))}
         <ViewAllButton onClick={onViewAll}>View All Experts</ViewAllButton>
       </Box>
-      <Box sx={{display:"flex", gap:3, mx:2}}>
+      <Box sx={{ display: "flex", gap: 3, mx: 2 }}>
         <NavigationButton onClick={onPrev}>
           <NavigateBeforeIcon />
         </NavigationButton>
