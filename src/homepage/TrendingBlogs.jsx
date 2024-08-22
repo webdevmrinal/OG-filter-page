@@ -208,7 +208,13 @@ const TrendingBlogs = ({ blogs }) => {
         {/* Use SliderWrapper and add horizontal padding */}
         <Slider ref={sliderRef} {...settings}>
           {blogs.map((blog, index) => (
-            <Box key={index}>
+            <Box
+              key={index}
+              sx={{
+                transition:"0.3s",
+                "&:hover": { boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" },
+              }}
+            >
               <BlogCard {...blog} />
             </Box>
           ))}
