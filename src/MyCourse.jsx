@@ -1,54 +1,59 @@
 import React from 'react';
-import { Box, Card, CardContent, Typography, Grid, Chip, Divider, CircularProgress } from '@mui/material';
+import { Box, Card, CardContent, Typography, Grid, Chip, Divider, CircularProgress, LinearProgress } from '@mui/material';
 import { styled } from '@mui/system';
 import { Link } from 'react-router-dom';
 
+
 const SmallCourseCard = styled(Card)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  marginBottom: theme.spacing(2),
-  boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-  borderRadius: theme.shape.borderRadius,
-  minHeight: 120,
-  maxWidth: 300,
-  position: 'relative',
-  cursor: 'pointer',
-  "&:hover": {
-    backgroundColor: "#0000000a",
-    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-    transform: "translateY(-2px)",
-  },
+    display: 'flex',
+    flexDirection: 'column', // Changed to column for vertical layout
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: theme.spacing(2),
+    boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+    borderRadius: '8px',
+    width: 220, // Adjusted for square shape
+    height: 220, // Adjusted for square shape
+    position: 'relative',
+    cursor: 'pointer',
+    "&:hover": {
+      backgroundColor: "#0000000a",
+      boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+      transform: "translateY(-2px)",
+    },
 }));
 
 const SmallCourseMedia = styled(Box)(({ theme }) => ({
-  width: 120,
-  height: 80,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  borderRadius: theme.shape.borderRadius,
-  marginRight: theme.spacing(2),
+    width: '100%',
+    height: '70%', // Adjusted for 70% height of the card
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderTopRightRadius: theme.shape.borderRadius,
 }));
 
 const OverlayText = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  width: '100%',
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  color: '#fff',
-  padding: theme.spacing(0.5),
-  textAlign: 'center',
-  fontSize: '1rem',
-  borderBottomLeftRadius: theme.shape.borderRadius,
-  borderBottomRightRadius: theme.shape.borderRadius,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start', // Align text to the start (left)
+    justifyContent: 'flex-start', // Align text to the top
+    position: 'absolute',
+    top: 5,  // Position at the top
+    left: 4, // Position at the left
+    marginRight: 70,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    color: '#fff',
+    padding: theme.spacing(1),
+    textAlign: 'left',
+    fontSize: '0.85em',
+    borderRadius: 4,
 }));
 
 const LargeCourseCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   marginBottom: theme.spacing(2),
-  boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-  borderRadius: theme.shape.borderRadius,
+  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+  borderRadius: '8px',
   minHeight: 200,
   maxWidth: '100%',
   marginRight: '20px',
@@ -72,6 +77,11 @@ const LargeCourseMedia = styled(Box)(({ theme }) => ({
 const TagChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
+const ProgressLabel = styled(Typography)(({ theme }) => ({
+    marginLeft: theme.spacing(1),
+    fontSize: '0.9em'
+    // fontWeight: 'bold',
+}));
 
 const MyCourse = () => {
   return (
@@ -83,7 +93,7 @@ const MyCourse = () => {
         </Typography>
         <Divider sx={{ width: "98%", mb: 2 }} />
         <Grid container spacing={2} >
-          <Grid item sx={{width: '18.5em'}}>
+          <Grid item sx={{width: '15.5em'}}>
             <Link
               to="/course/seo-basics"
               style={{ textDecoration: 'none' }}
@@ -97,12 +107,13 @@ const MyCourse = () => {
                 <SmallCourseMedia
                   sx={{
                     backgroundImage: 'url(https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg)',
-                    mt: 0, ml: 2, height: 90, width: 90
+                    mt: 0, ml: 0, height: 220, width: 265
                   }}
                 />
-                <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <CircularProgress variant="determinate" value={50} size={50} />
-                </CardContent>
+                <CardContent sx={{ width: '100%', display: 'flex', alignItems: 'center', px: 1, py: 0.5 }}>
+                    <LinearProgress variant="determinate" value={25} sx={{ width: '85%', height: 10, borderRadius: 1 }} />
+                    <ProgressLabel>{25}%</ProgressLabel>
+                  </CardContent>
                 <OverlayText>
                   SEO Basics
                 </OverlayText>
@@ -110,7 +121,7 @@ const MyCourse = () => {
             </Link>
           </Grid>
 
-          <Grid item sx={{width: '18.5em'}}>
+          <Grid item sx={{width: '15.5em'}}>
             <Link
               to="/course/ai-basic"
               style={{ textDecoration: 'none' }}
@@ -124,12 +135,13 @@ const MyCourse = () => {
                 <SmallCourseMedia
                   sx={{
                     backgroundImage: 'url(https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg)',
-                    mt: 0, ml: 2, height: 90, width: 90
+                    mt: 0, ml: 0, height: 220, width: 265
                   }}
                 />
-                <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <CircularProgress variant="determinate" value={75} size={60} />
-                </CardContent>
+                <CardContent sx={{ width: '100%', display: 'flex', alignItems: 'center', px: 1, py: 0.5, }}>
+                    <LinearProgress variant="determinate" value={42} sx={{ width: '85%', height: 10, borderRadius: 1 }} />
+                    <ProgressLabel>{42}%</ProgressLabel>
+                  </CardContent>
                 <OverlayText>
                   AI Basic
                 </OverlayText>
@@ -137,7 +149,7 @@ const MyCourse = () => {
             </Link>
           </Grid>
 
-          <Grid item sx={{width: '18.5em'}}>
+          <Grid item sx={{width: '15.5em'}}>
             <Link
               to="/course/identifying-your-target-audience"
               style={{ textDecoration: 'none' }}
@@ -151,12 +163,13 @@ const MyCourse = () => {
                 <SmallCourseMedia
                   sx={{
                     backgroundImage: 'url(https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg)',
-                    mt: 0, ml: 2, height: 90, width: 90
+                    mt: 0, ml: 0, height: 220, width: 265
                   }}
                 />
-                <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <CircularProgress variant="determinate" value={30} size={60} />
-                </CardContent>
+                <CardContent sx={{ width: '100%', display: 'flex', alignItems: 'center', px: 1, py: 0.5 }}>
+                    <LinearProgress variant="determinate" value={70} sx={{ width: '85%', height: 10, borderRadius: 1 }} />
+                    <ProgressLabel>{70}%</ProgressLabel>
+                  </CardContent>
                 <OverlayText>
                   Identifying Your Target Audience
                 </OverlayText>

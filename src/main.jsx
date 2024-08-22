@@ -21,6 +21,7 @@ import SignupPage from "./signup-login/SignupNew";
 import MyCourse from "./MyCourse.jsx";
 import CourseDescription from "./CourseDescription.jsx";
 import SearchCourse from "./SearchCourse.jsx";
+import CourseDashboard from "./CourseDashboard.jsx";
 
 const theme = createTheme({
   palette: {
@@ -52,6 +53,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="signup" element={<SignupPage />} />
           <Route path="mycourse" element={<MyCourse />} />
           <Route path="searchcourse" element={<SearchCourse />} />
+          <Route path="coursedashboard" element={<CourseDashboard />} />
           <Route path="course/:courseId" element={<CourseDescription />} />
         </Route>
       </Routes>
