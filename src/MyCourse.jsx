@@ -87,7 +87,7 @@ const MyCourse = () => {
   return (
     <Box sx={{ padding: 4 }}>
       {/* Course Progress Section */}
-      <Box sx={{ mb: 4, pl: 3, pt: 2, pb: 0, border: '1px solid #ddd', borderRadius: 2,  }}>
+      <Box sx={{ mb: 4, pl: 3, pt: 2, pb: 0,boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2,backgroundColor: "#ffff"  }}>
         <Typography variant="h6">
           Course Progress
         </Typography>
@@ -180,7 +180,7 @@ const MyCourse = () => {
       </Box>
 
       {/* My Enrolled Courses Section */}
-      <Box sx={{ pl: 3, pt: 2, pb: 0, border: '1px solid #ddd', borderRadius: 2 }}>
+      <Box sx={{ pl: 3, pt: 2, pb: 0, boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2 ,backgroundColor: "#fff"}}>
         <Typography variant="h6">
           My Enrolled Courses
         </Typography>
@@ -200,7 +200,7 @@ const MyCourse = () => {
             <LargeCourseMedia
               sx={{
                 backgroundImage: 'url(https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg)',
-                mt: 1.5, ml: 2, height: 180, width: 180
+                mt: 3, ml: 2, height: 150, width: 180
               }}
             />
             <CardContent sx={{ flexGrow: 1, width: '25em' }}>
@@ -233,7 +233,7 @@ const MyCourse = () => {
             <LargeCourseMedia
               sx={{
                 backgroundImage: 'url(https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg)',
-                mt: 1.5, ml: 2, height: 180, width: 180
+                mt: 3, ml: 2, height: 150, width: 180
               }}
             />
             <CardContent sx={{ flexGrow: 1, width: '25em' }}>
@@ -264,7 +264,7 @@ const MyCourse = () => {
             <LargeCourseMedia
               sx={{
                 backgroundImage: 'url(https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg)',
-                mt: 1.5, ml: 2, height: 180, width: 180
+                mt: 3, ml: 2, height: 150, width: 180
               }}
             />
             <CardContent sx={{ flexGrow: 1, width: '25em' }}>

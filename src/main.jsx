@@ -23,6 +23,7 @@ import CourseDescription from "./CourseDescription.jsx";
 import SearchCourse from "./SearchCourse.jsx";
 import CourseDashboard from "./CourseDashboard.jsx";
 import Homepage from "./homepage/Homepage.jsx";
+import CourseIntroduction from "./Course-Modules/Introduction.jsx";
 
 const theme = createTheme({
   palette: {
@@ -57,6 +58,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="coursedashboard" element={<CourseDashboard />} />
           <Route path="course/:courseId" element={<CourseDescription />} />
           <Route path="homepage" element={<Homepage />} />
+          <Route path="course-intro" element={<CourseIntroduction />} />
         </Route>
       </Routes>
     </Router>
