@@ -16,8 +16,10 @@ import { styled } from "@mui/material/styles";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+
 const StyledCard = styled(Card)(({ theme }) => ({
-  height: "400px", // Set a fixed height for all cards
+  height: "350px", // Set a fixed height for all cards
   display: "flex",
   flexDirection: "column",
   boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
@@ -79,10 +81,23 @@ const AuthorBox = styled(Box)({
   marginTop: "8px",
 });
 
-const CategoryChip = styled(Chip)(({ theme }) => ({
-  backgroundColor: '#e0e0e0',
-  color: theme.palette.common.black,
-  borderRadius: "15px",
+const CategoryChip = styled(Chip)(({ theme, active }) => ({
+    fontWeight: "normal",
+    backgroundColor: "#e0e0e0",
+    color: active ? "white" : "#000000",
+    boxShadow: "none",
+    "&:hover": {
+      backgroundColor: "#e0e0e0",
+      boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+      transform: "translateY(-2px)",
+    },
+    whiteSpace: "nowrap",
+
+  borderRadius: "1.5em",
+  padding: "6px 16px",
+  textTransform: "none",
+  margin: "0 4px",
+  cursor: 'pointer'
 }));
 
 const NavigationButton = styled(Button)(({ theme }) => ({
@@ -107,25 +122,20 @@ const AllBlogsButton = styled(StyledButton)({
   },
 });
 
-const BlogCard = ({ image, title, author, authorImage, category }) => (
+const BlogCard = ({ title, category, description, image, avatar, date }) => (
   <StyledCard>
     <StyledCardMedia image={image} title={title} />
     <StyledCardContent>
       <Box>
-        <StyledTitle gutterBottom variant="subtitle1" component="h2">
+        <StyledTitle variant="subtitle1" fontWeight={'bold'}>
           {title}
         </StyledTitle>
-        <AuthorBox>
-          <Avatar
-            src={authorImage}
-            alt={author}
-            sx={{ width: 32, height: 32, marginRight: 1 }}
-          />
-          <Typography variant="body2" color="text.secondary" noWrap>
-            {author}
-          </Typography>
-        </AuthorBox>
       </Box>
+      <Box>
+              <Typography variant="body2" sx={{ maxHeight: '40px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {description}
+              </Typography>
+            </Box>
       <Box sx={{ mt: 2 }}>
         <CategoryChip label={category} size="small" />
       </Box>
@@ -133,7 +143,7 @@ const BlogCard = ({ image, title, author, authorImage, category }) => (
   </StyledCard>
 );
 
-const TrendingBlogs = ({ blogs }) => {
+const Communities = ({ course }) => {
   const sliderRef = useRef(null);
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
@@ -179,36 +189,38 @@ const TrendingBlogs = ({ blogs }) => {
     sliderRef.current.slickNext();
   };
 
-  console.log(blogs);
   return (
     <Box sx={{ my: 6, overflow: "hidden", px: 2.5, boxShadow: "0 4px 6px rgba(0,0,0,0.2)",py: 2.5, borderRadius: 2 }}>
       {" "}
+      <Box sx={{ display: "flex", flexDirection: "column", mb: 2, px: 2 }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           mb: 2,
-          px: 2,
+          px:0,
           
         }}
       >
         <Box>
           <Typography variant="h6" gutterBottom fontWeight={'bold'}>
-            Trending blogs by our experts
+          Popular OpenGrowth Communities
           </Typography>
           
           <Typography variant="subtitle1" color="text.secondary">
-            Read blogs recommended by OpenGrowth Expert Community
+          Start your own community at OpenGrowth to unlock collaboration, learning, and growth.
           </Typography>
         </Box>
         <AllBlogsButton variant="contained">View All Blogs</AllBlogsButton>
       </Box>
+    </Box>
+      
       <SliderWrapper sx={{ position: "relative", px: 2 }}>
         {" "}
         {/* Use SliderWrapper and add horizontal padding */}
         <Slider ref={sliderRef} {...settings}>
-          {blogs.map((blog, index) => (
+          {course.map((blog, index) => (
             <Box
               key={index}
               sx={{
@@ -220,7 +232,7 @@ const TrendingBlogs = ({ blogs }) => {
             </Box>
           ))}
         </Slider>
-        {blogs.length > getSlidesToShow() && (
+        {course.length > getSlidesToShow() && (
           <>
             <Box
               sx={{
@@ -257,4 +269,4 @@ const TrendingBlogs = ({ blogs }) => {
   );
 };
 
-export default TrendingBlogs;
+export default Communities;

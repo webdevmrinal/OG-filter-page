@@ -1,95 +1,113 @@
-import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Chip, Grid, Card, CardContent, Avatar, Divider } from '@mui/material';
+import React, { useState, useRef } from 'react';
+import { useLocation } from "react-router-dom";
+import { Box, Typography, TextField, Button, Chip, Grid, Card, CardContent, Avatar, Divider ,useMediaQuery, useTheme} from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
+
+import Slider from "react-slick";
 import CommentIcon from '@mui/icons-material/Comment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SchoolIcon from '@mui/icons-material/School';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const courses = [
     {
         title: 'Digital Marketing',
         category: 'Marketing',
-        date: 'Aug 9, 2024 | 6:28 AM',
+        duration: '5 Weeks',
         description: 'This course provides a comprehensive overview of the strategies and tactics used to effectively promote products or…',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg',
         avatar: ['https://randomuser.me/api/portraits/men/75.jpg', 'https://randomuser.me/api/portraits/women/65.jpg'],
-        comments: 0,
-        views: 5,
+        ratings: 5,
+        reviews: 1
+
     },
     {
         title: 'Prospective Fractional Experts Guide',
         category: 'Leadership',
-        date: 'Jun 7, 2024 | 3:48 AM',
+        duration: '5 Weeks',
         description: 'A short course on transitioning from a 9 to 5 job to a Fractional Executive, a cornerstone of the gig economy. Find out…',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg',
         avatar: ['https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg'],
-        comments: 0,
-        views: 70,
+        ratings: 5,
+        reviews: 1
     },
     {
         title: 'final testing course',
         category: 'HR',
-        date: 'Apr 24, 2024 | 9:40 AM',
+        duration: '5 Weeks',
         description: 'testing testing testing',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/66.jpg'],
-        comments: 0,
-        views: 48,
+        ratings: 5,
+        reviews: 1
     },
     {
         title: 'StartUp Fundamentals',
         category: 'LeaderShip',
-        date: 'Apr 19, 2024 | 5:24 AM',
+        duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb__90082e05-8020-4bd8-8246-af0ef0853187.jpeg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
-        comments: 0,
-        views: 134,
+        ratings: 5,
+        reviews: 1
     },
     {
         title: 'Make You Pitch Investor Ready',
         category: 'LeaderShip',
-        date: 'Apr 19, 2024 | 5:24 AM',
+        duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s2mypir.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
-        comments: 0,
-        views: 134,
+        ratings: 5,
+        reviews: 1
     },
     {
         title: 'Business Modeling through Strategy and Analysis',
         category: 'Product',
-        date: 'Apr 19, 2024 | 5:24 AM',
+        duration: '5 Weeks',
         description: 'This course will give you a complete overview of developing and designing...',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_Strategy-and-Analysis.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
-        comments: 0,
-        views: 134,
+        ratings: 5,
+        reviews: 1
     },
     {
         title: 'MVP Fundamentals',
         category: 'LeaderShip',
-        date: 'Apr 19, 2024 | 5:24 AM',
+        duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_10HowtomeasurePMF.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
-        comments: 0,
-        views: 134,
+        ratings: 5,
+        reviews: 1
     },
     {
         title: 'HR for Remote Teams (HRD & HRM)',
         category: 'HR',
-        date: 'Apr 19, 2024 | 5:24 AM',
+        duration: '5 Weeks',
         description: 'A bulletproof Human Resource Development and Human Resource Management...',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_hrnew.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
-        comments: 0,
-        views: 134,
+        ratings: 5,
+        reviews: 1
     },
 ];
+
+const CourseChip = styled(Chip)(({ theme }) => ({
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    backgroundColor: '#f9bb02',
+    color: theme.palette.common.white,
+    fontWeight: 'bold',
+    fontSize: '0.75rem', // Smaller font size
+    padding: '4px 8px', // Smaller padding
+    height: 'auto', // Adjust height
+}));
 
 const CourseImage = styled('div')(({ theme }) => ({
     width: '100%',
@@ -121,7 +139,7 @@ const CategoryChip = styled(Chip)(({ theme }) => ({
     color: theme.palette.common.white,
     fontWeight: 'bold',
     fontSize: '0.75rem',
-    padding: '4px 8px', 
+    padding: '4px 8px',
     height: 'auto',
 }));
 const EnrollButton = styled(Button)(({ theme }) => ({
@@ -129,72 +147,218 @@ const EnrollButton = styled(Button)(({ theme }) => ({
     color: theme.palette.common.white,
     fontSize: '0.55rem',
     padding: '4px 8px',
-    marginRight: '4px', 
+    marginRight: '4px',
     "&:hover": {
-      backgroundColor: theme.palette.success.dark,
+        backgroundColor: theme.palette.success.dark,
     },
-  }));
-  
-  const WishlistButton = styled(Button)(({ theme }) => ({
+}));
+
+const WishlistButton = styled(Button)(({ theme }) => ({
     backgroundColor: '#f9bb02',
     color: theme.palette.common.white,
     fontSize: '0.55rem',
-    padding: '4px 8px', 
+    padding: '4px 8px',
     "&:hover": {
-      backgroundColor: theme.palette.warning.dark,
+        backgroundColor: theme.palette.warning.dark,
+    },
+}));
+
+const NavigationButton = styled(Button)(({ theme }) => ({
+    minWidth: "40px",
+    width: "40px",
+    height: "40px",
+    borderRadius: "50%",
+    padding: 0,
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.common.white,
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    "&:hover": {
+      backgroundColor: theme.palette.grey[100],
     },
   }));
 
-const SearchPage = () => {
+const SliderWrapper = styled(Box)({
+    "& .slick-list": {
+      margin: "0 -8px",
+    },
+    "& .slick-slide": {
+      padding: "16px 8px",
+    },
+  });
+  const BlogCard = ({ title, category, description, image, avatar, duration, ratings, reviews }) => (
+    <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Card sx={{
+            display: 'flex',
+            height: 150,  // Adjust height as needed
+            boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+            borderRadius: "12px",
+            '&:hover': {
+                boxShadow: "0px 8px 20px rgba(0,0,0,0.3)"
+            }
+        }}>
+            <Box sx={{
+                width: '35%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                borderRadius: '12px 0 0 12px'
+            }}>
+                <img src={image} alt={title} style={{ height: '100%', width: 'auto', objectFit: 'cover' }} />
+            </Box>
+            <Box sx={{
+                flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                padding: 2,
+                pt: 0.5,
+                backgroundColor: 'white'
+            }}>
+                <Typography variant="subtitle2" >{title}</Typography>
+                <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 0 }}>{duration}</Typography>
+                <Typography variant="body2" color="textSecondary">{ratings} Ratings | {reviews} Reviews</Typography>
+                <Box sx={{ display: 'flex', marginTop: 1 }}>
+                    <EnrollButton startIcon={<SchoolIcon />}>Enroll Now</EnrollButton>
+                    <WishlistButton startIcon={<FavoriteBorderIcon />}>Wishlist</WishlistButton>
+                </Box>
+            </Box>
+        </Card>
+    </Grid>
+  );
+
+const AllCourses = () => {
+    const sliderRef = useRef(null);
     const [search, setSearch] = useState('');
+    const location = useLocation();
+    
+  const theme = useTheme();
+  const { course } = location.state || {};
+  const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMedium = useMediaQuery(theme.breakpoints.between("sm", "lg"));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const handlePrev = () => {
+    sliderRef.current.slickPrev();
+  };
+
+  const handleNext = () => {
+    sliderRef.current.slickNext();
+  };
+  const getSlidesToShow = () => {
+    if (isLarge) return 3;
+    if (isMedium) return 2;
+    if (isSmall) return 1;
+    return 4;
+  };
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: getSlidesToShow(),
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: theme.breakpoints.values.lg,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: theme.breakpoints.values.sm,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
 
     return (
         <Box sx={{ padding: 3 }}>
-        <Typography variant="h6" gutterBottom>
-        Search Courses
-      </Typography>
-      <Divider sx={{ width: "100%", mb: 2, px: 1, ml: 0 }} />
-            {/* Search Bar */}
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, mt: 3 }}>
-                <TextField
-                    variant="outlined"
-                    placeholder="Tags"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    sx={{ flex: 1, mr: 2, height: '45px' }} 
-                    InputProps={{ sx: { height: '45px' } }} 
-                />
-                <Button 
-                    variant="contained" 
-                    color="primary" 
-                    startIcon={<SearchIcon />} 
-                    sx={{ height: '45px' }} 
-                >
-                    Search
-                </Button>
+        <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
+        <Typography variant="h5" fontWeight={'bold'} ml={2} gutterBottom>
+                Featured Courses
+        </Typography>
+        <SliderWrapper sx={{ position: "relative", px: 2 }}>
+        {" "}
+        {/* Use SliderWrapper and add horizontal padding */}
+        <Slider ref={sliderRef} {...settings}>
+          {courses.map((blog, index) => (
+            <Box
+              key={index}
+              sx={{
+                transition:"0.3s",
+                "&:hover": { boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" },
+              }}
+            >
+              <BlogCard {...blog} />
             </Box>
-
+          ))}
+        </Slider>
+        {courses.length > getSlidesToShow() && (
+          <>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: 0,
+                transform: "translateY(-50%)",
+                zIndex: 1,
+                
+              }}
+            >
+              <NavigationButton onClick={handlePrev}>
+                <ArrowBackIosNewIcon />
+              </NavigationButton>
+            </Box>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                right: 0,
+                transform: "translateY(-50%)",
+                zIndex: 1,
+                
+              }}
+            >
+              <NavigationButton onClick={handleNext}>
+                <ArrowForwardIosIcon />
+              </NavigationButton>
+            </Box>
+          </>
+        )}
+      </SliderWrapper>
+      </Card>
+            <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
+            <Typography variant="h5" fontWeight={'bold'} gutterBottom>
+                All Courses
+            </Typography>
+            {/* Search Bar */}
             {/* Filter Chips */}
             <Box sx={{ mb: 4 }}>
-                <Chip label="Recently added Courses" sx={{ mr: 1 }} />
-                <Chip label="Published Today" sx={{ mr: 1 }} />
-                <Chip label="Published this Week" sx={{ mr: 1 }} />
-                <Chip label="Published this Month" sx={{ mr: 1 }} />
+                <Chip label="LeaderShip" sx={{ mr: 1 }} />
+                <Chip label="Product" sx={{ mr: 1 }} />
+                <Chip label="Marketing" sx={{ mr: 1 }} />
+                <Chip label="Strategy" sx={{ mr: 1 }} />
                 <Chip label="Popular Course" sx={{ mr: 1 }} />
-                <Chip label="Most Commented" />
+                <Chip label="View All Course" />
             </Box>
 
             {/* Course Cards */}
             <Grid container spacing={3}>
                 {courses.map((course, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                        <Card sx={{ boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, height: '21.5em', display: 'flex', flexDirection: 'column',
+                        <Card sx={{
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, height: '21.5em', display: 'flex', flexDirection: 'column',
                             '&:hover': {
                                 transform: "translateY(-3px)",
                                 boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
                                 backgroundColor: '#0000000a',
                             },
-                         }}>
+                        }}>
                             <CourseImage
                                 sx={{
                                     backgroundImage: `url(${course.image || 'https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg'})`,
@@ -203,12 +367,12 @@ const SearchPage = () => {
                                 <OverlayText variant="subtitle2">{course.title}</OverlayText>
                                 <CategoryChip label={course.category} size="small" />
                             </CourseImage>
-                            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent:'space-between' }}>
+                            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1, mt: 2 }}>
                                     <Box>
                                         <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
                                             <CalendarTodayIcon sx={{ fontSize: 14, mr: 0.5 }} />
-                                            {course.date}
+                                            {course.duration}
                                         </Typography>
                                         <Typography variant="body2" sx={{ maxHeight: '40px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {course.description}
@@ -223,12 +387,7 @@ const SearchPage = () => {
                                 <Box>
                                     <Divider sx={{ my: 1 }} />
                                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', }}>
-                                            <CommentIcon sx={{ fontSize: 18, mr: 0.5 }} />
-                                            <Typography variant="body2">{course.comments}</Typography>
-                                            <VisibilityIcon sx={{ fontSize: 18, ml: 1, mr: 0.5 }} />
-                                            <Typography variant="body2">{course.views}</Typography>
-                                        </Box>
+                                        
                                         <Box>
                                             <EnrollButton startIcon={<SchoolIcon />}>Enroll Now</EnrollButton>
                                             <WishlistButton startIcon={<FavoriteBorderIcon />}>Wishlist</WishlistButton>
@@ -240,8 +399,9 @@ const SearchPage = () => {
                     </Grid>
                 ))}
             </Grid>
+            </Card>
         </Box>
     );
 };
 
-export default SearchPage;
+export default AllCourses;
