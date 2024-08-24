@@ -97,25 +97,21 @@ const NavigationButton = styled(IconButton)(({ theme }) => ({
 
 // HowItWorksCard Component
 const HowItWorksCard = ({ icon, title, description }) => (
-  <Box
+  <Card
     sx={{
-      flex: 1,
+      width: 320, // set the width to create square cards
+      height: 280, // set the height to create square cards
       textAlign: "center",
-      padding: 2,
-      borderRight: "1px solid #e0e0e0", // add a divider between items
-      "&:last-child": {
-        borderRight: "none", // remove the last border
-      },
+      m: 1, // add margin around each card
+      boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+      borderRadius: "12px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center"
     }}
   >
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 2,
-      }}
-    >
+    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mb: 2 }}>
       {icon}
     </Box>
     <Typography variant="h6" fontWeight="bold" gutterBottom>
@@ -124,33 +120,32 @@ const HowItWorksCard = ({ icon, title, description }) => (
     <Typography variant="body2" color="text.secondary">
       {description}
     </Typography>
-  </Box>
+  </Card>
 );
-
 // HowItWorks Component
 const HowItWorks = () => (
-  <Card sx={{ textAlign: "center", mt: 4, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", borderRadius: "12px", mr: 3, ml: 3}}>
-    <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ pt: 3 }}>
+  <Box sx={{ textAlign: "center", mt: 5 }}>
+    <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 3 }}>
       How it works?
     </Typography>
-    <Box sx={{ display: "flex", p: 2 }}>
+    <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
       <HowItWorksCard
         icon={<SearchIcon sx={{ fontSize: 50, color: "#25387c" }} />}
         title="Find an expert"
-        description="Discover and choose from our list of the world's most in-demand"
+        description="Discover and choose from our list of the world's most in-demand experts."
       />
       <HowItWorksCard
         icon={<EventAvailableIcon sx={{ fontSize: 50, color: "#25387c" }} />}
         title="Book a video call"
-        description="Select a time that works for both you and your expert's schedule"
+        description="Select a time that works for both you and your expert's schedule."
       />
       <HowItWorksCard
         icon={<VideoCallIcon sx={{ fontSize: 50, color: "#25387c" }} />}
         title="Virtual consultation"
-        description="Join the 1-on-1 video call, ask questions and get expert advice"
+        description="Join the 1-on-1 video call, ask questions, and get expert advice."
       />
     </Box>
-  </Card>
+  </Box>
 );
 
 const ExpertCard = ({ name, industry, img }) => {
@@ -195,10 +190,10 @@ const ExpertCard = ({ name, industry, img }) => {
       <Box
         sx={{
           position: "absolute",
-          bottom: 10,
-          left: 10,
-          backgroundColor: "rgba(0, 0, 0, 0.7)",
-          borderRadius: "4px",
+          bottom: 0,
+          left: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          borderRadius: "0px 4px 0px 0px",
           padding: "4px 8px",
         }}
       >
@@ -296,6 +291,7 @@ const ExpertCarousel = ({ experts }) => {
   
 
   return (
+    <>
     <Box sx={{ mt: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2 }}>
       <Box sx={{ mb: 2, px: 3.6 }}>
         <Typography variant="h6" gutterBottom fontWeight={"bold"}>
@@ -326,7 +322,7 @@ const ExpertCarousel = ({ experts }) => {
             <Typography variant="h6" fontWeight={"bold"} px={1.8} pb={0.5}>
               Top Experts
             </Typography>
-            <Typography variant="h6" color={"text.secondary"} mt={0}>
+            <Typography variant="subtitle1" color={"text.secondary"} mt={0.5}>
               Access to the best has never been easier
             </Typography>
           </Box>
@@ -339,13 +335,22 @@ const ExpertCarousel = ({ experts }) => {
           ))}
         </Slider>
       </Box>
-
-      <Box mt={3}>
+      <ExpertCarouselCategoryButtons
+        categories={categories}
+        onCategoryClick={handleCategoryClick}
+        onViewAll={handleViewAll}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      />
+    </Box>
+      {/* financial expert section */}
+      <Box sx={{ mt: 6, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2,pt: '18px' }}>
+      <Box >
         <Box display={"flex"}>
           <Typography variant="h6" fontWeight={"bold"} pl={4} pr={2} pb={0.5}>
             Financial Experts
           </Typography>
-          <Typography variant="h6" color={"text.secondary"} mt={0}>
+          <Typography variant="subtitle1" color={"text.secondary"} mt={0.5}>
             Connect with CEOs, executives, coaches, and more
           </Typography>
         </Box>
@@ -358,18 +363,28 @@ const ExpertCarousel = ({ experts }) => {
           ))}
         </Slider>
       </Box>
+      <ExpertCarouselCategoryButtons
+        categories={categories}
+        onCategoryClick={handleCategoryClick}
+        onViewAll={handleViewAll}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      />
+      </Box>
 
       {/* How it works section */}
+     
       <HowItWorks />
 
       {/* Fashion Experts section */}
-      <Box mt={3}>
+      <Box sx={{ mt: 6, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2,pt: '18px' }}>
+      <Box >
         <Box display={"flex"}>
           <Typography variant="h6" fontWeight={"bold"} pl={4} pr={2} pb={0.5}>
-            Fashion Experts
+            Enterpreneurship
           </Typography>
-          <Typography variant="h6" color={"text.secondary"} mt={0}>
-            Get styling advice from top fashion industry experts
+          <Typography variant="subtitle1" color={"text.secondary"} mt={0.5}>
+          Empower Your Entrepreneurial Journey
           </Typography>
         </Box>
         <Divider sx={{ mb: 2, width: "96%", ml: 3 }} />
@@ -381,6 +396,7 @@ const ExpertCarousel = ({ experts }) => {
           ))}
         </Slider>
       </Box>
+      
 
       <ExpertCarouselCategoryButtons
         categories={categories}
@@ -390,6 +406,37 @@ const ExpertCarousel = ({ experts }) => {
         onNext={handleNext}
       />
     </Box>
+
+    <Box sx={{ mt: 6, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2,pt: '18px' }}>
+      <Box >
+        <Box display={"flex"}>
+          <Typography variant="h6" fontWeight={"bold"} pl={4} pr={2} pb={0.5}>
+            Legal Solutions
+          </Typography>
+          <Typography variant="subtitle1" color={"text.secondary"} mt={0.5}>
+          Gain Insight and Confidence with Expert Legal Advice
+          </Typography>
+        </Box>
+        <Divider sx={{ mb: 2, width: "96%", ml: 3 }} />
+      </Box>
+      <Box sx={{ position: "relative", px: 2, pt: 1 }}>
+        <Slider ref={sliderRefFashion} {...settings}>
+          {experts.map((expert, index) => (
+            <ExpertCard key={index} {...expert} />
+          ))}
+        </Slider>
+      </Box>
+      
+
+      <ExpertCarouselCategoryButtons
+        categories={categories}
+        onCategoryClick={handleCategoryClick}
+        onViewAll={handleViewAll}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      />
+    </Box>
+    </>
   );
 };
 

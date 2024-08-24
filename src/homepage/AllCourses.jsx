@@ -22,7 +22,9 @@ const courses = [
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg',
         avatar: ['https://randomuser.me/api/portraits/men/75.jpg', 'https://randomuser.me/api/portraits/women/65.jpg'],
         ratings: 5,
-        reviews: 1
+        reviews: 1,
+        views: 2,
+        comments: 5,
 
     },
     {
@@ -33,17 +35,21 @@ const courses = [
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg',
         avatar: ['https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg'],
         ratings: 5,
-        reviews: 1
+        reviews: 1,
+        views: 2,
+        comments: 5,
     },
     {
-        title: 'final testing course',
+        title: 'Final testing course',
         category: 'HR',
         duration: '5 Weeks',
         description: 'testing testing testing',
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/66.jpg'],
         ratings: 5,
-        reviews: 1
+        reviews: 1,
+        views: 2,
+        comments: 5,
     },
     {
         title: 'StartUp Fundamentals',
@@ -53,7 +59,9 @@ const courses = [
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb__90082e05-8020-4bd8-8246-af0ef0853187.jpeg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
-        reviews: 1
+        reviews: 1,
+        views: 2,
+        comments: 5,
     },
     {
         title: 'Make You Pitch Investor Ready',
@@ -63,7 +71,9 @@ const courses = [
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s2mypir.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
-        reviews: 1
+        reviews: 1,
+        views: 2,
+        comments: 5,
     },
     {
         title: 'Business Modeling through Strategy and Analysis',
@@ -73,7 +83,9 @@ const courses = [
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_Strategy-and-Analysis.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
-        reviews: 1
+        reviews: 1,
+        views: 2,
+        comments: 5,
     },
     {
         title: 'MVP Fundamentals',
@@ -83,7 +95,9 @@ const courses = [
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_10HowtomeasurePMF.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
-        reviews: 1
+        reviews: 1,
+        views: 2,
+        comments: 5,
     },
     {
         title: 'HR for Remote Teams (HRD & HRM)',
@@ -93,7 +107,9 @@ const courses = [
         image: 'https://academy.opengrowth.com/assets/images/courses/thumb_hrnew.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
-        reviews: 1
+        reviews: 1,
+        views: 2,
+        comments: 5,
     },
 ];
 
@@ -185,7 +201,7 @@ const SliderWrapper = styled(Box)({
       padding: "16px 8px",
     },
   });
-  const BlogCard = ({ title, category, description, image, avatar, duration, ratings, reviews }) => (
+  const BlogCard = ({ title, comments, views, image, avatar, duration, ratings, reviews }) => (
     <Grid item xs={12} sm={6} md={4} lg={3}>
         <Card sx={{
             display: 'flex',
@@ -210,18 +226,40 @@ const SliderWrapper = styled(Box)({
                 flexGrow: 1,
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: 2,
+                justifyContent: 'space-evenly',
+                padding: 1.8,
                 pt: 0.5,
                 backgroundColor: 'white'
             }}>
-                <Typography variant="subtitle2" >{title}</Typography>
+                <Typography variant="subtitle1" >{title}</Typography>
                 <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 0 }}>{duration}</Typography>
                 <Typography variant="body2" color="textSecondary">{ratings} Ratings | {reviews} Reviews</Typography>
-                <Box sx={{ display: 'flex', marginTop: 1 }}>
-                    <EnrollButton startIcon={<SchoolIcon />}>Enroll Now</EnrollButton>
-                    <WishlistButton startIcon={<FavoriteBorderIcon />}>Wishlist</WishlistButton>
+                <Box
+                sx={{
+                display: "flex",
+                gap: 2,
+                mt: 1,
+                }}
+            >
+                <Box
+                sx={{ display: "flex", alignItems: "center" }}
+                >
+                <CommentIcon sx={{ fontSize: 18, mr: 0.5 }} />
+                <Typography variant="body2">
+                    {comments}
+                </Typography>
                 </Box>
+                <Box
+                sx={{ display: "flex", alignItems: "center" }}
+                >
+                <VisibilityIcon
+                    sx={{ fontSize: 18, mr: 0.5 }}
+                />
+                <Typography variant="body2">
+                    {views}
+                </Typography>
+                </Box>
+            </Box>
             </Box>
         </Card>
     </Grid>
@@ -352,7 +390,7 @@ const AllCourses = () => {
                 {courses.map((course, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                         <Card sx={{
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, height: '21.5em', display: 'flex', flexDirection: 'column',
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, height: '21em', display: 'flex', flexDirection: 'column',
                             '&:hover': {
                                 transform: "translateY(-3px)",
                                 boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
@@ -386,13 +424,31 @@ const AllCourses = () => {
                                 </Box>
                                 <Box>
                                     <Divider sx={{ my: 1 }} />
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        
-                                        <Box>
-                                            <EnrollButton startIcon={<SchoolIcon />}>Enroll Now</EnrollButton>
-                                            <WishlistButton startIcon={<FavoriteBorderIcon />}>Wishlist</WishlistButton>
-                                        </Box>
-                                    </Box>
+                                    <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Box
+                                sx={{ display: "flex", alignItems: "center" }}
+                              >
+                                <CommentIcon sx={{ fontSize: 18, mr: 0.5 }} />
+                                <Typography variant="body2">
+                                  {course.comments}
+                                </Typography>
+                              </Box>
+                              <Box
+                                sx={{ display: "flex", alignItems: "center" }}
+                              >
+                                <VisibilityIcon
+                                  sx={{ fontSize: 18, mr: 0.5 }}
+                                />
+                                <Typography variant="body2">
+                                  {course.views}
+                                </Typography>
+                              </Box>
+                            </Box>
                                 </Box>
                             </CardContent>
                         </Card>

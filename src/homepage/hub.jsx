@@ -53,7 +53,6 @@ const CardFeature = ({ IconComponent, title }) => (
 const Hub = () => {
   return (
     <Box sx={{ my: 6,  }}>
-      <MainCard>
         <Typography variant="h6" gutterBottom fontWeight={'bold'} sx={{ textAlign: 'center' }}>
           OpenGrowth Hub: Virtual Collaboration Platform
         </Typography>
@@ -74,11 +73,11 @@ const Hub = () => {
             <CardFeature IconComponent={TeamIcon} title="Collaborate with Team" />
           </Grid>
         </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4, px: 4, pb: 3 }}>
-          <Button variant="contained" color="primary">Sign Up For Free</Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, px: 4, pb: 3, gap: 2 }}>
           <Button variant="contained" color="secondary" sx={{backgroundColor: '#f9bb02'}}>Know More</Button>
+          <Button variant="contained" color="primary">Sign Up For Free</Button>
+          
         </Box>
-      </MainCard>
     </Box>
   );
 };

@@ -17,7 +17,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  height: "400px", // Set a fixed height for all cards
+  height: "380px", // Set a fixed height for all cards
   display: "flex",
   flexDirection: "column",
   boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
@@ -126,7 +126,7 @@ const BlogCard = ({ image, title, author, authorImage, category }) => (
           </Typography>
         </AuthorBox>
       </Box>
-      <Box sx={{ mt: 2 }}>
+      <Box sx={{ mt: 0 }}>
         <CategoryChip label={category} size="small" />
       </Box>
     </StyledCardContent>

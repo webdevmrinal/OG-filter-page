@@ -50,7 +50,7 @@ const CardFeature = ({ IconComponent, title, subtitle }) => (
     </Avatar>
     <Box>
       <Typography variant="h6">{title}</Typography>
-      <Typography variant="subtitle1" gutterBottom>
+      <Typography variant="subtitle1" color={'text.secondary'} gutterBottom>
         {subtitle}
       </Typography>
     </Box>
@@ -58,130 +58,123 @@ const CardFeature = ({ IconComponent, title, subtitle }) => (
 );
 
 const HowItWorksCard = ({ icon, title, description }) => (
-  <Box
-    sx={{
-      flex: 1,
-      textAlign: "center",
-      padding: 2,
-      borderRight: "1px solid #e0e0e0", 
-      "&:last-child": {
-        borderRight: "none", 
-      },
-    }}
-  >
-    <Box
+    <Card
       sx={{
+        width: 320,
+        height: 280,
+        textAlign: "center",
+        m: 1,
+        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+        borderRadius: "12px",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 2,
+        alignItems: "center"
       }}
     >
-      {icon}
-    </Box>
-    <Typography variant="h6" fontWeight="bold" gutterBottom>
-      {title}
-    </Typography>
-    <Typography variant="body2" color="text.secondary">
-      {description}
-    </Typography>
-  </Box>
-);
-
-const HowItWorks = () => (
-  <Card sx={{ textAlign: "center", mt: 4, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px", mr: 0, ml: 0}}>
-    <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ pt: 3 }}>
-      How it works?
-    </Typography>
-    <Box sx={{ display: "flex", p: 2 }}>
-      <HowItWorksCard
-        icon={<SearchIcon sx={{ fontSize: 50, color: "#25387c" }} />}
-        title="Find an expert"
-        description="Discover and choose from our list of the world's most in-demand"
-      />
-      <HowItWorksCard
-        icon={<EventAvailableIcon sx={{ fontSize: 50, color: "#25387c" }} />}
-        title="Book a video call"
-        description="Select a time that works for both you and your expert's schedule"
-      />
-      <HowItWorksCard
-        icon={<VideoCallIcon sx={{ fontSize: 50, color: "#25387c" }} />}
-        title="Virtual consultation"
-        description="Join the 1-on-1 video call, ask questions and get expert advice"
-      />
-    </Box>
-  </Card>
-);
-
-const ExpertCard = ({ name, industry, img }) => (
-  <Card
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: 300,
-      m: 2,
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      position: 'relative', // Add relative positioning to the card
-      "&:hover": {
-        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
-      },
-    }}
-  >
-    <CardMedia
-      component="img"
-      height="300"
-      image={`https://academy.opengrowth.com/assets/images/users/${img}`}
-      alt={name}
-      sx={{
-        borderRadius: 0,
-        objectFit: 'cover',
-      }}
-    />
-    <Box
-      sx={{
-        position: 'absolute',
-        top: 4,
-        left: 4,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent background
-        color: 'white',
-        padding: '8px',
-        borderRadius: '4px', // Rounded bottom-right corner
-      }}
-    >
-      <Typography variant="subtitle1" fontWeight="bold">
-        {name}
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mb: 2 }}>
+        {icon}
+      </Box>
+      <Typography variant="h6" fontWeight="bold" gutterBottom>
+        {title}
       </Typography>
-      <Typography variant="body2" color="white">
-        {industry}
+      <Typography variant="body2" color="text.secondary">
+        {description}
       </Typography>
+    </Card>
+  );
+
+  const HowItWorks = () => (
+    <Box sx={{ textAlign: "center", mt: 5 }}>
+      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 3 }}>
+        How it works?
+      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+        <HowItWorksCard
+          icon={<SearchIcon sx={{ fontSize: 50, color: "#25387c" }} />}
+          title="Find an expert"
+          description="Discover and choose from our list of the world's most in-demand experts."
+        />
+        <HowItWorksCard
+          icon={<EventAvailableIcon sx={{ fontSize: 50, color: "#25387c" }} />}
+          title="Book a video call"
+          description="Select a time that works for both you and your expert's schedule."
+        />
+        <HowItWorksCard
+          icon={<VideoCallIcon sx={{ fontSize: 50, color: "#25387c" }} />}
+          title="Virtual consultation"
+          description="Join the 1-on-1 video call, ask questions, and get expert advice."
+        />
+      </Box>
     </Box>
-    <Box
+  );
+
+  const ExpertCard = ({ name, industry, img }) => (
+    <Card
       sx={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        color: 'white',
-        padding: '8px',
+        width: 300,
+        margin: 2,
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        "&:hover": {
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+        },
+        position: 'relative', // Ensures that the position of children can be absolute in relation to this card
+        overflow: 'hidden' // Ensures that no content spills out of the card boundary
       }}
     >
-      <Button
-        variant="contained"
+      <CardMedia
+        component="img"
+        height="290"
+        image={`https://academy.opengrowth.com/assets/images/users/${img}`}
+        alt={name}
         sx={{
-          backgroundColor: '#f9bb02',
-          color: 'black',
-          fontSize: '0.67em',
-          fontWeight: '600',
-          borderRadius: '50px',
-          "&:hover": {
-            backgroundColor: '#f2a603',
-          },
+          objectFit: 'cover' // Ensures the image covers the designated area without distortion
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 65, 
+          left: 0,
+          right: 0,
+          background: 'rgba(0, 0, 0, 0.6)', 
+          color: 'white',
+          textAlign: 'center', 
         }}
       >
-        Request a Call
-      </Button>
-    </Box>
-  </Card>
-);
+        <Typography variant="subtitle1" fontWeight="bold">
+          {name}
+        </Typography>
+        <Typography variant="body2">
+          {industry}
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          padding: 2,
+          textAlign: 'center', // Centers the button within its container
+          mt: 'auto' // Pushes the button container to the bottom of the card
+        }}
+      >
+        <Button
+          variant="contained"
+          sx={{
+            color: 'white',
+            fontSize: '0.8em',
+            fontWeight: '500',
+            borderRadius: '35px',
+            "&:hover": {
+                color: 'black',
+              backgroundColor: '#f2a603',
+            },
+          }}
+        >
+          Request a Call
+        </Button>
+      </Box>
+    </Card>
+  );
+  
 
 const AllExperts = ({ }) => {
   const location = useLocation();
@@ -209,11 +202,11 @@ const AllExperts = ({ }) => {
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2, textAlign: 'center' }}>
           At OpenGrowth, our mission is to connect you with top global experts across diverse domains, including Marketing, HR, Finance, Legal, and Branding to catalyze your startup growth journey empowered by cutting-edge AI technologies.
         </Typography>
-        <Grid container spacing={2} justifyContent="center">
+        <Grid container spacing={2} justifyContent="space-evenly">
           <Grid item xs={12} sm={10} md={5.5} margin={0.5}>
             <CardFeature IconComponent={OrganizationIcon} title="Hire Fractional Executives" subtitle="Hire an Expert to solve your startup’s specific problems at a fractional cost."/>
           </Grid>
-          <Grid item xs={12} sm={10} md={5.5} margin={0.5}>
+          <Grid item xs={12} sm={10} md={5.5} margin={0.5} sx={{paddingLeft: '0px !important'}}>
             <CardFeature IconComponent={WorkLearnIcon} title="On Demand Expert" subtitle="Easily schedule a one-on-one session with an Expert for quick resolution."/>
           </Grid>
         </Grid>

@@ -4,18 +4,18 @@ import { Card, CardContent, Typography, Grid } from '@mui/material';
 const testimonialsData = [
   {
     name: "Shradha Verma",
-    content: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout...",
-    image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600"
+    content: "OpenGrowth hub has been a very useful tool for enhancing the overall team productivity and team management. It has helped us streamline a lot of things which is utmost important for a remote team like ours. It's easy, clear and time-saving.",
+    image: "https://www.opengrowth.com/assets/public/opengrowth/images/testimonial/shradha-verma-testimonial.jpg"
   },
   {
-    name: "Nancy Sharma",
-    content: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature.",
-    image: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600"
+    name: "Shellye",
+    content: "I had the pleasure of working with the members of OpenGrowth's team as we built out Shellye.opengrowth.com and its been not only a pleasure but I have been really pleased with the work ethics and quality of the work that has been done. I look forward to continuing our working relationship.",
+    image: "https://www.opengrowth.com/assets/public/opengrowth/images/testimonial/shellye-testimonial.png"
   },
   {
     name: "Anjali Singh",
-    content: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
-    image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=600"
+    content: "Open Growth Hub has been a monumental help to organize tasks for the team members, collaborate. You can. easily track progress and assign projects. A true help that allowed us to take our business to the next level.",
+    image: "https://www.opengrowth.com/assets/public/opengrowth/images/testimonial/negin.jpg"
   },
   {
     name: "Amit Kumar",
@@ -39,11 +39,11 @@ const TestimonialCard = ({ name, content, image }) => (
         />
       </Grid>
       <Grid item sx={{ height: '50%' }}>
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '20px', height: '100%' }}>
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', px: '20px', pt: 0, pb: '0 !important', height: '100%' }}>
           <Typography variant="h6" noWrap>
             {name}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical' }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 6, WebkitBoxOrient: 'vertical' }}>
             {content}
           </Typography>
         </CardContent>
