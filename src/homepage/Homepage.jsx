@@ -3,10 +3,12 @@ import ExpertCarousel from "./ExpertCarousel";
 import axios from "axios";
 import TrendingBlogs from "./TrendingBlogs";
 import Courses from "./Courses";
-import { Box } from "@mui/material";
-import Communities from "./Communities";
+import { Box, Typography, Button } from "@mui/material";
+import Slider from "react-slick";
+import { styled } from '@mui/system';
 import Hub from "./hub";
 import Testimonials from "./Testimonials";
+import Header from "../signup-login/Header";
 
 const blogData = [
   {
@@ -237,6 +239,102 @@ const communities = [
   },
 ];
 
+
+const BannerContainer = styled(Box)(({ theme, bgImage }) => ({
+  position: 'relative',
+  height: '500px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',  
+  borderRadius: '4px',
+  overflow: 'hidden',
+  backgroundColor: 'transparent', // Ensure the background is transparent
+  '&:before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `linear-gradient(to right, #2979ff, #d500f9)`, // Blue to purple gradient
+    zIndex: 1  // Gradient below the image
+  },
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    zIndex: 2  // Image on top of the gradient
+  }
+}));
+
+const ContentBox = styled(Box)(({ theme }) => ({
+  marginTop: '45px',
+  marginLeft: '35px',
+  position: 'relative',
+  zIndex: 3,  // Ensure content is above all
+  maxWidth: '520px',
+  textAlign: 'left',
+  padding: theme.spacing(3),
+  color: 'white'
+}));
+
+const BannerText = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+}));
+
+const BannerButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  borderRadius: '50px',
+  backgroundColor: '#f9bb02',
+  color: 'black',
+  fontWeight: 540,
+  "&:hover": {
+    boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+    backgroundColor: '#f9bb02'
+  },
+}));
+
+const BannerCarousel = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
+
+  const images = [
+    'https://www.opengrowth.com/assets/public/opengrowth/images/banner/banner-1-new.png',
+    'https://www.opengrowth.com/assets/public/opengrowth/images/banner/banner-5.png',
+    'https://www.opengrowth.com/assets/public/opengrowth/images/banner/04-new.jpg',
+    'https://www.opengrowth.com/assets/public/opengrowth/images/banner/banner-6.png',
+  ];
+
+  return (
+    <Slider {...settings} sx={{borderRadius: 6}}>
+      {images.map((image, index) => (
+        <BannerContainer key={index} bgImage={image}>
+          <ContentBox>
+            <BannerText variant="h4" fontWeight={'bold'}>Hire from us to accelerate your Growth Journey in the age of AI</BannerText>
+            <BannerText variant="h5" mt={3}>Discover the benefits of hiring On-demand and Fractional Experts & Executives for your Startup</BannerText>
+            <BannerButton variant="contained">Book A Consultation</BannerButton>
+            <BannerText variant="subtitle2" mt={1.5}>Our Team Will Help Your startUp Grow</BannerText>
+          </ContentBox>
+        </BannerContainer>
+      ))}
+    </Slider>
+  );
+};
+
+
 function Homepage() {
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -286,6 +384,8 @@ function Homepage() {
     <>
       {!loading && (
         <Box sx={{ px: 2 }}>
+          <Header />
+          <BannerCarousel />
           <ExpertCarousel experts={experts} />
           <TrendingBlogs blogs={blogData} />
           <Courses course={courses} />

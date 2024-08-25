@@ -12,6 +12,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SchoolIcon from '@mui/icons-material/School';
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import Header from '../signup-login/Header';
 
 const courses = [
     {
@@ -272,6 +273,39 @@ const SliderWrapper = styled(Box)({
     </Grid>
   );
 
+  const Banner = () => {
+    return (
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: '#fff', // Blue background
+        color: '#fff',
+        padding: '0rem 0rem 0rem 0rem', // Adjust padding as needed
+        height: '450px',
+        borderRadius: 2,
+        
+      }}>
+        <Box sx={{ width: '70%',height: '450px'}}>
+          <img 
+            src="https://www.opengrowth.com/assets/public/opengrowth/images/courses/banner-5.png" 
+            alt="Banner Image"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', borderTopLeftRadius: 4, borderBottomLeftRadius: 4 }}
+          />
+        </Box>
+        <Box sx={{ width: '20%', textAlign: 'left', mr: 8.85, ml: 4 }}>
+          <Typography variant="h4" sx={{ fontWeight: 'bold' , color: 'black'}}>Courses Curated by our experts for startups</Typography>
+          
+          <Button variant="contained" sx={{ backgroundColor: '#f9bb02', '&:hover': { backgroundColor: '#d6a302' }, borderRadius: '50px',
+        color: 'black', fontSize: '0.8em', fontWeight: '600', boxShadow: "0 4px 6px rgba(0,0,0,0.2)", mt: 4}}>
+            View All Courses
+          </Button>
+        </Box>
+        
+      </Box>
+    );
+  };
+
 const AllCourses = () => {
     const sliderRef = useRef(null);
     const [search, setSearch] = useState('');
@@ -322,7 +356,9 @@ const AllCourses = () => {
   };
 
     return (
-        <Box sx={{ padding: 3 }}>
+        <Box sx={{ padding: 3, pt: 0 }}>
+        <Header />
+        <Banner />
         <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
         <Typography variant="h5" fontWeight={'bold'} ml={2} gutterBottom>
                 Featured Courses

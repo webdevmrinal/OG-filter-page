@@ -101,7 +101,7 @@ const SidebarTopbarComponent = () => {
   const menuItems = [
     { text: "Dashboard", icon: <DashboardIcon />, route: "/dashboardpage" },
     { text: "Experts on Demand", icon: <PersonIcon />, route: "/expertPage" },
-    { text: "Courses", icon: <SchoolIcon />, route: null },
+    { text: "Courses", icon: <SchoolIcon />, route: "/searchcourse" },
     { text: "Messages", icon: <MessageIcon />, route: null },
     { text: "Account Settings", icon: <SettingsIcon />, route: null },
     { text: "Logout", icon: <ExitToAppIcon />, route: null },

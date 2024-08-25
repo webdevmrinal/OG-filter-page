@@ -292,7 +292,7 @@ const ExpertCarousel = ({ experts }) => {
 
   return (
     <>
-    <Box sx={{ mt: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2 }}>
+    <Box sx={{ mt: 5, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2 }}>
       <Box sx={{ mb: 2, px: 3.6 }}>
         <Typography variant="h6" gutterBottom fontWeight={"bold"}>
           Leverage our Expert Community: Hire Seasoned Executives

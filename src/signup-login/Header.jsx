@@ -70,7 +70,7 @@ const Header = () => {
             alt="OpenGrowth Logo"
             style={{ height: "3.5em" }}
             onClick={() => {
-              navigate("/");
+              navigate("/homepage");
             }}
           />
         </Link>

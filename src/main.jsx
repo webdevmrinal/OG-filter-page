@@ -53,19 +53,19 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="detail/:expertName" element={<DetailPage />} />
           <Route path="transaction" element={<TransactionHistory />} />
           <Route path="followers" element={<MyFollowers />} />
-          <Route path="get-started" element={<App2 />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignupPage />} />
           <Route path="mycourse" element={<MyCourse />} />
           <Route path="searchcourse" element={<SearchCourse />} />
           <Route path="coursedashboard" element={<CourseDashboard />} />
           <Route path="course/:courseId" element={<CourseDescription />} />
-          <Route path="homepage" element={<Homepage />} />
-          <Route path="allexperts" element={<AllExperts />} />
-          <Route path="all-courses" element={<AllCourses />} />
-          <Route path="expertProfile" element={<ExpertProfile />} />
           <Route path="course-intro" element={<CourseIntroduction />} />
         </Route>
+        <Route path="homepage" element={<Homepage />} />
+        <Route path="allexperts" element={<AllExperts />} />
+        <Route path="all-courses" element={<AllCourses />} />
+        <Route path="expertProfile" element={<ExpertProfile />} />
+        <Route path="get-started" element={<App2 />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
       </Routes>
     </Router>
   </ThemeProvider>
