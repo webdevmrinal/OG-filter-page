@@ -41,8 +41,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <CssBaseline />
     <Router>
       <Routes>
+        <Route index element={<Homepage />} />
         <Route path="/" element={<Layout />}>
-          <Route index element={<DashboardPage />} />
+          
           <Route path="profile/:expertName" element={<ProfilePage />} />
           <Route path="appointments" element={<Appointments />} />
           <Route path="dashboardpage" element={<DashboardPage />} />
