@@ -42,7 +42,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<App />} />
+          <Route index element={<DashboardPage />} />
           <Route path="profile/:expertName" element={<ProfilePage />} />
           <Route path="appointments" element={<Appointments />} />
           <Route path="dashboardpage" element={<DashboardPage />} />
