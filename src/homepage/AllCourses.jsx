@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { Box, Typography, TextField, Button, Chip, Grid, Card, CardContent, Avatar, Divider ,useMediaQuery, useTheme} from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
@@ -19,7 +19,7 @@ const courses = [
         category: 'Marketing',
         duration: '5 Weeks',
         description: 'This course provides a comprehensive overview of the strategies and tactics used to effectively promote products or…',
-        image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg',
+        imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg',
         avatar: ['https://randomuser.me/api/portraits/men/75.jpg', 'https://randomuser.me/api/portraits/women/65.jpg'],
         ratings: 5,
         reviews: 1,
@@ -32,7 +32,7 @@ const courses = [
         category: 'Leadership',
         duration: '5 Weeks',
         description: 'A short course on transitioning from a 9 to 5 job to a Fractional Executive, a cornerstone of the gig economy. Find out…',
-        image: 'https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg',
+        imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg',
         avatar: ['https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg'],
         ratings: 5,
         reviews: 1,
@@ -44,7 +44,7 @@ const courses = [
         category: 'HR',
         duration: '5 Weeks',
         description: 'testing testing testing',
-        image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg',
+        imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/66.jpg'],
         ratings: 5,
         reviews: 1,
@@ -56,7 +56,7 @@ const courses = [
         category: 'LeaderShip',
         duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
-        image: 'https://academy.opengrowth.com/assets/images/courses/thumb__90082e05-8020-4bd8-8246-af0ef0853187.jpeg',
+        imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb__90082e05-8020-4bd8-8246-af0ef0853187.jpeg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
         reviews: 1,
@@ -68,7 +68,7 @@ const courses = [
         category: 'LeaderShip',
         duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
-        image: 'https://academy.opengrowth.com/assets/images/courses/thumb_s2mypir.jpg',
+        imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_s2mypir.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
         reviews: 1,
@@ -80,7 +80,7 @@ const courses = [
         category: 'Product',
         duration: '5 Weeks',
         description: 'This course will give you a complete overview of developing and designing...',
-        image: 'https://academy.opengrowth.com/assets/images/courses/thumb_Strategy-and-Analysis.jpg',
+        imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_Strategy-and-Analysis.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
         reviews: 1,
@@ -92,7 +92,7 @@ const courses = [
         category: 'LeaderShip',
         duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
-        image: 'https://academy.opengrowth.com/assets/images/courses/thumb_10HowtomeasurePMF.jpg',
+        imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_10HowtomeasurePMF.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
         reviews: 1,
@@ -104,7 +104,7 @@ const courses = [
         category: 'HR',
         duration: '5 Weeks',
         description: 'A bulletproof Human Resource Development and Human Resource Management...',
-        image: 'https://academy.opengrowth.com/assets/images/courses/thumb_hrnew.jpg',
+        imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_hrnew.jpg',
         avatar: ['https://randomuser.me/api/portraits/women/67.jpg'],
         ratings: 5,
         reviews: 1,
@@ -201,8 +201,14 @@ const SliderWrapper = styled(Box)({
       padding: "16px 8px",
     },
   });
-  const BlogCard = ({ title, comments, views, image, avatar, duration, ratings, reviews }) => (
+  const BlogCard = ({ title, comments, views, imageUrl, avatar, duration, ratings, reviews, description }) => (
     <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Link to={`/course/${title}`} style={{ textDecoration: 'none', color: 'inherit' }}
+        state={{
+            title,
+            imageUrl,
+            description,
+          }}>
         <Card sx={{
             display: 'flex',
             height: 150,  // Adjust height as needed
@@ -220,7 +226,7 @@ const SliderWrapper = styled(Box)({
                 overflow: 'hidden',
                 borderRadius: '12px 0 0 12px'
             }}>
-                <img src={image} alt={title} style={{ height: '100%', width: 'auto', objectFit: 'cover' }} />
+                <img src={imageUrl} alt={title} style={{ height: '100%', width: 'auto', objectFit: 'cover' }} />
             </Box>
             <Box sx={{
                 flexGrow: 1,
@@ -262,6 +268,7 @@ const SliderWrapper = styled(Box)({
             </Box>
             </Box>
         </Card>
+        </Link>
     </Grid>
   );
 
@@ -389,6 +396,12 @@ const AllCourses = () => {
             <Grid container spacing={3}>
                 {courses.map((course, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                        <Link to={`/course/${course.title}`} style={{ textDecoration: 'none', color: 'inherit' }}
+        state={{
+            title: course.title,
+    imageUrl: course.imageUrl,
+    description: course.description
+          }}>
                         <Card sx={{
                             boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, height: '21em', display: 'flex', flexDirection: 'column',
                             '&:hover': {
@@ -399,7 +412,7 @@ const AllCourses = () => {
                         }}>
                             <CourseImage
                                 sx={{
-                                    backgroundImage: `url(${course.image || 'https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg'})`,
+                                    backgroundImage: `url(${course.imageUrl || 'https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg'})`,
                                 }}
                             >
                                 <OverlayText variant="subtitle2">{course.title}</OverlayText>
@@ -452,6 +465,7 @@ const AllCourses = () => {
                                 </Box>
                             </CardContent>
                         </Card>
+                        </Link>
                     </Grid>
                 ))}
             </Grid>

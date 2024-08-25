@@ -20,7 +20,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CommentIcon from '@mui/icons-material/Comment';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useNavigate } from "react-router-dom";
 import SchoolIcon from '@mui/icons-material/School';
 
 const CourseImage = styled('div')(({ theme }) => ({
@@ -220,6 +220,7 @@ const AllBlogsButton = styled(StyledButton)({
 
 const Courses = ({ course }) => {
   const sliderRef = useRef(null);
+  const navigate = useNavigate();
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
   const isMedium = useMediaQuery(theme.breakpoints.between("sm", "lg"));

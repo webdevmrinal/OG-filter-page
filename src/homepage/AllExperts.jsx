@@ -10,12 +10,13 @@ import {
   Chip
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import OrganizationIcon from '@mui/icons-material/AccountTree';
 import WorkLearnIcon from '@mui/icons-material/School';
 import SearchIcon from "@mui/icons-material/Search";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import ProfilePage from '../ProfilePage';
 
 // Styled components
 const MainCard = styled(Card)(({ theme }) => ({
@@ -109,7 +110,17 @@ const HowItWorksCard = ({ icon, title, description }) => (
     </Box>
   );
 
-  const ExpertCard = ({ name, industry, img }) => (
+  const ExpertCard = ({ name, industry, img, email, }) => {
+    const navigate = useNavigate();
+const handleRequestCall = () => {
+    navigate(`/profile/${name}`, {
+      state: {
+        expertEmail: email
+      }
+    });
+  };
+    return (
+    
     <Card
       sx={{
         width: 300,
@@ -158,6 +169,7 @@ const HowItWorksCard = ({ icon, title, description }) => (
       >
         <Button
           variant="contained"
+          onClick={handleRequestCall}
           sx={{
             color: 'white',
             fontSize: '0.8em',
@@ -173,10 +185,11 @@ const HowItWorksCard = ({ icon, title, description }) => (
         </Button>
       </Box>
     </Card>
-  );
+  )};
   
 
 const AllExperts = ({ }) => {
+    
   const location = useLocation();
   const { experts } = location.state || {};
   const chipLabels = [
@@ -235,9 +248,10 @@ const AllExperts = ({ }) => {
         </Box>
         {/* Displaying Experts inside the same card */}
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {experts.map((expert, index) => (
-            <ExpertCard key={index} {...expert} />
-          ))}
+        {experts.map((expert, index) => {
+  console.log(expert); // This will log each expert object to the console
+  return <ExpertCard key={index} {...expert} />;
+})}
         </Box>
       </Card>
     </Box>
