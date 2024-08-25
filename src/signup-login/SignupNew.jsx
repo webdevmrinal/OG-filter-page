@@ -473,7 +473,7 @@ const SignupPage = () => {
                       helperText={
                         formik.touched.firstName && formik.errors.firstName
                       }
-                      required
+                     
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -492,7 +492,7 @@ const SignupPage = () => {
                         },
                       }}
                       variant="outlined"
-                      required
+                      
                       {...formik.getFieldProps("lastName")}
                       error={
                         formik.touched.lastName &&
@@ -506,7 +506,7 @@ const SignupPage = () => {
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
-                      required
+                      
                       label={
                         <>
                           Email Address <span style={{ color: "red" }}>*</span>
@@ -544,7 +544,7 @@ const SignupPage = () => {
                       }}
                       type={showPassword ? "text" : "password"}
                       variant="outlined"
-                      required
+                      
                       {...formik.getFieldProps("password")}
                       error={
                         formik.touched.password &&
@@ -571,7 +571,7 @@ const SignupPage = () => {
                     <Autocomplete
                       multiple
                       id="interests"
-                      required
+                      
                       options={interests}
                       getOptionLabel={(option) => option}
                       value={formik.values.interests}
@@ -613,7 +613,7 @@ const SignupPage = () => {
                         },
                       }}
                       variant="outlined"
-                      required
+                      
                       {...formik.getFieldProps("country")}
                       error={
                         formik.touched.country && Boolean(formik.errors.country)
@@ -641,6 +641,7 @@ const SignupPage = () => {
                       color="primary"
                       type="submit"
                       fullWidth
+                      onClick={() => navigate("/dashboardpage")}
                     >
                       Register Now
                     </Button>

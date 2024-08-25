@@ -37,8 +37,8 @@ const DateButton = styled(ToggleButton)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 const TimeButton = styled(ToggleButton)(({ available }) => ({
-  border: `2px solid ${available ? "skyblue" : "#e0e0e0"}`,
-  color: available ? "skyblue" : "#e0e0e0",
+  border: `2px solid ${available ? "#25387c" : "#e0e0e0"}`,
+  color: available ? "#25387c" : "#e0e0e0",
   opacity: available ? 1 : 0.6,
   pointerEvents: available ? "auto" : "none",
   position: "relative",
@@ -83,16 +83,18 @@ const ScrollableBox = styled(Box)({
   "scrollbar-width": "none",
 });
 
-const ConfirmationBox = styled(Paper)({
-  padding: '16px',
-  borderRadius: '8px',
-  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  backgroundColor: '#ffffff', // Default background
+const StyledConfirmationBox = styled(Box)(({ theme }) => ({
+  width: '100%', // Ensures the box takes the full width
+  padding: theme.spacing(1),
+  backgroundColor: "#6fbf73", // Green background
+  color: 'white', // White text color for better contrast
   display: 'flex',
-  flexDirection: 'column',
   alignItems: 'center',
-});
-
+  justifyContent: 'center',
+  gap: theme.spacing(1),
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[1],
+}));
 const StyledSummaryBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   marginTop: theme.spacing(3),
@@ -506,13 +508,13 @@ const getDurationLabel = (duration) => {
     <>
       {view === "confirmation" ? (
         <StyledSummaryBox sx={{}}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <CheckCircleOutlineIcon sx={{ color: 'green', verticalAlign: 'middle', marginBottom: '0.40rem', transform: 'scale(1.1)' }} />
-            <Typography variant="h5" gutterBottom component="span">
-                Confirmed
-            </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <StyledConfirmationBox>
+                    <CheckCircleOutlineIcon />
+                    <Typography variant="h6">
+                        Your session is confirmed!
+                    </Typography>
+                </StyledConfirmationBox>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 , mt: 2}}>
             <Avatar
                 src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
                 alt={profileData?.name}

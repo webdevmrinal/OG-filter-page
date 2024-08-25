@@ -1,25 +1,37 @@
 import React from "react";
-import { Typography, Box, Grid } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 const platforms = [
   {
-    name: "No, I'm not using any platform",
+    name: "Competitor Analysis",
     imageLink: null,
   },
   {
-    name: "Square",
-    imageLink:
-      "https://shopify-assets.shopifycdn.com/shopifycloud/shopify/assets/signup_questions/icons/square-c3f5d2ed189e39db4c52a63b8394031fbf5aa3495225449ff76f9cdbc10039b8.svg",
+    name: "How to plan an MVP",
   },
   {
-    name: "Amazon",
-    imageLink:
-      "https://shopify-assets.shopifycdn.com/shopifycloud/shopify/assets/signup_questions/icons/amazon-6f5c72e2af68c01f1febdcb1ac71b71394e89a2fb00d2eb5fbb27fbdb48ea6fc.svg",
+    name: "How to Pitch Your Startup",
   },
   {
-    name: "Etsy",
-    imageLink:
-      "https://shopify-assets.shopifycdn.com/shopifycloud/shopify/assets/signup_questions/icons/etsy-ab3317744e7d923a44bcbea8b1f3f6fd84a5b8aff1c18edab99c3d741b805b5d.svg",
+    name: "Competitor Analysis",
+    imageLink: null,
+  },
+];
+
+const experts = [
+  {
+    name: "Aniisu K. Verghese",
+    imageLink: null,
+  },
+  {
+    name: "Dheeraj Prasad",
+  },
+  {
+    name: "Tushar Kansal",
+  },
+  {
+    name: "Vinod Harith",
+    imageLink: null,
   },
 ];
 
@@ -38,7 +50,7 @@ function Page2() {
         We can help you import your store.
       </Typography>
 
-      <Box sx={{ position: "relative", mt: 2 }}>
+      <Box sx={{ position: "relative", mt: 4 }}>
         <Typography variant="h6" component="h2" sx={{ mb: 1, fontWeight: 600 }}>
           Courses
         </Typography>
@@ -62,17 +74,17 @@ function Page2() {
               key={index}
               sx={{
                 width: "100%",
-                border: "1px solid #e0e0e0",
                 borderRadius: "0.375rem",
                 "&:hover": { bgcolor: "#f7f7f7" },
               }}
             >
               <label
-                className="w-full h-full block radio relative p-2"
+                className="w-full h-full block relative p-2"
                 htmlFor={`course-${index}`}
+                style={{ display: 'flex', alignItems: 'center', gap: '10px' }} // Added flex layout with gap
               >
-                <input type="radio" id={`course-${index}`} name="course" />
-                <span className="text-sm font-light inline-block w-full h-full py-5">
+                <input type="checkbox" id={`course-${index}`} name="course" />
+                <span className="text-sm font-light">
                   {platform.name}
                 </span>
                 {platform.imageLink && (
@@ -88,7 +100,7 @@ function Page2() {
         </Box>
       </Box>
 
-      <Box sx={{ position: "relative", mt: 2 }}>
+      <Box sx={{ position: "relative", marginTop: 8 }}>
         <Typography variant="h6" component="h2" sx={{ mb: 1, fontWeight: 600 }}>
           Experts
         </Typography>
@@ -106,30 +118,30 @@ function Page2() {
             listStyle: "none",
           }}
         >
-          {platforms.map((platform, index) => (
+          {experts.map((expert, index) => (
             <Box
               component="li"
               key={index}
               sx={{
                 width: "100%",
-                border: "1px solid #e0e0e0",
                 borderRadius: "0.375rem",
                 "&:hover": { bgcolor: "#f7f7f7" },
               }}
             >
               <label
-                className="w-full h-full block radio relative p-2"
+                className="w-full h-full block relative p-2"
                 htmlFor={`exp-${index}`}
+                style={{ display: 'flex', alignItems: 'center', gap: '10px' }} // Applied flex layout with gap
               >
-                <input type="radio" id={`exp-${index}`} name="exp" />
-                <span className="text-sm font-light inline-block w-full h-full py-5">
-                  {platform.name}
+                <input type="checkbox" id={`exp-${index}`} name="exp" />
+                <span className="text-sm font-light">
+                  {expert.name}
                 </span>
-                {platform.imageLink && (
+                {expert.imageLink && (
                   <img
                     className="absolute right-2 top-1/2 -translate-y-1/2"
-                    src={platform.imageLink}
-                    alt={platform.name}
+                    src={expert.imageLink}
+                    alt={expert.name}
                   />
                 )}
               </label>

@@ -119,6 +119,14 @@ const Header = () => {
           >
             Login
           </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ ml: 2,borderRadius: "2em" }}
+            onClick={() => navigate("/get-started")}
+          >
+            SignUp
+          </Button>
         </Box>
       </Toolbar>
 
@@ -177,6 +185,14 @@ const Header = () => {
               onClick={() => navigate("/login")}
             >
               Login
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ borderRadius: "2em" }}
+              onClick={() => navigate("/get-started")}
+            >
+              SignUp
             </Button>
           </Box>
         </Box>

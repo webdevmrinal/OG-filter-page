@@ -105,7 +105,7 @@ const SignUp = () => {
                 label="First Name"
                 variant="outlined"
                 fullWidth
-                required
+                
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
@@ -114,7 +114,7 @@ const SignUp = () => {
                 label="Last Name"
                 variant="outlined"
                 fullWidth
-                required
+                
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
@@ -126,7 +126,7 @@ const SignUp = () => {
                 type="email"
                 variant="outlined"
                 fullWidth
-                required
+                
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
@@ -137,7 +137,7 @@ const SignUp = () => {
                 type="password"
                 variant="outlined"
                 fullWidth
-                required
+                
                 name="password"
                 value={formData.password}
                 onChange={handleChange}

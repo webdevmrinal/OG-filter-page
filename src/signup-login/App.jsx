@@ -16,11 +16,15 @@ import Footer from "./Footer";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
   height: "100vh",
+  
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  
   [theme.breakpoints.up("md")]: {
     height: "48rem",
+    maxWidth: '100rem',
+    margin: '20px 0px',
   },
 }));
 
@@ -32,7 +36,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   padding: theme.spacing(2.5, 2.5, 0),
   [theme.breakpoints.up("md")]: {
-    maxWidth: "64rem",
+    maxWidth: "200rem",
     height: "48rem",
     borderRadius: theme.shape.borderRadius * 2,
     boxShadow: theme.shadows[4],
@@ -166,7 +170,7 @@ function App2() {
                       onClick={handleNext}
                       variant="contained"
                       sx={{
-                        backgroundColor: "#3f3f3f",
+                        backgroundColor: "#25387c",
                         color: "white",
                         textTransform: "none",
                         fontWeight: 500,

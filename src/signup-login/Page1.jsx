@@ -3,7 +3,7 @@ import { Typography, Box, RadioGroup, FormControlLabel, Radio } from "@mui/mater
 
 function Page1() {
   return (
-    <Box>
+    <Box sx={{}}>
       <Typography variant="h5" component="h1" sx={{ pt: 1.5, fontWeight: 'bold', color: '#303030' }}>
         Let's get started. Which of these best describes you?
       </Typography>
@@ -22,18 +22,18 @@ function Page1() {
           listStyle: 'none',
         }}
       >
-        <Box component="li" sx={{ width: '100%', border: '1px solid #e0e0e0', borderRadius: '0.375rem', '&:hover': { bgcolor: '#f7f7f7' } }}>
+        <Box component="li" sx={{ width: '100%', borderRadius: '0.375rem', '&:hover': { bgcolor: '#f7f7f7' } }}>
           <label className="w-full h-full block radio" htmlFor="exp-1">
-            <input type="radio" id="exp-1" name="exp" />
-            <span className="text-sm font-light inline-block w-full h-full py-5">
+            <input type="radio" id="exp-1" name="exp"/>
+            <span className="text-sm font-light inline-block w-full h-full py-5 " style={{marginLeft: '10px', marginBottom: '3px'}}>
               I'm a user
             </span>
           </label>
         </Box>
-        <Box component="li" sx={{ width: '100%', border: '1px solid #e0e0e0', borderRadius: '0.375rem', '&:hover': { bgcolor: '#f7f7f7' } }}>
+        <Box component="li" sx={{ width: '100%', borderRadius: '0.375rem', '&:hover': { bgcolor: '#f7f7f7' } }}>
           <label className="w-full h-full radio" htmlFor="exp-2">
             <input type="radio" id="exp-2" name="exp" />
-            <span className="text-sm font-light inline-block w-full h-full py-5">
+            <span className="text-sm font-light inline-block w-full h-full py-5" style={{marginLeft: '10px', marginBottom: '3px'}}>
               I'm an expert
             </span>
           </label>

@@ -97,12 +97,16 @@ const TimeButton = styled(ToggleButton)(({ available }) => ({
 }));
 
 const StyledConfirmationBox = styled(Box)(({ theme }) => ({
-    padding: theme.spacing(3),
-    marginTop: theme.spacing(3),
-    borderRadius: 12,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[2],
-    border: `1px solid ${theme.palette.grey[300]}`,
+    width: '100%', // Ensures the box takes the full width
+    padding: theme.spacing(1),
+    backgroundColor: "#6fbf73", // Green background
+    color: 'white', // White text color for better contrast
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: theme.shadows[1],
 }));
 
 const StyledSummaryBox = styled(Box)(({ theme }) => ({
@@ -113,6 +117,8 @@ const StyledSummaryBox = styled(Box)(({ theme }) => ({
     boxShadow: theme.shadows[2],
     border: `1px solid ${theme.palette.grey[300]}`,
 }));
+
+
 const SelectTime = ({ setShowGetTime, professorName }) => {
     const [duration, setDuration] = useState("15");
     const [selectedTimes, setSelectedTimes] = useState([]);
@@ -270,13 +276,13 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
 
             {view === "confirmation" ? (
                 <StyledSummaryBox sx={{}}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CheckCircleOutlineIcon sx={{ color: 'green', verticalAlign: 'middle', marginBottom: '0.40rem', transform: 'scale(1.1)' }} />
-                        <Typography variant="h5" gutterBottom component="span">
-                            Confirmed
-                        </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <StyledConfirmationBox>
+                    <CheckCircleOutlineIcon />
+                    <Typography variant="h6">
+                        Your session is confirmed!
+                    </Typography>
+                </StyledConfirmationBox>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 ,mt: 2 }}>
                         <Avatar
                             src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
                             alt={profileData?.name}
@@ -292,7 +298,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                     </Box>
 
                     {/* Selected Times */}
-                    <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2, }}>
                         <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
                             Selected Times:
                         </Typography>
@@ -362,7 +368,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                         </Box>
                         <Box sx={{ gap: 2 }}>
 
-                            <Button variant="contained" color="primary">
+                            <Button variant="contained" color="primary" onClick={() => setView('setTime')}>
                                 Book Another Slot
                             </Button>
                         </Box>

@@ -30,7 +30,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import SelectTime from "./SelectTime";
 
 const GradientBox = styled(Box)({
@@ -136,9 +136,11 @@ const ProfilePage = () => {
               alt={profileData.name}
             />
             <Box ml={2} mb={1}>
-              <Typography variant="h5" fontWeight="bold" color="white">
-                {profileData.name}
-              </Typography>
+            <Link to={`/profile/${profileData.profile_url}`} state={{ expertEmail: profileData.email }} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Typography variant="h5" fontWeight="bold" color="white">
+      {profileData.name}
+    </Typography>
+  </Link>
               <Typography variant="h6" color="white">
                 {profileData.experience}
               </Typography>
