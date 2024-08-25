@@ -34,6 +34,7 @@ import OGLogo from "./assets/OG-Logo.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FacebookIcon, GoogleIcon, LinkedInIcon } from "./Icons";
+import Header from "./Header";
 
 const images = [
   "https://images.unsplash.com/photo-1590649917466-06e6e1c3e92d?fit=crop&w=500&h=700",
@@ -107,95 +108,7 @@ const LoginPage = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky" color="default" elevation={0}>
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "1em",
-            bgcolor: "white",
-            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-          }}
-        >
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ display: { xs: "flex", md: "none" } }}
-            onClick={toggleDrawer(true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Link
-            href="#"
-            flexGrow={0}
-            py={1}
-            sx={{
-              display: { xs: "flex", md: "block" },
-              justifyContent: { xs: "center" },
-              alignItems: { xs: "center" },
-              width: { xs: "100%", md: "fit-content" },
-            }}
-          >
-            <img
-              src={OGLogo}
-              alt="OpenGrowth Logo"
-              style={{ height: "3.5em" }}
-              onClick={() => {
-                navigate("/");
-              }}
-            />
-          </Link>
-
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            {navItems.map((item, index) => (
-              <NavMenuItem key={index} title={item.title} items={item.items} />
-            ))}
-            <Button
-              sx={{
-                marginRight: 3,
-                fontWeight: "600",
-                fontSize: "1em",
-                textTransform: "capitalize",
-                "&:hover": {
-                  background: "transparent",
-                  textDecoration: "underline",
-                },
-              }}
-              color="inherit"
-              TouchRippleProps={{ style: { color: "transparent" } }}
-            >
-              About Us
-            </Button>
-            <Button
-              sx={{
-                marginRight: 3,
-                fontWeight: "600",
-                fontSize: "1em",
-                textTransform: "capitalize",
-                "&:hover": {
-                  background: "transparent",
-                  textDecoration: "underline",
-                },
-              }}
-              color="inherit"
-              TouchRippleProps={{ style: { color: "transparent" } }}
-            >
-              Contact
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ borderRadius: "2em" }}
-              onClick={() => {
-                navigate("/signup");
-              }}
-            >
-              Signup
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
+      <Header />
 
       <Drawer
         anchor="left"

@@ -19,7 +19,6 @@ import {
   FormControl,
   Grid,
   useTheme,
-  Link,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -28,6 +27,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
+import { Link } from "react-router-dom";
 
 // import Header from "./Header";
 
@@ -762,6 +762,13 @@ const CourseDashboard = () => {
                 <Grid container spacing={3}>
                   {courses.map((course, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
+                      <Link to={`/course/${course.title}`} style={{ textDecoration: 'none' }} 
+                      state={{
+                        title: course.title,
+                        imageUrl:
+                          course.image,
+                        description: course.description,
+                      }}>
                       <Card
                         sx={{
                           boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
@@ -872,6 +879,7 @@ const CourseDashboard = () => {
                           </Box>
                         </CardContent>
                       </Card>
+                      </Link>
                     </Grid>
                   ))}
                 </Grid>
