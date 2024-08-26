@@ -169,11 +169,7 @@ const ExpertCard = ({ name, industry, img }) => {
         borderRadius: "0.3em",
         maxWidth: "100%",
         transition: "0.3s",
-        // filter: "grayscale(100%)",  //remove these commenet for hover effect
-        "&:hover": {
-          //   filter: "grayscale(0%)",
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-        },
+        
         position: "relative",
         margin: "0 10px",
         height: getCardHeight(),

@@ -12,6 +12,7 @@ import {
     TimelineDot,
     TimelineOppositeContent,
   } from "@mui/lab";
+import Header from './signup-login/Header';
 
 const CourseImage = styled('div')(({ theme }) => ({
   width: '100%',
@@ -84,7 +85,8 @@ const CourseDescription = () => {
   }
 
   return (
-    <Box sx={{ width: '100%', padding: 4 }}>
+    <Box sx={{ width: '100%', px: 4 }}>
+      <Header />
       <Card sx={{ width: '100%', boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, marginBottom: 4 }}>
         <Box sx={{ width: '100%', padding: 2, marginBottom: 0 }}>
           <CourseImage

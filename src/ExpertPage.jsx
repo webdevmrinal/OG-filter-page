@@ -91,7 +91,7 @@ function ExpertPage() {
           {
             email: "akriti@opengrowth.com",
             start: 0,
-            end: 10,
+            end: 16,
             key: `0_popular_tags_${category}`,
             search: category,
             search_with: "tags",
@@ -105,7 +105,7 @@ function ExpertPage() {
           {
             id: "akriti@opengrowth.com",
             start: 0,
-            end: 10,
+            end: 16,
             key: "0_all_mentors_0_to_10",
           }
         );
@@ -184,13 +184,13 @@ function ExpertPage() {
       </Box>
       <Divider />
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
           <CircularProgress />
         </Box>
       ) : (
         <Grid
           container
-          spacing={5}
+          spacing={3}
           sx={{
             placeItems: "center",
             placeContent: "center",
@@ -244,8 +244,8 @@ const ExpertCard = ({ expert, onKnowMore }) => {
   return (
     <Card
       sx={{
-        width: "20em",
-        height: "35em",
+        width: "19em",
+        height: "28em",
         flexShrink: 0,
         display: "flex",
         flexDirection: "column",

@@ -41,7 +41,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
     borderRadius: theme.shape.borderRadius * 2,
     boxShadow: theme.shadows[4],
     border: `1px solid ${theme.palette.divider}`,
-    padding: theme.spacing(7, 7, 0),
+    padding: theme.spacing(4, 7, 0),
   },
 }));
 
@@ -116,7 +116,7 @@ function App2() {
           >
             <StyledContainer>
               <ContentBox>
-                <Box sx={{ width: "100%", my: 2.5 }}>
+                <Box sx={{ width: "100%", my: 2 }}>
                   <LinearProgress
                     variant="determinate"
                     value={step}

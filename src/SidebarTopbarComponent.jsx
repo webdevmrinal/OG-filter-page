@@ -102,8 +102,8 @@ const SidebarTopbarComponent = () => {
     { text: "Dashboard", icon: <DashboardIcon />, route: "/dashboardpage" },
     { text: "Experts on Demand", icon: <PersonIcon />, route: "/expertPage" },
     { text: "Courses", icon: <SchoolIcon />, route: "/coursedashboard" },
-    { text: "Messages", icon: <MessageIcon />, route: null },
-    { text: "Account Settings", icon: <SettingsIcon />, route: null },
+    { text: "Messages", icon: <MessageIcon />, route: "/connections" },
+    { text: "Account Settings", icon: <SettingsIcon />, route: "/transaction" },
     { text: "Logout", icon: <ExitToAppIcon />, route: null },
   ];
 
@@ -184,7 +184,7 @@ const SidebarTopbarComponent = () => {
             boxShadow: "0px 2px 4px -1px rgba(0,0,0,0.1)",
           }}
         >
-          <Link to={"/"}>
+          <Link to={"/dashboardpage"}>
             <Box
               component="img"
               src={OGLogo}

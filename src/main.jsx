@@ -57,7 +57,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="mycourse" element={<MyCourse />} />
           <Route path="searchcourse" element={<SearchCourse />} />
           <Route path="coursedashboard" element={<CourseDashboard />} />
-          <Route path="course/:courseId" element={<CourseDescription />} />
+          
           <Route path="course-intro" element={<CourseIntroduction />} />
         </Route>
         <Route path="homepage" element={<Homepage />} />
@@ -67,6 +67,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="get-started" element={<App2 />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
+          <Route path="course/:courseId" element={<CourseDescription />} />
       </Routes>
     </Router>
   </ThemeProvider>

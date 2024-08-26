@@ -91,7 +91,7 @@ function ExpertPage2() {
           {
             email: "akriti@opengrowth.com",
             start: 0,
-            end: 10,
+            end: 16,
             key: `0_popular_tags_${category}`,
             search: category,
             search_with: "tags",
@@ -105,7 +105,7 @@ function ExpertPage2() {
           {
             id: "akriti@opengrowth.com",
             start: 0,
-            end: 10,
+            end: 16,
             key: "0_all_mentors_0_to_10",
           }
         );

@@ -23,7 +23,7 @@ import {
 import { styled } from "@mui/system";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
-import AppointmentsPage from "./Appointments";
+import { useNavigate  } from 'react-router-dom';
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -364,6 +364,11 @@ const DashboardPage = () => {
       el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
     });
   }, []);
+  const navigate  = useNavigate ();
+
+const navigateToAppointmentsPage = () => {
+  navigate('/appointmentpage');
+};
 
   return (
     <>
@@ -528,6 +533,7 @@ const DashboardPage = () => {
             </Box>
             <Box
               sx={{
+                
                 pl: 4,
                 pr: 4,
                 pt: 1,
@@ -540,6 +546,9 @@ const DashboardPage = () => {
                 boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
               }}
             >
+              <Box sx={{display: 'flex',
+                justifyContent: 'space-between',
+              alignItems: 'center'}}>
               <Typography
                 variant="h6"
                 gutterBottom
@@ -547,6 +556,8 @@ const DashboardPage = () => {
               >
                 Appointments
               </Typography>
+              <Button onClick={navigateToAppointmentsPage} sx={{ mr: 4 }}>View All</Button>
+              </Box>
               <Divider sx={{ mb: 2 }} />
               {appointmentTab === 0 && (
                 <Grid

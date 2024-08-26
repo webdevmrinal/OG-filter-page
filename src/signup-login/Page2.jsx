@@ -37,7 +37,7 @@ const experts = [
 
 function Page2() {
   return (
-    <Box>
+    <Box sx={{}}>
       <Typography
         variant="h5"
         component="h1"
@@ -50,22 +50,22 @@ function Page2() {
         We can help you import your store.
       </Typography>
 
-      <Box sx={{ position: "relative", mt: 4 }}>
+      {/* Courses Section in a Box */}
+      <Box sx={{ mt: 4 }}>
         <Typography variant="h6" component="h2" sx={{ mb: 1, fontWeight: 600 }}>
           Courses
         </Typography>
         <Box
           component="ul"
           sx={{
-            width: "100%",
-            pb: 4,
             display: "grid",
-            gap: 2,
+            gap: 3,
             gridTemplateColumns: "repeat(2, 1fr)",
             maxHeight: 224,
             overflowY: "auto",
-            padding: 0,
             listStyle: "none",
+            p: 0,
+            mt: 3,
           }}
         >
           {platforms.map((platform, index) => (
@@ -73,25 +73,23 @@ function Page2() {
               component="li"
               key={index}
               sx={{
-                width: "100%",
-                borderRadius: "0.375rem",
+                border: '0.5px solid #e0e0e0',
+                borderRadius: '0.375rem',
+                p: 2,
                 "&:hover": { bgcolor: "#f7f7f7" },
               }}
             >
               <label
-                className="w-full h-full block relative p-2"
                 htmlFor={`course-${index}`}
-                style={{ display: 'flex', alignItems: 'center', gap: '10px' }} // Added flex layout with gap
+                sx={{ display: 'flex', alignItems: 'center', gap: '20px', p: 2, width: '100%' }}
               >
                 <input type="checkbox" id={`course-${index}`} name="course" />
-                <span className="text-sm font-light">
-                  {platform.name}
-                </span>
+                <span>&nbsp;{platform.name}</span>
                 {platform.imageLink && (
                   <img
-                    className="absolute right-2 top-1/2 -translate-y-1/2"
                     src={platform.imageLink}
                     alt={platform.name}
+                    style={{ position: 'absolute', right: 16, transform: 'translateY(-50%)', top: '50%' }}
                   />
                 )}
               </label>
@@ -100,22 +98,22 @@ function Page2() {
         </Box>
       </Box>
 
-      <Box sx={{ position: "relative", marginTop: 8 }}>
+      {/* Experts Section in a Box */}
+      <Box sx={{ mt: 4 }}>
         <Typography variant="h6" component="h2" sx={{ mb: 1, fontWeight: 600 }}>
           Experts
         </Typography>
         <Box
           component="ul"
           sx={{
-            width: "100%",
-            pb: 4,
             display: "grid",
-            gap: 2,
+            gap: 3,
             gridTemplateColumns: "repeat(2, 1fr)",
             maxHeight: 224,
             overflowY: "auto",
-            padding: 0,
             listStyle: "none",
+            p: 0,
+            mt: 3,
           }}
         >
           {experts.map((expert, index) => (
@@ -123,25 +121,23 @@ function Page2() {
               component="li"
               key={index}
               sx={{
-                width: "100%",
-                borderRadius: "0.375rem",
+                border: '0.5px solid #e0e0e0',
+                borderRadius: '0.375rem',
+                p: 2,
                 "&:hover": { bgcolor: "#f7f7f7" },
               }}
             >
               <label
-                className="w-full h-full block relative p-2"
                 htmlFor={`exp-${index}`}
-                style={{ display: 'flex', alignItems: 'center', gap: '10px' }} // Applied flex layout with gap
+                sx={{ display: 'flex', alignItems: 'center', gap: '20px', p: 2, width: '100%' }}
               >
                 <input type="checkbox" id={`exp-${index}`} name="exp" />
-                <span className="text-sm font-light">
-                  {expert.name}
-                </span>
+                <span>&nbsp;{expert.name}</span>
                 {expert.imageLink && (
                   <img
-                    className="absolute right-2 top-1/2 -translate-y-1/2"
                     src={expert.imageLink}
                     alt={expert.name}
+                    style={{ position: 'absolute', right: 16, transform: 'translateY(-50%)', top: '50%' }}
                   />
                 )}
               </label>
