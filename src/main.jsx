@@ -27,6 +27,8 @@ import CourseIntroduction from "./Course-Modules/Introduction.jsx";
 import AllExperts from "./homepage/AllExperts.jsx";
 import AllCourses from "./homepage/AllCourses.jsx";
 import ExpertProfile from "./homepage/ExpertProfile.jsx";
+import TodoTask from "./TodoTask.jsx";
+import Projects from "./Projects.jsx";
 
 const theme = createTheme({
   palette: {
@@ -57,6 +59,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="mycourse" element={<MyCourse />} />
           <Route path="searchcourse" element={<SearchCourse />} />
           <Route path="coursedashboard" element={<CourseDashboard />} />
+          <Route path="todo" element={<TodoTask />} />
+          <Route path="projects" element={<Projects />} />
           
           <Route path="course-intro" element={<CourseIntroduction />} />
         </Route>

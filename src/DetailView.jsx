@@ -522,7 +522,6 @@ const DetailView = () => {
                       {profileData?.country}
                     </Typography>
                     <Box display={"flex"} gap={1} sx={{ mt: 1 }}>
-                      <InfoIcon />
                       <Typography variant="body1">
                         {truncateText(profileData?.about, 400)}
                         <Button color="primary" sx={{ px: 0, color: "white" }}>

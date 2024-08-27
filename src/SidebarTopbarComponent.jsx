@@ -3,14 +3,13 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
+  InputBase,
+  Box,
   Drawer,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  InputBase,
-  Box,
 } from "@mui/material";
 import {
   ChevronLeft as ChevronLeftIcon,
@@ -18,18 +17,17 @@ import {
   Dashboard as DashboardIcon,
   Person as PersonIcon,
   School as SchoolIcon,
-  People as PeopleIcon,
-  Book as BookIcon,
   Message as MessageIcon,
   Settings as SettingsIcon,
   ExitToApp as ExitToAppIcon,
   Search as SearchIcon,
   Notifications as NotificationsIcon,
+  ExpandMore as ExpandMoreIcon,
+  ExpandLess as ExpandLessIcon,
 } from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
-import App from "./App";
+import { Link, useNavigate } from "react-router-dom";
 import OGLogo from "./assets/OG-Logo.svg";
-import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
@@ -93,15 +91,66 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const SidebarTopbarComponent = () => {
   const [open, setOpen] = useState(false);
+  const [expertsMenuOpen, setExpertsMenuOpen] = useState(false);
+  const [coursesMenuOpen, setCoursesMenuOpen] = useState(false);
+  const navigate = useNavigate(); // For navigation
 
   const handleDrawerToggle = () => {
     setOpen(!open);
+    if (!open) {
+      setExpertsMenuOpen(false); // Close experts menu when collapsing sidebar
+      setCoursesMenuOpen(false); // Close courses menu when collapsing sidebar
+    }
+  };
+
+  const toggleExpertsMenu = () => {
+    setExpertsMenuOpen(!expertsMenuOpen);
+  };
+
+  const toggleCoursesMenu = () => {
+    setCoursesMenuOpen(!coursesMenuOpen);
+  };
+
+  const handleMenuItemClick = (route, isMenu, toggleMenu) => {
+    if (isMenu) {
+      if (!open) {
+        setOpen(true);
+      }
+      toggleMenu();
+    }
+    if (route) {
+      navigate(route);
+    }
+  };
+
+  const handleSubMenuItemClick = (route) => {
+    navigate(route);
   };
 
   const menuItems = [
     { text: "Dashboard", icon: <DashboardIcon />, route: "/dashboardpage" },
-    { text: "Experts on Demand", icon: <PersonIcon />, route: "/expertPage" },
-    { text: "Courses", icon: <SchoolIcon />, route: "/coursedashboard" },
+    {
+      text: "Experts on Demand",
+      icon: <PersonIcon />,
+      route: "/expertpage",
+      isMenu: true,
+      subMenu: [
+        { text: "Search Experts", route: "/expertpage" },
+        { text: "My Followers", route: "/followers" },
+        { text: "My Connections", route: "/connections" },
+        { text: "My Projects", route: "/projects" },
+      ],
+    },
+    {
+      text: "Courses",
+      icon: <SchoolIcon />,
+      route: "/coursedashboard",
+      isMenu: true,
+      subMenu: [
+        { text: "My Course", route: "/mycourse" },
+        { text: "Search Course", route: "/searchcourse" },
+      ],
+    },
     { text: "Messages", icon: <MessageIcon />, route: "/connections" },
     { text: "Account Settings", icon: <SettingsIcon />, route: "/transaction" },
     { text: "Logout", icon: <ExitToAppIcon />, route: null },
@@ -112,7 +161,6 @@ const SidebarTopbarComponent = () => {
       <AppBar
         position="fixed"
         sx={{
-          //   zIndex: (theme) => theme.zIndex.drawer + 1,
           backgroundColor: "white",
           color: "black",
           boxShadow: "0px 2px 4px -1px rgba(0,0,0,0.1)",
@@ -218,43 +266,97 @@ const SidebarTopbarComponent = () => {
               </ListItemIcon>
             </ListItem>
             {menuItems.map((item) => (
-              <Link
-                key={item.text}
-                to={item.route}
-                onClick={handleDrawerToggle}
-                style={{ color: "initial", textDecoration: "none" }}
-              >
-                <ListItem
-                  button
-                  sx={{
-                    display: "flex",
-                    py: 0.5,
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+              item.isMenu ? (
+                <React.Fragment key={item.text}>
+                  <ListItem
+                    button
+                    onClick={() => handleMenuItemClick(item.route, item.isMenu, item.text === "Experts on Demand" ? toggleExpertsMenu : toggleCoursesMenu)}
                     sx={{
-                      my: 2,
-                      minWidth: 0,
-                      mr: open ? 2 : "auto",
-                      justifyContent: "center",
+                      px: 2.5,
+                      alignItems: "center",
                     }}
                   >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.text}
+                    <ListItemIcon
+                      sx={{
+                        my: 2,
+                        minWidth: 0,
+                        mr: open ? 2 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      sx={{
+                        opacity: open ? 1 : 0,
+                        "& .MuiListItemText-primary": {
+                          fontSize: "0.875rem",
+                        },
+                      }}
+                    />
+                    {open && (item.text === "Experts on Demand" ? (expertsMenuOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />) : (coursesMenuOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />))}
+                  </ListItem>
+                  {open && (item.text === "Experts on Demand" ? expertsMenuOpen : coursesMenuOpen) && (
+                    <Box sx={{ pl: 4 }}>
+                      {item.subMenu.map((subItem) => (
+                        <ListItem
+                          button
+                          key={subItem.text}
+                          onClick={() => handleSubMenuItemClick(subItem.route)}
+                          sx={{ py: 0.5, px: 2.5 }}
+                        >
+                          <ListItemText
+                            primary={subItem.text}
+                            sx={{
+                              "& .MuiListItemText-primary": {
+                                fontSize: "0.75rem",
+                              },
+                            }}
+                          />
+                        </ListItem>
+                      ))}
+                    </Box>
+                  )}
+                </React.Fragment>
+              ) : (
+                <Link
+                  key={item.text}
+                  to={item.route}
+                  onClick={handleDrawerToggle}
+                  style={{ color: "initial", textDecoration: "none" }}
+                >
+                  <ListItem
+                    button
                     sx={{
-                      minWidth: drawerWidth,
-                      opacity: open ? 1 : 0,
-                      // color: "primary",
-                      "& .MuiListItemText-primary": {
-                        fontSize: "0.875rem",
-                      },
+                      display: "flex",
+                      py: 0.5,
+                      px: 2.5,
                     }}
-                  />
-                </ListItem>
-              </Link>
+                  >
+                    <ListItemIcon
+                      sx={{
+                        my: 2,
+                        minWidth: 0,
+                        mr: open ? 2 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      sx={{
+                        minWidth: drawerWidth,
+                        opacity: open ? 1 : 0,
+                        "& .MuiListItemText-primary": {
+                          fontSize: "0.875rem",
+                        },
+                      }}
+                    />
+                  </ListItem>
+                </Link>
+              )
             ))}
           </List>
         </Box>

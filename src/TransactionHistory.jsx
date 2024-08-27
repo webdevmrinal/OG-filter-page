@@ -17,7 +17,7 @@ const GradientBox = styled(Box)({
   display: "flex",
   alignItems: "flex-end",
   padding: "24px",
-  borderRadius: "12px",
+  borderRadius: "0px",
 });
 
 const TransactionHistory = () => {
@@ -63,6 +63,13 @@ const TransactionHistory = () => {
     // <Box>
     //   <Header />
       <Box sx={{ backgroundColor: "#f4f4f4", minHeight: "100vh", padding: 2 }}>
+        <Box
+        bgcolor={"#fff"}
+        borderRadius={3}
+        overflow={"hidden"}
+        border={"1px solid lightgray"}
+        sx={{height: '13em'}}
+      >
         <GradientBox sx={{ marginBottom: 2 }}>
           <Box
             sx={{
@@ -72,10 +79,16 @@ const TransactionHistory = () => {
               width: "100%",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <Box
+            display="flex"
+            alignItems="center"
+            position={"absolute"}
+            bottom={"-46%"}
+            sx={{ translate: "0 -50%" }}
+          >
               <Avatar
                 src="https://example.com/your-photo.jpg"
-                sx={{ width: 110, height: 110, marginRight: 2 }}
+                sx={{ width: 110, height: 110, marginRight: 2,border: "4px solid white", }}
               />
               <Box sx={{ color: "white" }}>
                 <Typography variant="h5">John Doe</Typography>
@@ -87,6 +100,7 @@ const TransactionHistory = () => {
             
           </Box>
         </GradientBox>
+        </Box>
         <Card
           variant="outlined"
           sx={{ boxShadow: "0 4px 12px rgba(0,0,0,0.2)", marginTop: '2em' }}

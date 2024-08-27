@@ -3,34 +3,34 @@ import { Typography, Box } from "@mui/material";
 
 const platforms = [
   {
-    name: "Competitor Analysis",
+    name: "Leadership",
     imageLink: null,
   },
   {
-    name: "How to plan an MVP",
+    name: "Product",
   },
   {
-    name: "How to Pitch Your Startup",
+    name: "Marketing",
   },
   {
-    name: "Competitor Analysis",
+    name: "Strategy",
     imageLink: null,
   },
 ];
 
 const experts = [
   {
-    name: "Aniisu K. Verghese",
+    name: "Demand Engagement",
     imageLink: null,
   },
   {
-    name: "Dheeraj Prasad",
+    name: "Artificial Intelligence",
   },
   {
-    name: "Tushar Kansal",
+    name: "Human Resource",
   },
   {
-    name: "Vinod Harith",
+    name: "Enterpreneurship",
     imageLink: null,
   },
 ];

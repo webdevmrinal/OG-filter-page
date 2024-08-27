@@ -12,6 +12,7 @@ import {
 import { styled } from "@mui/system";
 import axios from "axios";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AvatarWrapper = styled(Box)(({ theme }) => ({
   transition: "transform 0.3s ease-in-out",
@@ -35,6 +36,7 @@ const StyledAttendedItem = styled(Box)(({ theme }) => ({
     backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
+    cursor: "pointer", // Change cursor to pointer on hover
   },
 }));
 
@@ -56,36 +58,44 @@ const AttendedItemSkeleton = () => (
   </StyledAttendedItem>
 );
 
-const AttendedItem = ({ item }) => (
-  <StyledAttendedItem >
-    <AvatarWrapper>
-      <Avatar
-        src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
-        sx={{ width: 90, height: 90, mr: 2 }}
-      />
-    </AvatarWrapper>
-    <Box >
-      <Typography variant="subtitle1" sx={{ }}>
-        {item.mentee_name}
-      </Typography>
-      <Typography
-        variant="subtitle2"
-        sx={{}}
-      >
-        {item.idea}
-      </Typography>
-      <Box display={'flex'} mt={0.5}>
-      <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.5, color: 'text.secondary', paddingTop: '1px'}}/>
-      <Typography variant="body2" color="text.secondary">
-        {item.date_title} | {item.time_title}
-      </Typography>
+const AttendedItem = ({ item }) => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleCardClick = () => {
+    navigate('/projects'); // Navigate to the Projects page
+  };
+
+  return (
+    <StyledAttendedItem onClick={handleCardClick}>
+      <AvatarWrapper>
+        <Avatar
+          src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
+          sx={{ width: 90, height: 90, mr: 2 }}
+        />
+      </AvatarWrapper>
+      <Box>
+        <Typography variant="subtitle1">
+          {item.mentee_name}
+        </Typography>
+        <Typography
+          variant="subtitle2"
+        >
+          {item.idea}
+        </Typography>
+        <Box display={'flex'} mt={0.5}>
+          <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.5, color: 'text.secondary', paddingTop: '1px'}}/>
+          <Typography variant="body2" color="text.secondary">
+            {item.date_title} | {item.time_title}
+          </Typography>
+        </Box>
+        <Typography variant="body2" color="text.secondary" sx={{mt: 1}}>
+          Requirement: {item.query}
+        </Typography>
       </Box>
-      <Typography variant="body2" color="text.secondary" sx={{mt: 1}}>
-        Requirement: {item.query}
-      </Typography>
-    </Box>
-  </StyledAttendedItem>
-);
+    </StyledAttendedItem>
+  );
+};
+
 const AttendedAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -123,14 +133,14 @@ const AttendedAppointments = () => {
       elevation={0}
       sx={{ borderRadius: 2, border: "1px solid lightgray" }}
     >
-      <Typography variant="h6" sx={{ px: 3, py: 1}}>
+      <Typography variant="h6" sx={{ px: 3, py: 1 }}>
         Attended Appointments
       </Typography>
       <Divider sx={{ width: "96%", alignSelf: "center", mb: 1, ml: 3 }} />
 
-      <Box sx={{ px: 3, py: 1}}>
+      <Box sx={{ px: 3, py: 1 }}>
         {appointments.map((item) => (
-          <AttendedItem key={item.meet_id} item={item}/>
+          <AttendedItem key={item.meet_id} item={item} />
         ))}
       </Box>
       {loading ? (
