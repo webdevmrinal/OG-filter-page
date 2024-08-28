@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import { Box, Typography, Button, Card, CardContent, Avatar, Grid, Tabs, Tab, Divider, Chip } from '@mui/material';
+import { Box, Typography, Button, Card, CardContent, Avatar,ListItemIcon, ListItemText , Grid, Tabs, Tab, List, ListItem, Divider, Chip,Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { styled } from '@mui/system';
 import { useLocation } from 'react-router-dom';
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import ArticleIcon from '@mui/icons-material/Article';  // Example icon
+import AssignmentIcon from '@mui/icons-material/Assignment';  // Example icon
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     Timeline,
     TimelineItem,
@@ -60,6 +62,71 @@ const InstructorCard = styled(Card)(({ theme }) => ({
   textAlign: 'center',
 }));
 
+const CourseAccordion = styled((props) => {
+  const [expanded, setExpanded] = useState('panel0'); // Default to the first panel open
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  return (
+    <Box {...props}>
+      {[
+        { title: 'What is Fractional Work?', details: [
+          { text: 'Unit 1 - What is a Fractional Executive', icon: <ArticleIcon sx={{height: '0.8em'}}/> },
+          { text: 'Resource 1 - What is a Fractional Executive', icon: <ArticleIcon  sx={{height: '0.8em'}} /> },
+          { text: 'Resource 2 - A Consultant vs a Fractional CEO / COO: What\'s the Difference? An Explanation', icon: <ArticleIcon  sx={{height: '0.8em'}}/> },
+          { text: 'Resource 3 - What are Virtual CFO Services? (And Do You Need It?)', icon: <ArticleIcon  sx={{height: '0.8em'}}/> },
+          { text: 'Resource 4 - Are YOU Ready to Start Offering CFO Services?', icon: <ArticleIcon  sx={{height: '0.8em'}} /> }
+        ]},
+        { title: 'Why Become a Fractional Executive?', details: [
+          { text: 'Resource 1 - Why go fractional', icon: <ArticleIcon sx={{height: '0.8em'}} /> }
+        ]}
+      ].map((section, index) => (
+        <Accordion
+          key={index}
+          expanded={expanded === `panel${index}`}
+          onChange={handleChange(`panel${index}`)}
+          sx={{ boxShadow: 'none', mb: 2, mx: 2 }}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`panel${index}a-content`}
+            id={`panel${index}a-header`}
+            sx={{ fontWeight: 'bold' }}
+          >
+            <Typography color="textPrimary">{section.title}</Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            overflowY: 'auto',
+            '&::-webkit-scrollbar': {
+              display: 'none' // This hides the scrollbar.
+            },
+            '-ms-overflow-style': 'none'  // For Internet Explorer and Edge.
+          }}>
+            <List dense>
+              {section.details.map((detail, idx) => (
+                <ListItem key={idx}>
+                  <ListItemIcon>
+                    {detail.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={<Typography variant='subtitle2' color="textSecondary">{detail.text}</Typography>} />
+                </ListItem>
+              ))}
+            </List>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </Box>
+  );
+})(({ theme }) => ({
+  width: '100%',
+  margin: 'auto',
+  bgcolor: 'background.paper'
+}));
+
 const CourseDescription = () => {
   const location = useLocation();
   const { title, imageUrl, description } = location.state;
@@ -86,60 +153,53 @@ const CourseDescription = () => {
 
   return (
     <Box sx={{ width: '100%', px: 2, py: 2.5 }}>
-      <Card sx={{ width: '100%', boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, marginBottom: 4 }}>
-        <Box sx={{ width: '100%', padding: 2, marginBottom: 0 }}>
-          <CourseImage
-            sx={{
-              backgroundImage: `url(${imageUrl})`,
-            }}
-          >
-            <OverlayText variant="h5">{title}</OverlayText>
-          </CourseImage>
-        </Box>
-        <CardContent>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6" gutterBottom>
-              Course Description
-            </Typography>
-            <Button variant="outlined" color="primary" sx={{ mb: 1.5 }}>
-              Remove Enrollment
-            </Button>
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Divider sx={{ flexGrow: 1, mr: 2, width: '100%' }} />
-          </Box>
-
-          <Typography variant="body1" color="textSecondary" paragraph>
-            {description}
-          </Typography>
-        </CardContent>
-      </Card>
-
-      {/* Instructors Section */}
-      <Card sx={{ width: '100%', boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, mt: 3.3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Instructors
-          </Typography>
-          <Divider sx={{ width: "100%", mb: 2, px: 1 }} />
-          <Grid container spacing={0}> {/* Removed spacing */}
-            {[
-              { name: 'John Doe', status: 'Marketing Expert', image: 'https://randomuser.me/api/portraits/men/75.jpg' },
-              { name: 'Jane Smith', status: 'SEO Specialist', image: 'https://randomuser.me/api/portraits/women/65.jpg' },
-              { name: 'Priya Nath', status: 'Content Strategist', image: 'https://randomuser.me/api/portraits/women/45.jpg' },
-            ].map((instructor, index) => (
-              <Grid item xs={1.3} key={index}>
-                <InstructorCard sx={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2}}>
-                  <InstructorAvatar src={instructor.image} />
-                  <InstructorName >{instructor.name}</InstructorName>
-                  <InstructorStatus >{instructor.status}</InstructorStatus>
-                </InstructorCard>
+      <Grid container spacing={2}>
+      <Grid item xs={12} md={4}>
+        <Card sx={{ height: '100%', overflow: 'auto',boxShadow: "0 4px 6px rgba(0,0,0,0.2)", }}>
+          <CourseAccordion />
+        </Card>
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <Card sx={{ height: '100%', overflow: 'auto',boxShadow: "0 4px 6px rgba(0,0,0,0.2)", }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <CourseImage
+              sx={{
+                backgroundImage: `url(${imageUrl})`,
+              }}
+            >
+              <OverlayText variant="h5">{title}</OverlayText>
+            </CourseImage>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Course Description
+              </Typography>
+              <Typography variant="body1" color="textSecondary" paragraph>
+                {description}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                Instructors
+              </Typography>
+              <Divider sx={{ width: "100%", mb: 2 }} />
+              <Grid container spacing={2}>
+                {[
+                  { name: 'John Doe', status: 'Marketing Expert', image: 'https://randomuser.me/api/portraits/men/75.jpg' },
+                  { name: 'Jane Smith', status: 'SEO Specialist', image: 'https://randomuser.me/api/portraits/women/65.jpg' },
+                  { name: 'Priya Nath', status: 'Content Strategist', image: 'https://randomuser.me/api/portraits/women/45.jpg' },
+                ].map((instructor, index) => (
+                  <Grid item key={index}>
+                    <InstructorCard>
+                      <InstructorAvatar src={instructor.image} />
+                      <InstructorName>{instructor.name}</InstructorName>
+                      <InstructorStatus>{instructor.status}</InstructorStatus>
+                    </InstructorCard>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Box>
+        </Card>
+      </Grid>
+    </Grid>
 
       {/* Skills Section */}
       <Card

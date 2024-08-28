@@ -7,7 +7,8 @@ import {
   Avatar,
   CardMedia,
   Button,
-  Chip
+  Chip,
+  Divider
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useLocation, useNavigate } from "react-router-dom";
@@ -159,6 +160,7 @@ const handleRequestCall = () => {
       sx={{
         width: 300,
         margin: 2,
+        
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
         "&:hover": {
           boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
@@ -179,6 +181,7 @@ const handleRequestCall = () => {
       <Box
         sx={{
           position: 'absolute',
+          
           bottom: 65, 
           left: 0,
           right: 0,
@@ -264,9 +267,10 @@ const AllExperts = ({ }) => {
 
       {/* Top Experts Card */}
       <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
-        <Typography variant="h5" fontWeight="bold" sx={{ mb: 2, ml: 4, textAlign: 'left' }}>
+        <Typography variant="h5" fontWeight="bold" sx={{ mb: 1, ml: 4, textAlign: 'left' }}>
           Top Experts
         </Typography>
+        <Divider sx={{mb: 2, width: '98%', ml: 2}}/>
         <Box sx={{ mb: 2, display: 'flex', flexWrap: 'wrap', ml:4, gap: 1 }}>
           {chipLabels.map((label, index) => (
             <Chip
@@ -283,7 +287,7 @@ const AllExperts = ({ }) => {
           ))}
         </Box>
         {/* Displaying Experts inside the same card */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', }}>
         {experts.map((expert, index) => {
   console.log(expert); // This will log each expert object to the console
   return <ExpertCard key={index} {...expert} />;
