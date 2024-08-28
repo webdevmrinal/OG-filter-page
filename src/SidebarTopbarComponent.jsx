@@ -151,7 +151,7 @@ const SidebarTopbarComponent = () => {
         { text: "Search Course", route: "/searchcourse" },
       ],
     },
-    { text: "Messages", icon: <MessageIcon />, route: "#" },
+    { text: "Messages", icon: <MessageIcon />, route: "/messages" },
     { text: "Account Settings", icon: <SettingsIcon />, route: "/transaction" },
     { text: "Logout", icon: <ExitToAppIcon />, route: null },
   ];

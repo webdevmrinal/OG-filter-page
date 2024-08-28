@@ -37,7 +37,7 @@ const experts = [
 
 function Page2() {
   return (
-    <Box sx={{}}>
+    <Box sx={{pb: 10}}>
       <Typography
         variant="h5"
         component="h1"

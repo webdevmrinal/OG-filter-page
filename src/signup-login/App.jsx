@@ -22,7 +22,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   justifyContent: "center",
   
   [theme.breakpoints.up("md")]: {
-    height: "48rem",
+    height: "auto",
     maxWidth: '100rem',
     margin: '20px 0px',
   },
@@ -37,7 +37,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2.5, 2.5, 0),
   [theme.breakpoints.up("md")]: {
     maxWidth: "200rem",
-    height: "48rem",
+    height: "auto",
     borderRadius: theme.shape.borderRadius * 2,
     boxShadow: theme.shadows[4],
     border: `1px solid ${theme.palette.divider}`,
