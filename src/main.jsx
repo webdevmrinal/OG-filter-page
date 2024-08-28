@@ -29,6 +29,7 @@ import AllCourses from "./homepage/AllCourses.jsx";
 import ExpertProfile from "./homepage/ExpertProfile.jsx";
 import TodoTask from "./TodoTask.jsx";
 import Projects from "./Projects.jsx";
+import PricingPage from "./Pricing.jsx";
 
 const theme = createTheme({
   palette: {
@@ -61,7 +62,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="coursedashboard" element={<CourseDashboard />} />
           <Route path="todo" element={<TodoTask />} />
           <Route path="projects" element={<Projects />} />
-          
+          <Route path="course/:courseId" element={<CourseDescription />} />
           <Route path="course-intro" element={<CourseIntroduction />} />
         </Route>
         <Route path="homepage" element={<Homepage />} />
@@ -71,7 +72,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="get-started" element={<App2 />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
-          <Route path="course/:courseId" element={<CourseDescription />} />
+          <Route path="pricing" element={<PricingPage />} />
+          
       </Routes>
     </Router>
   </ThemeProvider>

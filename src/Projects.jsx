@@ -110,7 +110,14 @@ const Projects = () => {
                     {projects.filter(project => project.favourite).map((project, index) => (
                       <Card
                         key={project.id}
-                        sx={{ width: 280, height: 280, display: 'flex', flexDirection: 'column', py: 2, pl: 2, position: 'relative' }}
+                        sx={{ width: 280, height: 280, display: 'flex', flexDirection: 'column', py: 2, pl: 2, position: 'relative',
+                            "&:hover": {
+                                backgroundColor: "#0000000a",
+                                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                                transform: "translateY(-1px)",
+                                borderRadius: 2,
+                              },
+                         }}
                         onClick={handleCardClick}
                       >
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -197,7 +204,14 @@ const Projects = () => {
                 {projects.filter(project => !project.favourite).map((project, index) => (
                   <Card
                     key={project.id}
-                    sx={{ width: 280, height: 280, display: 'flex', flexDirection: 'column', py: 2, pl: 2, position: 'relative' }}
+                    sx={{ width: 280, height: 280, display: 'flex', flexDirection: 'column', py: 2, pl: 2, position: 'relative' ,
+                        "&:hover": {
+                                backgroundColor: "#0000000a",
+                                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                                transform: "translateY(-1px)",
+                                borderRadius: 2,
+                              },
+                    }}
                     onClick={handleCardClick}
                   >
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

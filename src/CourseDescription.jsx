@@ -85,8 +85,7 @@ const CourseDescription = () => {
   }
 
   return (
-    <Box sx={{ width: '100%', px: 4 }}>
-      <Header />
+    <Box sx={{ width: '100%', px: 2, py: 2.5 }}>
       <Card sx={{ width: '100%', boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, marginBottom: 4 }}>
         <Box sx={{ width: '100%', padding: 2, marginBottom: 0 }}>
           <CourseImage
@@ -285,7 +284,7 @@ const CourseDescription = () => {
                     },
                   }}
                 >
-                  <Box sx={{ p: 2 }}>
+                  <Box sx={{ p: 2, height: '7em' }}>
                     <Typography variant="subtitle1">
                     Instructional benefits
                     </Typography>
