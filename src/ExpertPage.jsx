@@ -79,8 +79,8 @@ function ExpertPage() {
   const [categories, setCategories] = useState(initialCategories);
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [showGetTime, setShowGetTime] = useState(false);
-  const navigate = useNavigate(); // For navigation
-
+  const navigate = useNavigate();
+  
   const fetchExperts = useCallback(async (category = null) => {
     setLoading(true);
     try {
@@ -90,8 +90,8 @@ function ExpertPage() {
           "https://academy.opengrowth.com/api/search_mentor",
           {
             email: "akriti@opengrowth.com",
-            start: 2,
-            end: 18,
+            start: 0,
+            end: 20,
             key: `0_popular_tags_${category}`,
             search: category,
             search_with: "tags",
@@ -104,8 +104,8 @@ function ExpertPage() {
           "https://academy.opengrowth.com/api/get_all_mentors",
           {
             id: "akriti@opengrowth.com",
-            start: 2,
-            end: 18,
+            start: 0,
+            end: 20,
             key: "0_all_mentors_0_to_10",
           }
         );
@@ -153,17 +153,19 @@ function ExpertPage() {
       sx={{
         bgcolor: "white",
         borderRadius: "10px",
-        boxShadow: 1,
-        width: "100%",
+        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+        width: "auto",
         position: "relative",
+        p: 1,
+        // m: 2
       }}
     >
-      <Typography variant="h6" fontWeight="bold" sx={{ p: 2 }}>
+      <Typography variant="h6" gutterBottom sx={{ px: 2,pt: 1 }}>
         Experts
       </Typography>
-      <Divider />
-      <Box sx={{ px: 2, py: 1, overflow: "hidden",pl: 3 }}>
-        <Typography variant="div" fontWeight="semibold" fontSize={17} sx={{ pl: 2 }}>
+      <Divider sx={{width: '98%', ml: 2}}/>
+      <Box sx={{ px: 2, py: 1, overflow: "hidden", pl: 2 }}>
+        <Typography variant="div" fontWeight="semibold" fontSize={17} sx={{ pl: .5 }}>
           Choose a category:
         </Typography>
         <ScrollableBox>
@@ -182,7 +184,6 @@ function ExpertPage() {
           ))}
         </ScrollableBox>
       </Box>
-      <Divider />
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
           <CircularProgress />
@@ -190,72 +191,68 @@ function ExpertPage() {
       ) : (
         <Grid
           container
-          spacing={3}
+          columnSpacing={2} // Adjust column spacing
+          rowSpacing={1}
           sx={{
             placeItems: "center",
             placeContent: "center",
             mx: "auto",
             py: "1.5em",
+            px: '8px',
+
           }}
         >
           {experts.map((expert, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={expert.id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={expert.id} sx={{px: '4px !important'}}>
               <ExpertCard
                 expert={expert}
-                onKnowMore={() => handleExpertClick(expert)}
+                handleExpertClick={handleExpertClick}
               />
             </Grid>
           ))}
         </Grid>
       )}
-
       <ExpertPopup
-        expert={selectedExpert}
-        onClose={() => setSelectedExpert(null)}
-      />
-
-      {/* Button on the right side */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 16,
-          right: 16,
-        }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/appointments')}
-        >
-          List of Appointments
-        </Button>
-        {showGetTime && (
-          <SelectTime
-            setShowGetTime={setShowGetTime}
-            professorName={profileData.name} // Pass the professor's name to SelectTime
-          />
-        )}
-      </Box>
+          expert={selectedExpert}
+          onClose={() => setSelectedExpert(null)}
+        />
     </Card>
   );
 }
 
-const ExpertCard = ({ expert, onKnowMore }) => {
+
+const ExpertCard = ({ expert, handleExpertClick }) => {
+  const categoriesWithIndustry = expert.category.split(",").concat(expert.industry);
+  const uniqueCategories = Array.from(
+    new Set(categoriesWithIndustry.map(cat => cat.trim().toLowerCase()))
+  ).map(cat => cat.charAt(0).toUpperCase() + cat.slice(1));
+
+  // Separate the industry from other categories for different styling
+  const industryChip = uniqueCategories.find(cat => cat.toLowerCase() === expert.industry.toLowerCase());
+  const categoryChips = uniqueCategories.filter(cat => cat.toLowerCase() !== expert.industry.toLowerCase()).slice(0, 1); // Show only 2 categories
+
   return (
     <Card
       sx={{
-        width: "19em",
+        width: "21em",
         height: "28em",
         flexShrink: 0,
         display: "flex",
         flexDirection: "column",
-        borderRadius: ".8em",
+        borderRadius: "6px",
+        mb: 2,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        "&:hover": {
+          boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+          transform: "translateY(-1px)",
+          backgroundColor: '#0000000a',
+        },
       }}
     >
       <CardMedia
         component="div"
         sx={{
-          height: "60%",
+          height: "68%",
           position: "relative",
           backgroundImage: `url(https://academy.opengrowth.com/assets/images/users/${expert.img})`,
           backgroundSize: "cover",
@@ -304,7 +301,7 @@ const ExpertCard = ({ expert, onKnowMore }) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             display: "-webkit-box",
-            WebkitLineClamp: 4,
+            WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
           }}
         >
@@ -313,23 +310,23 @@ const ExpertCard = ({ expert, onKnowMore }) => {
         <Button
           size="small"
           sx={{ mb: 1, fontSize: ".75em", px: 0 }}
-          onClick={onKnowMore}
+          onClick={() => handleExpertClick(expert)}
         >
           Know More
         </Button>
         <Box>
           <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-            {expert.category.split(",").map((category, index) => (
+            {categoryChips.map((category, index) => (
               <Chip
                 key={index}
-                label={category.trim()}
+                label={category}
                 variant="outlined"
                 color="primary"
                 size="small"
               />
             ))}
             <Chip
-              label={expert.industry}
+              label={industryChip}
               variant="outlined"
               color="secondary"
               size="small"
@@ -340,6 +337,7 @@ const ExpertCard = ({ expert, onKnowMore }) => {
     </Card>
   );
 };
+
 
 const ExpertPopup = ({ expert, onClose }) => {
   if (!expert) return null;

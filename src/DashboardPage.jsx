@@ -18,12 +18,13 @@ import {
   CardMedia,
   ButtonBase,
   Grid,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -44,27 +45,57 @@ const initialCategories = [
   "Seasoned Entrepreneur",
 ];
 
-const HeaderSection = styled(Box)(({ theme }) => ({
-  //   backgroundColor: "#1e293b",
-  color: "white",
-  padding: '12px 0px 12px 0px',
-  borderRadius: theme.shape.borderRadius,
-  marginBottom: theme.spacing(3),
-  textAlign: "center",
-}));
+const HeaderSection = styled(Box)(({ theme }) => {
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  return {
+    position: "relative", // To allow positioning of overlay
+    color: "white",
+    padding: '12px 0px',
+    borderRadius: '8px',
+    marginBottom: theme.spacing(3),
+    textAlign: "center",
+    height: '180px',  // Adjust the height to your preference
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundImage: `url(https://academy.opengrowth.com/assets/images/web/banner3.png)`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    overflow: "hidden", // Ensure no overflow is visible
+    "&:before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "#3c4a7280", // Semi-transparent white overlay to lighten the image
+      zIndex: 1, // Ensure the overlay is below the content but above the background image
+    },
+    "& h4": {
+      fontSize: isMobile ? "1.5rem" : "2.125rem", // Adjusted font size for h4
+    },
+    "& h5": {
+      fontSize: isMobile ? "1.125rem" : "1.5rem", // Adjusted font size for h5
+    },
+  };
+});
+
 
 const EngagementCard = styled(ButtonBase)(({ theme }) => ({
-    width: "48%",
-    backgroundColor: "#fdf3e7",
-    padding: theme.spacing(2),
+    width: "49%",
+    backgroundColor: "#ffff",
+    padding: theme.spacing(1.7),
+    paddingTop: '8px',
     textAlign: "center",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-Start",
     gap: theme.spacing(2),
     boxShadow: "none",
-    borderRadius: "12px",
+    borderRadius: "8px",
   "&:hover": {
     backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
@@ -75,13 +106,18 @@ const EngagementCard = styled(ButtonBase)(({ theme }) => ({
     transition: "background-color 0.3s ease"
 }));
 
-const SidebarSection = styled(Box)(({ theme }) => ({
-  width: "25%",
-  marginLeft: theme.spacing(3),
-  display: "flex",
-  flexDirection: "column",
-  gap: theme.spacing(2),
-}));
+const SidebarSection = styled(Box)(({ theme }) => {
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  return {
+    width: isMobile ? "95%" : "25%", // Increase width for small screens
+    marginLeft: isMobile ? 19 : theme.spacing(3),
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(1),
+    marginTop: '8px',
+  };
+});
 const appointments = [
   {
     id: 1,
@@ -122,6 +158,8 @@ const Shimmer = ({ width = "100%", height = 100 }) => (
     <ShimmerEffect />
   </ShimmerWrapper>
 );
+
+
 
 const TimeButton = styled(Button)(({ theme }) => ({
   borderRadius: "1.2em",
@@ -189,6 +227,8 @@ const DashboardPage = () => {
   const [appointmentTab, setAppointmentTab] = useState(0);
 
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const fetchExperts = useCallback(async (category = null) => {
     setLoading(true);
@@ -228,7 +268,7 @@ const DashboardPage = () => {
     }
   }, []);
 
-  const truncateText = (text, maxLength = 80) => {
+  const truncateText = (text, maxLength = 70) => {
     if (text?.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
@@ -255,7 +295,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const elements = document.querySelectorAll(".css-ehiffo");
     elements.forEach((el) => {
-      el.style.width = "69vw";
+      el.style.width = "68vw";
       el.style.height = "53vh";
       el.style.borderRadius = "12px";
       el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
@@ -264,79 +304,76 @@ const DashboardPage = () => {
   const appointmentCard = (appointment) => (
     <Card
       sx={{
-        width: 250,
-        boxShadow: "none",
-        borderRadius: 2,
+        width: { xs: '100%', sm: 200 },
+        padding: theme.spacing(1),
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        borderRadius: theme.shape.borderRadius,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 2,
         position: "relative", // Establishing positioning context
         "&:hover": {
           boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
           transform: "translateY(-1px)",
+          backgroundColor: "#0000000a",
         },
       }}
     >
-      <Avatar sx={{ bgcolor: "primary.main", mb: 2 }}>
-        <EventAvailableIcon />
-      </Avatar>
       <Box sx={{ position: "absolute", top: 10, right: 8, zIndex: 1 }}>
-      <Chip
-    label={appointment.status}
-    sx={{
-      Color: 'white',
-      backgroundColor:'#81c784',
-      mb: 1,
-      height: '20px',
-      fontSize: '0.7rem',
-      '& .MuiChip-icon': {
-        color: "white",
-        backgroundColor: '#81c784',
-        fontSize: '16px',
-      },
-      '& .MuiChip-label': {
-        color: "white",
-        paddingLeft: '8px',
-        paddingRight: '8px',
-      },
-      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)'
-    }}
-  />
+        <Chip
+          label={appointment.status}
+          sx={{
+            color: 'white',
+            backgroundColor: '#81c784',
+            mb: 1,
+            height: '20px',
+            fontSize: '0.7rem',
+            '& .MuiChip-icon': {
+              color: "white",
+              backgroundColor: '#81c784',
+              fontSize: '16px',
+            },
+            '& .MuiChip-label': {
+              color: "white",
+              paddingLeft: '8px',
+              paddingRight: '8px',
+            },
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)'
+          }}
+        />
       </Box>
-      <Typography variant="h6" sx={{ textAlign: "center" }}>
+      
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2, mt: 3 }}>
+        <Avatar
+          sx={{ bgcolor: "primary.main", width: 70, height: 70, zIndex: 1 }}
+          src="https://academy.opengrowth.com/assets/images/users/user_523_professor_DheerajP.png"
+        />
+       
+      </Box>
+      
+      <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
         {appointment.name}
       </Typography>
+      
       <Typography
-        variant="subtitle1"
+        variant="body2"
         color="text.secondary"
-        sx={{ textAlign: "center" }}
+        sx={{ textAlign: "center", mt: 0.5,fontWeight: 500,
+          fontSize: '0.8rem', }}
       >
-        {appointment.description}
+        {appointment.startDate}
       </Typography>
-
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-        <TimeButton
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: "center", mt: 1 }}
-        >
-          {appointment.startDate}
-        </TimeButton>
-      </Box>
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-        <TimeButton
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: "center", mt: 0.5 }}
-        >
-          {appointment.startTime} - {appointment.endTime}
-        </TimeButton>
-      </Box>
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}></Box>
-      <Button sx={{ mt: 2 }}>View Now</Button>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{ textAlign: "center", mt: 0.5,fontWeight: 500,
+          fontSize: '0.8rem', }}
+      >
+        {appointment.startTime} - {appointment.endTime}
+      </Typography>
     </Card>
   );
+  
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
@@ -358,7 +395,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const elements = document.querySelectorAll(".css-ehiffo");
     elements.forEach((el) => {
-      el.style.width = "69vw";
+      el.style.width = "67vw";
       el.style.height = "53vh";
       el.style.borderRadius = "12px";
       el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
@@ -369,16 +406,31 @@ const DashboardPage = () => {
 const navigateToAppointmentsPage = () => {
   navigate('/appointmentpage');
 };
+const navigateToExpertsPage = () => {
+  navigate('/expertpage');
+};
 
   return (
     <>
       {/* <Header /> */}
-      <Box sx={{ backgroundColor: "#f4f6f8", minHeight: "100vh", p: 3 }}>
+      <Box sx={{ backgroundColor: "#f4f6f6", minHeight: "100vh", p: 3 }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 1 }}>
           <Tabs
             value={value}
             onChange={handleChange}
             aria-label="basic tabs example"
+            sx={{
+              '& .MuiTab-root': { 
+                fontSize: { 
+                  xs: '0.7rem',
+                  sm: '0.875rem'
+                },
+                width: {
+                  xs: '11.5em',
+                  sm: 'inherit'
+                }
+              }
+            }}
           >
             <Tab label="Expert On Demand" />
             <Tab label="My Courses" />
@@ -388,121 +440,122 @@ const navigateToAppointmentsPage = () => {
         <HeaderSection>
           <Box
             sx={{
-              background: `linear-gradient(to bottom, #25387c, #505f96)`,
-              // background: `#28419d`,
-              color: theme.palette.common.white,
-              borderRadius: theme.shape.borderRadius,
-              py: 6,
-              px: 4,
-              position: "relative",
-              overflow: "visible",
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
-              justifyContent: "space-between", // Ensures the image is on the right side
-              // "&:before": {
-              //   content: '""',
-              //   position: "absolute",
-              //   top: -60,
-              //   left: -400,
-              //   width: "50%",
-              //   height: "50%",
-              //   borderRadius: "100%",
-              //   background: "#ff98cf",
-              //   opacity: 0.5,
-              //   filter: "blur(65px)",
-              //   mixBlendMode: "screen",
-              //   animation: "wiggleTop 5s infinite ease-in-out",
-              // },
-              // "&:after": {
-              //   content: '""',
-              //   position: "absolute",
-              //   bottom: -80,
-              //   right: -400,
-              //   width: "50%",
-              //   height: "50%",
-              //   background: "#0cfae6",
-              //   filter: "blur(75px)",
-              //   borderRadius: "50%",
-              //   mixBlendMode: "screen",
-              //   animation: "wiggleBottom 5s infinite ease-in-out",
-              // },
-              "@keyframes wiggleTop": {
-                "0%, 100%": {
-                  top: -10,
-                },
-                "50%": {
-                  top: -70,
-                },
-              },
-              "@keyframes wiggleBottom": {
-                "0%, 100%": {
-                  bottom: -30,
-                },
-                "50%": {
-                  bottom: -80,
-                },
-              },
+              justifyContent: "center",
+              textAlign: "center",
+              zIndex: 2,  // Ensure content appears above any potential background overlays
             }}
           >
-            <Box
-              sx={{
-                position: "absolute",
-                right: 10,
-                width: "260px",
-                height: "150px",
-                borderRadius: theme.shape.borderRadius,
-                backgroundImage: `url(${bannerImg2})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                animation: `float 10s ease-in-out infinite`,
-                "@keyframes float": {
-                  "0%": {
-                    transform: "translateY(-5px)",
-                  },
-
-                  "50%": {
-                    transform: "translateY(5px)",
-                  },
-                  "100%": {
-                    transform: "translateY(-5px)",
-                  },
-                },
-              }}
-            />
-            <Box>
-              <Typography variant="h4" gutterBottom fontWeight="600">
-                Welcome, OpenGrowth
-              </Typography>
-              <Typography variant="h5">
-                Your expertise is the driving force on OpenGrowth - let's
-                continue shaping success together.
-              </Typography>
-            </Box>
+            <Typography variant="h4" gutterBottom fontWeight="600">
+              Welcome, OpenGrowth
+            </Typography>
+            <Typography variant="h5">
+              Your expertise is the driving force on OpenGrowth - let's
+              continue shaping success together.
+            </Typography>
           </Box>
         </HeaderSection>
-        <Box sx={{ display: "flex" }}>
-          <Box sx={{ flexGrow: 1, width: "69vw" }}>
+        <Grid container spacing={isMobile ? 2 : 3}>
+          <Grid item xs={12} md={8.7}>
             <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 2,}}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                mb: 2,
+                flexDirection: { xs: 'column', sm: 'inherit' },
+              }}
             >
-              <EngagementCard sx={{ background: ` #f0f0f0`, color: 'black', boxShadow: "0 4px 6px rgba(0,0,0,0.2)", }}>
-                <Typography variant="h6">Fractional Engagements</Typography>
-                <Typography variant="subtitle1" >
-                  Engage with experts for fractional consulting and advice.
-                </Typography>
+              <EngagementCard
+                sx={{
+                  background: `#ffff`,
+                  color: 'black',
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                  width: { xs: '100%', sm: '49%' },
+                  textAlign: 'left',
+                  pb: 2,
+                }}
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase' }}>
+                    Recommended for you
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar
+                      sx={{ width: 60, height: 60, backgroundColor: '#f0f0f0' }}
+                    >
+                      <Box
+                        component="img"
+                        src="https://academy.opengrowth.com/assets/images/web/fragment.png"
+                        alt="Fractional Engagements Icon"
+                        sx={{ width: 60, height: 60, filter: 'brightness(0)' }}  // Make the icon black
+                      />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h6">Fractional Engagements</Typography>
+                      <Typography variant="subtitle1" fontSize='1.1em'>
+                        Engage with experts for fractional consulting and advice.
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
               </EngagementCard>
-              <EngagementCard sx={{background: ` #f0f0f0`, color: 'Black', boxShadow: "0 4px 6px rgba(0,0,0,0.2)",}}>
-                <Typography variant="h6">On Demand Engagement</Typography>
-                <Typography variant="subtitle1">
-                  Access on-demand expertise for immediate needs.
-                </Typography>
+
+              <EngagementCard
+                sx={{
+                  background: `#ffff`,
+                  color: 'black',
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                  width: { xs: '100%', sm: '49%' },
+                  top: { xs: '8px', sm: 'inherit' },
+                  textAlign: 'left',
+                }}
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase' }}>
+                    Recommended for you
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar
+                      sx={{ width: 60, height: 60, backgroundColor: '#f0f0f0' }}
+                    >
+                      <Box
+                        component="img"
+                        src="https://academy.opengrowth.com/assets/images/web/engage.png"
+                        alt="On Demand Engagement Icon"
+                        sx={{ width: 60, height: 60, filter: 'brightness(0)' }}  // Make the icon black
+                      />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h6">On Demand Engagement</Typography>
+                      <Typography variant="subtitle1" fontSize='1.1em'>
+                        Access on-demand expertise for immediate needs.
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
               </EngagementCard>
             </Box>
+
+
             <Box sx={{ marginBottom: 2,  }}>
               <Tabs
                 value={appointmentTab}
                 onChange={handleAppointmentTabChange}
                 aria-label="appointment tabs"
+                sx={{
+                  '& .MuiTab-root': { 
+                    fontSize: { 
+                      xs: '0.7rem',
+                      sm: '0.875rem'
+                    },
+                    width: {
+                      xs: '11.5em',
+                      sm: 'inherit'
+                    }
+                  }
+                }}
               >
                 <Tab
                   iconPosition="start"
@@ -537,13 +590,13 @@ const navigateToAppointmentsPage = () => {
                 pl: 4,
                 pr: 4,
                 pt: 1,
-                pb: 0,
-                width: "69vw",
-                height: "54vh",
+                pb: 3,
+                width: { xs: '100%', sm: '66vw' },
+                height: "auto",
                 overflow: "auto",
-                borderRadius: "12px",
+                borderRadius: "8px",
                 backgroundColor: "#fff",
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
               }}
             >
               <Box sx={{display: 'flex',
@@ -556,7 +609,7 @@ const navigateToAppointmentsPage = () => {
               >
                 Appointments
               </Typography>
-              <Button onClick={navigateToAppointmentsPage} sx={{ mr: 4 }}>View All</Button>
+              <Button onClick={navigateToAppointmentsPage} sx={{ }}>View All</Button>
               </Box>
               <Divider sx={{ mb: 2 }} />
               {appointmentTab === 0 && (
@@ -564,8 +617,8 @@ const navigateToAppointmentsPage = () => {
                   container
                   spacing={2}
                   sx={{
-                    marginTop: 2,
-                    marginLeft: 1,
+                    marginTop: 3,
+                    ml: { xs: '24px', sm: 1 },
                     width: "284px",
                     "& .MuiGrid-item": {
                       padding: "0 !important",
@@ -573,12 +626,14 @@ const navigateToAppointmentsPage = () => {
                   }}
                 >
                   {appointments.map((appointment) => (
-                    <Box sx={{ display: "flex", gap: 2 }}>
+                    <Box sx={{ display: "flex", gap: 4 , flexDirection: { xs: 'column', sm: 'row' }, 
+                    width: { xs: '100%', sm: 'inherit' }, ml: { xs: '24px', sm: 'inherit' },}}>
                       <Grid
                         item
                         key={appointment.id}
                         sx={{
-                          boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                          
+                          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                           borderRadius: "8px",
                           border: "1px solid rgba(0,0,0,0.12)",
                           backgroundColor: "#fff",
@@ -591,7 +646,7 @@ const navigateToAppointmentsPage = () => {
                         item
                         key={appointment.id}
                         sx={{
-                          boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                           borderRadius: "8px",
                           border: "1px solid rgba(0,0,0,0.12)",
                           backgroundColor: "#fff",
@@ -607,83 +662,110 @@ const navigateToAppointmentsPage = () => {
             </Box>
 
             <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-evenly",
-                mt: 4,
-                pt: 3,
-                borderRadius: "12px",
-                backgroundColor: "#fff",
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-              }}
-            >
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{ width: "100%", mb: 2, pl: 5 }}
-              >
-                Experts you can connect
-              </Typography>
-              <Divider sx={{ width: "92%", mb: 2, alignSelf: "center" }} />
-              {experts.slice(0, 6).map((expert, index) => (
-                <Card
-                  key={index}
-                  sx={{
-                    width: 300,
-                    mb: 2,
-                    boxShadow: "none",
-                    borderRadius: "12px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    height: "100%",
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
-                    alt={expert.name}
-                    sx={{ width: "100%", height: 250, position: "relative" }}
-                  />
-                  <Box
-                    sx={{
-                      width: "100%",
-                      p: 1,
-                      border: "1px solid #ccc",
-                      boxSizing: "border-box",
-                      height: "22vh",
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      sx={{ textAlign: "left", width: "100%" }}
-                    >
-                      {expert.name}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      {expert.industry}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mt: 0.8 }}
-                    >
-                      {truncateText(expert.about)}
-                    </Typography>
-                    <Button
-                      size="small"
-                      onClick={() => handleExpertClick(expert)}
-                      sx={{ mt: 1 }}
-                    >
-                      Know More
-                    </Button>
-                  </Box>
-                  {/* </CardContent> */}
-                </Card>
-              ))}
-            </Box>
-          </Box>
+  sx={{
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+    mt: 4,
+    pt: 3,
+    borderRadius: "8px",
+    backgroundColor: "#fff",
+    boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+  }}
+>
+  <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <Typography
+      variant="h6"
+      gutterBottom
+      sx={{ pl: 5 }}
+    >
+      Experts you can connect
+    </Typography>
+    <Button onClick={navigateToExpertsPage} sx={{ mr: 5 }}>View All</Button>
+  </Box>
+  
+  <Divider sx={{ width: "96%", mb: 2 }} />
+
+  {experts.slice(0, 6).map((expert, index) => (
+    <Card
+      key={index}
+      sx={{
+        width: 300,
+        mb: 4,
+        borderRadius: "6px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "auto",
+        boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+        "&:hover": {
+          backgroundColor: "#0000000a",
+          boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+          transform: "translateY(-2px)",
+        },
+      }}
+    >
+      <Box sx={{ width: "100%", position: "relative" }}>
+        <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+          <CardMedia
+            component="img"
+            image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+            alt={expert.name}
+            sx={{ width: "100%", height: 250, cursor: "pointer" }}
+          />
+        </Link>
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            background: "rgba(0, 0, 0, 0.8)",
+            color: "white",
+            p: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "50px",
+          }}
+        >
+          <Typography variant="subtitle1" align="center">
+            {expert.name}
+          </Typography>
+          <Typography variant="body2" align="center" sx={{ fontSize: '0.75rem' }}>
+            {expert.industry}
+          </Typography>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          p: 1,
+          boxSizing: "border-box",
+          height: "auto",
+        }}
+      >
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mt: 0.8 }}
+        >
+          {truncateText(expert.about)}
+        </Typography>
+        <Button
+          size="small"
+          onClick={() => handleExpertClick(expert)}
+          sx={{ mt: 1 }}
+        >
+          Know More
+        </Button>
+      </Box>
+    </Card>
+  ))}
+</Box>
+
+          </Grid>
 
           <SidebarSection>
             <Typography variant="h6">OpenGrowth Experts</Typography>
@@ -739,7 +821,7 @@ const navigateToAppointmentsPage = () => {
               View All
             </Button>
           </SidebarSection>
-        </Box>
+        </Grid>
         <ExpertPopup
           expert={selectedExpert}
           onClose={() => setSelectedExpert(null)}

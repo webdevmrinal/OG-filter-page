@@ -9,7 +9,8 @@ import {
     ToggleButton,
     ToggleButtonGroup,
     Rating,
-    IconButton,
+    useMediaQuery,
+    useTheme,
     Avatar,
 } from "@mui/material";
 import { styled } from "@mui/system";
@@ -71,30 +72,16 @@ const DateButton = styled(ToggleButton)(({ theme }) => ({
 }));
 
 
-const TimeButton = styled(ToggleButton)(({ available }) => ({
-    border: `2px solid ${available ? "#505f96" : "#e0e0e0"}`,
-    color: available ? "#505f96" : "#e0e0e0",
-    opacity: available ? 1 : 0.6,
-    pointerEvents: available ? "auto" : "none",
-    position: "relative",
+const TimeButton = styled(ToggleButton)({
+    border: `2px solid #505f96`,  // Consistent blue border for all
+    color: "#505f96",  // Consistent blue text color for all
     borderRadius: "8px",
     height: "40px",
     width: "100px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    "&:after": {
-        content: available ? '""' : '""',
-        position: "absolute",
-        bottom: "4px",
-        left: "50%",
-        transform: "translateX(-50%)",
-        color: "#e0e0e0",
-        fontSize: "0.75rem",
-        fontWeight: "bold",
-        textAlign: "center",
-    },
-}));
+});
 
 const StyledConfirmationBox = styled(Box)(({ theme }) => ({
     width: '100%', // Ensures the box takes the full width
@@ -105,14 +92,14 @@ const StyledConfirmationBox = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing(1),
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: '6px',
     boxShadow: theme.shadows[1],
 }));
 
 const StyledSummaryBox = styled(Box)(({ theme }) => ({
     padding: theme.spacing(3),
     marginTop: theme.spacing(3),
-    borderRadius: 12,
+    borderRadius: 6,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[2],
     border: `1px solid ${theme.palette.grey[300]}`,
@@ -127,6 +114,8 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
     const [view, setView] = useState("selection");
     const [date, setDate] = useState(new Date().toLocaleDateString());
     const [showAllDays, setShowAllDays] = useState(false);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     const handleDurationChange = (event, newDuration) => {
         if (newDuration !== null) {
@@ -135,14 +124,10 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
     };
 
     const handleTimeToggle = (day, time) => {
-        if (time.available) {
-            setSelectedTimes((prev) => {
-                const timeKey = `${day.date}_${time.label}`;
-                return prev.includes(timeKey)
-                    ? prev.filter((t) => t !== timeKey)
-                    : [...prev, timeKey];
-            });
-        }
+        const timeKey = `${day.date}_${time.label}`;
+        setSelectedTimes((prev) => (
+            prev.includes(timeKey) ? prev.filter((t) => t !== timeKey) : [...prev, timeKey]
+        ));
     };
 
     const handleRequest = () => {
@@ -201,10 +186,10 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
 
     const times = [
         { label: "7pm-8pm", available: true },
-        { label: "8pm-9pm", available: false },
+        { label: "8pm-9pm", available: true },
         { label: "9pm-10pm", available: true },
         { label: "10pm-11pm", available: true },
-        { label: "11pm-12am", available: false },
+        { label: "11pm-12am", available: true },
     ];
 
     const generateNext10Days = () => {
@@ -269,6 +254,15 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                 return `${duration} Min`;
         }
     };
+
+    const resetAndBookAnotherSlot = () => {
+        setSelectedTimes([]);
+        setIsGift(false); 
+        setDate(new Date().toLocaleDateString()); 
+        setDuration("15"); 
+        setView('setTime'); 
+    };
+    
 
     return (
 
@@ -368,7 +362,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                         </Box>
                         <Box sx={{ gap: 2 }}>
 
-                            <Button variant="contained" color="primary" onClick={() => setView('setTime')}>
+                            <Button variant="contained" color="primary" onClick={resetAndBookAnotherSlot}>
                                 Book Another Slot
                             </Button>
                         </Box>
@@ -392,7 +386,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                             professorName={professorName}
                         />
                     ) : (
-                        <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
+                        <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 2 , boxShadow: '0 4px 10px rgba(0,0,0,0.2)'}}>
                             <Typography variant="h5" gutterBottom>
                                 Request a Video Call
                             </Typography>
@@ -445,7 +439,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                     </TimeButton>
                   ))}
                 </ScrollableBox>
-              </Box> */}   <Box display={'flex'} sx={{marginTop: 2}}>
+              </Box> */}   <Box display={'flex'} sx={{marginTop: 2, width: {xs: '110vw', sm: 'inherit'}}}>
                             <Box>
                             {visibleDays.map((day, index) => (
                                 <Box key={index} sx={{ mb: 2 }}>
@@ -460,7 +454,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                                     `${day.date}_${time.label}`
                                                 )}
                                                 onChange={() => handleTimeToggle(day, time)}
-                                                sx={{ mr: 1,mt: 0.7, width: "max-content" }}
+                                                sx={{ mr: 1,mt: 0.7, width: "max-content", fontSize: {xs: '0.9em', sm: 'inherit'} }}
                                             >
                                                 {time.label}
                                             </TimeButton>
@@ -472,7 +466,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                             <Box
                                 sx={{
                                     width: "100%",
-                                    display: "flex",
+                                    display: isMobile ? "none" : "flex",
                                     justifyContent: "flex-end",
                                     alignItems: "flex-start",
                                     mb: 2,
@@ -489,7 +483,11 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                             </Box>
                             </Box>
 
-                            <Box sx={{ mt: 2 }}>
+                            <Box sx={{ display: "flex",
+                                    justifyContent: isMobile ? "space-between" : "flex-start",
+                                    alignItems: "flex-start",
+                                    mt: 2,
+                                    flexDirection: isMobile ? "row" : "column",}}>
                                 <Button
                                     variant="text"
                                     onClick={() => setShowAllDays(!showAllDays)}
@@ -501,6 +499,11 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                 >
                                     {showAllDays ? "Show Less Slots" : "Show More Slots"}
                                 </Button>
+                                {isMobile && (
+                                    <Button size="small" onClick={() => setShowGetTime1(true)}>
+                                        Tap here to see available slots
+                                    </Button>
+                                )}
                             </Box>
 
                             <Box

@@ -10,11 +10,15 @@ import {
   ListItemText,
   Paper,
   Tabs,
-  Tab,
+  Card, CardContent,
+  Grid,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Divider,
+  useMediaQuery,
+  useTheme,
+  Chip
 } from "@mui/material";
 import { styled } from "@mui/system";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -24,7 +28,7 @@ import SendIcon from "@mui/icons-material/Send";
 import WorkIcon from "@mui/icons-material/Work";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
+import { keyframes } from '@mui/system';
 import PersonIcon from "@mui/icons-material/Person";
 import FolderIcon from "@mui/icons-material/Folder";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -32,6 +36,37 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { useParams, useLocation, Link } from "react-router-dom";
 import SelectTime from "./SelectTime";
+
+const shimmerAnimation = keyframes`
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+`;
+
+const ShimmerBox = styled(Box)(({ theme }) => ({
+  animation: `${shimmerAnimation} 2s infinite linear`,
+  background: 'linear-gradient(to right, #eff1f3 8%, #e2e2e2 18%, #eff1f3 33%)',
+  backgroundSize: '1000px 100%',
+  borderRadius: theme.shape.borderRadius,
+  marginBottom: theme.spacing(2)
+}));
+
+const ShimmerLine = styled(Box)({
+  height: '20px',
+  marginBottom: '8px',
+  backgroundColor: '#f0f0f0'
+});
+
+const ProfileShimmer = () => (
+  <ShimmerBox sx={{ width: 1, height: 200, mb: 2 }}>
+    <ShimmerBox sx={{ width: 120, height: 120, borderRadius: '50%', margin: 2 }} />
+    <ShimmerLine sx={{ width: '80%', height: 24 }} />
+    <ShimmerLine sx={{ width: '60%', height: 16 }} />
+  </ShimmerBox>
+);
 
 const GradientBox = styled(Box)({
   // background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
@@ -62,6 +97,38 @@ const ButtonContainer = styled(Box)({
   gap: "8px",
 });
 
+
+const SkillsCard = ({ skills }) => {
+  console.log(skills);
+  
+  const skillsArray = typeof skills === 'string' ? skills.split(',').map(skill => skill.trim()) : [];
+  console.log(skillsArray);
+  
+
+  return (
+    <Card sx={{ mb: 3, boxShadow: "0 8px 16px rgba(0,0,0,0.2)", borderRadius: 2 }}>
+      <CardContent>
+        <Typography variant="h6">
+          Skills
+        </Typography>
+        <Divider sx={{mb: 2}}/>
+        <Grid container spacing={2}>
+          {skillsArray.map((skill, index) => (
+            <Grid item key={index}>
+              <Chip 
+                label={skill} 
+                variant="outlined"  
+                sx={{ }}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </CardContent>
+    </Card>
+  );
+};
+
+
 const ProfilePage = () => {
   const { expertName } = useParams();
   const [profileData, setProfileData] = useState(null);
@@ -69,7 +136,11 @@ const ProfilePage = () => {
   const location = useLocation();
   const expertEmail = location.state?.expertEmail;
   const [tabValue, setTabValue] = useState(0);
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState('panel0');
+  const [isFollowing, setIsFollowing] = useState(false); 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -93,12 +164,24 @@ const ProfilePage = () => {
     }
   }, [expertEmail]);
 
+  if (loading) {
+    return <ProfileShimmer />;
+  }
+
+  if (!profileData) return null;
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
-  const handleAccordionChange = () => {
-    setExpanded(!expanded);
+  const handleFollowClick = () => {
+    setIsFollowing(!isFollowing);  // Toggle follow status on click
+  };
+
+  const handleAccordionChange = (panel) => (event, isExpanded) => {
+    console.log(event.target);
+    
+    setExpanded(isExpanded ? panel : false);
   };
 
   if (!profileData) return null;
@@ -115,13 +198,15 @@ const ProfilePage = () => {
     { title: "Experience", content: profileData.experience },
   ];
 
+  
+
   return (
-    <Box>
+    <Box sx={{width: { xs: '132vw', sm: 'inherit' }}}>
       <Box
         bgcolor={"#fff"}
-        borderRadius={3}
+        borderRadius={1.5}
         overflow={"hidden"}
-        border={"1px solid lightgray"}
+       
       >
         <GradientBox position={"relative"}>
           <Box
@@ -129,7 +214,7 @@ const ProfilePage = () => {
             alignItems="center"
             position={"absolute"}
             bottom={"-46%"}
-            sx={{ translate: "0 -50%" }}
+            sx={{ translate: "0 -50%",  }}
           >
             <ProfileAvatar
               src={`https://academy.opengrowth.com/assets/images/users/${profileData.img}`}
@@ -154,13 +239,14 @@ const ProfilePage = () => {
             aria-label="profile tabs"
           ></Tabs>
           <ButtonContainer>
-            <Button
+          <Button
               startIcon={<PersonAddIcon />}
               variant="outlined"
               color="primary"
+              onClick={handleFollowClick}  // Attach the click handler
               sx={{ mr: 1 }}
             >
-              Follow
+              {isFollowing ? "Following" : "Follow"} 
             </Button>
             <Button startIcon={<SendIcon />} variant="outlined" sx={{ mr: 1 }}>
               Message
@@ -177,91 +263,110 @@ const ProfilePage = () => {
         </TabsContainer>
       </Box>
 
-      <Accordion expanded={expanded} onChange={handleAccordionChange}>
-        <AccordionDetails>
+      <Accordion expanded={expanded === 'panel0'} onChange={handleAccordionChange('panel0')} sx={{boxShadow: "0 1px 1px rgba(0,0,0,0.15)",}}>
+        <AccordionDetails >
           <SelectTime
             setShowGetTime={setExpanded}
             professorName={profileData.name}
           />
         </AccordionDetails>
       </Accordion>
-
-      <Box sx={{ display: "flex", gap: 3, my: 3 }}>
-        <Paper sx={{ flex: 1, borderRadius: 3, alignSelf: "flex-start" }}>
-          <Typography px={3} pt={2} variant="h6" gutterBottom>
-            About
-          </Typography>
-          <Divider />
-          <List dense sx={{ padding: "0 .75em", my: 2 }}>
-            <ListItem>
-              <ListItemIcon>
-                <LocationOnIcon />
-              </ListItemIcon>
-              <ListItemText primary={`Lives in ${profileData.country}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <SchoolIcon />
-              </ListItemIcon>
-              <ListItemText primary={`Completed ${profileData.edu}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <BusinessIcon />
-              </ListItemIcon>
-              <ListItemText primary={profileData.other_college} />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <WorkIcon />
-              </ListItemIcon>
-              <ListItemText primary={profileData.interest} />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <PersonIcon />
-              </ListItemIcon>
-              <ListItemText primary={profileData.industry} />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <FolderIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={`Has ${profileData.experience} experience in ${profileData.industry}`}
-              />
-            </ListItem>
-          </List>
-        </Paper>
-        <Paper
-          elevation={0}
-          sx={{
-            height: "max-content",
-            width: "max-content",
-            flex: 2,
-            overflow: "hidden",
-            bgcolor: "transparent",
-            border: "none",
-            mx: 2,
-          }}
-        >
-          {accordionData.map((item, index) => (
-            <Accordion key={index}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>{item.title}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography
-                  style={{ whiteSpace: "pre-line" }}
-                  color={"text.secondary"}
-                >
-                  {item.content}
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Paper>
+      <Box sx={{px: 4.2}}>
+      <SkillsCard skills={profileData.interest} />
       </Box>
+      <Grid container spacing={3} sx={{ my: 3, pl: 4, pr: 4 }}>
+        {/* Left side - About section */}
+        <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Paper
+            sx={{
+              flex: 1,
+              borderRadius: 2,
+              boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%' // Ensure it takes full height
+            }}
+          >
+            <Typography px={3} pt={0.5} variant="h6" gutterBottom>
+              About
+            </Typography>
+            <Divider />
+            <List dense sx={{ padding: "0 .75em", my: 2, flexGrow: 1 }}>
+              <ListItem>
+                <ListItemIcon>
+                  <LocationOnIcon />
+                </ListItemIcon>
+                <ListItemText primary={`Lives in ${profileData.country}`} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <SchoolIcon />
+                </ListItemIcon>
+                <ListItemText primary={`Completed ${profileData.edu}`} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <BusinessIcon />
+                </ListItemIcon>
+                <ListItemText primary={profileData.other_college} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <WorkIcon />
+                </ListItemIcon>
+                <ListItemText primary={profileData.interest} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary={profileData.industry} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <FolderIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={`Has ${profileData.experience} experience in ${profileData.industry}`}
+                />
+              </ListItem>
+            </List>
+          </Paper>
+        </Grid>
+
+        {/* Right side - Accordion section */}
+        <Grid item xs={12} sm={8} sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Paper
+            elevation={0}
+            sx={{
+              flex: 1,
+              overflow: "hidden",
+              bgcolor: "transparent",
+              border: "none",
+              borderRadius: '8px',
+              boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%' // Ensure it takes full height
+            }}
+          >
+            {accordionData.map((item, index) => (
+              <Accordion key={index} expanded={expanded === `panel${index + 1}`} onChange={handleAccordionChange(`panel${index + 1}`)} sx={{ boxShadow: 'none', flexGrow: 1 }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography sx={{ minHeight: '26.3px' }}>{item.title}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography sx={{ whiteSpace: 'pre-line' }} color="text.secondary">
+                    {item.content}
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Paper>
+        </Grid>
+</Grid>
+
+
     </Box>
   );
 };

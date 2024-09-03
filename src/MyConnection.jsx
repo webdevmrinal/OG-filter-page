@@ -11,7 +11,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   height: 450,
   margin: theme.spacing(2),
   boxShadow: theme.shadows[3],
-  borderRadius: '10px',
+  borderRadius: '6px',
   display: 'flex',
   flexDirection: 'column',
   transition: "0.3s",
@@ -28,9 +28,14 @@ const ExpertCard = styled(Card)(({ theme }) => ({
   flexShrink: 0,
   display: 'flex',
   flexDirection: 'column',
-  borderRadius: '.8em',
+  borderRadius: '8px',
   boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',
   marginBottom: theme.spacing(4),
+  '&:hover': {
+    transform: "translateY(-3px)",
+    boxShadow: theme.shadows[6],
+    backgroundColor: '#0000000a',
+  },
 }));
 
 const MyConnections = () => {
@@ -52,7 +57,7 @@ const MyConnections = () => {
           {
             email: "akriti@opengrowth.com",
             start: 0,
-            end: 10,
+            end: 12,
             key: `0_popular_tags_${category}`,
             search: category,
             search_with: "tags",
@@ -66,7 +71,7 @@ const MyConnections = () => {
           {
             id: "akriti@opengrowth.com",
             start: 0,
-            end: 10,
+            end: 12,
             key: "0_all_mentors_0_to_10",
           }
         );

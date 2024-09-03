@@ -199,7 +199,7 @@ const SidebarTopbarComponent = () => {
           </IconButton>
           <IconButton>
             <img
-              src="https://placehold.co/40x40"
+              src="https://academy.opengrowth.com/assets/images/users/user_597_professor_AnmolJamwal.png"
               alt="User"
               style={{ width: 32, height: 32, borderRadius: "50%" }}
             />
