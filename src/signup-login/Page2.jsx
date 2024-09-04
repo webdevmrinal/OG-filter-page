@@ -30,14 +30,14 @@ const experts = [
     name: "Human Resource",
   },
   {
-    name: "Enterpreneurship",
+    name: "Entrepreneurship",
     imageLink: null,
   },
 ];
 
 function Page2() {
   return (
-    <Box sx={{pb: 10}}>
+    <Box sx={{ pb: 10 }}>
       <Typography
         variant="h5"
         component="h1"
@@ -50,7 +50,7 @@ function Page2() {
         We can help you import your store.
       </Typography>
 
-      {/* Courses Section in a Box */}
+      {/* Courses Section */}
       <Box sx={{ mt: 4 }}>
         <Typography variant="h6" component="h2" sx={{ mb: 1, fontWeight: 600 }}>
           Courses
@@ -59,9 +59,8 @@ function Page2() {
           component="ul"
           sx={{
             display: "grid",
-            gap: 3,
-            gridTemplateColumns: "repeat(2, 1fr)",
-            maxHeight: 224,
+            gap: 2,
+            gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" },
             overflowY: "auto",
             listStyle: "none",
             p: 0,
@@ -77,6 +76,8 @@ function Page2() {
                 borderRadius: '0.375rem',
                 p: 2,
                 "&:hover": { bgcolor: "#f7f7f7" },
+                display: 'flex', // This makes sure the label uses all available space
+                alignItems: 'center', // Aligns items vertically in the center
               }}
             >
               <label
@@ -84,7 +85,7 @@ function Page2() {
                 sx={{ display: 'flex', alignItems: 'center', gap: '20px', p: 2, width: '100%' }}
               >
                 <input type="checkbox" id={`course-${index}`} name="course" />
-                <span>&nbsp;{platform.name}</span>
+                <span>{platform.name}</span>
                 {platform.imageLink && (
                   <img
                     src={platform.imageLink}
@@ -98,7 +99,7 @@ function Page2() {
         </Box>
       </Box>
 
-      {/* Experts Section in a Box */}
+      {/* Experts Section */}
       <Box sx={{ mt: 4 }}>
         <Typography variant="h6" component="h2" sx={{ mb: 1, fontWeight: 600 }}>
           Experts
@@ -107,9 +108,8 @@ function Page2() {
           component="ul"
           sx={{
             display: "grid",
-            gap: 3,
-            gridTemplateColumns: "repeat(2, 1fr)",
-            maxHeight: 224,
+            gap: 2,
+            gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" },
             overflowY: "auto",
             listStyle: "none",
             p: 0,
@@ -125,6 +125,8 @@ function Page2() {
                 borderRadius: '0.375rem',
                 p: 2,
                 "&:hover": { bgcolor: "#f7f7f7" },
+                display: 'flex', // This makes sure the label uses all available space
+                alignItems: 'center', // Aligns items vertically in the center
               }}
             >
               <label
@@ -132,7 +134,7 @@ function Page2() {
                 sx={{ display: 'flex', alignItems: 'center', gap: '20px', p: 2, width: '100%' }}
               >
                 <input type="checkbox" id={`exp-${index}`} name="exp" />
-                <span>&nbsp;{expert.name}</span>
+                <span>{expert.name}</span>
                 {expert.imageLink && (
                   <img
                     src={expert.imageLink}

@@ -15,29 +15,29 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
-  height: "100vh",
-  
   display: "flex",
+  flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  
+  padding: theme.spacing(2),
   [theme.breakpoints.up("md")]: {
-    height: "auto",
+    flexDirection: "row",
+    height: "100vh", // original desktop styles
     maxWidth: '100rem',
-    margin: '20px 0px',
+    margin: '20px auto',
+    padding: theme.spacing(4),
   },
 }));
 
 const ContentBox = styled(Box)(({ theme }) => ({
   width: "100%",
-  height: "100vh",
-  backgroundColor: "white",
   display: "flex",
   flexDirection: "column",
-  padding: theme.spacing(2.5, 2.5, 0),
+  backgroundColor: "white",
+  padding: theme.spacing(2),
   [theme.breakpoints.up("md")]: {
     maxWidth: "200rem",
-    height: "auto",
+    height: "100vh",
     borderRadius: theme.shape.borderRadius * 2,
     boxShadow: theme.shadows[4],
     border: `1px solid ${theme.palette.divider}`,
@@ -48,11 +48,13 @@ const ContentBox = styled(Box)(({ theme }) => ({
 const ButtonContainer = styled(Box)(({ theme }) => ({
   width: "100%",
   display: "flex",
+  flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
   marginTop: "auto",
-  paddingBottom: theme.spacing(3),
+  paddingBottom: theme.spacing(2),
   [theme.breakpoints.up("md")]: {
+    flexDirection: "row",
     paddingBottom: theme.spacing(3),
   },
 }));
@@ -123,7 +125,6 @@ function App2() {
                     sx={{
                       height: 8,
                       borderRadius: 4,
-                      backgroundColor: "#e3e3e3",
                       "& .MuiLinearProgress-bar": {
                         backgroundColor: "#303030",
                         transition: "all 500ms cubic-bezier(0.25,0.1,0.25,1)",

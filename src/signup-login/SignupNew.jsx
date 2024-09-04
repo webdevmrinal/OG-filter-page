@@ -281,7 +281,7 @@ const SignupPage = () => {
                   key={index}
                   sx={{
                     width: "100%",
-                    height: "700px",
+                    height: { xs: "300px", sm: "400px", md: "700px" },
                     overflow: "hidden",
                     borderRadius: "10px",
                     backgroundImage: `url(${url})`,
