@@ -91,12 +91,12 @@ const Projects = () => {
       </Typography>
       <Divider sx={{ mb: 2 }} />
       <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Paper elevation={3} sx={{ padding: 2, width: '100%' }}>
+        <Paper elevation={3} sx={{ padding: {xs: 0, sm: 2}, width: '100%' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
-              <Tab label="Active" id="tab-0" aria-controls="tabpanel-0" />
-              <Tab label="Completed" id="tab-1" aria-controls="tabpanel-1" />
-              <Tab label="Templates" id="tab-2" aria-controls="tabpanel-2" />
+              <Tab label="Active" id="tab-0" aria-controls="tabpanel-0"  sx={{ fontSize:{xs: '0.78rem', sm: 'inherit'}}}/>
+              <Tab label="Completed" id="tab-1" aria-controls="tabpanel-1"  sx={{ fontSize:{xs: '0.78rem', sm: 'inherit'}}}/>
+              <Tab label="Templates" id="tab-2" aria-controls="tabpanel-2"  sx={{ fontSize:{xs: '0.78rem', sm: 'inherit'}}}/>
             </Tabs>
 
             <TabPanel value={tabIndex} index={0}>
@@ -105,18 +105,26 @@ const Projects = () => {
                   <Typography variant="h6" sx={{ mb: 2 }}>
                     FAVOURITES
                   </Typography>
-                  <Divider sx={{ mb: 2 }} />
-                  <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                  <Divider sx={{ mb : 2 }} />
+                  <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2 }}>
                     {projects.filter(project => project.favourite).map((project, index) => (
                       <Card
                         key={project.id}
-                        sx={{ width: 280, height: 280, display: 'flex', flexDirection: 'column', py: 2, pl: 2, position: 'relative',
-                            "&:hover": {
-                                backgroundColor: "#0000000a",
-                                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                                transform: "translateY(-1px)",
-                                borderRadius: 2,
-                              },
+                        sx={{ 
+                          width: { xs: '100%', sm: 400, md: 280 }, // Responsive widths
+                          height: 280, 
+                          display: 'flex', 
+                          flexDirection: 'column', 
+                          py: 2, 
+                          pl: 2, 
+                          boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                          position: 'relative',
+                          "&:hover": {
+                            backgroundColor: "#0000000a",
+                            boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                            transform: "translateY(-2px)",
+                            borderRadius: 2,
+                          },
                          }}
                         onClick={handleCardClick}
                       >
@@ -200,17 +208,25 @@ const Projects = () => {
                 OTHER
               </Typography>
               <Divider sx={{ mb: 2 }} />
-              <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2 }}>
                 {projects.filter(project => !project.favourite).map((project, index) => (
                   <Card
                     key={project.id}
-                    sx={{ width: 280, height: 280, display: 'flex', flexDirection: 'column', py: 2, pl: 2, position: 'relative' ,
-                        "&:hover": {
-                                backgroundColor: "#0000000a",
-                                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                                transform: "translateY(-1px)",
-                                borderRadius: 2,
-                              },
+                    sx={{ 
+                      width: { xs: '100%', sm: 400, md: 280 }, // Responsive widths
+                      height: 280, 
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      py: 2, 
+                      pl: 2, 
+                      boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                      position: 'relative',
+                      "&:hover": {
+                        backgroundColor: "#0000000a",
+                        boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                        transform: "translateY(-2px)",
+                        borderRadius: 2,
+                      },
                     }}
                     onClick={handleCardClick}
                   >

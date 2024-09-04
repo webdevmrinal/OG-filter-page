@@ -1,6 +1,5 @@
-import React from "react";
-import { Card, Box, Typography, Divider, Avatar, Chip } from "@mui/material";
-// import Header from "./Header";
+import React, { useState } from "react";
+import { Card, Box, Typography, Divider, Avatar, Chip, Tabs, Tab } from "@mui/material";
 import { styled } from "@mui/system";
 
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -8,9 +7,11 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import BillingInformationForm from "./BillingInformationForm";
+import AvailableBalances from "./AvailableBalances";
+import PaymentMethods from "./PaymentMethods";
 
 const GradientBox = styled(Box)({
-  // background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
   background: "linear-gradient(to top, #505f96, #25387c)",
   height: "165px",
   position: "relative",
@@ -21,6 +22,8 @@ const GradientBox = styled(Box)({
 });
 
 const TransactionHistory = () => {
+  const [selectedTab, setSelectedTab] = useState(0);
+
   const transactions = [
     {
       date: "May 12",
@@ -59,16 +62,18 @@ const TransactionHistory = () => {
     },
   ];
 
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
   return (
-    // <Box>
-    //   <Header />
-      <Box sx={{ backgroundColor: "#f4f4f4", minHeight: "100vh", padding: 2 }}>
-        <Box
+    <Box sx={{ backgroundColor: "#f4f4f4", minHeight: "100vh", padding: 2 }}>
+      <Box
         bgcolor={"#fff"}
         borderRadius={3}
         overflow={"hidden"}
         border={"1px solid lightgray"}
-        sx={{height: '13em'}}
+        sx={{ height: "13em" }}
       >
         <GradientBox sx={{ marginBottom: 2 }}>
           <Box
@@ -80,45 +85,55 @@ const TransactionHistory = () => {
             }}
           >
             <Box
-            display="flex"
-            alignItems="center"
-            position={"absolute"}
-            bottom={"-46%"}
-            sx={{ translate: "0 -50%" }}
-          >
+              display="flex"
+              alignItems="center"
+              position={"absolute"}
+              bottom={"-46%"}
+              sx={{ translate: "0 -50%" }}
+            >
               <Avatar
                 src="https://example.com/your-photo.jpg"
-                sx={{ width: 110, height: 110, marginRight: 2,border: "4px solid white", }}
+                sx={{
+                  width: 110,
+                  height: 110,
+                  marginRight: 2,
+                  border: "4px solid white",
+                }}
               />
               <Box sx={{ color: "white" }}>
                 <Typography variant="h5">John Doe</Typography>
                 <Typography variant="subtitle1">
-                  React Developer,<LocationOnOutlinedIcon  sx={{ width: "0.8em", height: "0.6em" }}/>India
+                  React Developer,
+                  <LocationOnOutlinedIcon
+                    sx={{ width: "0.8em", height: "0.6em" }}
+                  />
+                  India
                 </Typography>
               </Box>
             </Box>
-            
           </Box>
         </GradientBox>
-        </Box>
-        <Card
-          variant="outlined"
-          sx={{ boxShadow: "0 4px 12px rgba(0,0,0,0.2)", marginTop: '2em' }}
+      </Box>
+      <Card
+        variant="outlined"
+        sx={{ boxShadow: "0 4px 12px rgba(0,0,0,0.2)", marginTop: "2em" }}
+      >
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
+          sx={{ padding: "0 16px" }}
         >
-          <Box sx={{  color: "black" , ml: 2.5, display: 'flex', mt: 2, gap: 1.5}}>
-              <Typography variant="h6" sx={{ }}>
-                Total Spending:
-              </Typography>
-              <Typography variant="h6">$425,000</Typography>
-            </Box>
-          <Typography
-            variant="h6"
-            sx={{ width: "100%", padding: "1px 1px 0px 4px", mt: 2, ml: 2 }}
-          >
-            Transaction History
-          </Typography>
-          <Divider sx={{ width: "98%", mb: 2, px: 1, ml: 2 }} />
-          {transactions.map((transaction, index) => (
+          <Tab label="Transactions History" />
+          <Tab label="Billing Information" />
+          <Tab label="Availlable Balances" />
+          <Tab label="Payment Methods" />
+        </Tabs>
+        <Divider sx={{ width: "98%", mb: 2, mx: "auto" }} />
+
+        {selectedTab === 0 && (
+          transactions.map((transaction, index) => (
             <Card
               key={index}
               sx={{
@@ -141,70 +156,107 @@ const TransactionHistory = () => {
                 },
               }}
             >
-              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 1, ml: 1.5, borderRadius: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.1)", width: '90px', height: '95px' }}>
-                <Typography variant="caption" sx={{ alignSelf: "center", color: "text.secondary", mt: 1, ml: 0.5 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  mb: 1,
+                  ml: 1.5,
+                  borderRadius: 2,
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                  width: "90px",
+                  height: "95px",
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  sx={{
+                    alignSelf: "center",
+                    color: "text.secondary",
+                    mt: 1,
+                    ml: 0.5,
+                  }}
+                >
                   Booked on
                 </Typography>
-                <CalendarTodayIcon sx={{ color: "text.secondary", width: '18px', mt: 1 }} />
-                <Typography variant="body1" color= "text.secondary" fontWeight={'bold'} >
+                <CalendarTodayIcon
+                  sx={{ color: "text.secondary", width: "18px", mt: 1 }}
+                />
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  fontWeight={"bold"}
+                >
                   {transaction.date}
                 </Typography>
               </Box>
               <Box sx={{ padding: 2, flex: 1, ml: 0.5 }}>
-                
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1, gap:0.3, 
-                        paddingTop: '3px', }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    mb: 1,
+                    gap: 0.3,
+                    paddingTop: "3px",
+                  }}
+                >
                   <Chip
-                    label={transaction.isPositive ? "Payment Successful" : "Payment Declined"}
-
-                    icon={transaction.isPositive ? <CheckCircleOutlineIcon sx={{mb: 0.3}}/> : <ErrorOutlineIcon sx={{mb: 0}} />}
+                    label={
+                      transaction.isPositive
+                        ? "Payment Successful"
+                        : "Payment Declined"
+                    }
+                    icon={
+                      transaction.isPositive ? (
+                        <CheckCircleOutlineIcon sx={{ mb: 0.3 }} />
+                      ) : (
+                        <ErrorOutlineIcon sx={{ mb: 0 }} />
+                      )
+                    }
                     size="small"
                     sx={{
-                      Color: 'white',
-                      backgroundColor: transaction.isPositive ? '#81c784' : '#e57373',
+                      Color: "white",
+                      backgroundColor: transaction.isPositive
+                        ? "#81c784"
+                        : "#e57373",
                       mb: 1,
-                      height: '20px',
-                      fontSize: '0.7rem',
-                      '& .MuiChip-icon': {
+                      height: "20px",
+                      fontSize: "0.7rem",
+                      "& .MuiChip-icon": {
                         color: "white",
-                        backgroundColor: transaction.isPositive ? '#81c784' : '#e57373',
-                        fontSize: '16px',
+                        backgroundColor: transaction.isPositive
+                          ? "#81c784"
+                          : "#e57373",
+                        fontSize: "16px",
                       },
-                      '& .MuiChip-label': {
+                      "& .MuiChip-label": {
                         color: "white",
-                        paddingLeft: '8px',
-                        paddingRight: '8px',
+                        paddingLeft: "8px",
+                        paddingRight: "8px",
                       },
-                      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)'
+                      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
                     }}
                   />
                 </Box>
 
                 <Typography
                   variant="subtitle1"
-                  sx={{ pl: 0.3, pb:1 ,lineHeight:0 , mt: 2}}
+                  sx={{ pl: 0.3, pb: 1, lineHeight: 0, mt: 2 }}
                 >
                   {transaction.description}
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                <CalendarTodayIcon sx={{ width: '0.55em', pb: 0.4, mr: 0.6 }} />
-                  <Typography variant="subtitle2" color={'text.secondary'}>
+                  <CalendarTodayIcon
+                    sx={{ width: "0.55em", pb: 0.4, mr: 0.6 }}
+                  />
+                  <Typography variant="subtitle2" color={"text.secondary"}>
                     {transaction.datetime}
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", mt: 0.2 }}>
-                  <AttachMoneyIcon
-                    sx={{
-                      mr: 0, width: '0.8em', pb: 0.1
-                    }}
-                  />
-                  <Typography
-                    variant="h6"
-                    sx={{ 
-                    }}
-                  >
-                    {transaction.amount}
-                  </Typography>
+                  <AttachMoneyIcon sx={{ mr: 0, width: "0.8em", pb: 0.1 }} />
+                  <Typography variant="h6">{transaction.amount}</Typography>
                 </Box>
               </Box>
               <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
@@ -218,10 +270,23 @@ const TransactionHistory = () => {
                 />
               </Box>
             </Card>
-          ))}
-        </Card>
-      </Box>
-    // </Box>
+          ))
+        )}
+
+        {selectedTab === 1 && (
+          <BillingInformationForm />  // Call the form component
+        )}
+
+        {selectedTab === 2 && (
+          <AvailableBalances /> // Call the Available Balances component
+        )}
+        
+        {selectedTab === 3 && (
+          <PaymentMethods /> // Call the Payment Methods component
+        )}
+
+      </Card>
+    </Box>
   );
 };
 

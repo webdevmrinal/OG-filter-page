@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, CardMedia, Button, CircularProgress, Box, Tab, Tabs, Divider, Rating } from '@mui/material';
 import axios from 'axios';
-import { styled } from '@mui/system';
-// import Header from './Header';
-
-import { Link, useNavigate } from "react-router-dom";
+import { styled, useTheme } from '@mui/system';
+import { Link } from "react-router-dom";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: 445,
@@ -36,9 +34,24 @@ const ExpertCard = styled(Card)(({ theme }) => ({
     boxShadow: theme.shadows[6],
     backgroundColor: '#0000000a',
   },
+  [theme.breakpoints.down('sm')]: {
+    width: 'auto',
+    height: '29em',
+    marginLeft: '0px',
+  },
+  [theme.breakpoints.between('md')]: {
+    width: 'auto',  // For tablets like iPads in portrait mode
+    height: '27em',
+    marginLeft: '15px',
+  },
+  [theme.breakpoints.down('xs')]: {
+    width: '18em',
+    height: '22em',
+  },
 }));
 
 const MyConnections = () => {
+  const theme = useTheme();
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState(0);
@@ -98,28 +111,26 @@ const MyConnections = () => {
   }
 
   return (
-    <>
-      {/* <Header /> */}
-      <Box sx={{ padding: 2, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 4 }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="My Connections" />
-          </Tabs>
-        </Box>
-        <Grid container spacing={1} justifyContent="center">
-          {experts.map((expert, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <Link
-          to={`/detail/${expert.profile_url}`}
-          style={{ textDecoration: "none" }}
-          state={{ expertEmail: expert.email }}
-        >
+    <Box sx={{ padding: 2, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 4 }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="My Connections" />
+        </Tabs>
+      </Box>
+      <Grid container spacing={1} justifyContent="center">
+        {experts.map((expert, index) => (
+          <Grid item key={index} xs={12} sm={6} md={4}>
+            <Link
+              to={`/detail/${expert.profile_url}`}
+              style={{ textDecoration: "none" }}
+              state={{ expertEmail: expert.email }}
+            >
               <ExpertCard>
                 <CardMedia
                   component="img"
                   image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
                   alt={expert.name}
-                  sx={{ height: 330, width: '100%', objectFit: 'cover' }}
+                  sx={{ height: 330, width: '100%', objectFit: 'cover', [theme.breakpoints.down('sm')]: { height: '275px' } }}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h6">
@@ -130,24 +141,23 @@ const MyConnections = () => {
                     {truncateText(expert.about, 100)}
                   </Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
-                      <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                          Interactions: 9
-                      </Typography>
-                      <Button color="primary">
-                          Know More
-                      </Button>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold' }}>
+                      Interactions: 9
+                    </Typography>
+                    <Button color="primary">
+                      Know More
+                    </Button>
                   </Box>
                   <Box sx={{ mt: -1, display: 'flex', alignItems: 'center' }}>
                     <Rating name="read-only" value={3.5} readOnly />
                   </Box>
                 </CardContent>
               </ExpertCard>
-              </Link>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </>
+            </Link>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 

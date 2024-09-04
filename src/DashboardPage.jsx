@@ -618,8 +618,8 @@ const navigateToExpertsPage = () => {
                   spacing={2}
                   sx={{
                     marginTop: 3,
-                    ml: { xs: '24px', sm: 1 },
-                    width: "284px",
+                    ml: { xs: '8px', sm: 1 },
+                    width: {xs :"190px", sm: '284px'},
                     "& .MuiGrid-item": {
                       padding: "0 !important",
                     },
@@ -627,7 +627,7 @@ const navigateToExpertsPage = () => {
                 >
                   {appointments.map((appointment) => (
                     <Box sx={{ display: "flex", gap: 4 , flexDirection: { xs: 'column', sm: 'row' }, 
-                    width: { xs: '100%', sm: 'inherit' }, ml: { xs: '24px', sm: 'inherit' },}}>
+                    width: { xs: '100%', sm: 'inherit' }, ml: { xs: '0px', sm: 'inherit' },}}>
                       <Grid
                         item
                         key={appointment.id}
@@ -637,7 +637,7 @@ const navigateToExpertsPage = () => {
                           borderRadius: "8px",
                           border: "1px solid rgba(0,0,0,0.12)",
                           backgroundColor: "#fff",
-                          maxWidth: "calc(100% - 25px)",
+                          maxWidth: "calc(100% - 0px)",
                         }}
                       >
                         {appointmentCard(appointment)}

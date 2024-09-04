@@ -16,7 +16,7 @@ import {
   DialogContent,
   Avatar
 } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled, useTheme } from '@mui/system';
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
@@ -73,6 +73,7 @@ const CategoryButton = styled(Button)(({ theme, active }) => ({
 }));
 
 function ExpertPage() {
+  
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -222,6 +223,7 @@ function ExpertPage() {
 
 
 const ExpertCard = ({ expert, handleExpertClick }) => {
+  const theme = useTheme();
   const categoriesWithIndustry = expert.category.split(",").concat(expert.industry);
   const uniqueCategories = Array.from(
     new Set(categoriesWithIndustry.map(cat => cat.trim().toLowerCase()))
@@ -246,6 +248,15 @@ const ExpertCard = ({ expert, handleExpertClick }) => {
           boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
           transform: "translateY(-1px)",
           backgroundColor: '#0000000a',
+        },
+        [theme.breakpoints.down('sm')]: {
+          width: 'auto',
+          height: '29em',
+          marginRight: '10px',
+        },
+        [theme.breakpoints.down('xs')]: {
+          width: 'auto',
+          height: '22em',
         },
       }}
     >

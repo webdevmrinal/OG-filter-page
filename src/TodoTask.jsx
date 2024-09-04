@@ -5,6 +5,8 @@ import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineC
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { useMediaQuery, useTheme } from '@mui/material';
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -152,6 +154,9 @@ const TodoTask = () => {
   const [newComment, setNewComment] = useState('');
   const [startDate, setStartDate] = useState(dayjs().subtract(7, 'day'));
   const [endDate, setEndDate] = useState(dayjs());
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); // Adjust the breakpoint as needed
+
 
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
@@ -175,12 +180,12 @@ const TodoTask = () => {
       </Typography>
       <Divider sx={{ mb: 2 }} />
       <Box sx={{ mt: 4, display: 'flex' }}>
-        <Paper elevation={3} sx={{ padding: 2, width: '100%' }}>
+        <Paper elevation={3} sx={{ padding: {xs: 0, sm: 2}, width: '100%' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
-              <Tab label="Task" id="tab-0" aria-controls="tabpanel-0" />
-              <Tab label="Discussion" id="tab-1" aria-controls="tabpanel-1" />
-              <Tab label="Activity" id="tab-2" aria-controls="tabpanel-2" />
+            <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 ,}}>
+              <Tab label="Task" id="tab-0" aria-controls="tabpanel-0" sx={{ fontSize:{xs: '0.8rem', sm: 'inherit'}}}/>
+              <Tab label="Discussion" id="tab-1" aria-controls="tabpanel-1" sx={{ fontSize:{xs: '0.8rem', sm: 'inherit'}}} />
+              <Tab label="Activity" id="tab-2" aria-controls="tabpanel-2" sx={{ fontSize:{xs: '0.8rem', sm: 'inherit'}}}/>
             </Tabs>
             <TabPanel value={tabIndex} index={0}>
               {tasks.map((section, index) => (
@@ -207,6 +212,7 @@ const TodoTask = () => {
                           {section.items.map((item, idx) => (
                             <ListItem key={idx} sx={{
                               display: 'flex',
+                              flexDirection: 'row', // Always row layout for large screens
                               justifyContent: 'space-between',
                               alignItems: 'center',
                               "&:hover": {
@@ -221,21 +227,21 @@ const TodoTask = () => {
                               </ListItemIcon>
                               <Box sx={{
                                 display: 'flex',
+                                flexDirection: { xs: 'column', sm: 'row' }, // Change to column on small screens
+                                alignItems: { xs: 'flex-start', sm: 'center' }, // Adjust alignment for small screens
                                 flexGrow: 1,
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
                               }}>
-                                <Typography variant="subtitle1" sx={{ mr: 2 }}>
+                                <Typography variant="subtitle1" sx={{ mr: { sm: 2 } }}>
                                   {item.title}
                                 </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary', flexGrow: 1 }}>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                   {item.description}
                                 </Typography>
-                                <Typography variant="body2" sx={{ ml: 2, whiteSpace: 'nowrap' }}>
-                                  {item.date}
-                                </Typography>
                               </Box>
-                            </ListItem>
+                              <Typography variant="body2" sx={{ ml: 2, whiteSpace: 'nowrap' }}>
+                                {item.date}
+                              </Typography>
+                            </ListItem>                            
                           ))}
                         </List>
                       </CardContent>
@@ -295,7 +301,7 @@ const TodoTask = () => {
                             variant="contained"
                             color="primary"
                             onClick={() => handleCommentSubmit(index)}
-                            sx={{  display: 'block' }}
+                            sx={{  display: 'block', px: {xs: '6px', sm: 'inherit'} }}
                           >
                             Submit
                           </Button>
@@ -307,79 +313,112 @@ const TodoTask = () => {
               ))}
             </TabPanel>
             <TabPanel value={tabIndex} index={2}>
-  <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Stack direction="row" spacing={2} alignItems="center" justifyContent="center" sx={{ mb: 3 }}>
-      <DatePicker
-        label="Start Date"
-        value={startDate}
-        onChange={setStartDate}
-        renderInput={(params) => <TextField {...params} />}
-      />
-      <DatePicker
-        label="End Date"
-        value={endDate}
-        onChange={setEndDate}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    </Stack>
-  </LocalizationProvider>
-  {activities.map((day, dayIndex) => (
-    <Card key={dayIndex} sx={{ mb: 3, boxShadow: "0 8px 16px rgba(0,0,0,0.1)" }}>
-      <Typography variant="h6" sx={{ mt: 2, textAlign: 'center' }}>
-        {day.date}
-      </Typography>
-      <Divider sx={{ my: 1, width: '94%', ml: 5.5 }} />
-      <Timeline sx={{ ml: -3 }}>  {/* More aggressive left margin adjustment */}
-        {day.events.map((activity, index) => (
-          <TimelineItem key={index}>
-            <TimelineOppositeContent sx={{ flex: 0.1, p: 2 }}>
-              <Typography variant="body2" color="textSecondary">
-                {activity.time}
-              </Typography>
-            </TimelineOppositeContent>
-            <TimelineSeparator sx={{ pt: 1 }}>
-              <TimelineDot sx={{backgroundColor:"#00000099"}} />
-              {index < day.events.length - 1 && <TimelineConnector />}
-            </TimelineSeparator>
-            <TimelineContent display={'flex'} justifyContent={'space-between'} sx={{ml: 1,"&:hover": {
-                  backgroundColor: "#0000000a",
-                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                  transform: "translateY(-1px)",
-                  borderRadius: 2,
-                }}}>
-              <Box display="flex" alignItems="flex-start" sx={{
-                gap: 1,
-                px: 1,
-                pb: 0,
-                pt: 1.5,
-                
-              }}>
-                <Avatar sx={{ width: 24, height: 24 }} />
-                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                  {activity.user}
-                </Typography>
-                <Typography variant="body2">
-                  {activity.action}
-                </Typography>
-                <Typography variant="body2" color="primary">
-                  {activity.project}
-                </Typography>
-                {activity.subtask && (
-                  <Typography variant="body2" sx={{ ml: 1 }}>
-                    {activity.subtask}
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Stack
+          direction={isSmallScreen ? 'column' : 'row'} // Change direction only on small screens
+          spacing={2}
+          alignItems="center"
+          justifyContent="center"
+          sx={{ mb: 3 }}
+        >
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={setStartDate}
+            renderInput={(params) => <TextField {...params} />}
+            sx={{ width: isSmallScreen ? '100%' : 'auto' }} // Apply full width only on small screens
+          />
+          <DatePicker
+            label="End Date"
+            value={endDate}
+            onChange={setEndDate}
+            renderInput={(params) => <TextField {...params} />}
+            sx={{ width: isSmallScreen ? '100%' : 'auto' }} // Apply full width only on small screens
+          />
+        </Stack>
+      </LocalizationProvider>
+      {activities.map((day, dayIndex) => (
+        <Card
+          key={dayIndex}
+          sx={{
+            mb: 3,
+            boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+            ...(isSmallScreen && {
+              width: '100%', // Full width on small screens
+              maxWidth: 'none', // Remove maxWidth constraint on small screens
+              mx: 'auto', // Center card on small screens
+            })
+          }}
+        >
+          <Typography variant="h6" sx={{ mt: 2, textAlign: 'center' }}>
+            {day.date}
+          </Typography>
+          <Divider sx={{ my: 1, width: '94%', ml: 'auto', mr: 'auto' }} /> {/* Center divider on small screens */}
+          <Timeline sx={{ ml: 0, width: '100%' }}> {/* Adjust margin and width */}
+            {day.events.map((activity, index) => (
+              <TimelineItem key={index}>
+                <TimelineOppositeContent sx={{ flex: 0.1, p: 2 }}>
+                  <Typography variant="body2" color="textSecondary">
+                    {activity.time}
                   </Typography>
-                )}
-              </Box>
-              <Typography variant="body2" sx={{ flexShrink: 0, color: 'black', pt: 1, mr: 2 }}>
-                {activity.project}
-              </Typography>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
-      </Timeline>
-    </Card>
-  ))}
-</TabPanel>
+                </TimelineOppositeContent>
+                <TimelineSeparator sx={{ pt: 1 }}>
+                  <TimelineDot sx={{ backgroundColor: "#00000099" }} />
+                  {index < day.events.length - 1 && <TimelineConnector />}
+                </TimelineSeparator>
+                <TimelineContent
+                  display="flex"
+                  justifyContent="space-between"
+                  sx={{
+                    ml: 1,
+                    "&:hover": {
+                      backgroundColor: "#0000000a",
+                      boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                      transform: "translateY(-1px)",
+                      borderRadius: 2,
+                    }
+                  }}
+                >
+                  <Box
+                    display="flex"
+                    flexDirection={isSmallScreen ? 'column' : 'row'} // Stack items vertically on small screens
+                    alignItems="flex-start"
+                    sx={{
+                      gap: 1,
+                      px: 1,
+                      pb: 0,
+                      pt: 1.5,
+                      flexWrap: 'wrap' // Allow wrapping on small screens
+                    }}
+                  >
+                    <Avatar sx={{ width: 24, height: 24 }} />
+                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                      {activity.user}
+                    </Typography>
+                    <Typography variant="body2">
+                      {activity.action}
+                    </Typography>
+                    <Typography variant="body2" color="primary">
+                      {activity.project}
+                    </Typography>
+                    {activity.subtask && (
+                      <Typography variant="body2" sx={{ ml: 1 }}>
+                        {activity.subtask}
+                      </Typography>
+                    )}
+                  </Box>
+                  {!isSmallScreen && ( // Only show the project text on large screens
+                    <Typography variant="body2" sx={{ flexShrink: 0, color: 'black', pt: 1, mr: 2 }}>
+                      {activity.project}
+                    </Typography>
+                  )}
+                </TimelineContent>
+              </TimelineItem>
+            ))}
+          </Timeline>
+        </Card>
+      ))}
+    </TabPanel>
 
 
           </Box>

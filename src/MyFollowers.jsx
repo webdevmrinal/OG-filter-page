@@ -140,7 +140,7 @@ const MyFollowers = () => {
                 alignItems: 'flex-start', 
                 p: 2, 
                 boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-                height: '19vh',
+                height: {xs: 'fit-content',sm:'19vh'},
                 "&:hover": {
                   backgroundColor: "#0000000a",
                   boxShadow: "0 8px 16px rgba(0,0,0,0.2)",

@@ -91,11 +91,23 @@ const TabsContainer = styled(Box)({
   borderBottom: "1px solid #e0e0e0",
 });
 
-const ButtonContainer = styled(Box)({
+const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  gap: "8px",
-});
+  gap: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    justifyContent: "center", // Center the buttons on small screens
+    gap: theme.spacing(0.5), // Reduce gap between buttons
+    flexWrap: "wrap", // Wrap buttons if space is insufficient
+  },
+}));
+const StyledButton = styled(Button)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(0.5), // Reduce padding
+    fontSize: "0.7rem", // Smaller font size for text in buttons
+    minWidth: '64px', // Minimum width to ensure tap target size
+  },
+}));
 
 
 const SkillsCard = ({ skills }) => {
@@ -239,27 +251,32 @@ const ProfilePage = () => {
             aria-label="profile tabs"
           ></Tabs>
           <ButtonContainer>
-          <Button
+            <StyledButton
               startIcon={<PersonAddIcon />}
               variant="outlined"
               color="primary"
-              onClick={handleFollowClick}  // Attach the click handler
+              onClick={handleFollowClick}
               sx={{ mr: 1 }}
             >
-              {isFollowing ? "Following" : "Follow"} 
-            </Button>
-            <Button startIcon={<SendIcon />} variant="outlined" sx={{ mr: 1 }}>
+              {isFollowing ? "Following" : "Follow"}
+            </StyledButton>
+            <StyledButton
+              startIcon={<SendIcon />}
+              variant="outlined"
+              sx={{ mr: 1 }}
+            >
               Message
-            </Button>
-            <Button
+            </StyledButton>
+            <StyledButton
               startIcon={<EventNoteIcon />}
               variant="outlined"
-              onClick={handleAccordionChange}
+              onClick={() => setExpanded('panel0')}
               sx={{ mr: 2 }}
             >
               Request a Time
-            </Button>
+            </StyledButton>
           </ButtonContainer>
+
         </TabsContainer>
       </Box>
 

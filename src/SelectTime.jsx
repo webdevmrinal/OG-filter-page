@@ -18,6 +18,7 @@ import GetTime from "./GetTime";
 import Summary from "./Summary";
 import { addDays, format } from "date-fns";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ContactModal from "./ContactModal";
 
 const ScrollableBox = styled(Box)({
     display: "flex",
@@ -28,6 +29,7 @@ const ScrollableBox = styled(Box)({
     "-ms-overflow-style": "none",
     "scrollbar-width": "none",
 });
+
 
 const ConfirmationBox = styled(Paper)({
     padding: "16px",
@@ -69,8 +71,11 @@ const DateButton = styled(ToggleButton)(({ theme }) => ({
     justifyContent: "center",
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1),
+    [theme.breakpoints.down("sm")]: {
+        width: "auto", // Adjust width for smaller screens
+        padding: theme.spacing(0.5, 1), // Reduce padding on smaller screens
+    },
 }));
-
 
 const TimeButton = styled(ToggleButton)({
     border: `2px solid #505f96`,  // Consistent blue border for all
@@ -105,6 +110,22 @@ const StyledSummaryBox = styled(Box)(({ theme }) => ({
     border: `1px solid ${theme.palette.grey[300]}`,
 }));
 
+const ButtonContainer = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column', // Stack buttons vertically on small screens
+        alignItems: 'stretch',   // Stretch buttons to take full width
+    },
+}));
+const ResponsiveButton = styled(Button)(({ theme }) => ({
+    margin: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '0.8rem',
+        padding: theme.spacing(1, 2),
+    },
+}));
 
 const SelectTime = ({ setShowGetTime, professorName }) => {
     const [duration, setDuration] = useState("15");
@@ -116,6 +137,15 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
     const [showAllDays, setShowAllDays] = useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+    const [openContactModal, setOpenContactModal] = useState(false);
+
+  const handleOpenContactModal = () => {
+    setOpenContactModal(true);
+  };
+
+  const handleCloseContactModal = () => {
+    setOpenContactModal(false);
+  };
 
     const handleDurationChange = (event, newDuration) => {
         if (newDuration !== null) {
@@ -271,12 +301,12 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
             {view === "confirmation" ? (
                 <StyledSummaryBox sx={{}}>
                     <StyledConfirmationBox>
-                    <CheckCircleOutlineIcon />
-                    <Typography variant="h6">
-                        Your session is confirmed!
-                    </Typography>
-                </StyledConfirmationBox>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 ,mt: 2 }}>
+                        <CheckCircleOutlineIcon />
+                        <Typography variant="h6">
+                            Your session is confirmed!
+                        </Typography>
+                    </StyledConfirmationBox>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, mt: 2 }}>
                         <Avatar
                             src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
                             alt={profileData?.name}
@@ -328,16 +358,6 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                         </ToggleButtonGroup>
                     </Box>
 
-                    {/* <SelectedDurationButton>
-          {duration === "15"
-            ? "Quick - 15 Min"
-            : duration === "30"
-            ? "Regular - 30 Min"
-            : duration === "45"
-            ? "Extra - 45 Min"
-            : "All Access - 60 Min"}
-        </SelectedDurationButton> */}
-
                     {isGift && (
                         <Typography
                             variant="subtitle1"
@@ -360,11 +380,23 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                 5.0 (40)
                             </Typography>
                         </Box>
-                        <Box sx={{ gap: 2 }}>
-
+                        <Box sx={{ display: 'flex', gap: 2 }}>
                             <Button variant="contained" color="primary" onClick={resetAndBookAnotherSlot}>
                                 Book Another Slot
                             </Button>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={handleOpenContactModal}
+                            >
+                                Contact Me
+                            </Button>
+
+      <ContactModal
+        open={openContactModal}
+        onClose={handleCloseContactModal}
+        professorName={professorName}
+      />
                         </Box>
                     </Box>
                 </StyledSummaryBox>
@@ -439,8 +471,8 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                     </TimeButton>
                   ))}
                 </ScrollableBox>
-              </Box> */}   <Box display={'flex'} sx={{marginTop: 2, width: {xs: '110vw', sm: 'inherit'}}}>
-                            <Box>
+              </Box> */}   <Box display={isMobile ? 'block' : 'flex'} sx={{marginTop: 2, width: {xs: '100vw', sm: 'inherit'}}}>
+    <Box>
                             {visibleDays.map((day, index) => (
                                 <Box key={index} sx={{ mb: 2 }}>
                                     <Typography variant="subtitle2">{day.date}</Typography>
@@ -454,7 +486,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                                     `${day.date}_${time.label}`
                                                 )}
                                                 onChange={() => handleTimeToggle(day, time)}
-                                                sx={{ mr: 1,mt: 0.7, width: "max-content", fontSize: {xs: '0.9em', sm: 'inherit'} }}
+                                                sx={{ mr: 1,mt: 0.7, width: "max-content", fontSize: {xs: '0.8em', sm: 'inherit'} }}
                                             >
                                                 {time.label}
                                             </TimeButton>
@@ -523,23 +555,26 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                         5.0 (40)
                                     </Typography>
                                 </Box>
-                                <Box>
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        sx={{ mr: 2 }}
-                                        onClick={() => setShowGetTime(false)}
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleRequest}
-                                    >
-                                        Request
-                                    </Button>
-                                </Box>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+    <ButtonContainer>
+        <ResponsiveButton
+            variant="outlined"
+            color="primary"
+            onClick={() => setShowGetTime(false)}
+            sx={{ flexGrow: 1 }}  // Ensures the button stretches in column layout
+        >
+            Cancel
+        </ResponsiveButton>
+        <ResponsiveButton
+            variant="contained"
+            color="primary"
+            onClick={handleRequest}
+            sx={{ flexGrow: 1 }}  // Ensures the button stretches in column layout
+        >
+            Request
+        </ResponsiveButton>
+    </ButtonContainer>
+</Box>
                             </Box>
                         </Paper>
                     )}
