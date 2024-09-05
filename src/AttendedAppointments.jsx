@@ -8,6 +8,8 @@ import {
   Paper,
   Divider,
   Skeleton,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -22,31 +24,31 @@ const AvatarWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledAttendedItem = styled(Box)(({ theme }) => ({
+const StyledAttendedItem = styled(Box)(({ theme, isMobile }) => ({
   display: "flex",
   alignItems: "center",
-  padding: "16px",
-  margin: "8px 16px 16px 0",
-  
+  flexDirection: isMobile ? "column" : "row", // Responsive layout for mobile
+  padding: isMobile ? "8px" : "16px", // Responsive padding for mobile
+  margin: isMobile ? "12px 0" : "8px 16px 16px 0", // Adjust margin for mobile
   borderRadius: "4px",
   transition: "all 0.3s ease",
-  backgroundColor:"transparent",
+  backgroundColor: "transparent",
   boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
   "&:hover": {
     backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
-    cursor: "pointer", // Change cursor to pointer on hover
+    cursor: "pointer",
   },
 }));
 
-const AttendedItemSkeleton = () => (
-  <StyledAttendedItem>
+const AttendedItemSkeleton = ({ isMobile }) => (
+  <StyledAttendedItem isMobile={isMobile}>
     <Skeleton
       variant="circular"
       width={56}
       height={56}
-      sx={{ mr: 2 }}
+      sx={{ mr: isMobile ? 0 : 2, mb: isMobile ? 2 : 0 }}
       animation="wave"
     />
     <Box sx={{ flexGrow: 1 }}>
@@ -58,7 +60,7 @@ const AttendedItemSkeleton = () => (
   </StyledAttendedItem>
 );
 
-const AttendedItem = ({ item }) => {
+const AttendedItem = ({ item, isMobile }) => {
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleCardClick = () => {
@@ -66,29 +68,31 @@ const AttendedItem = ({ item }) => {
   };
 
   return (
-    <StyledAttendedItem onClick={handleCardClick}>
+    <StyledAttendedItem onClick={handleCardClick} isMobile={isMobile}>
       <AvatarWrapper>
         <Avatar
           src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
-          sx={{ width: 90, height: 90, mr: 2 }}
+          sx={{ width: 90, height: 90, mr: isMobile ? 0 : 2, mb: isMobile ? 2 : 0 }}
         />
       </AvatarWrapper>
       <Box>
-        <Typography variant="subtitle1">
-          {item.mentee_name}
-        </Typography>
-        <Typography
-          variant="subtitle2"
-        >
-          {item.idea}
-        </Typography>
-        <Box display={'flex'} mt={0.5}>
-          <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.5, color: 'text.secondary', paddingTop: '1px'}}/>
+        <Typography variant="subtitle1">{item.mentee_name}</Typography>
+        <Typography variant="subtitle2">{item.idea}</Typography>
+        <Box display={"flex"} mt={0.5}>
+          <CalendarTodayIcon
+            sx={{
+              width: "0.5em",
+              height: "0.7em",
+              mr: 0.5,
+              color: "text.secondary",
+              paddingTop: "1px",
+            }}
+          />
           <Typography variant="body2" color="text.secondary">
             {item.date_title} | {item.time_title}
           </Typography>
         </Box>
-        <Typography variant="body2" color="text.secondary" sx={{mt: 1}}>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
           Requirement: {item.query}
         </Typography>
       </Box>
@@ -100,6 +104,9 @@ const AttendedAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [start, setStart] = useState(0);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check if it's mobile
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -131,7 +138,7 @@ const AttendedAppointments = () => {
   return (
     <Paper
       elevation={0}
-      sx={{ borderRadius: 2, border: "1px solid lightgray" }}
+      sx={{ borderRadius: 2, border: "1px solid lightgray", width: isMobile ? "100%" : "auto" }}
     >
       <Typography variant="h6" sx={{ px: 3, py: 1 }}>
         Attended Appointments
@@ -140,14 +147,14 @@ const AttendedAppointments = () => {
 
       <Box sx={{ px: 3, py: 1 }}>
         {appointments.map((item) => (
-          <AttendedItem key={item.meet_id} item={item} />
+          <AttendedItem key={item.meet_id} item={item} isMobile={isMobile} />
         ))}
       </Box>
       {loading ? (
         <Box sx={{ px: 3, py: 1 }}>
-          <AttendedItemSkeleton />
-          <AttendedItemSkeleton />
-          <AttendedItemSkeleton />
+          <AttendedItemSkeleton isMobile={isMobile} />
+          <AttendedItemSkeleton isMobile={isMobile} />
+          <AttendedItemSkeleton isMobile={isMobile} />
         </Box>
       ) : (
         <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>

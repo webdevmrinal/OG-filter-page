@@ -91,7 +91,7 @@ const Projects = () => {
       </Typography>
       <Divider sx={{ mb: 2 }} />
       <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Paper elevation={3} sx={{ padding: {xs: 0, sm: 2}, width: '100%' }}>
+        <Paper elevation={3} sx={{ padding: {xs: 3, sm: 2}, width: '100%',}}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
               <Tab label="Active" id="tab-0" aria-controls="tabpanel-0"  sx={{ fontSize:{xs: '0.78rem', sm: 'inherit'}}}/>

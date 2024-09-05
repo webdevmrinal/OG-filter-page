@@ -226,7 +226,7 @@ const SidebarTopbarComponent = () => {
         <Toolbar
           sx={{
             position: "relative",
-            height: "65px",
+            height: "57px",
             borderBottom: "1px solid #dedede",
             overflow: "hidden",
             boxShadow: "0px 2px 4px -1px rgba(0,0,0,0.1)",

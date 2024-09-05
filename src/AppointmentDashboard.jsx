@@ -10,14 +10,12 @@ import {
   Divider,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { GoogleMeetIcon } from "./Icon";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import RejectedRequestComponent from "./RejectedRequestComponent";
 import AttendedAppointments from "./AttendedAppointments";
 import axios from "axios";
-// import Header from "./Header";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 const appointmentsData = [
@@ -30,7 +28,7 @@ const appointmentsData = [
   { id: 7, name: "Rahul Kumar", time: "09:15 PM - 09:45 PM" },
 ];
 
-const StyledTabs = styled(Tabs)({
+const StyledTabs = styled(Tabs)(({ theme }) => ({
   "& .MuiTab-root": {
     textTransform: "none",
     minHeight: "48px",
@@ -47,17 +45,15 @@ const StyledTabs = styled(Tabs)({
       fontWeight: "medium",
     },
   },
-});
+  "& .MuiTabs-flexContainer": {
+    flexDirection: { xs: "column", sm: "row" },
+  }
+}));
 
 const StyledTab = styled(Tab)({
   "& .MuiSvgIcon-root": {
     marginRight: "8px",
   },
-});
-
-const iconStyle = (color) => ({
-  color: color,
-  marginRight: "8px",
 });
 
 const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
@@ -74,6 +70,8 @@ const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
     transform: "translateY(-2px)",
   },
+  flexDirection: { xs: 'column', sm: 'row' },
+  gap: { xs: 2, sm: 0 },
 }));
 
 const AppointmentDashboard = () => {
@@ -113,11 +111,11 @@ const AppointmentDashboard = () => {
     switch (value) {
       case 0:
         return (
-          <Box sx={{ px: 3, py: 1 }}>
+          <Box sx={{ px: { xs: 2, sm: 3 }, py: 1 }}>
             <Typography variant="h6" sx={{ mb: 1 }}>
               Upcoming Appointments
             </Typography>
-            <Divider sx={{ width: "100%", mb: 3, alignSelf: "center" }} />
+            <Divider sx={{ width: "100%", mb: 3 }} />
             {appointmentsData.map((appointment) => (
               <AppointmentItemComp
                 key={appointment.id}
@@ -147,23 +145,33 @@ const AppointmentDashboard = () => {
 
   return (
     <>
-      {/* <Header /> */}
-      <Box sx={{ width: "100%", bgcolor: "#f4f7f9", minHeight: "100vh", p: 3 }}>
-        <Box sx={{ display: "flex", p: 2, borderColor: "divider" }}>
+      <Box sx={{
+        width: "100%",
+        bgcolor: "#f4f7f9",
+        minHeight: "100vh",
+        p: { xs: 2, sm: 3 },
+      }}>
+        <Box sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          p: 2,
+          borderColor: "divider",
+        }}>
           <StyledTabs
             value={value}
             onChange={handleChange}
             aria-label="appointment tabs"
+            sx={{ width: { xs: '100%', sm: 'auto' }, marginBottom: { xs: 2, sm: 0 } }}
           >
             <StyledTab
               icon={<EventAvailableIcon sx={{ color: "#81c784" }} />}
               iconPosition="start"
-              label={`Upcoming Appoinments (${tabCounts.upcoming})`}
+              label={`Upcoming Appointments (${tabCounts.upcoming})`}
             />
             <StyledTab
               icon={<EventBusyIcon sx={{ color: "#e57373" }} />}
               iconPosition="start"
-              label={`Rejected Request (${tabCounts.rejected})`}
+              label={`Rejected Requests (${tabCounts.rejected})`}
             />
             <StyledTab
               icon={<EventNoteIcon sx={{ color: "#505f96" }} />}
@@ -194,9 +202,11 @@ const AppointmentItemComp = ({
       sx={{
         display: 'flex', 
         alignItems: 'flex-start', 
-        p: 2, 
+        p: { xs: 2, sm: 2 },
         boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-        height: '19vh',
+        height: { xs: 'auto', sm: '19vh' },
+        flexDirection: { xs: 'column', sm: 'row' },
+        mb: 2,
         "&:hover": {
           backgroundColor: "#0000000a",
           boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
@@ -206,25 +216,24 @@ const AppointmentItemComp = ({
     >
       <Avatar
         src="https://academy.opengrowth.com/assets/images/users/user_791_student_collaborate.png"
-        sx={{  mr: 2, height: "80px", width: "80px" }}
+        sx={{  mr: 2, height: { xs: "60px", sm: "80px" }, width: { xs: "60px", sm: "80px" },alignSelf: { xs: 'center', sm: 'flex-start' }, }}
       />
-      <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle1" sx={{}}>
-          {name}
-        </Typography>
-        <Box display={'flex'}>
-        <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.3, color: 'text.secondary'}}/>
-        <Typography variant="body2" color="text.secondary">
-          Thursday, August 08, 2024 | {time}
-        </Typography>
+      <Box sx={{ flexGrow: 1, mt: { xs: 1, sm: 0 } }}>
+        <Typography variant="subtitle1">{name}</Typography>
+        <Box display='flex'>
+          <CalendarTodayIcon sx={{ width: '0.5em', height: '0.7em', mr: 0.3, color: 'text.secondary' }}/>
+          <Typography variant="body2" color="text.secondary">
+            Thursday, August 08, 2024 | {time}
+          </Typography>
         </Box>
         <Typography variant="body2" color="text.secondary" mt={1}>
-          Requirement : Specific requirement details here ,Specific requirement details here , Specific requirement details here, Specific requirement details here,Specific requirement details here
+          Requirement: Specific requirement details here, Specific requirement details here, Specific requirement details here, Specific requirement details here,Specific requirement details here
         </Typography>
       </Box>
       <Button
         variant="contained"
         sx={{
+          mt: { xs: 1, sm: 0 },
           backgroundColor: '#505f96',
           color: "white",
           textTransform: "none",

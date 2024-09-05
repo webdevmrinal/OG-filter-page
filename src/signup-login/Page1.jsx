@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTheme } from '@mui/material/styles';
 import { Typography, Box, RadioGroup, FormControlLabel, Radio, Grid } from "@mui/material";
 
 function Page1() {
   const theme = useTheme();
+  const [selectedValue, setSelectedValue] = useState("");  // State to track the selected value
+
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);  // Update the state on change
+  };
+
   return (
     <Box sx={{ pt: 2, pb: 35 }}>
       <Typography variant="h5" component="h1" sx={{ pt: 1, fontWeight: 'bold', color: '#303030' }}>
@@ -14,7 +20,8 @@ function Page1() {
       </Typography>
       <RadioGroup
         aria-labelledby="user-type-question"
-        defaultValue=""
+        value={selectedValue}
+        onChange={handleChange}
         name="user-type"
         row
       >
@@ -25,7 +32,8 @@ function Page1() {
             mb: 2, // Add margin-bottom on small screens for spacing between options
             [theme.breakpoints.up('sm')]: {
               mb: 0, // Remove margin-bottom on small screens
-            }
+            },
+            bgcolor: selectedValue === 'user' ? '#f7f7f7' : '#ffffff',  // Change background color based on selection
           }}>
             <FormControlLabel
               value="user"
@@ -44,6 +52,7 @@ function Page1() {
           <Grid item xs={12} sm={5.9} sx={{
             border: '0.5px solid #e0e0e0',
             borderRadius: '0.375rem',
+            bgcolor: selectedValue === 'expert' ? '#f7f7f7' : '#ffffff',  // Change background color based on selection
           }}>
             <FormControlLabel
               value="expert"

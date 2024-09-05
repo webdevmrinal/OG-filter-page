@@ -113,7 +113,7 @@ function TabPanel(props) {
       aria-labelledby={`tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && <Box sx={{p: {xs: 1, sm : 3}}}>{children}</Box>}
     </div>
   );
 }
@@ -481,7 +481,7 @@ const DetailView = () => {
             sx={{
               height: "calc(100% - 10px)",
               color: "white",
-              translate: "0 -45%",
+              translate: "0 -46%",
             }}
             display="flex"
             alignItems="center"
@@ -512,7 +512,7 @@ const DetailView = () => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box sx={{ ml: {xs: 2, sm: 3}, width: { xs: '200px', sm: "auto" }, mt: {xs: 4, sm: 0} }}>
+                <Box sx={{ ml: {xs: 2, sm: 3}, width: { xs: '200px', sm: "auto" }, mt: {xs: 5.5, sm: 0} }}>
                   <Box display={"flex"} sx={{ gap: 1 }}>
                     <Typography variant="h6" sx={{fontSize: {xs: '1rem', sm: '1.4em'}}}>{profileData?.name}</Typography>
                   </Box>
@@ -539,7 +539,7 @@ const DetailView = () => {
 
                   <Chip
                     label="Connected: 5 Times"
-                    sx={{ mt: {xs: 1.5, sm: -0.5}, fontWeight: "bold", color: {xs: 'black', sm: 'white'} }}
+                    sx={{ mt: {xs: '20px', sm: -0.5}, fontWeight: "bold", color: {xs: 'black', sm: 'white'} }}
                   />
                 </Box>
               </Box>
@@ -593,7 +593,7 @@ const DetailView = () => {
               </Card>
             ))}
           </TabPanel>
-        <TabPanel value={tabIndex} index={1}>
+        <TabPanel value={tabIndex} index={1} >
           <Typography variant="h6" component="h2">
             Details:
           </Typography>

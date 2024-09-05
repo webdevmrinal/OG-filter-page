@@ -180,7 +180,7 @@ const TodoTask = () => {
       </Typography>
       <Divider sx={{ mb: 2 }} />
       <Box sx={{ mt: 4, display: 'flex' }}>
-        <Paper elevation={3} sx={{ padding: {xs: 0, sm: 2}, width: '100%' }}>
+        <Paper elevation={3} sx={{ padding: {xs: 1.5, sm: 2}, width: '100%' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 ,}}>
               <Tab label="Task" id="tab-0" aria-controls="tabpanel-0" sx={{ fontSize:{xs: '0.8rem', sm: 'inherit'}}}/>
@@ -231,10 +231,10 @@ const TodoTask = () => {
                                 alignItems: { xs: 'flex-start', sm: 'center' }, // Adjust alignment for small screens
                                 flexGrow: 1,
                               }}>
-                                <Typography variant="subtitle1" sx={{ mr: { sm: 2 } }}>
+                                <Typography variant={{xs: "caption" , sm: "subtitle1"}} sx={{ mr: { sm: 2 }, }}>
                                   {item.title}
                                 </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                <Typography variant={{xs: "caption" , sm: "body2"}} sx={{ color: 'text.secondary' }}>
                                   {item.description}
                                 </Typography>
                               </Box>

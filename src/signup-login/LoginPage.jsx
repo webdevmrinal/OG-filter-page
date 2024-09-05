@@ -179,7 +179,7 @@ const LoginPage = () => {
 
       <Container
         maxWidth="xl"
-        sx={{ mt: 4, pb: 12 }}
+        sx={{ mt: 4, pb: {xs: 4, sm: 10} }}
         className="md:border md:mb-6 md:pt-6 md:shadow-lg md:rounded-xl"
       >
         <Grid
@@ -195,7 +195,7 @@ const LoginPage = () => {
                   key={index}
                   sx={{
                     width: "100%",
-                    height: "700px",
+                    height: { xs: "300px", sm: "400px", md: "700px" },
                     overflow: "hidden",
                     borderRadius: "10px",
                     backgroundImage: `url(${url})`,
@@ -232,7 +232,8 @@ const LoginPage = () => {
                   gap: ".75em",
                   mb: 2,
                   px: 4,
-                  py: 1,
+                  pt: 3.3,
+                  pb: 1,
                 }}
               >
                 <Button

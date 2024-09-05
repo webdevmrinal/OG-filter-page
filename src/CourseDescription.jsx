@@ -108,8 +108,8 @@ const CourseAccordion = styled((props) => {
           }}>
             <List dense>
               {section.details.map((detail, idx) => (
-                <ListItem key={idx}>
-                  <ListItemIcon>
+                <ListItem key={idx} sx={{px: {xs: 0, sm: 0}}}>
+                  <ListItemIcon sx={{minWidth: {xs: '40px', sm: '56px'}}}>
                     {detail.icon}
                   </ListItemIcon>
                   <ListItemText primary={<Typography variant='subtitle2' color="textSecondary">{detail.text}</Typography>} />

@@ -587,11 +587,13 @@ const navigateToExpertsPage = () => {
             <Box
               sx={{
                 
-                pl: 4,
-                pr: 4,
+                pl: 3,
+                pr: 3,
                 pt: 1,
                 pb: 3,
                 width: { xs: '100%', sm: '66vw' },
+                display: {xs : 'grid', sm: 'inherit'},
+                justifyContent: {xs: 'center', sm: 'inherit'},
                 height: "auto",
                 overflow: "auto",
                 borderRadius: "8px",
@@ -650,7 +652,7 @@ const navigateToExpertsPage = () => {
                           borderRadius: "8px",
                           border: "1px solid rgba(0,0,0,0.12)",
                           backgroundColor: "#fff",
-                          maxWidth: "calc(100% - 25px)",
+                          maxWidth: "calc(100% - 0px)",
                         }}
                       >
                         {appointmentCard(appointment)}

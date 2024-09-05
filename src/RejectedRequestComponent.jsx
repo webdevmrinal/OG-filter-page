@@ -19,8 +19,11 @@ import {
   TableCell,
   TableBody,
   Drawer,
+  useMediaQuery,
+  useTheme
 } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -171,6 +174,8 @@ const RejectedRequestComponent = () => {
       [index]: !prev[index],
     }));
   };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Paper
@@ -179,62 +184,58 @@ const RejectedRequestComponent = () => {
         border: "1px solid lightgray",
         borderRadius: 2,
         overflow: "hidden",
+        width: isMobile ? "100%" : "auto", // Responsive width
       }}
     >
       <Box>
         <Typography variant="h6" sx={{ px: 3, py: 1 }}>
           Rejected Requests
         </Typography>
-        <Divider sx={{ width: "97%", alignSelf: "center", ml: '24px' }}/>
-        <Box sx={{ px: 3, py: 1 }}>
+        <Divider sx={{ width: isMobile ? "90%" : "97%", alignSelf: "center", ml: "24px" }} />
+        <Box sx={{ px: isMobile ? 2 : 3, py: 1 }}>
           {rejectedItems.map((item, index) => (
-            <RejectedItem key={item.meet_id}>
+            <RejectedItem key={item.meet_id} sx={{ flexDirection: isMobile ? "column" : "row" }}>
               <AvatarWrapper>
                 <Avatar
                   src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
-                  sx={{ width: 90, height: 90, mr: 2 }}
+                  sx={{ width: 90, height: 90, mr: isMobile ? 0 : 2, mb: isMobile ? 2 : 0 }}
                 />
               </AvatarWrapper>
-              <Box sx={{ display: "flex", flexGrow: 1 }}>
-                <Box
-                  sx={{ flexGrow: 0.6, flexShrink: 0.5, flexBasis: 0, pr: 5 }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    sx={{ }}
-                  >
-                    {item.mentee_name}
-                  </Typography>
+              <Box sx={{ display: "flex", flexDirection: isMobile ? "column" : "row", flexGrow: 1 }}>
+                <Box sx={{ flexGrow: 0.6, flexShrink: 0.5, flexBasis: 0, pr: isMobile ? 0 : 5 }}>
+                  <Typography variant="subtitle1">{item.mentee_name}</Typography>
                   <Link
                     href={`/mentee-profile/${item.mentee_id}`}
                     underline="hover"
                     color="inherit"
                   >
-                    <Typography
-                      variant="subtitle2"
-                      sx={{ }}
-                    >
-                      {item.idea}
-                    </Typography>
+                    <Typography variant="subtitle2">{item.idea}</Typography>
                   </Link>
-                  <Box display={'flex'} mt={0.5}>
-                  <CalendarTodayIcon sx={{width: '0.5em', height: '0.7em', mr: 0.4, color: 'text.secondary'}}/>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.date_title} | {item.time_title}
-                  </Typography>
+                  <Box display={"flex"} mt={0.5}>
+                    <CalendarTodayIcon
+                      sx={{
+                        width: "0.5em",
+                        height: "0.7em",
+                        mr: 0.4,
+                        color: "text.secondary",
+                      }}
+                    />
+                    <Typography variant="body2" color="text.secondary">
+                      {item.date_title} | {item.time_title}
+                    </Typography>
                   </Box>
                   <Typography variant="body2" color="text.secondary" mt={1.2}>
                     Requirement: {item.query}
                   </Typography>
-                  
                 </Box>
                 <Box
                   flexGrow={"0.35"}
                   sx={{
-                    width: 0,
-                    paddingLeft: '20em',
+                    width: isMobile ? "auto": 0,
+                    paddingLeft: isMobile ? 0 : "20em",
                     justifyContent: "flex-end",
-                    alignSelf: "center",
+                    alignSelf: isMobile ? "flex-start" : "center",
+                    mt: isMobile ? 2 : 0,
                   }}
                 >
                   <Typography variant="body2" color="text.primary">
@@ -244,7 +245,6 @@ const RejectedRequestComponent = () => {
                     {truncateText(item.reasons[0], 100)}
                   </Typography>
                   <Button
-                    
                     onClick={() => handleOpenDrawer(item.reasons)}
                     size="small"
                     sx={{ mb: 1, fontSize: ".75em", px: 0 }}
@@ -270,9 +270,8 @@ const RejectedRequestComponent = () => {
           </Box>
         )}
       </Box>
-
       <Drawer anchor="right" open={drawerOpen} onClose={handleCloseDrawer}>
-        <Box sx={{ width :500, p: 2 }}>
+        <Box sx={{ width: isMobile ? "100%" : 500, p: 1.8 }}>
           <Typography variant="h6" gutterBottom>
             Rejection Reasons
           </Typography>
@@ -280,8 +279,12 @@ const RejectedRequestComponent = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell>Reasons</TableCell>
+                  <TableCell>
+                    <Button onClick={handleCloseDrawer} size="small" variant="none" sx={{ml: -1.5}}>
+                      <ArrowBackIcon />
+                    </Button>
+                  </TableCell>
+                  <TableCell sx={{pl: 2}}>Reasons</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

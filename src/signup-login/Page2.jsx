@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Box } from "@mui/material";
 
 const platforms = [
@@ -36,6 +36,31 @@ const experts = [
 ];
 
 function Page2() {
+  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [selectedExperts, setSelectedExperts] = useState([]);
+
+  const handleSelectCourse = (index) => {
+    const newSelected = [...selectedCourses];
+    const position = newSelected.indexOf(index);
+    if (position >= 0) {
+      newSelected.splice(position, 1); // Remove if already selected
+    } else {
+      newSelected.push(index); // Add to selected list if not already
+    }
+    setSelectedCourses(newSelected);
+  };
+
+  const handleSelectExpert = (index) => {
+    const newSelected = [...selectedExperts];
+    const position = newSelected.indexOf(index);
+    if (position >= 0) {
+      newSelected.splice(position, 1);
+    } else {
+      newSelected.push(index);
+    }
+    setSelectedExperts(newSelected);
+  };
+
   return (
     <Box sx={{ pb: 10 }}>
       <Typography
@@ -71,29 +96,31 @@ function Page2() {
             <Box
               component="li"
               key={index}
+              onClick={() => handleSelectCourse(index)}
               sx={{
                 border: '0.5px solid #e0e0e0',
                 borderRadius: '0.375rem',
                 p: 2,
                 "&:hover": { bgcolor: "#f7f7f7" },
-                display: 'flex', // This makes sure the label uses all available space
-                alignItems: 'center', // Aligns items vertically in the center
+                bgcolor: selectedCourses.includes(index) ? '#f7f7f7' : '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
-              <label
-                htmlFor={`course-${index}`}
-                sx={{ display: 'flex', alignItems: 'center', gap: '20px', p: 2, width: '100%' }}
-              >
-                <input type="checkbox" id={`course-${index}`} name="course" />
-                <span>{platform.name}</span>
-                {platform.imageLink && (
-                  <img
-                    src={platform.imageLink}
-                    alt={platform.name}
-                    style={{ position: 'absolute', right: 16, transform: 'translateY(-50%)', top: '50%' }}
-                  />
-                )}
-              </label>
+              <input
+                type="checkbox"
+                checked={selectedCourses.includes(index)}
+                onChange={() => {}}
+                sx={{ mr: 2 }}
+              />
+              <span>{platform.name}</span>
+              {platform.imageLink && (
+                <img
+                  src={platform.imageLink}
+                  alt={platform.name}
+                  style={{ marginLeft: 'auto', height: '30px' }}
+                />
+              )}
             </Box>
           ))}
         </Box>
@@ -120,29 +147,31 @@ function Page2() {
             <Box
               component="li"
               key={index}
+              onClick={() => handleSelectExpert(index)}
               sx={{
                 border: '0.5px solid #e0e0e0',
                 borderRadius: '0.375rem',
                 p: 2,
                 "&:hover": { bgcolor: "#f7f7f7" },
-                display: 'flex', // This makes sure the label uses all available space
-                alignItems: 'center', // Aligns items vertically in the center
+                bgcolor: selectedExperts.includes(index) ? '#f7f7f7' : '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
-              <label
-                htmlFor={`exp-${index}`}
-                sx={{ display: 'flex', alignItems: 'center', gap: '20px', p: 2, width: '100%' }}
-              >
-                <input type="checkbox" id={`exp-${index}`} name="exp" />
-                <span>{expert.name}</span>
-                {expert.imageLink && (
-                  <img
-                    src={expert.imageLink}
-                    alt={expert.name}
-                    style={{ position: 'absolute', right: 16, transform: 'translateY(-50%)', top: '50%' }}
-                  />
-                )}
-              </label>
+              <input
+                type="checkbox"
+                checked={selectedExperts.includes(index)}
+                onChange={() => {}}
+                sx={{ mr: 2 }}
+              />
+              <span>{expert.name}</span>
+              {expert.imageLink && (
+                <img
+                  src={expert.imageLink}
+                  alt={expert.name}
+                  style={{ marginLeft: 'auto', height: '30px' }}
+                />
+              )}
             </Box>
           ))}
         </Box>

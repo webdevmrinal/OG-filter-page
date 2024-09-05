@@ -36,7 +36,7 @@ const ExpertCard = styled(Card)(({ theme }) => ({
   },
   [theme.breakpoints.down('sm')]: {
     width: 'auto',
-    height: '29em',
+    height: 'auto',
     marginLeft: '0px',
   },
   [theme.breakpoints.between('md')]: {

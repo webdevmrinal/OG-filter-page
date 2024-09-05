@@ -33,6 +33,7 @@ import {
   Menu as MenuIcon,
 } from "@mui/icons-material";
 import "slick-carousel/slick/slick.css";
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import "slick-carousel/slick/slick-theme.css";
 import LoginPage from "./LoginPage";
 import OGLogo from "./assets/OG-Logo.svg";
@@ -265,7 +266,7 @@ const SignupPage = () => {
 
       <Container
         maxWidth="xl"
-        sx={{ mt: 4, pb: 12 }}
+        sx={{ mt: 4, pb: 4 }}
         className="md:border md:mb-6 md:pt-6 md:shadow-lg md:rounded-xl"
       >
         <Grid
@@ -314,7 +315,8 @@ const SignupPage = () => {
                   gap: ".75em",
                   mb: 2,
                   px: 4,
-                  py: 1,
+                  pb: 1,
+                  pt: 3.3,
                 }}
               >
                 <Button
@@ -364,7 +366,7 @@ const SignupPage = () => {
                 style={{ padding: "0 2rem" }}
               >
                 <Grid container spacing={2}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} md={6}>
                     <TextField
                       fullWidth
                       label={
@@ -388,10 +390,9 @@ const SignupPage = () => {
                       helperText={
                         formik.touched.firstName && formik.errors.firstName
                       }
-                     
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} md={6}>
                     <TextField
                       fullWidth
                       label={
@@ -407,7 +408,6 @@ const SignupPage = () => {
                         },
                       }}
                       variant="outlined"
-                      
                       {...formik.getFieldProps("lastName")}
                       error={
                         formik.touched.lastName &&
@@ -418,6 +418,7 @@ const SignupPage = () => {
                       }
                     />
                   </Grid>
+
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
@@ -589,15 +590,25 @@ const SignupPage = () => {
           </Grid>
         </Grid>
       </Container>
+      <Button
+  sx={{
+    color: "#25", // Adjust the color as needed
+    textTransform: "none",
+    background: "transparent",
+    border: "none",
+    fontSize: "0.8rem", // Adjust the font size as needed
+    "&:hover": {
+      backgroundColor: "transparent"
+    },
+    m: 2
+  }}
+  onClick={() => {
+    navigate("/get-started", { state: { fromSignup: true } });
+  }}
+>
+  &lt; Back
+</Button>
 
-      <button
-        className="px-4 py-2 mx-4 my-4 rounded-md bg-zinc-700 text-white font-semibold"
-        onClick={() => {
-          navigate("/", { state: { fromSignup: true } });
-        }}
-      >
-        Back
-      </button>
 
       <Footer />
     </Box>

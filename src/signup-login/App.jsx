@@ -22,10 +22,10 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(2),
   [theme.breakpoints.up("md")]: {
     flexDirection: "row",
-    height: "100vh", // original desktop styles
+    height: "auto", // original desktop styles
     maxWidth: '100rem',
-    margin: '20px auto',
-    padding: theme.spacing(4),
+    margin: 'auto auto',
+    padding: theme.spacing(2),
   },
 }));
 
@@ -37,11 +37,11 @@ const ContentBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   [theme.breakpoints.up("md")]: {
     maxWidth: "200rem",
-    height: "100vh",
+    height: "auto",
     borderRadius: theme.shape.borderRadius * 2,
     boxShadow: theme.shadows[4],
     border: `1px solid ${theme.palette.divider}`,
-    padding: theme.spacing(4, 7, 0),
+    padding: theme.spacing(3, 7, 0),
   },
 }));
 

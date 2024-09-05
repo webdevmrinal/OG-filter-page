@@ -9,7 +9,9 @@ import {
   Typography,
   TextField,
   Button,
-  Paper
+  Paper,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 
 const users = [
@@ -36,6 +38,9 @@ const initialMessages = [
 ];
 
 const ChatPage = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [selectedUser, setSelectedUser] = useState(users[2]); // Default selected user as object
   const [messages, setMessages] = useState(initialMessages);
   const [newMessage, setNewMessage] = useState('');
@@ -68,11 +73,11 @@ const ChatPage = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', height: '91vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', height: '91vh' }}>
       <Box 
         sx={{
-          width: '300px',
-          borderRight: '1px solid #e0e0e0',
+          width: isMobile ? 'auto' : '300px',
+          borderRight: isMobile ? 'none' : '1px solid #e0e0e0',
           overflow: 'hidden',
           m: 2,
           boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
@@ -83,7 +88,7 @@ const ChatPage = () => {
         </Typography>
         <List 
           sx={{
-            maxHeight: 'calc(100vh - 150px)', // Adjust based on other components height
+            maxHeight: isMobile ? '200px' : 'calc(100vh - 150px)', // Adjust for small screens
             overflowY: 'auto',
             '::-webkit-scrollbar': {
               width: '0px',
@@ -101,16 +106,15 @@ const ChatPage = () => {
           ))}
         </List>
       </Box>
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', my: 2, mr: 2,
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)" }}>
-        <Box sx={{ p: 2, backgroundColor: '#f5f5f5', borderBottom: '1px solid #e0e0e0', display: 'flex', alignItems: 'center' }}>
-          <Avatar sx={{ mr: 2, height: '60px', width: '60px' }} src={selectedUser.avatar} />
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', my: 2, mx: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.2)" }}>
+        <Box sx={{ p: 2, backgroundColor: '#f5f5f5', borderBottom: '1px solid #e0e0e0', display: 'flex', alignItems: 'center', flexDirection: isMobile ? 'column' : 'row' }}>
+          <Avatar sx={{ mr: isMobile ? 0 : 2, mb: isMobile ? 1 : 0, height: '60px', width: '60px' }} src={selectedUser.avatar} />
+          <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: isMobile ? 'center' : 'left' }}>
             <Typography variant="h6">{selectedUser.name}</Typography>
             <Typography variant="subtitle1">{selectedUser.role}</Typography>
           </Box>
         </Box>
-        <Box sx={{ flex: 1, overflow: 'auto', p: 2,overflowY: 'auto',
+        <Box sx={{ flex: 1, overflow: 'auto', p: 2, overflowY: 'auto',
             '::-webkit-scrollbar': {
               width: '0px',
               background: 'transparent'
@@ -135,7 +139,7 @@ const ChatPage = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   padding: '10px',
-                  backgroundColor: message.sender === 'mentor' ? '#bbdefb' : '#fff9c4', // Changed color to blue for sent messages
+                  backgroundColor: message.sender === 'mentor' ? '#bbdefb' : '#fff9c4',
                   maxWidth: 'calc(100% - 80px)',
                   wordWrap: 'break-word'
                 }}>
