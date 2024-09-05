@@ -471,7 +471,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                     </TimeButton>
                   ))}
                 </ScrollableBox>
-              </Box> */}   <Box display={isMobile ? 'block' : 'flex'} sx={{marginTop: 2, width: {xs: '100vw', sm: 'inherit'}}}>
+              </Box> */}   <Box display={isMobile ? 'block' : 'flex'} sx={{marginTop: 2, width: {xs: '107vw', sm: 'inherit'}, }}>
     <Box>
                             {visibleDays.map((day, index) => (
                                 <Box key={index} sx={{ mb: 2 }}>
@@ -486,7 +486,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                                     `${day.date}_${time.label}`
                                                 )}
                                                 onChange={() => handleTimeToggle(day, time)}
-                                                sx={{ mr: 1,mt: 0.7, width: "max-content", fontSize: {xs: '0.8em', sm: 'inherit'} }}
+                                                sx={{ mr: 1,mt: 0.7, width: "max-content", fontSize: {xs: '0.8em', sm: 'inherit'},px: {xs: '4px', sm: '11px'} }}
                                             >
                                                 {time.label}
                                             </TimeButton>

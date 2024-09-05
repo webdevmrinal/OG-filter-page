@@ -158,10 +158,16 @@ const AppointmentDashboard = () => {
           borderColor: "divider",
         }}>
           <StyledTabs
-            value={value}
-            onChange={handleChange}
-            aria-label="appointment tabs"
-            sx={{ width: { xs: '100%', sm: 'auto' }, marginBottom: { xs: 2, sm: 0 } }}
+              value={value}
+              onChange={handleChange}
+              aria-label="appointment tabs"
+              variant="scrollable" // Makes the tabs scrollable
+              scrollButtons="auto" // Shows scroll buttons automatically if needed
+              allowScrollButtonsMobile // Enables scroll buttons on mobile as well
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                marginBottom: { xs: 2, sm: 0 },
+              }}
           >
             <StyledTab
               icon={<EventAvailableIcon sx={{ color: "#81c784" }} />}

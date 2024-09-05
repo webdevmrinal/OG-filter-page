@@ -35,8 +35,12 @@ const DateButton = styled(ToggleButton)(({ theme }) => ({
   justifyContent: "center",
   marginRight: theme.spacing(1),
   marginBottom: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    width: '100%', // Full width on smaller screens
+  },
 }));
-const TimeButton = styled(ToggleButton)(({ available }) => ({
+
+const TimeButton = styled(ToggleButton)(({ available, theme }) => ({
   border: `2px solid ${available ? "#25387c" : "#e0e0e0"}`,
   color: available ? "#25387c" : "#e0e0e0",
   opacity: available ? 1 : 0.6,
@@ -49,15 +53,19 @@ const TimeButton = styled(ToggleButton)(({ available }) => ({
   alignItems: "center",
   justifyContent: "center",
   "&:after": {
-      content: available ? '""' : '""',
-      position: "absolute",
-      bottom: "4px",
-      left: "50%",
-      transform: "translateX(-50%)",
-      color: "#e0e0e0",
-      fontSize: "0.75rem",
-      fontWeight: "bold",
-      textAlign: "center",
+    content: available ? '""' : '""',
+    position: "absolute",
+    bottom: "4px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    color: "#e0e0e0",
+    fontSize: "0.75rem",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%', // Full width on smaller screens
+    height: 'auto', // Adjust height on smaller screens
   },
 }));
 
@@ -102,6 +110,9 @@ const StyledSummaryBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   boxShadow: theme.shadows[2],
   border: `1px solid ${theme.palette.grey[300]}`,
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2), // Less padding on smaller screens
+  },
 }));
 
 const SuccessMessage = styled(Typography)({
