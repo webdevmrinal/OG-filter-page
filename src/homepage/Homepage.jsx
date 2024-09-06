@@ -1,14 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
-import ExpertCarousel from "./ExpertCarousel";
+import React, { useCallback, useEffect, useState, Suspense, lazy } from "react";
 import axios from "axios";
-import TrendingBlogs from "./TrendingBlogs";
-import Courses from "./Courses";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, CircularProgress, Typography, Button } from "@mui/material";
 import Slider from "react-slick";
 import { styled } from '@mui/system';
-import Hub from "./hub";
-import Testimonials from "./Testimonials";
 import Header from "../signup-login/Header";
+
+const ExpertCarousel = lazy(() => import("./ExpertCarousel"));
+const TrendingBlogs = lazy(() => import("./TrendingBlogs"));
+const Courses = lazy(() => import("./Courses"));
+const Hub = lazy(() => import("./hub"));
+const Testimonials = lazy(() => import("./Testimonials"));
 
 const blogData = [
   {
@@ -248,7 +249,8 @@ const BannerContainer = styled(Box)(({ theme, bgImage }) => ({
   justifyContent: 'center',  
   borderRadius: '4px',
   overflow: 'hidden',
-  backgroundColor: 'transparent', // Ensure the background is transparent
+  backgroundColor: 'transparent',
+  flexDirection: 'column',  // Default to column layout
   '&:before': {
     content: '""',
     position: 'absolute',
@@ -256,8 +258,8 @@ const BannerContainer = styled(Box)(({ theme, bgImage }) => ({
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundImage: `linear-gradient(to right, #2979ff, #d500f9)`, // Blue to purple gradient
-    zIndex: 1  // Gradient below the image
+    backgroundImage: `linear-gradient(to right, #2979ff, #d500f9)`,
+    zIndex: 1
   },
   '&:after': {
     content: '""',
@@ -269,23 +271,40 @@ const BannerContainer = styled(Box)(({ theme, bgImage }) => ({
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    zIndex: 2  // Image on top of the gradient
-  }
+    zIndex: 2
+  },
+  [theme.breakpoints.up('md')]: { // Large screens
+    height: '500px',
+    flexDirection: 'row', // Side by side layout for large screens
+  },
+  [theme.breakpoints.down('sm')]: { // Small screens
+    height: '300px', // Adjust height for small screens
+    flexDirection: 'column', // Stack image and text in column
+    backgroundPosition: 'center', // Ensure the image is centered
+    backgroundSize: 'contain', // Contain image to avoid cut-off
+  },
 }));
-
 const ContentBox = styled(Box)(({ theme }) => ({
   marginTop: '45px',
   marginLeft: '35px',
   position: 'relative',
-  zIndex: 3,  // Ensure content is above all
+  zIndex: 3,
   maxWidth: '520px',
   textAlign: 'left',
   padding: theme.spacing(3),
-  color: 'white'
+  color: 'white',
+  [theme.breakpoints.down('sm')]: { // Smaller font on small screens
+    fontSize: '0.8rem',
+    padding: theme.spacing(2),
+    marginLeft: '10px',
+  }
 }));
 
 const BannerText = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: { // Smaller font for the text on small screens
+    fontSize: '1rem',
+  },
 }));
 
 const BannerButton = styled(Button)(({ theme }) => ({
@@ -296,8 +315,12 @@ const BannerButton = styled(Button)(({ theme }) => ({
   fontWeight: 540,
   "&:hover": {
     boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
-    backgroundColor: '#f9bb02'
+    backgroundColor: '#f9bb02',
   },
+  [theme.breakpoints.down('sm')]: { // Adjust button size for small screens
+    fontSize: '0.7rem',
+    padding: '6px 12px',
+  }
 }));
 
 const BannerCarousel = () => {
@@ -333,7 +356,6 @@ const BannerCarousel = () => {
     </Slider>
   );
 };
-
 
 function Homepage() {
   const [experts, setExperts] = useState([]);
@@ -382,17 +404,16 @@ function Homepage() {
 
   return (
     <>
+      <Header />
+      <BannerCarousel />
       {!loading && (
-        <Box sx={{ px: 2 }}>
-          <Header />
-          <BannerCarousel />
+        <Suspense fallback={<CircularProgress />}>
           <ExpertCarousel experts={experts} />
           <TrendingBlogs blogs={blogData} />
           <Courses course={courses} />
-          {/* <Communities course={communities} /> */}
           <Hub course={communities} />
           <Testimonials />
-        </Box>
+        </Suspense>
       )}
     </>
   );

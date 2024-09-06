@@ -275,34 +275,48 @@ const SliderWrapper = styled(Box)({
 
   const Banner = () => {
     return (
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: '#fff', // Blue background
-        color: '#fff',
-        padding: '0rem 0rem 0rem 0rem', // Adjust padding as needed
-        height: '450px',
-        borderRadius: 2,
-        
-      }}>
-        <Box sx={{ width: '70%',height: '450px'}}>
-          <img 
-            src="https://www.opengrowth.com/assets/public/opengrowth/images/courses/banner-5.png" 
-            alt="Banner Image"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', borderTopLeftRadius: 4, borderBottomLeftRadius: 4 }}
-          />
-        </Box>
-        <Box sx={{ width: '20%', textAlign: 'left', mr: 8.85, ml: 4 }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold' , color: 'black'}}>Courses Curated by our experts for startups</Typography>
-          
-          <Button variant="contained" sx={{ backgroundColor: '#f9bb02', '&:hover': { backgroundColor: '#d6a302' }, borderRadius: '50px',
-        color: 'black', fontSize: '0.8em', fontWeight: '600', boxShadow: "0 4px 6px rgba(0,0,0,0.2)", mt: 4}}>
-            View All Courses
-          </Button>
-        </Box>
-        
-      </Box>
+      <Box
+  sx={{
+    display: 'flex',
+    flexDirection: { xs: 'column', sm: 'row' }, // Column for small screens
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    padding: '0rem 0rem 0rem 0rem',
+    height: { xs: 'auto', sm: '450px' }, // Adjust height for small screens
+    borderRadius: 2,
+  }}
+>
+  <Box sx={{ width: { xs: '100%', sm: '70%' }, height: { xs: 'auto', sm: '450px' } }}>
+    <img
+      src="https://www.opengrowth.com/assets/public/opengrowth/images/courses/banner-5.png"
+      alt="Banner Image"
+      style={{ width: '100%', height: '100%', objectFit: 'cover', borderTopLeftRadius: 4, borderBottomLeftRadius: 4 }}
+    />
+  </Box>
+  <Box sx={{ width: { xs: '100%', sm: '20%' }, textAlign: 'left', mr: { sm: 8.85 }, ml: { sm: 4 }, p: { xs: 2, sm: 0 } }}>
+    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'black', fontSize: { xs: '1.5rem', sm: '2rem' } }}>
+      Courses Curated by our experts for startups
+    </Typography>
+
+    <Button
+      variant="contained"
+      sx={{
+        backgroundColor: '#f9bb02',
+        '&:hover': { backgroundColor: '#d6a302' },
+        borderRadius: '50px',
+        color: 'black',
+        fontSize: '0.8em',
+        fontWeight: '600',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
+        mt: 4,
+      }}
+    >
+      View All Courses
+    </Button>
+  </Box>
+</Box>
+
     );
   };
 
@@ -356,10 +370,10 @@ const AllCourses = () => {
   };
 
     return (
-        <Box sx={{ padding: 3, pt: 0 }}>
+        <Box sx={{ padding: 1, pt: 0 }}>
         <Header />
         <Banner />
-        <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
+        <Card sx={{ mt: 4, p: {sm: 3, xs: 1}, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
         <Typography variant="h5" fontWeight={'bold'} ml={2} gutterBottom>
                 Featured Courses
         </Typography>
@@ -419,7 +433,15 @@ const AllCourses = () => {
             </Typography>
             {/* Search Bar */}
             {/* Filter Chips */}
-            <Box sx={{ mb: 4 }}>
+          <Box sx={{
+            mb: 4,
+            display: 'flex',
+            flexWrap: 'nowrap', // Ensure chips stay in a single line
+            overflowX: 'auto', // Allow horizontal scrolling
+            gap: 1,
+            scrollbarWidth: 'none', // Hide scrollbar for Firefox
+            '&::-webkit-scrollbar': { display: 'none' }, // Hide scrollbar for Chrome, Safari, and Edge
+          }}>
                 <Chip label="LeaderShip" sx={{ mr: 1 }} />
                 <Chip label="Product" sx={{ mr: 1 }} />
                 <Chip label="Marketing" sx={{ mr: 1 }} />
@@ -432,12 +454,12 @@ const AllCourses = () => {
             <Grid container spacing={3}>
                 {courses.map((course, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                        <Link to={`/course/${course.title}`} style={{ textDecoration: 'none', color: 'inherit' }}
-        state={{
-            title: course.title,
-    imageUrl: course.imageUrl,
-    description: course.description
-          }}>
+                    <Link to={`/course/${course.title}`} style={{ textDecoration: 'none', color: 'inherit' }}
+                      state={{
+                        title: course.title,
+                        imageUrl: course.imageUrl,
+                        description: course.description
+                      }}>
                         <Card sx={{
                             boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, height: '21em', display: 'flex', flexDirection: 'column',
                             '&:hover': {

@@ -75,7 +75,7 @@ const TransactionHistory = () => {
         border={"1px solid lightgray"}
         sx={{ height: "13em" }}
       >
-        <GradientBox sx={{ marginBottom: 2 }}>
+        <GradientBox sx={{ marginBottom: 2, padding: {xs: "auto" , sm: "24px"} }}>
           <Box
             sx={{
               display: "flex",
@@ -89,18 +89,18 @@ const TransactionHistory = () => {
               alignItems="center"
               position={"absolute"}
               bottom={"-46%"}
-              sx={{ translate: "0 -50%" }}
+              sx={{ translate: {sm: "0 -50%", xs: "0 -68%"} }}
             >
               <Avatar
                 src="https://example.com/your-photo.jpg"
                 sx={{
-                  width: 110,
-                  height: 110,
-                  marginRight: 2,
+                  width: {xs: 85, sm: 110},
+                  height: {xs: 85, sm: 110},
+                  marginRight: {xs: 1, sm: 2},
                   border: "4px solid white",
                 }}
               />
-              <Box sx={{ color: "white" }}>
+              <Box sx={{ color: "white" , marginBottom: {xs: 1.4, sm: 'inherit'}}}>
                 <Typography variant="h5">John Doe</Typography>
                 <Typography variant="subtitle1">
                   React Developer,
@@ -123,6 +123,9 @@ const TransactionHistory = () => {
           onChange={handleTabChange}
           indicatorColor="primary"
           textColor="primary"
+          variant="scrollable"
+          scrollButtons="auto"  // Scroll buttons enabled on both sides
+          allowScrollButtonsMobile  // Allow scroll buttons on mobile as well
           sx={{ padding: "0 16px" }}
         >
           <Tab label="Transactions History" />
@@ -135,26 +138,28 @@ const TransactionHistory = () => {
         {selectedTab === 0 && (
           transactions.map((transaction, index) => (
             <Card
-              key={index}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginY: 1,
-                paddingLeft: 1,
-                borderLeft: `10px solid ${
-                  transaction.isPositive ? "#a5d6a7" : "#ef9a9a"
-                }`,
-                mx: 3,
-                mt: 3,
-                borderRadius: 2,
-                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                "&:hover": {
-                  backgroundColor: "#0000000a",
-                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                  transform: "translateY(-2px)",
-                },
-              }}
+            key={index}
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },  // Stack elements vertically on small screens
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginY: 1,
+              paddingLeft: 1,
+              borderLeft: `10px solid ${
+                transaction.isPositive ? "#a5d6a7" : "#ef9a9a"
+              }`,
+              mx: 3,
+              mt: 3,
+              borderRadius: 2,
+              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+              "&:hover": {
+                backgroundColor: "#0000000a",
+                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                transform: "translateY(-2px)",
+              },
+              p: { xs: 1, sm: 2 } // Smaller padding on xs screens
+            }}
             >
               <Box
                 sx={{
@@ -167,6 +172,7 @@ const TransactionHistory = () => {
                   boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                   width: "90px",
                   height: "95px",
+                  mt: { xs: 1, sm: 0 }
                 }}
               >
                 <Typography
@@ -176,6 +182,7 @@ const TransactionHistory = () => {
                     color: "text.secondary",
                     mt: 1,
                     ml: 0.5,
+                    
                   }}
                 >
                   Booked on
@@ -191,7 +198,7 @@ const TransactionHistory = () => {
                   {transaction.date}
                 </Typography>
               </Box>
-              <Box sx={{ padding: 2, flex: 1, ml: 0.5 }}>
+              <Box sx={{ padding: {xs: 0, sm: 2}, flex: 1, ml: 0.5 }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -239,10 +246,14 @@ const TransactionHistory = () => {
                     }}
                   />
                 </Box>
-
+                
                 <Typography
                   variant="subtitle1"
-                  sx={{ pl: 0.3, pb: 1, lineHeight: 0, mt: 2 }}
+                  sx={{ pl: 0.3, pb: 1, lineHeight: {xs: 1.2, sm: 0}, mt: 2, fontSize: { xs: "13px", sm: "16px" },
+                  width: { xs: "100%", sm: "auto" },  // Full width on small screens
+                  whiteSpace: "normal",  // Allow text to wrap normally
+                  wordWrap: "break-word",  // Ensure long words break when necessary
+                  overflowWrap: "anywhere",  }}
                 >
                   {transaction.description}
                 </Typography>
@@ -259,14 +270,32 @@ const TransactionHistory = () => {
                   <Typography variant="h6">{transaction.amount}</Typography>
                 </Box>
               </Box>
-              <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  mr: 2,
+                  mt: { xs: 1, sm: 0 },
+                  mb: { xs: 1, sm: 0 } // Adjust margin-top for xs screens
+                }}
+              >
                 <Avatar
                   src="https://example.com/avatar1.jpg"
-                  sx={{ width: 60, height: 60, zIndex: 2, ml: -1, mt: 0 }}
+                  sx={{
+                    width: { xs: 40, sm: 60 }, // Smaller avatars on xs screens
+                    height: { xs: 40, sm: 60 },
+                    zIndex: 2,
+                    ml: { xs: 0, sm: -1 } // Adjust margin-left for small screens
+                  }}
                 />
                 <Avatar
                   src="https://example.com/avatar2.jpg"
-                  sx={{ width: 60, height: 60, zIndex: 1, ml: -2, mb: 0 }}
+                  sx={{
+                    width: { xs: 40, sm: 60 },
+                    height: { xs: 40, sm: 60 },
+                    zIndex: 1,
+                    ml: { xs: -1, sm: -2 } // Adjust margin-left for small screens
+                  }}
                 />
               </Box>
             </Card>

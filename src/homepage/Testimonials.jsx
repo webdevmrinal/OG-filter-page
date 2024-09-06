@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, Grid } from '@mui/material';
+import { Card, CardContent, Typography, Grid, useTheme, useMediaQuery } from '@mui/material';
 
 const testimonialsData = [
   {
@@ -53,17 +53,20 @@ const TestimonialCard = ({ name, content, image }) => (
 );
 
 const Testimonials = () => {
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <Card sx={{ p: 4, boxShadow: 6, borderRadius: '8px', mb: 2 }}>
-      <Typography variant="h6" fontWeight={'bold'} sx={{ textAlign: 'center' }}>
+    <Card sx={{ p: isSmall ? 2 : 4, boxShadow: 6, borderRadius: '8px', mb: 2,  }}>
+      <Typography variant="h6" fontWeight={'bold'} sx={{ textAlign: 'center', fontSize: isSmall ? '1.2rem' : '1.5rem' }}>
         What our Clients Say
       </Typography>
-      <Typography variant="subtitle1" gutterBottom color="text.secondary" sx={{ mb: 2, textAlign: 'center' }}>
+      <Typography variant="subtitle1" gutterBottom color="text.secondary" sx={{ mb: 2, textAlign: 'center', fontSize: isSmall ? '0.9rem' : '1.1rem' }}>
         Learn how startups use OpenGrowth as a perfect partner for their growth journey
       </Typography>
-      <Grid container spacing={0.5} justifyContent="center" sx={{ p: 3, mt: 2 }}>
+      <Grid container spacing={isSmall ? 1 : 0.5} justifyContent="center" sx={{ p: isSmall ? 1 : 3, mt: isSmall ? 1 : 2 }}>
         {testimonialsData.map((testimonial, index) => (
-          <Grid item xs={6} sm={6} md={3} key={index}>
+          <Grid item xs={12} sm={6} md={3} key={index} sx={{ mb: isSmall ? 2 : 0, ml: isSmall ? 2.5 : 0 }}>
             <TestimonialCard
               name={testimonial.name}
               content={testimonial.content}

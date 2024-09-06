@@ -137,14 +137,12 @@ const TrendingBlogs = ({ blogs }) => {
   const sliderRef = useRef(null);
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
-  const isMedium = useMediaQuery(theme.breakpoints.between("sm", "lg"));
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   const getSlidesToShow = () => {
     if (isLarge) return 4;
-    if (isMedium) return 3;
-    if (isSmall) return 1;
-    return 4;
+    if (isSmall) return 1; // Show only one slide at a time on small screens
+    return 3;
   };
 
   const settings = {
@@ -155,16 +153,9 @@ const TrendingBlogs = ({ blogs }) => {
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: theme.breakpoints.values.lg,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
         breakpoint: theme.breakpoints.values.sm,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1, // Single card view for smaller screens
           slidesToScroll: 1,
         },
       },
@@ -179,40 +170,58 @@ const TrendingBlogs = ({ blogs }) => {
     sliderRef.current.slickNext();
   };
 
-  console.log(blogs);
   return (
-    <Box sx={{ my: 6, overflow: "hidden", px: 2.5, boxShadow: "0 4px 6px rgba(0,0,0,0.2)",py: 2.5, borderRadius: 2 }}>
-      {" "}
+    <Box
+      sx={{
+        my: 6,
+        overflow: "hidden",
+        px: 2.5,
+        boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+        py: 2.5,
+        borderRadius: 2,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          flexDirection: isSmall ? "column" : "row", // Stack on small screens
+          justifyContent: isSmall ? "center" : "space-between", // Centered on small screens
+          alignItems: isSmall ? "center" : "center", // Align properly on both
           mb: 2,
           px: 2,
-          
         }}
       >
-        <Box>
-          <Typography variant="h6" gutterBottom fontWeight={'bold'}>
+        <Box sx={{ textAlign: isSmall ? "center" : "left" }}>
+          <Typography
+            variant="h6"
+            gutterBottom
+            fontWeight={"bold"}
+            sx={{ fontSize: isSmall ? "1.2rem" : "1.5rem" }}
+          >
             Trending blogs by our experts
           </Typography>
-          
-          <Typography variant="subtitle1" color="text.secondary">
+
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            sx={{ fontSize: isSmall ? "0.9rem" : "1rem" }}
+          >
             Read blogs recommended by OpenGrowth Expert Community
           </Typography>
         </Box>
-        <AllBlogsButton variant="contained">View All Blogs</AllBlogsButton>
+
+        {!isSmall && (
+          <AllBlogsButton variant="contained">View All Blogs</AllBlogsButton>
+        )}
       </Box>
+
       <SliderWrapper sx={{ position: "relative", px: 2 }}>
-        {" "}
-        {/* Use SliderWrapper and add horizontal padding */}
         <Slider ref={sliderRef} {...settings}>
           {blogs.map((blog, index) => (
             <Box
               key={index}
               sx={{
-                transition:"0.3s",
+                transition: "0.3s",
                 "&:hover": { boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" },
               }}
             >
@@ -220,6 +229,7 @@ const TrendingBlogs = ({ blogs }) => {
             </Box>
           ))}
         </Slider>
+
         {blogs.length > getSlidesToShow() && (
           <>
             <Box
@@ -229,7 +239,6 @@ const TrendingBlogs = ({ blogs }) => {
                 left: 0,
                 transform: "translateY(-50%)",
                 zIndex: 1,
-                
               }}
             >
               <NavigationButton onClick={handlePrev}>
@@ -243,7 +252,6 @@ const TrendingBlogs = ({ blogs }) => {
                 right: 0,
                 transform: "translateY(-50%)",
                 zIndex: 1,
-                
               }}
             >
               <NavigationButton onClick={handleNext}>
@@ -253,8 +261,21 @@ const TrendingBlogs = ({ blogs }) => {
           </>
         )}
       </SliderWrapper>
+
+      {isSmall && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 2, // Margin on top for small screens
+          }}
+        >
+          <AllBlogsButton variant="contained">View All Blogs</AllBlogsButton>
+        </Box>
+      )}
     </Box>
   );
 };
+
 
 export default TrendingBlogs;

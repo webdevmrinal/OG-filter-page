@@ -10,14 +10,13 @@ import {
   Chip,
   Divider
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles'; // Import useTheme hook
 import { useLocation, useNavigate } from "react-router-dom";
 import OrganizationIcon from '@mui/icons-material/AccountTree';
 import WorkLearnIcon from '@mui/icons-material/School';
 import SearchIcon from "@mui/icons-material/Search";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import ProfilePage from '../ProfilePage';
 import Header from '../signup-login/Header';
 
 // Styled components
@@ -44,40 +43,79 @@ const FeatureCard = styled(Card)(({ theme }) => ({
     transform: 'translateY(-2px)',
     backgroundColor: '#0000000a'
   },
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    textAlign: 'center',
+  },
 }));
 
 const Banner = () => {
-    return (
-      <Box sx={{
+  const theme = useTheme(); // Get the theme using the useTheme hook
+
+  return (
+    <Box
+      sx={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#2c489b', // Blue background
+        backgroundColor: '#2c489b',
         color: '#fff',
-        padding: '2rem 6.3rem 2.1rem 2rem', // Adjust padding as needed
-        height: '440px',
+        padding: { xs: '1rem', sm: '2rem 6.3rem 2.1rem 2rem' }, // Adjust padding for small screens
+        height: { xs: 'auto', sm: '440px' }, // Adjust height for small screens
         borderRadius: 2,
-      }}>
-        <Box sx={{ width: '50%' }}>
-          <img 
-            src="https://www.opengrowth.com/assets/public/opengrowth/images/banner/experts-banner.png" 
-            alt="Banner Image"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        </Box>
-        <Box sx={{ width: '42%', textAlign: 'left', mr: 8.85 }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold' }}>Unlock Expert Insights and Propel your Business Growth</Typography>
-          <Typography variant="h5" sx={{ mt: 2, mb: 3 }}>Hire, network, and collaborate with global industry experts</Typography>
-          <Button variant="contained" sx={{ backgroundColor: '#f9bb02', '&:hover': { backgroundColor: '#d6a302' }, borderRadius: '50px',
-        color: 'black', fontSize: '0.8em', fontWeight: '600', boxShadow: "0 4px 6px rgba(0,0,0,0.2)", }}>
-            Find An Expert
-          </Button>
-        </Box>
-        
+        [theme.breakpoints.down('sm')]: {
+          flexDirection: 'column-reverse', // Stack text on top of image for small screens
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+      }}
+    >
+      <Box
+        sx={{
+          width: { xs: '100%', sm: '42%' }, // Full width for small screens
+          textAlign: { xs: 'center', sm: 'left' }, // Center text on small screens
+          mr: { sm: 8.85 },
+          mb: { xs: 2, sm: 0 }, // Add margin below text on small screens
+        }}
+      >
+        <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
+          Unlock Expert Insights and Propel your Business Growth
+        </Typography>
+        <Typography variant="h5" sx={{ mt: 2, mb: 3, fontSize: { xs: '1rem', sm: '1.5rem' } }}>
+          Hire, network, and collaborate with global industry experts
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: '#f9bb02',
+            '&:hover': { backgroundColor: '#d6a302' },
+            borderRadius: '50px',
+            color: 'black',
+            fontSize: { xs: '0.7em', sm: '0.8em' }, // Adjust button text size for small screens
+            fontWeight: '600',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
+          }}
+        >
+          Find An Expert
+        </Button>
       </Box>
-    );
-  };
-  
+
+      <Box
+        sx={{
+          width: { xs: '100%', sm: '49%' }, // Full width for small screens
+          mb: { xs: 2, sm: 0 }, // Add margin below image on small screens
+        }}
+      >
+        <img
+          src="https://www.opengrowth.com/assets/public/opengrowth/images/banner/experts-banner.png"
+          alt="Banner Image"
+          style={{ width: '100%', height: {sm: 'auto', xs: '40vh'}, objectFit: 'cover' }}
+        />
+      </Box>
+    </Box>
+  );
+};
+
 
 const CardFeature = ({ IconComponent, title, subtitle }) => (
   <FeatureCard>
@@ -93,7 +131,10 @@ const CardFeature = ({ IconComponent, title, subtitle }) => (
   </FeatureCard>
 );
 
-const HowItWorksCard = ({ icon, title, description }) => (
+const HowItWorksCard = ({ icon, title, description }) => {
+  const theme = useTheme(); // Get the theme using the useTheme hook
+
+  return (
     <Card
       sx={{
         width: 320,
@@ -105,7 +146,13 @@ const HowItWorksCard = ({ icon, title, description }) => (
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+          height: 'auto',
+          marginBottom: '1rem',
+          padding: '1em 1em',
+        }
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mb: 2 }}>
@@ -119,54 +166,34 @@ const HowItWorksCard = ({ icon, title, description }) => (
       </Typography>
     </Card>
   );
+};
 
-  const HowItWorks = () => (
-    <Box sx={{ textAlign: "center", mt: 5 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 3 }}>
-        How it works?
-      </Typography>
-      <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
-        <HowItWorksCard
-          icon={<SearchIcon sx={{ fontSize: 50, color: "#25387c" }} />}
-          title="Find an expert"
-          description="Discover and choose from our list of the world's most in-demand experts."
-        />
-        <HowItWorksCard
-          icon={<EventAvailableIcon sx={{ fontSize: 50, color: "#25387c" }} />}
-          title="Book a video call"
-          description="Select a time that works for both you and your expert's schedule."
-        />
-        <HowItWorksCard
-          icon={<VideoCallIcon sx={{ fontSize: 50, color: "#25387c" }} />}
-          title="Virtual consultation"
-          description="Join the 1-on-1 video call, ask questions, and get expert advice."
-        />
-      </Box>
-    </Box>
-  );
-
-  const ExpertCard = ({ name, industry, img, email, }) => {
-    const navigate = useNavigate();
-const handleRequestCall = () => {
+const ExpertCard = ({ name, industry, img, email }) => {
+  const theme = useTheme(); // Get the theme using the useTheme hook
+  const navigate = useNavigate();
+  const handleRequestCall = () => {
     navigate(`/profile/${name}`, {
       state: {
         expertEmail: email
       }
     });
   };
-    return (
-    
+
+  return (
     <Card
       sx={{
         width: 300,
         margin: 2,
-        
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
         "&:hover": {
           boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
         },
-        position: 'relative', // Ensures that the position of children can be absolute in relation to this card
-        overflow: 'hidden' // Ensures that no content spills out of the card boundary
+        position: 'relative',
+        overflow: 'hidden',
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+          margin: '10px 0',
+        },
       }}
     >
       <CardMedia
@@ -175,19 +202,21 @@ const handleRequestCall = () => {
         image={`https://academy.opengrowth.com/assets/images/users/${img}`}
         alt={name}
         sx={{
-          objectFit: 'cover' // Ensures the image covers the designated area without distortion
+          objectFit: 'cover',
+          [theme.breakpoints.down('sm')]: {
+            height: 'auto',
+          },
         }}
       />
       <Box
         sx={{
           position: 'absolute',
-          
-          bottom: 65, 
+          bottom: 65,
           left: 0,
           right: 0,
-          background: 'rgba(0, 0, 0, 0.6)', 
+          background: 'rgba(0, 0, 0, 0.6)',
           color: 'white',
-          textAlign: 'center', 
+          textAlign: 'center',
         }}
       >
         <Typography variant="subtitle1" fontWeight="bold">
@@ -200,8 +229,8 @@ const handleRequestCall = () => {
       <Box
         sx={{
           padding: 2,
-          textAlign: 'center', // Centers the button within its container
-          mt: 'auto' // Pushes the button container to the bottom of the card
+          textAlign: 'center',
+          mt: 'auto',
         }}
       >
         <Button
@@ -213,7 +242,7 @@ const handleRequestCall = () => {
             fontWeight: '500',
             borderRadius: '35px',
             "&:hover": {
-                color: 'black',
+              color: 'black',
               backgroundColor: '#f2a603',
             },
           }}
@@ -222,11 +251,37 @@ const handleRequestCall = () => {
         </Button>
       </Box>
     </Card>
-  )};
-  
+  );
+};
 
-const AllExperts = ({ }) => {
-    
+const HowItWorks = () => (
+  <Box sx={{ textAlign: "center", mt: 5 }}>
+    <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 3 }}>
+      How it works?
+    </Typography>
+    <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+      <HowItWorksCard
+        icon={<SearchIcon sx={{ fontSize: 50, color: "#25387c" }} />}
+        title="Find an expert"
+        description="Discover and choose from our list of the world's most in-demand experts."
+      />
+      <HowItWorksCard
+        icon={<EventAvailableIcon sx={{ fontSize: 50, color: "#25387c" }} />}
+        title="Book a video call"
+        description="Select a time that works for both you and your expert's schedule."
+      />
+      <HowItWorksCard
+        icon={<VideoCallIcon sx={{ fontSize: 50, color: "#25387c" }} />}
+        title="Virtual consultation"
+        description="Join the 1-on-1 video call, ask questions, and get expert advice."
+      />
+    </Box>
+  </Box>
+);
+
+const AllExperts = () => {
+  const theme = useTheme(); // Get the theme using the useTheme hook
+  const navigate = useNavigate();
   const location = useLocation();
   const { experts } = location.state || {};
   const chipLabels = [
@@ -244,22 +299,22 @@ const AllExperts = ({ }) => {
   ];
 
   return (
-    <Box sx={{ p: 3, pt: 0}}>
+    <Box sx={{ p: 1, pt: 0 }}>
       <Header />
       <Banner />
-      <MainCard sx={{ py: 4, mt: 5 }}>
-        <Typography variant="h5" gutterBottom fontWeight={'bold'} sx={{ textAlign: 'center' }}>
+      <MainCard sx={{ py: 4, mt: 5,  }}>
+        <Typography variant="h5" gutterBottom fontWeight={'bold'} sx={{ textAlign: 'center', m: {xs: 2, sm: 0} }}>
           Grow your startup with On-Demand and Fractional Executives as Your Success Partners
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2, textAlign: 'center' }}>
+        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2, textAlign: 'center',m: {xs: 2, sm: 0} }}>
           At OpenGrowth, our mission is to connect you with top global experts across diverse domains, including Marketing, HR, Finance, Legal, and Branding to catalyze your startup growth journey empowered by cutting-edge AI technologies.
         </Typography>
-        <Grid container spacing={2} justifyContent="space-evenly">
-          <Grid item xs={12} sm={10} md={5.5} margin={0.5}>
-            <CardFeature IconComponent={OrganizationIcon} title="Hire Fractional Executives" subtitle="Hire an Expert to solve your startup’s specific problems at a fractional cost."/>
+        <Grid container spacing={2} justifyContent="space-evenly" >
+          <Grid item xs={12} sm={10} md={5.5} sx={{margin: {xs: 2, sm: 0.5}}}>
+            <CardFeature IconComponent={OrganizationIcon} title="Hire Fractional Executives" subtitle="Hire an Expert to solve your startup’s specific problems at a fractional cost." />
           </Grid>
-          <Grid item xs={12} sm={10} md={5.5} margin={0.5} sx={{paddingLeft: '0px !important'}}>
-            <CardFeature IconComponent={WorkLearnIcon} title="On Demand Expert" subtitle="Easily schedule a one-on-one session with an Expert for quick resolution."/>
+          <Grid item xs={12} sm={10} md={5.5}sx={{ paddingLeft: '0px !important', ml: {xs: 4, sm: 0}, mr: {xs: 2, sm: 0.5}, my: 0.5 }}>
+            <CardFeature IconComponent={WorkLearnIcon} title="On Demand Expert" subtitle="Easily schedule a one-on-one session with an Expert for quick resolution." />
           </Grid>
         </Grid>
       </MainCard>
@@ -267,11 +322,23 @@ const AllExperts = ({ }) => {
 
       {/* Top Experts Card */}
       <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
-        <Typography variant="h5" fontWeight="bold" sx={{ mb: 1, ml: 4, textAlign: 'left' }}>
+        <Typography variant="h5" fontWeight="bold" sx={{ mb: 1, ml:{sm: 4, xs: 0}, textAlign: 'left' }}>
           Top Experts
         </Typography>
-        <Divider sx={{mb: 2, width: '98%', ml: 2}}/>
-        <Box sx={{ mb: 2, display: 'flex', flexWrap: 'wrap', ml:4, gap: 1 }}>
+        <Divider sx={{ mb: 2, width: '98%', ml: {sm: 2, xs: 0} }} />
+        <Box sx={{
+          mb: 2,
+          display: 'flex',
+          flexWrap: 'nowrap', // Ensure the chips don't wrap to the next line
+          ml: {sm: 4, xs: 0},
+          gap: 1,
+          overflowX: 'auto', // Allow horizontal scrolling
+          scrollbarWidth: 'none', // For Firefox to hide the scrollbar
+          '&::-webkit-scrollbar': { display: 'none' }, // For Chrome, Edge, and Safari
+          [theme.breakpoints.down('sm')]: {
+            overflowX: 'auto', // Enable scrolling on small screens
+          },
+        }}>
           {chipLabels.map((label, index) => (
             <Chip
               key={index}
@@ -282,16 +349,16 @@ const AllExperts = ({ }) => {
                 width: '155px',
                 fontSize: '0.9rem',
                 borderRadius: '20px',
+                whiteSpace: 'nowrap',
               }}
             />
           ))}
         </Box>
         {/* Displaying Experts inside the same card */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', }}>
-        {experts.map((expert, index) => {
-  console.log(expert); // This will log each expert object to the console
-  return <ExpertCard key={index} {...expert} />;
-})}
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+          {experts.map((expert, index) => (
+            <ExpertCard key={index} {...expert} />
+          ))}
         </Box>
       </Card>
     </Box>
