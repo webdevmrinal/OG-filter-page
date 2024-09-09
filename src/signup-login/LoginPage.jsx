@@ -35,14 +35,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FacebookIcon, GoogleIcon, LinkedInIcon } from "./Icons";
 import Header from "./Header";
+import { loginPageConfig } from "../configs/login.config";
 
-const images = [
-  "https://images.unsplash.com/photo-1590649917466-06e6e1c3e92d?fit=crop&w=500&h=700",
-  "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?fit=crop&w=500&h=700",
-  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?fit=crop&w=500&h=700",
-];
+const iconComponents = {
+  FacebookIcon,
+  GoogleIcon,
+  LinkedInIcon,
+};
 
 const LoginPage = () => {
+  const { images, sliderSettings, navItems, socialButtons, formValidation } =
+    loginPageConfig;
   const [showPassword, setShowPassword] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -55,11 +58,14 @@ const LoginPage = () => {
     },
     validationSchema: Yup.object({
       email: Yup.string()
-        .email("Invalid email address")
-        .required("Email is required"),
+        .email(formValidation.email.invalid)
+        .required(formValidation.email.required),
       password: Yup.string()
-        .min(8, "Password must be at least 8 characters")
-        .required("Password is required"),
+        .min(
+          formValidation.password.minLength.value,
+          formValidation.password.minLength.message
+        )
+        .required(formValidation.password.required),
     }),
     onSubmit: (values) => {
       console.log(values);
@@ -82,28 +88,6 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
-  };
-
-  const navItems = [
-    { title: "Hire", items: ["Find Talent", "Post a Job", "Hiring Solutions"] },
-    {
-      title: "Enable",
-      items: ["Training Programs", "Certifications", "Resources"],
-    },
-    {
-      title: "Grow",
-      items: ["Business Solutions", "Marketing Services", "Consulting"],
-    },
-  ];
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
   };
 
   return (
@@ -179,7 +163,7 @@ const LoginPage = () => {
 
       <Container
         maxWidth="xl"
-        sx={{ mt: 4, pb: {xs: 4, sm: 10} }}
+        sx={{ mt: 4, pb: { xs: 4, sm: 10 } }}
         className="md:border md:mb-6 md:pt-6 md:shadow-lg md:rounded-xl"
       >
         <Grid
@@ -189,7 +173,7 @@ const LoginPage = () => {
           alignItems={"flex-start"}
         >
           <Grid item xs={12} md={6}>
-            <Slider {...settings}>
+            <Slider {...sliderSettings}>
               {images.map((url, index) => (
                 <Box
                   key={index}
@@ -212,7 +196,7 @@ const LoginPage = () => {
             <Paper
               elevation={0}
               sx={{
-                height:"100%",
+                height: "100%",
                 borderRadius: "16px",
                 border: "1px solid lightgray",
               }}
@@ -236,46 +220,39 @@ const LoginPage = () => {
                   pb: 1,
                 }}
               >
-                <Button
-                  startIcon={<LinkedInIcon height={30} />}
-                  variant="outlined"
-                  fullWidth
-                  sx={{
-                    py: 1,
-                    gridColumnStart: "span 2",
-                    border: "1px solid lightgray",
-                    "&:hover": {
-                      border: "1px solid lightgray",
-                    },
-                  }}
-                  TouchRippleProps={{ style: { color: "#0077B5" } }}
-                ></Button>
-                <Button
-                  startIcon={<GoogleIcon height={28} />}
-                  variant="outlined"
-                  fullWidth
-                  TouchRippleProps={{ style: { color: "#DB4437" } }}
-                  sx={{
-                    py: 1,
-                    border: "1px solid lightgray",
-                    "&:hover": {
-                      border: "1px solid lightgray",
-                    },
-                  }}
-                ></Button>
-                <Button
-                  startIcon={<FacebookIcon height={30} />}
-                  variant="outlined"
-                  fullWidth
-                  TouchRippleProps={{ style: { color: "#1877F2" } }}
-                  sx={{
-                    py: 1,
-                    border: "1px solid lightgray",
-                    "&:hover": {
-                      border: "1px solid lightgray",
-                    },
-                  }}
-                ></Button>
+                {socialButtons.map((button, index) => {
+                  const IconComponent = iconComponents[button.icon];
+                  console.log(button.icon, iconComponents[button.icon]);
+                  return (
+                    <Button
+                      key={index}
+                      variant="outlined"
+                      fullWidth
+                      TouchRippleProps={{ style: { color: button.color } }}
+                      sx={{
+                        py: 1,
+                        gridColumnStart: index === 0 ? "span 2" : "auto",
+                        border: "1px solid lightgray",
+                        "&:hover": {
+                          border: "1px solid lightgray",
+                        },
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: "40px",
+                        color: button.color,
+                        backgroundColor: "white",
+                      }}
+                    >
+                      <IconComponent
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                        }}
+                      />
+                    </Button>
+                  );
+                })}
               </Box>
               <Divider sx={{ px: 4, my: 2, fontSize: ".75em" }}>OR</Divider>
               <form
@@ -365,7 +342,12 @@ const LoginPage = () => {
                     xs={12}
                     sx={{ display: "flex", justifyContent: "center" }}
                   >
-                    <Button variant="contained" color="primary" type="submit" fullWidth>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      fullWidth
+                    >
                       Login
                     </Button>
                   </Grid>

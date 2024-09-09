@@ -33,7 +33,7 @@ import {
   Menu as MenuIcon,
 } from "@mui/icons-material";
 import "slick-carousel/slick/slick.css";
-import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowBack from "@mui/icons-material/ArrowBack";
 import "slick-carousel/slick/slick-theme.css";
 import LoginPage from "./LoginPage";
 import OGLogo from "./assets/OG-Logo.svg";
@@ -42,79 +42,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { LinkedInIcon, GoogleIcon, FacebookIcon } from "./Icons";
 import Header from "./Header";
+import { signupConfig } from "../configs/signup.config";
 
-const interests = [
-  "Artificial Intelligence",
-  "Blogging",
-  "Dance",
-  "Data Science",
-  "Demand Engagement",
-  "Entrepreneur",
-  "Finance",
-  "Fractional",
-  "Human Resource",
-  "Leadership",
-  "Learning languages",
-];
-
-const countries = [
-  "United States",
-  "Canada",
-  "Mexico",
-  "Brazil",
-  "Argentina",
-  "United Kingdom",
-  "France",
-  "Germany",
-  "Italy",
-  "Spain",
-  "Australia",
-  "New Zealand",
-  "China",
-  "Japan",
-  "India",
-  "South Korea",
-  "South Africa",
-  "Nigeria",
-  "Egypt",
-  "Kenya",
-  "Russia",
-  "Turkey",
-  "Saudi Arabia",
-  "Iran",
-  "United Arab Emirates",
-  "Vietnam",
-  "Thailand",
-  "Indonesia",
-  "Malaysia",
-  "Philippines",
-  "Singapore",
-  "Pakistan",
-  "Bangladesh",
-  "Sri Lanka",
-  "Nepal",
-  "Israel",
-  "Jordan",
-  "Lebanon",
-  "Iraq",
-  "Syria",
-  "Ukraine",
-  "Poland",
-  "Czech Republic",
-  "Hungary",
-  "Sweden",
-  "Norway",
-  "Denmark",
-  "Finland",
-];
-
-const images = [
-  "https://images.unsplash.com/photo-1590649917466-06e6e1c3e92d?fit=crop&w=500&h=700",
-  "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?fit=crop&w=500&h=700",
-  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?fit=crop&w=500&h=700",
-];
+const iconComponents = {
+  LinkedInIcon,
+  GoogleIcon,
+  FacebookIcon,
+};
 
 const SignupPage = () => {
+  const { images, interests, countries, navItems, sliderSettings } =
+    signupConfig;
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
@@ -122,16 +60,28 @@ const SignupPage = () => {
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
+    firstName: Yup.string().required(
+      signupConfig.formValidation.firstName.required
+    ),
+    lastName: Yup.string().required(
+      signupConfig.formValidation.lastName.required
+    ),
     email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
+      .email(signupConfig.formValidation.email.invalid)
+      .required(signupConfig.formValidation.email.required),
     password: Yup.string()
-      .min(8, "Password should be at least 8 characters long")
-      .required("Password is required"),
-    interests: Yup.array().min(1, "At least one interest is required"),
-    country: Yup.string().required("Country is required"),
+      .min(
+        signupConfig.formValidation.password.min.value,
+        signupConfig.formValidation.password.min.message
+      )
+      .required(signupConfig.formValidation.password.required),
+    interests: Yup.array().min(
+      signupConfig.formValidation.interests.min.value,
+      signupConfig.formValidation.interests.min.message
+    ),
+    country: Yup.string().required(
+      signupConfig.formValidation.country.required
+    ),
   });
 
   const formik = useFormik({
@@ -171,28 +121,6 @@ const SignupPage = () => {
     setDrawerOpen(open);
   };
 
-  const navItems = [
-    { title: "Hire", items: ["Find Talent", "Post a Job", "Hiring Solutions"] },
-    {
-      title: "Enable",
-      items: ["Training Programs", "Certifications", "Resources"],
-    },
-    {
-      title: "Grow",
-      items: ["Business Solutions", "Marketing Services", "Consulting"],
-    },
-  ];
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-  };
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Header />
@@ -220,6 +148,7 @@ const SignupPage = () => {
             {navItems.map((item, index) => (
               <NavMenuItem key={index} title={item.title} items={item.items} />
             ))}
+
             <Button
               sx={{
                 marginRight: 3,
@@ -276,7 +205,7 @@ const SignupPage = () => {
           alignItems={"center"}
         >
           <Grid item xs={12} md={6}>
-            <Slider {...settings}>
+            <Slider {...sliderSettings}>
               {images.map((url, index) => (
                 <Box
                   key={index}
@@ -319,46 +248,39 @@ const SignupPage = () => {
                   pt: 3.3,
                 }}
               >
-                <Button
-                  startIcon={<LinkedInIcon height={30} />}
-                  variant="outlined"
-                  fullWidth
-                  sx={{
-                    py: 1,
-                    gridColumnStart: "span 2",
-                    border: "1px solid lightgray",
-                    "&:hover": {
-                      border: "1px solid lightgray",
-                    },
-                  }}
-                  TouchRippleProps={{ style: { color: "#0077B5" } }}
-                ></Button>
-                <Button
-                  startIcon={<GoogleIcon height={28} />}
-                  variant="outlined"
-                  fullWidth
-                  TouchRippleProps={{ style: { color: "#DB4437" } }}
-                  sx={{
-                    py: 1,
-                    border: "1px solid lightgray",
-                    "&:hover": {
-                      border: "1px solid lightgray",
-                    },
-                  }}
-                ></Button>
-                <Button
-                  startIcon={<FacebookIcon height={30} />}
-                  variant="outlined"
-                  fullWidth
-                  TouchRippleProps={{ style: { color: "#1877F2" } }}
-                  sx={{
-                    py: 1,
-                    border: "1px solid lightgray",
-                    "&:hover": {
-                      border: "1px solid lightgray",
-                    },
-                  }}
-                ></Button>
+                {signupConfig.socialButtons.map((button, index) => {
+                  const IconComponent = iconComponents[button.icon];
+                  console.log(button.icon, iconComponents[button.icon]);
+                  return (
+                    <Button
+                      key={index}
+                      variant="outlined"
+                      fullWidth
+                      TouchRippleProps={{ style: { color: button.color } }}
+                      sx={{
+                        py: 1,
+                        gridColumnStart: index === 0 ? "span 2" : "auto",
+                        border: "1px solid lightgray",
+                        "&:hover": {
+                          border: "1px solid lightgray",
+                        },
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: "40px",
+                        color: button.color,
+                        backgroundColor: "white",
+                      }}
+                    >
+                      <IconComponent
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                        }}
+                      />
+                    </Button>
+                  );
+                })}
               </Box>
               <Divider sx={{ px: 4, my: 2, fontSize: ".75em" }}>OR</Divider>
               <form
@@ -422,7 +344,6 @@ const SignupPage = () => {
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
-                      
                       label={
                         <>
                           Email Address <span style={{ color: "red" }}>*</span>
@@ -460,7 +381,6 @@ const SignupPage = () => {
                       }}
                       type={showPassword ? "text" : "password"}
                       variant="outlined"
-                      
                       {...formik.getFieldProps("password")}
                       error={
                         formik.touched.password &&
@@ -487,7 +407,6 @@ const SignupPage = () => {
                     <Autocomplete
                       multiple
                       id="interests"
-                      
                       options={interests}
                       getOptionLabel={(option) => option}
                       value={formik.values.interests}
@@ -529,7 +448,6 @@ const SignupPage = () => {
                         },
                       }}
                       variant="outlined"
-                      
                       {...formik.getFieldProps("country")}
                       error={
                         formik.touched.country && Boolean(formik.errors.country)
@@ -538,13 +456,11 @@ const SignupPage = () => {
                         formik.touched.country && formik.errors.country
                       }
                     >
-                      {countries.map((country, index) => {
-                        return (
-                          <MenuItem value={country} key={country}>
-                            {country}
-                          </MenuItem>
-                        );
-                      })}
+                      {countries.map((country) => (
+                        <MenuItem value={country} key={country}>
+                          {country}
+                        </MenuItem>
+                      ))}
                     </TextField>
                   </Grid>
                   <Grid
@@ -569,12 +485,18 @@ const SignupPage = () => {
                 variant="body2"
                 sx={{ px: 4, m: 2, textAlign: "center" }}
               >
-                By registering, I agree to the OpenGrowth Academy{" "}
-                <Link color="primary" href="#">
+                {signupConfig.termsAndPrivacy.text}{" "}
+                <Link
+                  color="primary"
+                  href={signupConfig.termsAndPrivacy.termsLink}
+                >
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link color="primary" href="#">
+                <Link
+                  color="primary"
+                  href={signupConfig.termsAndPrivacy.privacyLink}
+                >
                   Privacy Policy
                 </Link>
               </Typography>
@@ -584,31 +506,32 @@ const SignupPage = () => {
               variant="body2"
               sx={{ mt: 2, textAlign: "center" }}
             >
-              Are you interested in becoming an expert?{" "}
-              <Link href="#">Sign up here!</Link>
+              {signupConfig.expertSignup.text}{" "}
+              <Link href={signupConfig.expertSignup.link}>Sign up here!</Link>
             </Typography>
           </Grid>
         </Grid>
       </Container>
       <Button
-  sx={{
-    color: "#25", // Adjust the color as needed
-    textTransform: "none",
-    background: "transparent",
-    border: "none",
-    fontSize: "0.8rem", // Adjust the font size as needed
-    "&:hover": {
-      backgroundColor: "transparent"
-    },
-    m: 2
-  }}
-  onClick={() => {
-    navigate("/get-started", { state: { fromSignup: true } });
-  }}
->
-  &lt; Back
-</Button>
-
+        sx={{
+          color: "#25", // Adjust the color as needed
+          textTransform: "none",
+          background: "transparent",
+          border: "none",
+          fontSize: "0.8rem", // Adjust the font size as needed
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
+          m: 2,
+        }}
+        onClick={() => {
+          navigate(signupConfig.backButton.route, {
+            state: { fromSignup: true },
+          });
+        }}
+      >
+        {signupConfig.backButton.text}
+      </Button>
 
       <Footer />
     </Box>
