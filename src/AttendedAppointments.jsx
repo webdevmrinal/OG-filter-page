@@ -138,7 +138,7 @@ const AttendedAppointments = () => {
   return (
     <Paper
       elevation={0}
-      sx={{ borderRadius: 2, border: "1px solid lightgray", width: isMobile ? "100%" : "auto" }}
+      sx={{ borderRadius: 2,  width: isMobile ? "100%" : "auto" }}
     >
       <Typography variant="h6" sx={{ px: 3, py: 1 }}>
         Attended Appointments

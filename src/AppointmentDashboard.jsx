@@ -17,6 +17,7 @@ import RejectedRequestComponent from "./RejectedRequestComponent";
 import AttendedAppointments from "./AttendedAppointments";
 import axios from "axios";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { StyledTabs, StyledTab, StyledDivider } from './Course-Modules/Data';
 
 const appointmentsData = [
   { id: 1, name: "Vanshika Yadav", time: "02:29 PM - 02:59 PM" },
@@ -28,33 +29,33 @@ const appointmentsData = [
   { id: 7, name: "Rahul Kumar", time: "09:15 PM - 09:45 PM" },
 ];
 
-const StyledTabs = styled(Tabs)(({ theme }) => ({
-  "& .MuiTab-root": {
-    textTransform: "none",
-    minHeight: "48px",
-    padding: "6px 16px",
-    fontWeight: "normal",
-    fontSize: "14px",
-    color: "#5f6368",
-    "&:hover": {
-      color: "#202124",
-      opacity: 1,
-    },
-    "&.Mui-selected": {
-      color: "#25387c",
-      fontWeight: "medium",
-    },
-  },
-  "& .MuiTabs-flexContainer": {
-    flexDirection: { xs: "column", sm: "row" },
-  }
-}));
+// const StyledTabs = styled(Tabs)(({ theme }) => ({
+//   "& .MuiTab-root": {
+//     textTransform: "none",
+//     minHeight: "48px",
+//     padding: "6px 16px",
+//     fontWeight: "normal",
+//     fontSize: "14px",
+//     color: "#5f6368",
+//     "&:hover": {
+//       color: "#202124",
+//       opacity: 1,
+//     },
+//     "&.Mui-selected": {
+//       color: "#25387c",
+//       fontWeight: "medium",
+//     },
+//   },
+//   "& .MuiTabs-flexContainer": {
+//     flexDirection: { xs: "column", sm: "row" },
+//   }
+// }));
 
-const StyledTab = styled(Tab)({
-  "& .MuiSvgIcon-root": {
-    marginRight: "8px",
-  },
-});
+// const StyledTab = styled(Tab)({
+//   "& .MuiSvgIcon-root": {
+//     marginRight: "8px",
+//   },
+// });
 
 const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
   display: "flex",
@@ -151,6 +152,8 @@ const AppointmentDashboard = () => {
         minHeight: "100vh",
         p: { xs: 2, sm: 3 },
       }}>
+        
+        <Paper elevation={0} sx={{ borderRadius: 2, overflow: "hidden" }}>
         <Box sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
@@ -184,9 +187,10 @@ const AppointmentDashboard = () => {
               iconPosition="start"
               label={`Attended Appointments (${tabCounts.attended})`}
             />
+            
           </StyledTabs>
+          
         </Box>
-        <Paper elevation={0} sx={{ borderRadius: 2, overflow: "hidden" }}>
           {renderContent()}
         </Paper>
       </Box>
@@ -221,8 +225,8 @@ const AppointmentItemComp = ({
       }}
     >
       <Avatar
-        src="https://academy.opengrowth.com/assets/images/users/user_791_student_collaborate.png"
-        sx={{  mr: 2, height: { xs: "60px", sm: "80px" }, width: { xs: "60px", sm: "80px" },alignSelf: { xs: 'center', sm: 'flex-start' }, }}
+        src="https://academy.opengrowth.com/assets/images/users/user_39_student_vi.png"
+        sx={{  mr: 2, height: { xs: "60px", sm: "90px" }, width: { xs: "60px", sm: "90px" },alignSelf: { xs: 'center', sm: 'center' }, }}
       />
       <Box sx={{ flexGrow: 1, mt: { xs: 1, sm: 0 } }}>
         <Typography variant="subtitle1">{name}</Typography>

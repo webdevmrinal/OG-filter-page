@@ -181,7 +181,7 @@ const RejectedRequestComponent = () => {
     <Paper
       elevation={0}
       sx={{
-        border: "1px solid lightgray",
+        // border: "1px solid lightgray",
         borderRadius: 2,
         overflow: "hidden",
         width: isMobile ? "100%" : "auto", // Responsive width

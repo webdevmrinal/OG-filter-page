@@ -403,7 +403,7 @@ function Homepage() {
   }, [fetchExperts]);
 
   return (
-    <>
+    <Box sx={{px: {xs: 1, sm: 1}}}>
       <Header />
       <BannerCarousel />
       {!loading && (
@@ -415,7 +415,7 @@ function Homepage() {
           <Testimonials />
         </Suspense>
       )}
-    </>
+    </Box>
   );
 }
 
