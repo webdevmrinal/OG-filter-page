@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -9,6 +9,9 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Avatar,
+  Menu,
+  MenuItem
 } from "@mui/material";
 import {
   ChevronLeft as ChevronLeftIcon,
@@ -36,39 +39,40 @@ const closedDrawerWidth = 64;
 const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
   const [expertsMenuOpen, setExpertsMenuOpen] = useState(false);
   const [coursesMenuOpen, setCoursesMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null); // For the avatar menu
+  const [user, setUser] = useState(null); // To store user data
   const navigate = useNavigate(); // For navigation
 
-  // Toggle the drawer
+  // Fetch user data from localStorage when the component mounts
+  useEffect(() => {
+    const existingSubmissions = JSON.parse(localStorage.getItem("signupSubmissions"));
+    if (existingSubmissions && existingSubmissions.length > 0) {
+      setUser(existingSubmissions[existingSubmissions.length - 1]); // Get the last added user
+    }
+  }, []);
+
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget); // Open the menu
+  };
+
+  const handleAvatarMenuClose = () => {
+    setAnchorEl(null); // Close the menu
+  };
+
+  const handleLogout = () => {
+    // Clear user data from localStorage and redirect to signup
+    localStorage.removeItem("signupSubmissions");
+    setUser(null);
+    handleAvatarMenuClose();
+    navigate("/get-started");
+  };
+
   const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);  // Sync drawerOpen with parent
+    setDrawerOpen(!drawerOpen); // Sync drawerOpen with parent
     if (drawerOpen) {
       setExpertsMenuOpen(false); // Close experts menu when collapsing sidebar
       setCoursesMenuOpen(false); // Close courses menu when collapsing sidebar
     }
-  };
-
-  const toggleExpertsMenu = () => {
-    setExpertsMenuOpen(!expertsMenuOpen);
-  };
-
-  const toggleCoursesMenu = () => {
-    setCoursesMenuOpen(!coursesMenuOpen);
-  };
-
-  const handleMenuItemClick = (route, isMenu, toggleMenu) => {
-    if (isMenu) {
-      if (!drawerOpen) {
-        setDrawerOpen(true);
-      }
-      toggleMenu();
-    }
-    if (route) {
-      navigate(route);
-    }
-  };
-
-  const handleSubMenuItemClick = (route) => {
-    navigate(route);
   };
 
   const menuItems = [
@@ -130,14 +134,24 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
           <IconButton sx={{ color: "#0000008a" }}>
             <NotificationsIcon />
           </IconButton>
-          <IconButton>
-            {/* User Avatar */}
-            <img
-              src="https://academy.opengrowth.com/assets/images/users/user_597_professor_AnmolJamwal.png"
-              alt="User"
-              style={{ width: 32, height: 32, borderRadius: "50%" }}
-            />
-          </IconButton>
+
+          {/* Avatar Button */}
+          {user ? (
+            <IconButton onClick={handleAvatarClick}>
+              <Avatar
+                alt={user.firstName}
+                src="https://academy.opengrowth.com/assets/images/users/user_597_professor_AnmolJamwal.png"
+                style={{ width: 32, height: 32, borderRadius: "50%" }}
+              />
+            </IconButton>
+          ) : (
+            <IconButton>
+              <Avatar
+                src="https://academy.opengrowth.com/assets/images/users/user_597_professor_AnmolJamwal.png"
+                style={{ width: 32, height: 32, borderRadius: "50%" }}
+              />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
 
@@ -285,6 +299,19 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
           </List>
         </Box>
       </Drawer>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleAvatarMenuClose}
+      >
+        {user && (
+          <>
+            <MenuItem>{user.firstName} {user.lastName}</MenuItem>
+            <MenuItem>{user.email}</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </>
+        )}
+      </Menu>
     </Box>
   );
 };

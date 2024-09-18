@@ -43,26 +43,57 @@ export const ShimmerAvatar = styled('div')(({ theme, size }) => ({
   marginBottom: '20px',
 }));
 
+export const ShimmerButton = styled('div')(({ theme, width, height }) => ({
+  height: height || '40px',
+  width: width || '100%',
+  marginBottom: '10px',
+  backgroundColor: '#d0d0d0',
+  borderRadius: '6px',
+}));
+
+export const ShimmerSlot = styled('div')(({ theme, width, height }) => ({
+  height: height || '35px',
+  width: width || '100%',
+  marginBottom: '8px',
+  backgroundColor: '#d0d0d0',
+  borderRadius: '6px',
+}));
+
 export const ShimmerLoading = () => (
   <ShimmerEffect>
-    {/* Simulate the avatar */}
-    <ShimmerAvatar size="80px" /> 
+    {/* Simulate the profile header */}
+    <ShimmerAvatar size="100px" />
+    <ShimmerLine width="50%" height="20px" /> {/* Name */}
+    <ShimmerLine width="30%" height="15px" /> {/* Title */}
     
-    {/* Simulate text lines for profile information */}
-    <ShimmerLine width="70%" height="20px" />
-    <ShimmerLine width="50%" height="20px" />
+    {/* Simulate buttons */}
+    <ShimmerButton width="40%" height="40px" /> {/* Follow button */}
+    <ShimmerButton width="40%" height="40px" /> {/* Message button */}
+    <ShimmerButton width="40%" height="40px" /> {/* Request a time button */}
     
-    {/* Simulate the request section */}
-    <ShimmerLine width="100%" height="40px" /> {/* Simulate larger content */}
-    <ShimmerLine width="80%" height="20px" />
+    {/* Simulate the video call request */}
+    <ShimmerLine width="100%" height="40px" /> {/* Request header */}
+    <ShimmerLine width="100%" height="15px" /> {/* Gift checkbox */}
     
-    {/* Simulate the skills section */}
-    <ShimmerLine width="30%" height="20px" />
-    <ShimmerLine width="30%" height="20px" />
-
-    {/* Simulate the video call request slots */}
-    <ShimmerLine width="100%" height="20px" />
-    <ShimmerLine width="100%" height="20px" />
-    <ShimmerLine width="100%" height="20px" />
+    {/* Simulate slots */}
+    <ShimmerSlot width="100%" height="35px" /> {/* First slot row */}
+    <ShimmerSlot width="100%" height="35px" /> {/* Second slot row */}
+    <ShimmerSlot width="100%" height="35px" /> {/* Third slot row */}
+    
+    <ShimmerLine width="100%" height="20px" /> {/* Show more slots */}
+    
+    {/* Simulate pricing section */}
+    <ShimmerLine width="100%" height="25px" />
+    
+    {/* Simulate skills section */}
+    <ShimmerLine width="50%" height="25px" /> {/* Skill 1 */}
+    <ShimmerLine width="50%" height="25px" /> {/* Skill 2 */}
+    
+    {/* Simulate About section */}
+    <ShimmerLine width="80%" height="20px" /> {/* About */}
+    <ShimmerLine width="80%" height="20px" /> {/* Address */}
+    <ShimmerLine width="80%" height="20px" /> {/* Education */}
   </ShimmerEffect>
 );
+
+export default ShimmerLoading;

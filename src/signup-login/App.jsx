@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Box,
-  Button,
-  LinearProgress,
-} from "@mui/material";
+import { Box, Button, LinearProgress } from "@mui/material";
 import Page1 from "./Page1";
 import Page2 from "./Page2";
 import Header from "./Header";
 import Footer from "./Footer";
-import {StyledContainer, ContentBox, ButtonContainer} from "./Components/Box";
+import { StyledContainer, ContentBox, ButtonContainer } from "./Components/Box";
 
 function App2() {
   const [step, setStep] = useState(1);
+  const [page1Data, setPage1Data] = useState(
+    JSON.parse(localStorage.getItem("page1Data")) || {} // Load data from localStorage
+  );
+  const [page2Data, setPage2Data] = useState(
+    JSON.parse(localStorage.getItem("page2Data")) || {} // Load data from localStorage
+  );
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,11 +31,28 @@ function App2() {
     }
   }, [step, navigate]);
 
+  // Save page1Data and page2Data to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem("page1Data", JSON.stringify(page1Data));
+  }, [page1Data]);
+
+  useEffect(() => {
+    localStorage.setItem("page2Data", JSON.stringify(page2Data));
+  }, [page2Data]);
+
+  const handlePage1Data = (data) => {
+    setPage1Data(data); // Update local state with the data from Page1
+  };
+
+  const handlePage2Data = (data) => {
+    setPage2Data(data); // Update local state with the data from Page2
+  };
+
   const renderPage = () => {
     if (step < 50) {
-      return <Page1 />;
+      return <Page1 data={page1Data} onDataChange={handlePage1Data} />;
     } else if (step >= 50 && step <= 100) {
-      return <Page2 />;
+      return <Page2 data={page2Data} onDataChange={handlePage2Data} />;
     }
   };
 

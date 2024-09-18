@@ -17,8 +17,7 @@ export const inClassActivities = [
       header: 'In groups, create and deliver a presentation on the working principles and applications of Popular Search Algorithms, Fuzzy Logic and Natural Language Processing. ',
       image: 'https://academy.opengrowth.com/assets/images/assignment/images/1697171735454.png?1697171735454',  // Path to the image for Activity 1
       instructions: `
-        In groups, create and deliver a presentation on the origin story of Artificial Intelligence. 
-        Use what you have learned in the preceding units to guide your research and presentation.
+        Use what you have learned in the preceding units and conduct your own research on Neural Networks to write a 1000 word blog article entitled, “The rise of Neural Networks”. Your article should cover how neural networks evolved, types of neural networks, and applications of neural networks today. You may use graphics and visuals to enhance your article or support your views and arguments where appropriate.
       `,
       grading: [
         'Clear understanding of the origin of AI.',
@@ -58,12 +57,13 @@ export const inClassActivities = [
       fileSubmission: 'File not found.',
       type: 'In-Class Activity',
       header: 'Write a blog article entitled, "The rise of Neural Networks". (1000 words)',
-      image: 'https://academy.opengrowth.com/assets/images/assignment/images/1697172280675.png?1697172280675',  // Path to the image for Activity 2
+      image: 'https://academy.opengrowth.com/assets/images/assignment/images/1697172280675.png?1697172280675',
       instructions: `
         In groups, create and deliver a presentation on the working principles and applications 
         of Popular Search Algorithms, Fuzzy Logic, and Natural Language Processing. 
         You may use graphics and visuals to support your presentation.
       `,
+      scenario: `Your company, which is involved in taking on the legal implications of digital transformation and artificial intelligence, has asked you to try and increase the awareness amongst new hires of the kinds of issues arising in society as a result of artificial intelligence usage.  You decide to conduct a discussion on the subject and involve all the new joinees in order to facilitate an increase in awareness en masse. You ask the new joinees to form groups in order to encourage shared learning and foster collaboration. Each group is tasked with researching the subject matter and coming up with a set of relevant points to discuss with the larger group. You hope that this exercise will bring all the relevant points together for everyone involved to get acquainted with them.`,
       grading: [
         'Clear understanding of working principles and applications of search algorithms.',
         'Effective use of group collaboration.',

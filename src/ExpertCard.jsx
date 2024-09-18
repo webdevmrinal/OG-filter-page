@@ -47,7 +47,7 @@ export const ExpertCard = ({ expert, handleExpertClick, context }) => {
                 <Link
                     to={
                         context === "myConnection"
-                            ? `/details/${expert.profile_url}`
+                            ? `/detail/${expert.profile_url}`
                             : `/profile/${expert.profile_url}`
                     }
                     style={{ textDecoration: "none" }}

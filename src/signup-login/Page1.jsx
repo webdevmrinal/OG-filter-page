@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import { Typography, Box, RadioGroup, FormControlLabel, Radio, Grid } from "@mui/material";
 
-function Page1() {
+function Page1({ data, onDataChange }) { // Accept data and onDataChange props
   const theme = useTheme();
-  const [selectedValue, setSelectedValue] = useState("");  // State to track the selected value
+  const [selectedValue, setSelectedValue] = useState(data || "");  // Load data from props if available
 
   const handleChange = (event) => {
-    setSelectedValue(event.target.value);  // Update the state on change
+    const value = event.target.value;
+    setSelectedValue(value);  // Update the state on change
+    onDataChange(value);  // Pass the selected value to parent (App2) for saving
   };
 
+  useEffect(() => {
+    setSelectedValue(data); // Update local state if the parent changes the data
+  }, [data]);
+
   return (
-    <Box sx={{ pt: 2, pb: 5}}>
+    <Box sx={{ pt: 2, pb: 5 }}>
       <Typography variant="h5" component="h1" sx={{ pt: 1, fontWeight: 'bold', color: '#303030' }}>
         Let's get started. Which of these best describes you?
       </Typography>
@@ -29,11 +35,11 @@ function Page1() {
           <Grid item xs={12} sm={5.9} sx={{
             border: '0.5px solid #e0e0e0',
             borderRadius: '0.375rem',
-            mb: 2, // Add margin-bottom on small screens for spacing between options
+            mb: 2, 
             [theme.breakpoints.up('sm')]: {
-              mb: 0, // Remove margin-bottom on small screens
+              mb: 0, 
             },
-            bgcolor: selectedValue === 'user' ? '#f7f7f7' : '#ffffff',  // Change background color based on selection
+            bgcolor: selectedValue === 'user' ? '#f7f7f7' : '#ffffff',  
           }}>
             <FormControlLabel
               value="user"
@@ -52,7 +58,7 @@ function Page1() {
           <Grid item xs={12} sm={5.9} sx={{
             border: '0.5px solid #e0e0e0',
             borderRadius: '0.375rem',
-            bgcolor: selectedValue === 'expert' ? '#f7f7f7' : '#ffffff',  // Change background color based on selection
+            bgcolor: selectedValue === 'expert' ? '#f7f7f7' : '#ffffff',
           }}>
             <FormControlLabel
               value="expert"

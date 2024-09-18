@@ -29,6 +29,7 @@ import { FormContainer, SocialBox } from "./Components/Box";
 import { FormTextField } from "./Components/TextField";
 import { SliderStyles } from "./Components/SliderStyle";
 import { ShimmerLoading } from "./Components/ShimmerEffect";
+import ShimmerSignup from "./Components/SignupShimmer";
 
 const iconComponents = {
   LinkedInIcon,
@@ -100,7 +101,7 @@ const LoginPage = () => {
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <ShimmerLoading />
+        <ShimmerSignup />
       </Box>
     );
   }

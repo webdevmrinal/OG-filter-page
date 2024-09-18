@@ -9,7 +9,7 @@ import {
   CircularProgress,
   Box,
   Grid,
-  Autocomplete
+  Autocomplete,
 } from "@mui/material";
 import Slider from "react-slick";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -18,18 +18,18 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { styled } from "@mui/system";
 
 import Footer from "./Footer";
 import Header from "./Header";
 import { LinkedInIcon, GoogleIcon, FacebookIcon } from "./Icons";
 import { signupConfig } from "../configs/signup.config";
 import { FormButton, SocialButtons } from "./Components/Buttons";
-import { FormCard, FormPaper } from "./Components/Cards";
+import { FormPaper } from "./Components/Cards";
 import { FormContainer, SocialBox } from "./Components/Box";
 import { FormTextField } from "./Components/TextField";
 import { SliderStyles } from "./Components/SliderStyle";
 import { ShimmerLoading } from "./Components/ShimmerEffect";
+import ShimmerSignup from "./Components/SignupShimmer";
 
 const iconComponents = {
   LinkedInIcon,
@@ -43,51 +43,91 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const navigate = useNavigate();
-  const [submitting, setSubmitting] = useState(false); 
+  const [submitting, setSubmitting] = useState(false);
+
+  // Load Page1 and Page2 data from localStorage if it exists
+  const page1Data = JSON.parse(localStorage.getItem('page1Data'));
+  const page2Data = JSON.parse(localStorage.getItem('page2Data'));
+
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    interests: [],
+    country: "",
+  };
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-      setTimeout(() => setImagesLoaded(true), 1000); // Delay images loading after form is ready
-    }, 2000); // Simulate fetch or heavy computation
+      setTimeout(() => setImagesLoaded(true), 1000);
+    }, 2000);
   }, []);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required(signupConfig.formValidation.firstName.required),
-    lastName: Yup.string().required(signupConfig.formValidation.lastName.required),
-    email: Yup.string().email(signupConfig.formValidation.email.invalid).required(signupConfig.formValidation.email.required),
-    password: Yup.string().min(signupConfig.formValidation.password.min.value, signupConfig.formValidation.password.min.message).required(signupConfig.formValidation.password.required),
-    interests: Yup.array().min(signupConfig.formValidation.interests.min.value, signupConfig.formValidation.interests.min.message),
+    firstName: Yup.string().required(
+      signupConfig.formValidation.firstName.required
+    ),
+    lastName: Yup.string().required(
+      signupConfig.formValidation.lastName.required
+    ),
+    email: Yup.string()
+      .email(signupConfig.formValidation.email.invalid)
+      .required(signupConfig.formValidation.email.required),
+    password: Yup.string()
+      .min(
+        signupConfig.formValidation.password.min.value,
+        signupConfig.formValidation.password.min.message
+      )
+      .required(signupConfig.formValidation.password.required),
+    interests: Yup.array()
+      .min(
+        signupConfig.formValidation.interests.min.value,
+        signupConfig.formValidation.interests.min.message
+      ),
     country: Yup.string().required(signupConfig.formValidation.country.required),
   });
 
   const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      interests: [],
-      country: "",
-    },
+    initialValues,
     validationSchema,
     onSubmit: (values) => {
       setSubmitting(true);
-      console.log("Form data", values);
-      setTimeout(() => {
-        setSubmitting(false);
-        navigate("/dashboardpage");
-      }, 2000); // Simulate network request
+      
+      // Store new submission along with locked Page1 and Page2 data
+      const existingSubmissions =
+        JSON.parse(localStorage.getItem("signupSubmissions")) || [];
+
+      const newSubmission = {
+        ...values,
+        page1Data,  // Include locked Page1 data
+        page2Data,  // Include locked Page2 data
+        submittedAt: new Date().toISOString(),
+      };
+
+      // Add the new submission to the existing submissions array
+      existingSubmissions.push(newSubmission);
+
+      // Save the updated submissions array back to localStorage
+      localStorage.setItem(
+        "signupSubmissions",
+        JSON.stringify(existingSubmissions)
+      );
+
+      // After saving, navigate to the dashboard or any other page
+      setSubmitting(false);
+      navigate("/dashboardpage");
     },
   });
 
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <ShimmerLoading />
+        <ShimmerSignup />
       </Box>
     );
   }
@@ -97,36 +137,71 @@ const SignupPage = () => {
       <Header />
       <FormContainer>
         <FormPaper>
-        <Box
-        sx={{
-          width: { xs: "100%", md: "50%" },
-          flexGrow: 1,
-          position: "relative",
-          display: { xs: "none", md: "block" }, // Hide on xs, show on md and larger
-        }}
-      >
-        {imagesLoaded && (
-          <Slider {...sliderSettings}>
-            {images.map((url, index) => (
-              <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
-            ))}
-          </Slider>
-        )}
-      </Box>
-          <Box sx={{ width: { xs: "100%", md: "50%" }, p: { xs: 2, md: 5 }, display: "flex", flexDirection: "column", justifyContent: "flex-start", position: "relative" }}>
+          <Box
+            sx={{
+              width: { xs: "100%", md: "50%" },
+              flexGrow: 1,
+              position: "relative",
+              display: { xs: "none", md: "block" }, // Hide on xs, show on md and larger
+            }}
+          >
+            {imagesLoaded && (
+              <Slider {...sliderSettings}>
+                {images.map((url, index) => (
+                  <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
+                ))}
+              </Slider>
+            )}
+          </Box>
+          <Box
+            sx={{
+              width: { xs: "100%", md: "50%" },
+              p: { xs: 2, md: 5 },
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              position: "relative",
+            }}
+          >
             <Button
-              sx={{ px: 4, position: "absolute", top: "10px", left: "10px", color: "primary.main" }}
-              onClick={() => navigate(signupConfig.backButton.route, { state: { fromSignup: true } })}
+              sx={{
+                px: 4,
+                position: "absolute",
+                top: "10px",
+                left: "10px",
+                color: "primary.main",
+              }}
+              onClick={() =>
+                navigate(signupConfig.backButton.route, {
+                  state: { fromSignup: true },
+                })
+              }
             >
               &lt; {signupConfig.backButton.text}
             </Button>
-            <Box display={'flex'} sx={{flexDirection: {xs: 'column', sm: 'row'}, justifyContent: {xs: 'center', sm: 'space-between'}, alignItems: 'center'}} >
-            <Typography variant="h6" sx={{ fontWeight: "600", mt: {xs: 4, sm: 2} }}>
-              Signup on OpenGrowth
-            </Typography>
-            <Typography variant="subtitle2" sx={{ mt: {xs: 1, sm: 3} }}>
-              Already registered? <Link sx={{ cursor: "pointer", textDecoration: 'none' }} onClick={() => navigate("/login")}>Login now</Link>
-            </Typography>
+            <Box
+              display={"flex"}
+              sx={{
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent: { xs: "center", sm: "space-between" },
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "600", mt: { xs: 4, sm: 2 } }}
+              >
+                Signup on OpenGrowth
+              </Typography>
+              <Typography variant="subtitle2" sx={{ mt: { xs: 1, sm: 3 } }}>
+                Already registered?{" "}
+                <Link
+                  sx={{ cursor: "pointer", textDecoration: "none" }}
+                  onClick={() => navigate("/login")}
+                >
+                  Login now
+                </Link>
+              </Typography>
             </Box>
             <Divider />
             <SocialBox>
@@ -139,7 +214,9 @@ const SignupPage = () => {
                 return (
                   <SocialButtons key={index} variant="outlined">
                     <IconComponent style={{ marginRight: 1, width: 20, height: 20 }} />
-                    <Typography variant="subtitle2" sx={{ mt: 0.5, ml: 1 }}>{button.label}</Typography>
+                    <Typography variant="subtitle2" sx={{ mt: 0.5, ml: 1 }}>
+                      {button.label}
+                    </Typography>
                   </SocialButtons>
                 );
               })}
@@ -182,9 +259,7 @@ const SignupPage = () => {
                       fullWidth
                       label="Email Address"
                       {...formik.getFieldProps("email")}
-                      error={
-                        formik.touched.email && Boolean(formik.errors.email)
-                      }
+                      error={formik.touched.email && Boolean(formik.errors.email)}
                       helperText={formik.touched.email && formik.errors.email}
                     />
                   </Grid>
@@ -208,11 +283,7 @@ const SignupPage = () => {
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
                           >
-                            {showPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         ),
                       }}
@@ -265,12 +336,12 @@ const SignupPage = () => {
                     </FormTextField>
                   </Grid>
                   <Grid item xs={12}>
-                  <FormButton
+                    <FormButton
                       variant="contained"
                       type="submit"
-                      disabled={submitting}  // Disable the button while submitting
+                      disabled={submitting} // Disable the button while submitting
                     >
-                      {submitting ? <CircularProgress size={24} /> : 'Register Now'}
+                      {submitting ? <CircularProgress size={24} /> : "Register Now"}
                     </FormButton>
                   </Grid>
                 </Grid>

@@ -21,7 +21,7 @@ const Layout = () => {
           transition: "margin-left 0.3s ease", // Smooth transition for the margin change
           marginLeft: drawerOpen ? "240px" : "64px", // Adjust margin to push content based on sidebar state
           
-          width: `calc(100% - ${drawerOpen ? "240px" : "64px"})`, // Adjust width of content area
+          // width: `calc(100% - ${drawerOpen ? "240px" : "0"})`,
           overflowX: "hidden", // Prevent horizontal overflow
           position: "relative", // Ensure it's within normal document flow
         }}

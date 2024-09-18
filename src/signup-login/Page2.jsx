@@ -1,43 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Box } from "@mui/material";
 
 const platforms = [
-  {
-    name: "Leadership",
-    imageLink: null,
-  },
-  {
-    name: "Product",
-  },
-  {
-    name: "Marketing",
-  },
-  {
-    name: "Strategy",
-    imageLink: null,
-  },
+  { name: "Leadership", imageLink: null },
+  { name: "Product" },
+  { name: "Marketing" },
+  { name: "Strategy", imageLink: null },
 ];
 
 const experts = [
-  {
-    name: "Demand Engagement",
-    imageLink: null,
-  },
-  {
-    name: "Artificial Intelligence",
-  },
-  {
-    name: "Human Resource",
-  },
-  {
-    name: "Entrepreneurship",
-    imageLink: null,
-  },
+  { name: "Demand Engagement", imageLink: null },
+  { name: "Artificial Intelligence" },
+  { name: "Human Resource" },
+  { name: "Entrepreneurship", imageLink: null },
 ];
 
-function Page2() {
-  const [selectedCourses, setSelectedCourses] = useState([]);
-  const [selectedExperts, setSelectedExperts] = useState([]);
+function Page2({ data, onDataChange }) { // Accept data and onDataChange props
+  const [selectedCourses, setSelectedCourses] = useState(data.courses || []);  // Load from props or default to empty array
+  const [selectedExperts, setSelectedExperts] = useState(data.experts || []);  // Load from props or default to empty array
 
   const handleSelectCourse = (index) => {
     const newSelected = [...selectedCourses];
@@ -48,26 +28,29 @@ function Page2() {
       newSelected.push(index); // Add to selected list if not already
     }
     setSelectedCourses(newSelected);
+    onDataChange({ courses: newSelected, experts: selectedExperts });  // Update the parent with both selected courses and experts
   };
 
   const handleSelectExpert = (index) => {
     const newSelected = [...selectedExperts];
     const position = newSelected.indexOf(index);
     if (position >= 0) {
-      newSelected.splice(position, 1);
+      newSelected.splice(position, 1); // Remove if already selected
     } else {
-      newSelected.push(index);
+      newSelected.push(index); // Add to selected list if not already
     }
     setSelectedExperts(newSelected);
+    onDataChange({ courses: selectedCourses, experts: newSelected });  // Update the parent with both selected courses and experts
   };
+
+  useEffect(() => {
+    setSelectedCourses(data.courses || []); // Sync state with parent data
+    setSelectedExperts(data.experts || []); // Sync state with parent data
+  }, [data]);
 
   return (
     <Box sx={{ pb: 6 }}>
-      <Typography
-        variant="h5"
-        component="h1"
-        sx={{ pt: 1.5, fontWeight: "bold", color: "#303030" }}
-      >
+      <Typography variant="h5" component="h1" sx={{ pt: 1.5, fontWeight: "bold", color: "#303030" }}>
         I'm interested in courses categories
       </Typography>
       <Typography variant="body2" sx={{ color: "#616161" }}>
