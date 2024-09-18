@@ -18,6 +18,7 @@ import {
   InputLabel,
   FormControl,
   Grid,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
@@ -28,8 +29,6 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
 import { Link } from "react-router-dom";
-
-// import Header from "./Header";
 
 const initialCategories = [
   "Expert",
@@ -129,7 +128,7 @@ const data = {
       fill: false,
       pointRadius: 0,
       pointHoverRadius: 7,
-      borderWidth: 5, 
+      borderWidth: 5,
       tension: 0.4,
       shadowColor: "rgba(0, 0, 0, 0.3)",
       shadowBlur: 10,
@@ -199,12 +198,40 @@ const ProgressLabel = styled(Typography)(({ theme }) => ({
   // fontWeight: 'bold',
 }));
 
-const SidebarSection = styled(Box)(({ theme }) => ({
-  width: "25%",
-  marginLeft: theme.spacing(3),
-  display: "flex",
-  flexDirection: "column",
-  gap: theme.spacing(2),
+const SidebarSection = styled(Box)(({ theme }) => {
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
+  return {
+    width: isMobile ? "100%" : isTablet ? "100%" : "25%", // Adjust width for small and tablet screens
+    marginLeft: isMobile ? 0 : isTablet ? 0 : theme.spacing(3),
+    marginTop: isMobile ? theme.spacing(2) : '8px',
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(1),
+  };
+});
+
+const CourseImage = styled("div")(({ theme }) => ({
+  width: "100%",
+  height: 175,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  borderRadius: theme.shape.borderRadius,
+  position: "relative",
+  backgroundColor: "#e0e0e0",
+}));
+
+const CategoryChip = styled(Chip)(({ theme }) => ({
+  position: "absolute",
+  bottom: 10,
+  left: 10,
+  backgroundColor: "#f9bb02",
+  color: theme.palette.common.white,
+  fontWeight: "bold",
+  fontSize: "0.75rem", // Smaller font size
+  padding: "4px 8px", // Smaller padding
+  height: "auto", // Adjust height
 }));
 
 const courses = [
@@ -309,27 +336,6 @@ const courses = [
     views: 134,
   },
 ];
-const CourseImage = styled("div")(({ theme }) => ({
-  width: "100%",
-  height: 175,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  borderRadius: theme.shape.borderRadius,
-  position: "relative",
-  backgroundColor: "#e0e0e0",
-}));
-
-const CategoryChip = styled(Chip)(({ theme }) => ({
-  position: "absolute",
-  bottom: 10,
-  left: 10,
-  backgroundColor: "#f9bb02",
-  color: theme.palette.common.white,
-  fontWeight: "bold",
-  fontSize: "0.75rem", // Smaller font size
-  padding: "4px 8px", // Smaller padding
-  height: "auto", // Adjust height
-}));
 
 const ShimmerWrapper = styled("div")({
   overflow: "hidden",
@@ -371,6 +377,8 @@ const CourseDashboard = () => {
   const [category, setCategory] = useState("");
 
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const fetchExperts = useCallback(async (category = null) => {
     setLoading(true);
@@ -446,30 +454,30 @@ const CourseDashboard = () => {
     setSelectedExpert(expert);
   };
 
-  useEffect(() => {
-    const elements = document.querySelectorAll(".css-ehiffo");
-    elements.forEach((el) => {
-      el.style.width = "65vw";
-      el.style.height = "53vh";
-      el.style.borderRadius = "12px";
-      el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
-    });
-  }, []);
-
   return (
     <>
-      {/* <Header /> */}
       <Box sx={{ backgroundColor: "#f4f6f8", minHeight: "100vh", p: 3 }}>
-        <Box sx={{ display: "flex" }}>
-          <Box sx={{ flexGrow: 1, width: "63vw" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: isMobile || isTablet ? "column" : "row", // Stack columns for mobile/tablet
+          }}
+        >
+          <Box
+            sx={{
+              flexGrow: 1,
+              width: isMobile || isTablet ? "100%" : "63vw", // Adjust width for mobile/tablet
+              mb: isMobile ? 3 : 0, // Add margin for mobile
+            }}
+          >
             <Box
               sx={{
-                pl: 4,
-                pr: 4,
+                pl: 2,
+                pr: 2,
                 pt: 1,
                 pb: 2,
-                width: "67vw",
-                height: "43vh",
+                width: "auto",
+                height: { sm: "43vh", xs: "25vh" },
                 borderRadius: "12px",
                 backgroundColor: "#fff",
                 boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
@@ -528,14 +536,15 @@ const CourseDashboard = () => {
                 />
               </Box>
             </Box>
+
             <Box
               sx={{
-                pl: 4,
-                pr: 4,
+                pl: 2,
+                pr: 2,
                 pt: 1,
-                pb: 0,
-                width: "67vw",
-                height: "43vh",
+                pb: 2,
+                width: "auto",
+                height: "auto",
                 overflow: "auto",
                 borderRadius: "12px",
                 backgroundColor: "#fff",
@@ -543,141 +552,100 @@ const CourseDashboard = () => {
               }}
             >
               <Typography variant="h6">Course Progress</Typography>
-              <Divider sx={{ width: "98%", mb: 2 }} />
-              <Grid container spacing={2}>
-                <Grid item sx={{ width: "15em" }}>
-                  <Link
-                    to="/course/seo-basics"
-                    style={{ textDecoration: "none" }}
-                    state={{
-                      title: "SEO Basics",
-                      imageUrl:
-                        "https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg",
-                      description:
-                        "A step-by-step guide to developing a Search Engine Optimization strategy for your business to increase your online presence and attract traffic to your website by using keywords intelligently, leveraging paid and organic searches, and making your website mobile-friendly.",
-                    }}
-                  >
-                    <SmallCourseCard>
-                      <SmallCourseMedia
+              <Divider sx={{ width: "100%", mb: 2 }} />
+              <Grid container spacing={2} sx={{ overflow: "auto", p: 1 }}>
+                {[
+                  {
+                    link: "/course/seo-basics",
+                    duration: "5 weeks",
+                    imageUrl:
+                      "https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg",
+                    title: "SEO Basics",
+                    progress: 25,
+                  },
+                  {
+                    link: "/course/ai-basic",
+                    duration: "5 weeks",
+                    imageUrl:
+                      "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
+                    title: "AI Basic",
+                    progress: 42,
+                  },
+                  {
+                    link: "/course/identifying-your-target-audience",
+                    duration: "5 weeks",
+                    imageUrl:
+                      "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
+                    title: "Identifying Your Target Audience",
+                    progress: 70,
+                  },
+                ].map((course) => (
+                  <Grid item xs={12} sm={6} md={4} key={course.title}>
+                    <Link
+                      to={course.link}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Box
                         sx={{
-                          backgroundImage:
-                            "url(https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg)",
-                          mt: 0,
-                          ml: 0,
-                          height: 220,
-                          width: 265,
-                        }}
-                      />
-                      <CardContent
-                        sx={{
-                          width: "100%",
                           display: "flex",
                           alignItems: "center",
-                          px: 1,
-                          py: 0.5,
-                        }}
-                      >
-                        <LinearProgress
-                          variant="determinate"
-                          value={25}
-                          sx={{ width: "85%", height: 10, borderRadius: 1 }}
-                        />
-                        <ProgressLabel>{25}%</ProgressLabel>
-                      </CardContent>
-                      <OverlayText>SEO Basics</OverlayText>
-                    </SmallCourseCard>
-                  </Link>
-                </Grid>
-
-                <Grid item sx={{ width: "15em" }}>
-                  <Link
-                    to="/course/ai-basic"
-                    style={{ textDecoration: "none" }}
-                    state={{
-                      title: "AI Basic",
-                      imageUrl:
-                        "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
-                      description:
-                        "A step-by-step guide to incorporating your company, including why you need to incorporate your company, the documentation needed and do's and don'ts. Learn about different types of organizations and how they operate, including taxation and legal aspects.",
-                    }}
-                  >
-                    <SmallCourseCard>
-                      <SmallCourseMedia
-                        sx={{
-                          backgroundImage:
-                            "url(https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg)",
-                          mt: 0,
-                          ml: 0,
-                          height: 220,
-                          width: 265,
-                        }}
-                      />
-                      <CardContent
-                        sx={{
                           width: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          px: 1,
-                          py: 0.5,
+                          bgcolor: "#fff",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                          borderRadius: "8px",
+                          p: 1,
                         }}
                       >
-                        <LinearProgress
-                          variant="determinate"
-                          value={42}
-                          sx={{ width: "85%", height: 10, borderRadius: 1 }}
-                        />
-                        <ProgressLabel>{42}%</ProgressLabel>
-                      </CardContent>
-                      <OverlayText>AI Basic</OverlayText>
-                    </SmallCourseCard>
-                  </Link>
-                </Grid>
-
-                <Grid item sx={{ width: "15em" }}>
-                  <Link
-                    to="/course/identifying-your-target-audience"
-                    style={{ textDecoration: "none" }}
-                    state={{
-                      title: "Identifying Your Target Audience",
-                      imageUrl:
-                        "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
-                      description:
-                        "This course covers the basics of business analytics, including data analysis techniques, predictive modeling, and data-driven decision making. Perfect for those looking to enhance their analytical skills.",
-                    }}
-                  >
-                    <SmallCourseCard>
-                      <SmallCourseMedia
-                        sx={{
-                          backgroundImage:
-                            "url(https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg)",
-                          mt: 0,
-                          ml: 0,
-                          height: 220,
-                          width: 265,
-                        }}
-                      />
-                      <CardContent
-                        sx={{
-                          width: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          px: 1,
-                          py: 0.5,
-                        }}
-                      >
-                        <LinearProgress
-                          variant="determinate"
-                          value={70}
-                          sx={{ width: "85%", height: 10, borderRadius: 1 }}
-                        />
-                        <ProgressLabel>{70}%</ProgressLabel>
-                      </CardContent>
-                      <OverlayText>
-                        Identifying Your Target Audience
-                      </OverlayText>
-                    </SmallCourseCard>
-                  </Link>
-                </Grid>
+                        <Box
+                          sx={{
+                            width: 90,
+                            height: 90,
+                            mr: 2,
+                            backgroundImage: `url(${course.imageUrl})`,
+                            backgroundSize: "cover",
+                            borderRadius: "4px",
+                          }}
+                        ></Box>
+                        <Box sx={{ flexGrow: 1 }}>
+                          <Typography
+                            variant="subtitle2"
+                            sx={{ color: "text.primary" }}
+                          >
+                            {course.title}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            gutterBottom
+                            sx={{ color: "text.secondary" }}
+                          >
+                            {course.duration}
+                          </Typography>
+                          <Box
+                            sx={{
+                              width: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <LinearProgress
+                              variant="determinate"
+                              value={course.progress}
+                              sx={{
+                                width: "100%",
+                                height: 10,
+                                borderRadius: 1,
+                                mr: 1,
+                              }}
+                            />
+                            <Typography variant="body2">
+                              {course.progress}%
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Link>
+                  </Grid>
+                ))}
               </Grid>
             </Box>
 
@@ -690,21 +658,33 @@ const CourseDashboard = () => {
                 borderRadius: "12px",
                 backgroundColor: "#fff",
                 boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                 // Set width to auto
               }}
             >
-              <Box sx={{ padding: 3 }}>
-                <Typography variant="h6">Explore other courses</Typography>
+              <Box sx={{ padding: 2, width: "100%", }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography variant="h6">Explore other courses</Typography>
+                  <Button>View All</Button>
+                </Box>
                 <Divider sx={{ width: "100%", mb: 2, px: 1, ml: 0 }} />
                 <Box
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
                     mb: 2,
+                    width: "100%", // Ensure width is responsive
                   }}
                 >
                   <FormControl
                     variant="outlined"
-                    sx={{ m: 1, minWidth: "17em" }}
+                    size="small"
+                    sx={{ m: 0.5, width: "100%" }}
                   >
                     <InputLabel>Skill</InputLabel>
                     <Select
@@ -721,7 +701,8 @@ const CourseDashboard = () => {
                   </FormControl>
                   <FormControl
                     variant="outlined"
-                    sx={{ m: 1, minWidth: "17em" }}
+                    size="small"
+                    sx={{ m: 0.5, minWidth: "16em" }}
                   >
                     <InputLabel>Level</InputLabel>
                     <Select
@@ -739,7 +720,8 @@ const CourseDashboard = () => {
                   </FormControl>
                   <FormControl
                     variant="outlined"
-                    sx={{ m: 1, minWidth: "17em" }}
+                    size="small"
+                    sx={{ m: 0.5, minWidth: "16em" }}
                   >
                     <InputLabel>Category</InputLabel>
                     <Select
@@ -754,137 +736,154 @@ const CourseDashboard = () => {
                       <MenuItem value="technology">Technology</MenuItem>
                     </Select>
                   </FormControl>
-                  <Button variant="contained" sx={{ m: 1 }}>
+                  <Button variant="contained" sx={{ m: 0.5, height: "2.5em" }}>
                     Search
                   </Button>
                 </Box>
                 {/* Course Cards */}
-                <Grid container spacing={3}>
-                  {courses.map((course, index) => (
+                <Grid container spacing={3} sx={{ width: "auto" }}> {/* Adjust width here */}
+                  {courses.slice(0, 6).map((course, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
-                      <Link to={`/course/${course.title}`} style={{ textDecoration: 'none' }} 
-                      state={{
-                        title: course.title,
-                        imageUrl:
-                          course.image,
-                        description: course.description,
-                      }}>
-                      <Card
-                        sx={{
-                          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-                          borderRadius: 2,
-                          height: "21.5em",
-                          display: "flex",
-                          flexDirection: "column",
-                          "&:hover": {
-                            transform: "translateY(-3px)",
-                            boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                            backgroundColor: "#0000000a",
-                          },
+                      <Link
+                        to={`/course/${course.title}`}
+                        style={{ textDecoration: "none" }}
+                        state={{
+                          title: course.title,
+                          imageUrl: course.image,
+                          description: course.description,
                         }}
                       >
-                        <CourseImage
+                        <Card
                           sx={{
-                            backgroundImage: `url(${
-                              course.image ||
-                              "https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg"
-                            })`,
-                          }}
-                        >
-                          <OverlayText variant="subtitle2">
-                            {course.title}
-                          </OverlayText>
-                          <CategoryChip label={course.category} size="small" />
-                        </CourseImage>
-                        <CardContent
-                          sx={{
-                            flexGrow: 1,
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                            borderRadius: 2,
+                            height: "21.5em",
                             display: "flex",
                             flexDirection: "column",
-                            justifyContent: "space-between",
+                            width: "auto", // Set width to auto
+                            "&:hover": {
+                              transform: "translateY(-3px)",
+                              boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                              backgroundColor: "#0000000a",
+                            },
                           }}
                         >
-                          <Box
+                          <CourseImage
                             sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "flex-start",
-                              mb: 1,
-                              mt: 2,
+                              backgroundImage: `url(${course.image ||
+                                "https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg"
+                                })`,
+                              width: "auto", // Set width to auto
                             }}
                           >
-                            <Box>
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                sx={{ mb: 1 }}
-                              >
-                                <CalendarTodayIcon
-                                  sx={{ fontSize: 14, mr: 0.5 }}
-                                />
-                                {course.date}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                sx={{
-                                  maxHeight: "40px",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                }}
-                              >
-                                {course.description}
-                              </Typography>
-                            </Box>
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                              {course.avatar.map((src, i) => (
-                                <Avatar
-                                  key={i}
-                                  src={src}
-                                  sx={{
-                                    width: 35,
-                                    height: 35,
-                                    ml: i === 0 ? 0 : -1,
-                                  }}
-                                />
-                              ))}
-                            </Box>
-                          </Box>
-                          <Box>
-                            <Divider sx={{ my: 1 }} />
+                            <OverlayText variant="subtitle2">
+                              {course.title}
+                            </OverlayText>
+                            <CategoryChip
+                              label={course.category}
+                              size="small"
+                            />
+                          </CourseImage>
+                          <CardContent
+                            sx={{
+                              flexGrow: 1,
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "space-between",
+                            }}
+                          >
                             <Box
                               sx={{
                                 display: "flex",
                                 justifyContent: "space-between",
+                                alignItems: "flex-start",
+                                mb: 1,
+                                mt: 2,
                               }}
                             >
-                              <Box
-                                sx={{ display: "flex", alignItems: "center" }}
-                              >
-                                <CommentIcon sx={{ fontSize: 18, mr: 0.5 }} />
-                                <Typography variant="body2">
-                                  {course.comments}
+                              <Box>
+                                <Typography
+                                  variant="body2"
+                                  color="textSecondary"
+                                  sx={{ mb: 1 }}
+                                >
+                                  <CalendarTodayIcon
+                                    sx={{ fontSize: 14, mr: 0.5 }}
+                                  />
+                                  {course.date}
+                                </Typography>
+                                <Typography
+                                  variant="body2"
+                                  sx={{
+                                    maxHeight: "40px",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  }}
+                                >
+                                  {course.description}
                                 </Typography>
                               </Box>
                               <Box
                                 sx={{ display: "flex", alignItems: "center" }}
                               >
-                                <VisibilityIcon
-                                  sx={{ fontSize: 18, mr: 0.5 }}
-                                />
-                                <Typography variant="body2">
-                                  {course.views}
-                                </Typography>
+                                {course.avatar.map((src, i) => (
+                                  <Avatar
+                                    key={i}
+                                    src={src}
+                                    sx={{
+                                      width: 35,
+                                      height: 35,
+                                      ml: i === 0 ? 0 : -1,
+                                    }}
+                                  />
+                                ))}
                               </Box>
                             </Box>
-                          </Box>
-                        </CardContent>
-                      </Card>
+                            <Box>
+                              <Divider sx={{ my: 1 }} />
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <CommentIcon
+                                    sx={{ fontSize: 18, mr: 0.5 }}
+                                  />
+                                  <Typography variant="body2">
+                                    {course.comments}
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <VisibilityIcon
+                                    sx={{ fontSize: 18, mr: 0.5 }}
+                                  />
+                                  <Typography variant="body2">
+                                    {course.views}
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </Box>
+                          </CardContent>
+                        </Card>
                       </Link>
                     </Grid>
                   ))}
                 </Grid>
               </Box>
             </Box>
+
           </Box>
 
           <SidebarSection>
@@ -892,44 +891,46 @@ const CourseDashboard = () => {
             <Divider sx={{ mb: 2 }} />
             {loading
               ? Array.from({ length: 4 }, (_, index) => (
-                  <Shimmer key={index} height={150} />
-                ))
-              : experts.slice(0, 4).map((expert, index) => (
-                  <Card
-                    key={index}
-                    sx={{ mb: 2, boxShadow: "none", borderRadius: "12px" }}
+                <Shimmer key={index} height={150} />
+              ))
+              : experts.slice(0, 6).map((expert, index) => (
+                <Card
+                  key={index}
+                  sx={{ mb: 2, boxShadow: "none", borderRadius: "12px" }}
+                >
+                  <CardContent
+                    sx={{ display: "flex", alignItems: "center" }}
                   >
-                    <CardContent sx={{ display: "flex", alignItems: "center" }}>
-                      <Avatar
-                        src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
-                        alt={expert.name}
-                        sx={{ width: 90, height: 90, mr: 2 }}
-                      />
-                      <Box>
-                        <Typography variant="subtitle1">
-                          {expert.name}
-                        </Typography>
-                        <Typography variant="body2">
-                          {expert.industry}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ mt: 0.8 }}
-                        >
-                          {truncateText(expert.about)}
-                        </Typography>
-                        <Button
-                          size="small"
-                          onClick={() => handleExpertClick(expert)}
-                          sx={{ mt: 1 }}
-                        >
-                          Know More
-                        </Button>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                ))}
+                    <Avatar
+                      src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+                      alt={expert.name}
+                      sx={{ width: 90, height: 90, mr: 2 }}
+                    />
+                    <Box>
+                      <Typography variant="subtitle1">
+                        {expert.name}
+                      </Typography>
+                      <Typography variant="body2">
+                        {expert.industry}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mt: 0.8 }}
+                      >
+                        {truncateText(expert.about)}
+                      </Typography>
+                      <Button
+                        size="small"
+                        onClick={() => handleExpertClick(expert)}
+                        sx={{ mt: 1 }}
+                      >
+                        Know More
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              ))}
             <Button sx={{ alignSelf: "flex-end" }} size="small">
               View All
             </Button>

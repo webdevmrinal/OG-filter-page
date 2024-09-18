@@ -3,7 +3,7 @@ import { Box, Typography, Button, Card, CardContent, Avatar,ListItemIcon, ListIt
 import { styled } from '@mui/system';
 import { useLocation } from 'react-router-dom';
 import ArticleIcon from '@mui/icons-material/Article';  // Example icon
-import AssignmentIcon from '@mui/icons-material/Assignment';  // Example icon
+import { useNavigate } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     Timeline,
@@ -64,20 +64,24 @@ const InstructorCard = styled(Card)(({ theme }) => ({
 
 const CourseAccordion = styled((props) => {
   const [expanded, setExpanded] = useState('panel0'); // Default to the first panel open
+  const navigate = useNavigate();
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const handleNavigation = (resourceId) => {
+    navigate(`/course-assignment`, { state: { resourceId } });
+  };
   return (
     <Box {...props}>
       {[
         { title: 'What is Fractional Work?', details: [
-          { text: 'Unit 1 - What is a Fractional Executive', icon: <ArticleIcon sx={{height: '0.8em'}}/> },
-          { text: 'Resource 1 - What is a Fractional Executive', icon: <ArticleIcon  sx={{height: '0.8em'}} /> },
-          { text: 'Resource 2 - A Consultant vs a Fractional CEO / COO: What\'s the Difference? An Explanation', icon: <ArticleIcon  sx={{height: '0.8em'}}/> },
-          { text: 'Resource 3 - What are Virtual CFO Services? (And Do You Need It?)', icon: <ArticleIcon  sx={{height: '0.8em'}}/> },
-          { text: 'Resource 4 - Are YOU Ready to Start Offering CFO Services?', icon: <ArticleIcon  sx={{height: '0.8em'}} /> }
+          { text: 'Unit 1 - What is a Fractional Executive', icon: <ArticleIcon sx={{ height: '0.8em' }} />, resourceId: 1 },
+          { text: 'Resource 1 - What is a Fractional Executive', icon: <ArticleIcon sx={{ height: '0.8em' }} />, resourceId: 2 },
+          { text: 'Resource 2 - A Consultant vs a Fractional CEO / COO: What\'s the Difference?', icon: <ArticleIcon sx={{ height: '0.8em' }} />, resourceId: 3 },
+          { text: 'Resource 3 - What are Virtual CFO Services? (And Do You Need It?)', icon: <ArticleIcon sx={{ height: '0.8em' }} />, resourceId: 4 },
+          { text: 'Resource 4 - Are YOU Ready to Start Offering CFO Services?', icon: <ArticleIcon sx={{ height: '0.8em' }} />, resourceId: 5 },
         ]},
         { title: 'Why Become a Fractional Executive?', details: [
           { text: 'Resource 1 - Why go fractional', icon: <ArticleIcon sx={{height: '0.8em'}} /> }
@@ -108,7 +112,7 @@ const CourseAccordion = styled((props) => {
           }}>
             <List dense>
               {section.details.map((detail, idx) => (
-                <ListItem key={idx} sx={{px: {xs: 0, sm: 0}}}>
+                <ListItem key={idx} sx={{px: {xs: 0, sm: 0}}} onClick={() => handleNavigation(detail.path)}>
                   <ListItemIcon sx={{minWidth: {xs: '40px', sm: '56px'}}}>
                     {detail.icon}
                   </ListItemIcon>

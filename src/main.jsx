@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ReactDOM from "react-dom/client";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import ProfilePage from "./ProfilePage.jsx";
 import Appointments from "./Appointments.jsx";
 import ExpertPage from "./ExpertPage.jsx";
@@ -13,7 +13,6 @@ import AppointmentDashboard from "./AppointmentDashboard.jsx";
 import DetailPage from "./DetailView.jsx";
 import TransactionHistory from "./TransactionHistory.jsx";
 import Layout from "./Layout.jsx";
-import App from "./App.jsx";
 import MyFollowers from "./MyFollowers.jsx";
 import App2 from "./signup-login/App";
 import LoginPage from "./signup-login/LoginPage";
@@ -41,10 +40,21 @@ const theme = createTheme({
   },
 });
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top
+  }, [pathname]); // Runs on route change
+
+  return null;
+};
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <Router>
+    <ScrollToTop />
       <Routes>
         <Route index element={<Homepage />} />
         <Route path="/" element={<Layout />}>

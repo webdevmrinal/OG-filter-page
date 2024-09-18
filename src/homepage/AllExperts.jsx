@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState} from 'react';
 import {
   Box,
   Typography,
@@ -18,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import Header from '../signup-login/Header';
+import { ExpertCard } from '../ExpertCard';
 
 // Styled components
 const MainCard = styled(Card)(({ theme }) => ({
@@ -61,7 +62,7 @@ const Banner = () => {
         backgroundColor: '#2c489b',
         color: '#fff',
         padding: { xs: '1rem', sm: '2rem 6.3rem 2.1rem 2rem' }, // Adjust padding for small screens
-        height: { xs: 'auto', sm: '440px' }, // Adjust height for small screens
+        height: { xs: 'auto', sm: 'auto' }, // Adjust height for small screens
         borderRadius: 2,
         [theme.breakpoints.down('sm')]: {
           flexDirection: 'column-reverse', // Stack text on top of image for small screens
@@ -103,7 +104,7 @@ const Banner = () => {
       <Box
         sx={{
           width: { xs: '100%', sm: '49%' }, // Full width for small screens
-          mb: { xs: 2, sm: 0 }, // Add margin below image on small screens
+          mb: { xs: 2, sm: -5 }, // Add margin below image on small screens
         }}
       >
         <img
@@ -138,7 +139,7 @@ const HowItWorksCard = ({ icon, title, description }) => {
     <Card
       sx={{
         width: 320,
-        height: 280,
+        height: 'auto',
         textAlign: "center",
         m: 1,
         boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
@@ -147,6 +148,7 @@ const HowItWorksCard = ({ icon, title, description }) => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        p: 2,
         [theme.breakpoints.down('sm')]: {
           width: '100%',
           height: 'auto',
@@ -164,92 +166,6 @@ const HowItWorksCard = ({ icon, title, description }) => {
       <Typography variant="body2" color="text.secondary">
         {description}
       </Typography>
-    </Card>
-  );
-};
-
-const ExpertCard = ({ name, industry, img, email }) => {
-  const theme = useTheme(); // Get the theme using the useTheme hook
-  const navigate = useNavigate();
-  const handleRequestCall = () => {
-    navigate(`/profile/${name}`, {
-      state: {
-        expertEmail: email
-      }
-    });
-  };
-
-  return (
-    <Card
-      sx={{
-        width: 300,
-        margin: 2,
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        "&:hover": {
-          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
-        },
-        position: 'relative',
-        overflow: 'hidden',
-        [theme.breakpoints.down('sm')]: {
-          width: '100%',
-          margin: '10px 0',
-        },
-      }}
-    >
-      <CardMedia
-        component="img"
-        height="290"
-        image={`https://academy.opengrowth.com/assets/images/users/${img}`}
-        alt={name}
-        sx={{
-          objectFit: 'cover',
-          [theme.breakpoints.down('sm')]: {
-            height: 'auto',
-          },
-        }}
-      />
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 65,
-          left: 0,
-          right: 0,
-          background: 'rgba(0, 0, 0, 0.6)',
-          color: 'white',
-          textAlign: 'center',
-        }}
-      >
-        <Typography variant="subtitle1" fontWeight="bold">
-          {name}
-        </Typography>
-        <Typography variant="body2">
-          {industry}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          padding: 2,
-          textAlign: 'center',
-          mt: 'auto',
-        }}
-      >
-        <Button
-          variant="contained"
-          onClick={handleRequestCall}
-          sx={{
-            color: 'white',
-            fontSize: '0.8em',
-            fontWeight: '500',
-            borderRadius: '35px',
-            "&:hover": {
-              color: 'black',
-              backgroundColor: '#f2a603',
-            },
-          }}
-        >
-          Request a Call
-        </Button>
-      </Box>
     </Card>
   );
 };
@@ -284,6 +200,8 @@ const AllExperts = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { experts } = location.state || {};
+  
+  const [selectedExpert, setSelectedExpert] = useState(null);
   const chipLabels = [
     "Personal Branding",
     "Entrepreneurship",
@@ -297,6 +215,10 @@ const AllExperts = () => {
     "Business Consulting",
     "Talent Acquisition",
   ];
+
+  const handleExpertClick = (expert) => {
+    setSelectedExpert(expert);
+  };
 
   return (
     <Box sx={{ p: 1, pt: 0 }}>
@@ -330,7 +252,7 @@ const AllExperts = () => {
           mb: 2,
           display: 'flex',
           flexWrap: 'nowrap', // Ensure the chips don't wrap to the next line
-          ml: {sm: 4, xs: 0},
+          ml: {sm: 3, xs: 0},
           gap: 1,
           overflowX: 'auto', // Allow horizontal scrolling
           scrollbarWidth: 'none', // For Firefox to hide the scrollbar
@@ -355,11 +277,32 @@ const AllExperts = () => {
           ))}
         </Box>
         {/* Displaying Experts inside the same card */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+        <Grid
+            container
+            columnSpacing={2}
+            rowSpacing={1}
+            sx={{
+              placeItems: "center",
+              placeContent: "center",
+              mx: "auto",
+              py: "1.5em",
+              px: "8px",
+            }}
+          >
           {experts.map((expert, index) => (
-            <ExpertCard key={index} {...expert} />
+            <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            key={expert.id}
+            sx={{ px: "4px !important" }}
+          >
+            <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="allExperts"/>
+            </Grid>
           ))}
-        </Box>
+        </Grid>
       </Card>
     </Box>
   );

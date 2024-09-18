@@ -36,79 +36,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { useParams, useLocation, Link } from "react-router-dom";
 import SelectTime from "./SelectTime";
-
-const shimmerAnimation = keyframes`
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-`;
-
-const ShimmerBox = styled(Box)(({ theme }) => ({
-  animation: `${shimmerAnimation} 2s infinite linear`,
-  background: 'linear-gradient(to right, #eff1f3 8%, #e2e2e2 18%, #eff1f3 33%)',
-  backgroundSize: '1000px 100%',
-  borderRadius: theme.shape.borderRadius,
-  marginBottom: theme.spacing(2)
-}));
-
-const ShimmerLine = styled(Box)({
-  height: '20px',
-  marginBottom: '8px',
-  backgroundColor: '#f0f0f0'
-});
-
-const ProfileShimmer = () => (
-  <ShimmerBox sx={{ width: 1, height: 200, mb: 2 }}>
-    <ShimmerBox sx={{ width: 120, height: 120, borderRadius: '50%', margin: 2 }} />
-    <ShimmerLine sx={{ width: '80%', height: 24 }} />
-    <ShimmerLine sx={{ width: '60%', height: 16 }} />
-  </ShimmerBox>
-);
-
-const GradientBox = styled(Box)({
-  // background: "linear-gradient(to right, #5e6fa3, #4ea3a0)",
-  background: "linear-gradient(to top, #505f96, #25387c)",
-  height: "200px",
-  position: "relative",
-  display: "flex",
-  alignItems: "flex-end",
-  padding: "24px",
-});
-
-const ProfileAvatar = styled(Avatar)({
-  width: 120,
-  height: 120,
-  border: "4px solid white",
-});
-
-const TabsContainer = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  borderBottom: "1px solid #e0e0e0",
-});
-
-const ButtonContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: theme.spacing(1),
-  [theme.breakpoints.down('sm')]: {
-    justifyContent: "center", // Center the buttons on small screens
-    gap: theme.spacing(0.5), // Reduce gap between buttons
-    flexWrap: "wrap", // Wrap buttons if space is insufficient
-  },
-}));
-const StyledButton = styled(Button)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(0.5), // Reduce padding
-    fontSize: "0.7rem", // Smaller font size for text in buttons
-    minWidth: '64px', // Minimum width to ensure tap target size
-  },
-}));
-
+import { ShimmerLoading } from "./signup-login/Components/ShimmerEffect";
+import { GradientBox, ButtonContainer,StyledButton, TabsContainer, ProfileAvatar,GradientContent, PaperContent } from "./Experts/Components/ProfileStyles";
 
 const SkillsCard = ({ skills }) => {
   console.log(skills);
@@ -144,7 +73,7 @@ const SkillsCard = ({ skills }) => {
 const ProfilePage = () => {
   const { expertName } = useParams();
   const [profileData, setProfileData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const expertEmail = location.state?.expertEmail;
   const [tabValue, setTabValue] = useState(0);
@@ -167,7 +96,7 @@ const ProfilePage = () => {
       } catch (error) {
         console.error("Error fetching profile data:", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -176,8 +105,12 @@ const ProfilePage = () => {
     }
   }, [expertEmail]);
 
-  if (loading) {
-    return <ProfileShimmer />;
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <ShimmerLoading />
+      </Box>
+    );
   }
 
   if (!profileData) return null;
@@ -221,12 +154,7 @@ const ProfilePage = () => {
        
       >
         <GradientBox position={"relative"}>
-          <Box
-            display="flex"
-            alignItems="center"
-            position={"absolute"}
-            bottom={"-46%"}
-            sx={{ translate: "0 -50%",  }}
+          <GradientContent
           >
             <ProfileAvatar
               src={`https://academy.opengrowth.com/assets/images/users/${profileData.img}`}
@@ -242,7 +170,7 @@ const ProfilePage = () => {
                 {profileData.experience}
               </Typography>
             </Box>
-          </Box>
+          </GradientContent>
         </GradientBox>
         <TabsContainer>
           <Tabs
@@ -280,7 +208,7 @@ const ProfilePage = () => {
         </TabsContainer>
       </Box>
 
-      <Accordion expanded={expanded === 'panel0'} onChange={handleAccordionChange('panel0')} sx={{boxShadow: "0 1px 1px rgba(0,0,0,0.15)",}}>
+      <Accordion expanded={expanded === 'panel0'} onChange={handleAccordionChange('panel0')} sx={{boxShadow: "0 1px 1px rgba(0,0,0,0)",}}>
         <AccordionDetails >
           <SelectTime
             setShowGetTime={setExpanded}
@@ -294,16 +222,7 @@ const ProfilePage = () => {
       <Grid container spacing={3} sx={{ my: 3, pl: 4, pr: 4 }}>
         {/* Left side - About section */}
         <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Paper
-            sx={{
-              flex: 1,
-              borderRadius: 2,
-              boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100%' // Ensure it takes full height
-            }}
-          >
+          <PaperContent >
             <Typography px={3} pt={0.5} variant="h6" gutterBottom>
               About
             </Typography>
@@ -348,23 +267,17 @@ const ProfilePage = () => {
                 />
               </ListItem>
             </List>
-          </Paper>
+          </PaperContent>
         </Grid>
 
         {/* Right side - Accordion section */}
         <Grid item xs={12} sm={8} sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Paper
+          <PaperContent
             elevation={0}
             sx={{
-              flex: 1,
               overflow: "hidden",
               bgcolor: "transparent",
               border: "none",
-              borderRadius: '8px',
-              boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100%' // Ensure it takes full height
             }}
           >
             {accordionData.map((item, index) => (
@@ -379,7 +292,7 @@ const ProfilePage = () => {
                 </AccordionDetails>
               </Accordion>
             ))}
-          </Paper>
+          </PaperContent>
         </Grid>
 </Grid>
 

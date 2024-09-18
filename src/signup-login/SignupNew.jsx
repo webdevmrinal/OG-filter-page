@@ -1,48 +1,35 @@
-import React, { useState } from "react";
-import Slider from "react-slick";
+import React, { useState, useEffect } from "react";
 import {
-  AppBar,
-  Toolbar,
   Typography,
   Button,
-  Container,
-  Grid,
-  TextField,
-  MenuItem,
-  Box,
   IconButton,
   Link,
+  MenuItem,
   Divider,
-  Autocomplete,
-  Chip,
-  Paper,
-  Menu,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
+  CircularProgress,
+  Box,
+  Grid,
+  Autocomplete
 } from "@mui/material";
-import Footer from "./Footer";
-import {
-  LinkedIn,
-  Google,
-  Facebook,
-  Visibility,
-  VisibilityOff,
-  ArrowDropDown,
-  Menu as MenuIcon,
-} from "@mui/icons-material";
-import "slick-carousel/slick/slick.css";
-import ArrowBack from "@mui/icons-material/ArrowBack";
-import "slick-carousel/slick/slick-theme.css";
-import LoginPage from "./LoginPage";
-import OGLogo from "./assets/OG-Logo.svg";
+import Slider from "react-slick";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { LinkedInIcon, GoogleIcon, FacebookIcon } from "./Icons";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { styled } from "@mui/system";
+
+import Footer from "./Footer";
 import Header from "./Header";
+import { LinkedInIcon, GoogleIcon, FacebookIcon } from "./Icons";
 import { signupConfig } from "../configs/signup.config";
+import { FormButton, SocialButtons } from "./Components/Buttons";
+import { FormCard, FormPaper } from "./Components/Cards";
+import { FormContainer, SocialBox } from "./Components/Box";
+import { FormTextField } from "./Components/TextField";
+import { SliderStyles } from "./Components/SliderStyle";
+import { ShimmerLoading } from "./Components/ShimmerEffect";
 
 const iconComponents = {
   LinkedInIcon,
@@ -51,37 +38,30 @@ const iconComponents = {
 };
 
 const SignupPage = () => {
-  const { images, interests, countries, navItems, sliderSettings } =
-    signupConfig;
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedInterests, setSelectedInterests] = useState([]);
+  const { images, interests, countries, sliderSettings } = signupConfig;
   const [showPassword, setShowPassword] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false); 
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      setTimeout(() => setImagesLoaded(true), 1000); // Delay images loading after form is ready
+    }, 2000); // Simulate fetch or heavy computation
+  }, []);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = (event) => event.preventDefault();
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required(
-      signupConfig.formValidation.firstName.required
-    ),
-    lastName: Yup.string().required(
-      signupConfig.formValidation.lastName.required
-    ),
-    email: Yup.string()
-      .email(signupConfig.formValidation.email.invalid)
-      .required(signupConfig.formValidation.email.required),
-    password: Yup.string()
-      .min(
-        signupConfig.formValidation.password.min.value,
-        signupConfig.formValidation.password.min.message
-      )
-      .required(signupConfig.formValidation.password.required),
-    interests: Yup.array().min(
-      signupConfig.formValidation.interests.min.value,
-      signupConfig.formValidation.interests.min.message
-    ),
-    country: Yup.string().required(
-      signupConfig.formValidation.country.required
-    ),
+    firstName: Yup.string().required(signupConfig.formValidation.firstName.required),
+    lastName: Yup.string().required(signupConfig.formValidation.lastName.required),
+    email: Yup.string().email(signupConfig.formValidation.email.invalid).required(signupConfig.formValidation.email.required),
+    password: Yup.string().min(signupConfig.formValidation.password.min.value, signupConfig.formValidation.password.min.message).required(signupConfig.formValidation.password.required),
+    interests: Yup.array().min(signupConfig.formValidation.interests.min.value, signupConfig.formValidation.interests.min.message),
+    country: Yup.string().required(signupConfig.formValidation.country.required),
   });
 
   const formik = useFormik({
@@ -95,148 +75,83 @@ const SignupPage = () => {
     },
     validationSchema,
     onSubmit: (values) => {
+      setSubmitting(true);
       console.log("Form data", values);
+      setTimeout(() => {
+        setSubmitting(false);
+        navigate("/dashboardpage");
+      }, 2000); // Simulate network request
     },
   });
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleChange = (event, newValue) => {
-    setSelectedInterests(newValue);
-  };
-
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
-  };
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <ShimmerLoading />
+      </Box>
+    );
+  }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, px: 1 }}>
       <Header />
-
-
-      <Container
-        maxWidth="xl"
-        sx={{ mt: 4, pb: 4 }}
-        className="md:border md:mb-6 md:pt-6 md:shadow-lg md:rounded-xl"
+      <FormContainer>
+        <FormPaper>
+        <Box
+        sx={{
+          width: { xs: "100%", md: "50%" },
+          flexGrow: 1,
+          position: "relative",
+          display: { xs: "none", md: "block" }, // Hide on xs, show on md and larger
+        }}
       >
-        <Grid
-          container
-          spacing={4}
-          justifyContent="center"
-          alignItems={"center"}
-        >
-          <Grid item xs={12} md={6}>
-            <Slider {...sliderSettings}>
-              {images.map((url, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width: "100%",
-                    height: { xs: "300px", sm: "400px", md: "700px" },
-                    overflow: "hidden",
-                    borderRadius: "10px",
-                    backgroundImage: `url(${url})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                  }}
-                />
-              ))}
-            </Slider>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper
-              elevation={0}
-              sx={{ borderRadius: "16px", border: "1px solid lightgray" }}
+        {imagesLoaded && (
+          <Slider {...sliderSettings}>
+            {images.map((url, index) => (
+              <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
+            ))}
+          </Slider>
+        )}
+      </Box>
+          <Box sx={{ width: { xs: "100%", md: "50%" }, p: { xs: 2, md: 5 }, display: "flex", flexDirection: "column", justifyContent: "flex-start", position: "relative" }}>
+            <Button
+              sx={{ px: 4, position: "absolute", top: "10px", left: "10px", color: "primary.main" }}
+              onClick={() => navigate(signupConfig.backButton.route, { state: { fromSignup: true } })}
             >
-              <Typography
-                variant="h6"
-                sx={{ px: 4, py: 1, fontWeight: "600" }}
-                gutterBottom
-              >
-                Signup on OpenGrowth
-              </Typography>
-              <Divider />
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: ".75em",
-                  mb: 2,
-                  px: 4,
-                  pb: 1,
-                  pt: 3.3,
-                }}
-              >
-                {signupConfig.socialButtons.map((button, index) => {
-                  const IconComponent = iconComponents[button.icon];
-                  console.log(button.icon, iconComponents[button.icon]);
-                  return (
-                    <Button
-                      key={index}
-                      variant="outlined"
-                      fullWidth
-                      TouchRippleProps={{ style: { color: button.color } }}
-                      sx={{
-                        py: 1,
-                        gridColumnStart: index === 0 ? "span 2" : "auto",
-                        border: "1px solid lightgray",
-                        "&:hover": {
-                          border: "1px solid lightgray",
-                        },
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minHeight: "40px",
-                        color: button.color,
-                        backgroundColor: "white",
-                      }}
-                    >
-                      <IconComponent
-                        style={{
-                          width: "20px",
-                          height: "20px",
-                        }}
-                      />
-                    </Button>
-                  );
-                })}
-              </Box>
-              <Divider sx={{ px: 4, my: 2, fontSize: ".75em" }}>OR</Divider>
-              <form
-                onSubmit={formik.handleSubmit}
-                style={{ padding: "0 2rem" }}
-              >
+              &lt; {signupConfig.backButton.text}
+            </Button>
+            <Box display={'flex'} sx={{flexDirection: {xs: 'column', sm: 'row'}, justifyContent: {xs: 'center', sm: 'space-between'}, alignItems: 'center'}} >
+            <Typography variant="h6" sx={{ fontWeight: "600", mt: {xs: 4, sm: 2} }}>
+              Signup on OpenGrowth
+            </Typography>
+            <Typography variant="subtitle2" sx={{ mt: {xs: 1, sm: 3} }}>
+              Already registered? <Link sx={{ cursor: "pointer", textDecoration: 'none' }} onClick={() => navigate("/login")}>Login now</Link>
+            </Typography>
+            </Box>
+            <Divider />
+            <SocialBox>
+              {signupConfig.socialButtons.map((button, index) => {
+                const IconComponent = iconComponents[button.icon];
+                if (!IconComponent) {
+                  console.error(`Icon component for ${button.icon} not found`);
+                  return null;
+                }
+                return (
+                  <SocialButtons key={index} variant="outlined">
+                    <IconComponent style={{ marginRight: 1, width: 20, height: 20 }} />
+                    <Typography variant="subtitle2" sx={{ mt: 0.5, ml: 1 }}>{button.label}</Typography>
+                  </SocialButtons>
+                );
+              })}
+            </SocialBox>
+            <Divider sx={{ my: 1, fontSize: ".75em" }}>OR</Divider>
+            <Box sx={{ mt: 2 }}>
+              <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
-                    <TextField
+                    <FormTextField
                       fullWidth
-                      label={
-                        <>
-                          First Name <span style={{ color: "red" }}>*</span>
-                        </>
-                      }
-                      InputLabelProps={{
-                        sx: {
-                          "& .MuiInputLabel-asterisk": {
-                            display: "none",
-                          },
-                        },
-                      }}
-                      variant="outlined"
+                      label="First Name"
                       {...formik.getFieldProps("firstName")}
                       error={
                         formik.touched.firstName &&
@@ -248,21 +163,9 @@ const SignupPage = () => {
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <TextField
+                    <FormTextField
                       fullWidth
-                      label={
-                        <>
-                          Last Name <span style={{ color: "red" }}>*</span>
-                        </>
-                      }
-                      InputLabelProps={{
-                        sx: {
-                          "& .MuiInputLabel-asterisk": {
-                            display: "none",
-                          },
-                        },
-                      }}
-                      variant="outlined"
+                      label="Last Name"
                       {...formik.getFieldProps("lastName")}
                       error={
                         formik.touched.lastName &&
@@ -275,21 +178,9 @@ const SignupPage = () => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <TextField
+                    <FormTextField
                       fullWidth
-                      label={
-                        <>
-                          Email Address <span style={{ color: "red" }}>*</span>
-                        </>
-                      }
-                      InputLabelProps={{
-                        sx: {
-                          "& .MuiInputLabel-asterisk": {
-                            display: "none",
-                          },
-                        },
-                      }}
-                      variant="outlined"
+                      label="Email Address"
                       {...formik.getFieldProps("email")}
                       error={
                         formik.touched.email && Boolean(formik.errors.email)
@@ -298,22 +189,10 @@ const SignupPage = () => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
+                    <FormTextField
                       fullWidth
-                      label={
-                        <>
-                          Password <span style={{ color: "red" }}>*</span>
-                        </>
-                      }
-                      InputLabelProps={{
-                        sx: {
-                          "& .MuiInputLabel-asterisk": {
-                            display: "none",
-                          },
-                        },
-                      }}
+                      label="Password"
                       type={showPassword ? "text" : "password"}
-                      variant="outlined"
                       {...formik.getFieldProps("password")}
                       error={
                         formik.touched.password &&
@@ -328,9 +207,12 @@ const SignupPage = () => {
                             aria-label="toggle password visibility"
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
-                            edge="end"
                           >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            {showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
                           </IconButton>
                         ),
                       }}
@@ -345,14 +227,11 @@ const SignupPage = () => {
                       value={formik.values.interests}
                       onChange={(event, value) => {
                         formik.setFieldValue("interests", value);
-                        formik.setFieldTouched("interests", true);
                       }}
-                      onBlur={() => formik.setFieldTouched("interests", true)}
                       renderInput={(params) => (
-                        <TextField
+                        <FormTextField
                           {...params}
                           label="Interests"
-                          variant="outlined"
                           error={
                             formik.touched.interests &&
                             Boolean(formik.errors.interests)
@@ -365,25 +244,14 @@ const SignupPage = () => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
+                    <FormTextField
                       fullWidth
                       select
-                      label={
-                        <>
-                          Country <span style={{ color: "red" }}>*</span>
-                        </>
-                      }
-                      InputLabelProps={{
-                        sx: {
-                          "& .MuiInputLabel-asterisk": {
-                            display: "none",
-                          },
-                        },
-                      }}
-                      variant="outlined"
+                      label="Country"
                       {...formik.getFieldProps("country")}
                       error={
-                        formik.touched.country && Boolean(formik.errors.country)
+                        formik.touched.country &&
+                        Boolean(formik.errors.country)
                       }
                       helperText={
                         formik.touched.country && formik.errors.country
@@ -394,126 +262,40 @@ const SignupPage = () => {
                           {country}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </FormTextField>
                   </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <Button
+                  <Grid item xs={12}>
+                  <FormButton
                       variant="contained"
-                      color="primary"
                       type="submit"
-                      fullWidth
-                      onClick={() => navigate("/dashboardpage")}
+                      disabled={submitting}  // Disable the button while submitting
                     >
-                      Register Now
-                    </Button>
+                      {submitting ? <CircularProgress size={24} /> : 'Register Now'}
+                    </FormButton>
                   </Grid>
                 </Grid>
               </form>
-              <Typography
-                color="secondary.main"
-                variant="body2"
-                sx={{ px: 4, m: 2, textAlign: "center" }}
-              >
-                {signupConfig.termsAndPrivacy.text}{" "}
-                <Link
-                  color="primary"
-                  href={signupConfig.termsAndPrivacy.termsLink}
-                >
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link
-                  color="primary"
-                  href={signupConfig.termsAndPrivacy.privacyLink}
-                >
-                  Privacy Policy
-                </Link>
-              </Typography>
-            </Paper>
+            </Box>
             <Typography
-              color="secondary.main"
+              color="text.secondary"
               variant="body2"
               sx={{ mt: 2, textAlign: "center" }}
             >
-              {signupConfig.expertSignup.text}{" "}
-              <Link href={signupConfig.expertSignup.link}>Sign up here!</Link>
+              {signupConfig.termsAndPrivacy.text}{" "}
+              <Link href={signupConfig.termsAndPrivacy.termsLink}>
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link href={signupConfig.termsAndPrivacy.privacyLink}>
+                Privacy Policy
+              </Link>
             </Typography>
-          </Grid>
-        </Grid>
-      </Container>
-      <Button
-        sx={{
-          color: "#25", // Adjust the color as needed
-          textTransform: "none",
-          background: "transparent",
-          border: "none",
-          fontSize: "0.8rem", // Adjust the font size as needed
-          "&:hover": {
-            backgroundColor: "transparent",
-          },
-          m: 2,
-        }}
-        onClick={() => {
-          navigate(signupConfig.backButton.route, {
-            state: { fromSignup: true },
-          });
-        }}
-      >
-        {signupConfig.backButton.text}
-      </Button>
-
+          </Box>
+        </FormPaper>
+      </FormContainer>
       <Footer />
     </Box>
   );
 };
 
 export default SignupPage;
-
-const NavMenuItem = ({ title, items }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <>
-      <Button
-        color="primary"
-        onClick={handleClick}
-        endIcon={<ArrowDropDown />}
-        sx={{
-          marginRight: 3,
-          fontWeight: "600",
-          fontSize: "1em",
-          textTransform: "capitalize",
-          "&:hover": { background: "transparent", textDecoration: "underline" },
-        }}
-        TouchRippleProps={{ style: { color: "transparent" } }}
-      >
-        {title}
-      </Button>
-      <Menu
-        sx={{ borderRadius: "2em" }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        {items.map((item, index) => (
-          <MenuItem key={index} onClick={handleClose}>
-            {item}
-          </MenuItem>
-        ))}
-      </Menu>
-    </>
-  );
-};

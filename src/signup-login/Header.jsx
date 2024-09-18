@@ -85,9 +85,11 @@ const Header = () => {
               fontWeight: "600",
               fontSize: "1em",
               textTransform: "capitalize",
+              padding: "8px 15px", // Add padding to make the button size uniform
+              borderRadius: "40px", // Make it circular
               "&:hover": {
-                background: "transparent",
-                textDecoration: "underline",
+                backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
+                borderRadius: "40px", // Keep it circular on hover
               },
             }}
             color="inherit"
@@ -101,9 +103,11 @@ const Header = () => {
               fontWeight: "600",
               fontSize: "1em",
               textTransform: "capitalize",
+              padding: "8px 15px", // Add padding to make the button size uniform
+              borderRadius: "40px", // Make it circular
               "&:hover": {
-                background: "transparent",
-                textDecoration: "underline",
+                backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
+                borderRadius: "40px", // Keep it circular on hover
               },
             }}
             color="inherit"
@@ -122,7 +126,7 @@ const Header = () => {
           <Button
             variant="contained"
             color="primary"
-            sx={{ ml: 2,borderRadius: "2em" }}
+            sx={{ ml: 2, borderRadius: "2em" }}
             onClick={() => navigate("/get-started")}
           >
             SignUp
@@ -152,9 +156,11 @@ const Header = () => {
                 fontWeight: "600",
                 fontSize: "1em",
                 textTransform: "capitalize",
+                padding: "10px 15px",
+                borderRadius: "40px", // Make it circular
                 "&:hover": {
-                  background: "transparent",
-                  textDecoration: "underline",
+                  backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
+                  borderRadius: "40px", // Keep it circular on hover
                 },
               }}
               color="inherit"
@@ -168,9 +174,11 @@ const Header = () => {
                 fontWeight: "600",
                 fontSize: "1em",
                 textTransform: "capitalize",
+                padding: "10px 15px",
+                borderRadius: "40px", // Make it circular
                 "&:hover": {
-                  background: "transparent",
-                  textDecoration: "underline",
+                  backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
+                  borderRadius: "40px", // Keep it circular on hover
                 },
               }}
               color="inherit"
@@ -226,7 +234,12 @@ const NavMenuItem = ({ title, items }) => {
           fontWeight: "600",
           fontSize: "1em",
           textTransform: "capitalize",
-          "&:hover": { background: "transparent", textDecoration: "underline" },
+          padding: "8px 15px", // Add padding to make the button size uniform
+          borderRadius: "40px", // Make it circular
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
+            borderRadius: "40px", // Keep it circular on hover
+          },
         }}
         TouchRippleProps={{ style: { color: "transparent" } }}
       >

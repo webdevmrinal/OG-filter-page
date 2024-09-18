@@ -11,7 +11,7 @@ function Page1() {
   };
 
   return (
-    <Box sx={{ pt: 2, pb: 35 }}>
+    <Box sx={{ pt: 2, pb: 5}}>
       <Typography variant="h5" component="h1" sx={{ pt: 1, fontWeight: 'bold', color: '#303030' }}>
         Let's get started. Which of these best describes you?
       </Typography>

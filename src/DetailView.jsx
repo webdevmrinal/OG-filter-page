@@ -60,27 +60,8 @@ const ClickableBox = styled(Box)({
 });
 
 const getSessionColor = (title) => {
-  // const colors = {
-  //   'Strategy': '#e6f3ff',
-  //   'Planning': '#fff0e6',
-  //   'Review': '#e6ffe6',
-  //   'Workshop': '#f3e6ff',
-  //   'Analysis': '#fffde6',
-  //   'Meeting': '#ffe6f3',
-  //   'Briefing': '#e6fff3',
-  //   'Sync-up': '#fff6e6',
-  //   'Update': '#e6f9ff',
-  //   'Brainstorm': '#ffe6e6'
-  // };
 
-  // for (const [key, value] of Object.entries(colors)) {
-  //   if (title.toLowerCase().includes(key.toLowerCase())) {
-  //     return value;
-  //   }
-  // }
-
-  return '#fff'; // default color
-  // return '#f0f0f0'; // default color
+  return '#fff';
 };
 
 const ProfileAvatar = styled(Avatar)({

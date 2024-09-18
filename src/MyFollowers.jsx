@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Avatar, Typography, Grid, Box, Divider, Link } from '@mui/material';
+import { FollowerCard } from './Experts/Components/FollowerStyle';
 
 const followers = [
     { 
@@ -135,19 +136,7 @@ const MyFollowers = () => {
       <Grid container spacing={2}>
         {followers.map((follower) => (
           <Grid item xs={12} sm={6} md={4} key={follower.id} sx={{}}>
-            <Card sx={{ 
-                display: 'flex', 
-                alignItems: 'flex-start', 
-                p: 2, 
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-                height: {xs: 'fit-content',sm:'19vh'},
-                "&:hover": {
-                  backgroundColor: "#0000000a",
-                  boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
-                  transform: "translateY(-2px)",
-                },
-              }}
-            >
+            <FollowerCard >
               <Avatar src={follower.avatarUrl} alt={follower.name} sx={{ width: 90, height: 90, mr: 2, mt: 1 }} />
               <CardContent sx={{ p: 0 , }}>
                 <Typography variant="subtitle1" >
@@ -164,7 +153,7 @@ const MyFollowers = () => {
                 </Typography>
                 </Box>
               </CardContent>
-            </Card>
+            </FollowerCard>
           </Grid>
         ))}
       </Grid>

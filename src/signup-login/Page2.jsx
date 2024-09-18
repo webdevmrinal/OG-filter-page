@@ -62,7 +62,7 @@ function Page2() {
   };
 
   return (
-    <Box sx={{ pb: 10 }}>
+    <Box sx={{ pb: 6 }}>
       <Typography
         variant="h5"
         component="h1"

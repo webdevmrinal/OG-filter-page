@@ -17,11 +17,11 @@ export default function InClassActivity({ activity, handleBackClick }) {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: {xs: 'column', sm: 'row'}, justifyContent: 'space-between', width: '100%' }}>
       {/* Left Side: Activity Content */}
       <Box sx={{ width: showForm ? '65%' : '100%', transition: 'width 0.3s ease' }}>
         <StyledCard>
-          <Box sx={{ padding: 2, width: '100%' }}>
+          <Box sx={{ padding: 1, width: '100%' }}>
             {/* Header Section */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
               {/* Back Button */}

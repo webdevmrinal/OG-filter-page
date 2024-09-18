@@ -1,46 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import {
-  AppBar,
-  Toolbar,
   Typography,
-  Button,
-  Container,
   Grid,
-  TextField,
   Box,
   IconButton,
   Link,
   Divider,
-  Paper,
-  Menu,
-  MenuItem,
-  Drawer,
+  CircularProgress
 } from "@mui/material";
 import Footer from "./Footer";
 import {
-  LinkedIn,
-  Google,
-  Facebook,
   Visibility,
   VisibilityOff,
-  ArrowDropDown,
   Menu as MenuIcon,
 } from "@mui/icons-material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
-import OGLogo from "./assets/OG-Logo.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FacebookIcon, GoogleIcon, LinkedInIcon } from "./Icons";
 import Header from "./Header";
 import { loginPageConfig } from "../configs/login.config";
+import { FormButton, SocialButtons } from "./Components/Buttons";
+import { FormPaper } from "./Components/Cards";
+import { FormContainer, SocialBox } from "./Components/Box";
+import { FormTextField } from "./Components/TextField";
+import { SliderStyles } from "./Components/SliderStyle";
+import { ShimmerLoading } from "./Components/ShimmerEffect";
 
 const iconComponents = {
-  FacebookIcon,
-  GoogleIcon,
   LinkedInIcon,
+  GoogleIcon,
+  FacebookIcon,
 };
 
 const LoginPage = () => {
@@ -48,8 +41,17 @@ const LoginPage = () => {
     loginPageConfig;
   const [showPassword, setShowPassword] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [submitting, setSubmitting] = useState(false); 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      setTimeout(() => setImagesLoaded(true), 1000); // Delay images loading after form is ready
+    }, 2000); // Simulate fetch or heavy computation
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -68,7 +70,12 @@ const LoginPage = () => {
         .required(formValidation.password.required),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      setSubmitting(true);
+      console.log("Form data", values);
+      setTimeout(() => {
+        setSubmitting(false);
+        navigate("/dashboardpage");
+      }, 2000); // Simulate network request
     },
   });
 
@@ -90,233 +97,114 @@ const LoginPage = () => {
     event.preventDefault();
   };
 
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <ShimmerLoading />
+      </Box>
+    );
+  }
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, px: 1, }}>
       <Header />
-
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={toggleDrawer(false)}
-        sx={{ display: { xs: "flex", md: "none" } }}
-      >
+      <FormContainer>
+        <FormPaper>
         <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
+        sx={{
+          width: { xs: "100%", md: "50%" },
+          flexGrow: 1,
+          position: "relative",
+          display: { xs: "none", md: "block" }, // Hide on xs, show on md and larger
+        }}
+      >
+        {imagesLoaded && (
+          <Slider {...sliderSettings}>
+            {images.map((url, index) => (
+              <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
+            ))}
+          </Slider>
+        )}
+      </Box>
+
           <Box
             sx={{
-              padding: "2.5em 1em",
+              width: { xs: "100%", md: "50%" },
+              p: { xs: 2, md: 4 },
               display: "flex",
               flexDirection: "column",
-              gap: "1.5em",
+              justifyContent: "flex-start",
+              position: "relative",
             }}
           >
-            {navItems.map((item, index) => (
-              <NavMenuItem key={index} title={item.title} items={item.items} />
-            ))}
-            <Button
-              sx={{
-                marginRight: 3,
-                fontWeight: "600",
-                fontSize: "1em",
-                textTransform: "capitalize",
-                "&:hover": {
-                  background: "transparent",
-                  textDecoration: "underline",
-                },
-              }}
-              color="inherit"
-              TouchRippleProps={{ style: { color: "transparent" } }}
-            >
-              About Us
-            </Button>
-            <Button
-              sx={{
-                marginRight: 3,
-                fontWeight: "600",
-                fontSize: "1em",
-                textTransform: "capitalize",
-                "&:hover": {
-                  background: "transparent",
-                  textDecoration: "underline",
-                },
-              }}
-              color="inherit"
-              TouchRippleProps={{ style: { color: "transparent" } }}
-            >
-              Contact
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ borderRadius: "2em" }}
-              onClick={() => navigate("/signup")}
-            >
-              Sign Up
-            </Button>
-          </Box>
-        </Box>
-      </Drawer>
-
-      <Container
-        maxWidth="xl"
-        sx={{ mt: 4, pb: { xs: 4, sm: 10 } }}
-        className="md:border md:mb-6 md:pt-6 md:shadow-lg md:rounded-xl"
-      >
-        <Grid
-          container
-          spacing={4}
-          justifyContent="center"
-          alignItems={"flex-start"}
-        >
-          <Grid item xs={12} md={6}>
-            <Slider {...sliderSettings}>
-              {images.map((url, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width: "100%",
-                    height: { xs: "300px", sm: "400px", md: "700px" },
-                    overflow: "hidden",
-                    borderRadius: "10px",
-                    backgroundImage: `url(${url})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                  }}
-                />
-              ))}
-            </Slider>
-          </Grid>
-
-          <Grid item xs={12} md={6} height={"730px"}>
-            <Paper
-              elevation={0}
-              sx={{
-                height: "100%",
-                borderRadius: "16px",
-                border: "1px solid lightgray",
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{ px: 4, py: 1, fontWeight: "600" }}
-                gutterBottom
-              >
-                Login to OpenGrowth
+            <Box display={'flex'} sx={{flexDirection: {xs: 'column', sm: 'row'}, justifyContent: {xs: 'center', sm: 'space-between'}, alignItems: 'center'}} >
+            <Typography variant="h6" sx={{ fontWeight: "600", mt: { sm: 2} }}>
+                Login on OpenGrowth
               </Typography>
-              <Divider />
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: ".75em",
-                  mb: 2,
-                  px: 4,
-                  pt: 3.3,
-                  pb: 1,
-                }}
-              >
-                {socialButtons.map((button, index) => {
-                  const IconComponent = iconComponents[button.icon];
-                  console.log(button.icon, iconComponents[button.icon]);
-                  return (
-                    <Button
-                      key={index}
-                      variant="outlined"
-                      fullWidth
-                      TouchRippleProps={{ style: { color: button.color } }}
-                      sx={{
-                        py: 1,
-                        gridColumnStart: index === 0 ? "span 2" : "auto",
-                        border: "1px solid lightgray",
-                        "&:hover": {
-                          border: "1px solid lightgray",
-                        },
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minHeight: "40px",
-                        color: button.color,
-                        backgroundColor: "white",
-                      }}
-                    >
-                      <IconComponent
-                        style={{
-                          width: "20px",
-                          height: "20px",
-                        }}
-                      />
-                    </Button>
-                  );
-                })}
-              </Box>
-              <Divider sx={{ px: 4, my: 2, fontSize: ".75em" }}>OR</Divider>
-              <form
-                onSubmit={formik.handleSubmit}
-                style={{ padding: "0 2rem" }}
-              >
+
+              {/* Login Link */}
+              <Typography
+                variant="subtitle2"
+                sx={{ mt: 2, }}
+              >Didn't have a account?
+                <Link
+                  sx={{ cursor: "pointer", textDecoration: 'none' }}
+                  onClick={() => navigate("/signup")} // Assuming "/login" is your route to the login page
+                >
+                  Join now
+                </Link>
+
+              </Typography>
+
+
+            </Box>
+
+            <Divider />
+            <SocialBox>
+              {loginPageConfig.socialButtons.map((button, index) => {
+                const IconComponent = iconComponents[button.icon];
+                if (!IconComponent) {
+                  console.error(`Icon component for ${button.icon} not found`);
+                  return null;
+                }
+                return (
+                  <SocialButtons
+                    key={index}
+                    variant="outlined"
+                    
+                  >
+                    <IconComponent style={{ marginRight: 1, width: 20, height: 20 }} />
+                    <Typography variant={'subtitle2'} sx={{ mt:0.5, ml: 1 }}>{button.label}</Typography>
+                  </SocialButtons>
+                );
+              })}
+            </SocialBox>
+            <Divider sx={{ my: 2, fontSize: ".75em" }}>OR</Divider>
+            <Box sx={{ mt: 2 }}>
+              <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField
+                    <FormTextField
                       fullWidth
-                      required
-                      label={
-                        <>
-                          Email Address <span style={{ color: "red" }}>*</span>
-                        </>
-                      }
-                      InputLabelProps={{
-                        sx: {
-                          "& .MuiInputLabel-asterisk": {
-                            display: "none",
-                          },
-                        },
-                      }}
-                      variant="outlined"
+                      label="Email Address"
                       {...formik.getFieldProps("email")}
-                      error={
-                        formik.touched.email && Boolean(formik.errors.email)
-                      }
+                      error={formik.touched.email && Boolean(formik.errors.email)}
                       helperText={formik.touched.email && formik.errors.email}
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
+                    <FormTextField
                       fullWidth
-                      label={
-                        <>
-                          Password <span style={{ color: "red" }}>*</span>
-                        </>
-                      }
-                      InputLabelProps={{
-                        sx: {
-                          "& .MuiInputLabel-asterisk": {
-                            display: "none",
-                          },
-                        },
-                      }}
+                      label="Password"
                       type={showPassword ? "text" : "password"}
-                      variant="outlined"
-                      required
                       {...formik.getFieldProps("password")}
-                      error={
-                        formik.touched.password &&
-                        Boolean(formik.errors.password)
-                      }
-                      helperText={
-                        formik.touched.password && formik.errors.password
-                      }
+                      error={formik.touched.password && Boolean(formik.errors.password)}
+                      helperText={formik.touched.password && formik.errors.password}
                       InputProps={{
                         endAdornment: (
                           <IconButton
                             aria-label="toggle password visibility"
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
-                            edge="end"
                           >
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
@@ -324,88 +212,30 @@ const LoginPage = () => {
                       }}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Link href="#" variant="body2">
+                  <Grid item xs={12} display="flex" justifyContent="flex-end">
+                    <Link href="#" variant="body2" sx={{ mb: 2 }}>
                       Forgot password?
                     </Link>
-                    <Link href="#" variant="body2">
-                      Sign up
-                    </Link>
                   </Grid>
-                  <Grid
-                    item
-                    py={3}
-                    xs={12}
-                    sx={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <Button
+                  <Grid item xs={12}>
+                  <FormButton
                       variant="contained"
-                      color="primary"
                       type="submit"
-                      fullWidth
+                      disabled={submitting}  // Disable the button while submitting
                     >
-                      Login
-                    </Button>
+                      {submitting ? <CircularProgress size={24} /> : 'Login Now'}
+                    </FormButton>
                   </Grid>
                 </Grid>
               </form>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
 
+            </Box>
+          </Box>
+        </FormPaper>
+      </FormContainer>
       <Footer />
     </Box>
   );
 };
 
 export default LoginPage;
-
-const NavMenuItem = ({ title, items }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <>
-      <Button
-        color="primary"
-        onClick={handleClick}
-        endIcon={<ArrowDropDown />}
-        sx={{
-          marginRight: 3,
-          fontWeight: "600",
-          fontSize: "1em",
-          textTransform: "capitalize",
-          "&:hover": { background: "transparent", textDecoration: "underline" },
-        }}
-        TouchRippleProps={{ style: { color: "transparent" } }}
-      >
-        {title}
-      </Button>
-      <Menu
-        sx={{ borderRadius: "2em" }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        {items.map((item, index) => (
-          <MenuItem key={index} onClick={handleClose}>
-            {item}
-          </MenuItem>
-        ))}
-      </Menu>
-    </>
-  );
-};

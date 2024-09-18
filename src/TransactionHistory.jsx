@@ -10,16 +10,16 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import BillingInformationForm from "./BillingInformationForm";
 import AvailableBalances from "./AvailableBalances";
 import PaymentMethods from "./PaymentMethods";
+import { GradientBox, GradientContent, ProfileAvatar } from "./Experts/Components/ProfileStyles";
 
-const GradientBox = styled(Box)({
-  background: "linear-gradient(to top, #505f96, #25387c)",
-  height: "165px",
-  position: "relative",
-  display: "flex",
-  alignItems: "flex-end",
-  padding: "24px",
-  borderRadius: "0px",
-});
+// const GradientBox = styled(Box)({
+//   background: "linear-gradient(to top, #505f96, #25387c)",
+//   height: "165px",
+//   position: "relative",
+//   display: "flex",
+//   alignItems: "flex-end",
+//   padding: "24px",
+// });
 
 const TransactionHistory = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -73,36 +73,20 @@ const TransactionHistory = () => {
         borderRadius={3}
         overflow={"hidden"}
         border={"1px solid lightgray"}
-        sx={{ height: "13em" }}
+        sx={{ height: "100%" }}
       >
-        <GradientBox sx={{ marginBottom: 2, padding: {xs: "auto" , sm: "24px"} }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              width: "100%",
-            }}
-          >
-            <Box
-              display="flex"
-              alignItems="center"
-              position={"absolute"}
-              bottom={"-46%"}
-              sx={{ translate: {sm: "0 -50%", xs: "0 -68%"} }}
-            >
-              <Avatar
+        <GradientBox sx={{ marginBottom: 5, padding: {xs: "auto" , sm: "24px"} , height: '165px'}}>
+            <GradientContent >
+              <ProfileAvatar
                 src="https://example.com/your-photo.jpg"
                 sx={{
-                  width: {xs: 85, sm: 110},
-                  height: {xs: 85, sm: 110},
                   marginRight: {xs: 1, sm: 2},
-                  border: "4px solid white",
+                  mt: -1.5,
                 }}
               />
-              <Box sx={{ color: "white" , marginBottom: {xs: 1.4, sm: 'inherit'}}}>
-                <Typography variant="h5">John Doe</Typography>
-                <Typography variant="subtitle1">
+              <Box sx={{ color: "white" , marginBottom: {xs: 3.9, sm: 'inherit'}}}>
+                <Typography variant="h5" fontWeight="bold" color="white">John Doe</Typography>
+                <Typography variant="h6">
                   React Developer,
                   <LocationOnOutlinedIcon
                     sx={{ width: "0.8em", height: "0.6em" }}
@@ -110,8 +94,7 @@ const TransactionHistory = () => {
                   India
                 </Typography>
               </Box>
-            </Box>
-          </Box>
+            </GradientContent>
         </GradientBox>
       </Box>
       <Card

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Box, CardContent, Rating } from '@mui/material';
+import { Box, CardContent, Rating,useMediaQuery,
+  useTheme } from '@mui/material';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TabNavigation from './TabNav'; // Ensure TabNavigation can update state
 import InClassActivity from './InClassActivity'; // Import the components for each activity type
 import CumulativeActivity from './CumulativeActivity';
 import QuizActivity from './QuizActivity';
-import { inClassActivities, cumulativeActivities, quizzes } from './Data';
+import { inClassActivities, cumulativeActivities, quizzes, StyledDivider } from './Data';
 import { StyledCard, StyledIconContainer, StyledTitle, StyledChip, StyledMainCard } from './Data';
 
 export default function CourseAssignment() {
@@ -33,19 +34,19 @@ export default function CourseAssignment() {
   };
 
   const ActivityCard = ({ activity }) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     return (
       <StyledCard onClick={() => handleCardClick(activity)}>
         {/* Icon Section */}
         <StyledIconContainer>
-          <FilePresentIcon sx={{ fontSize: 50, color: '#3f51b5' }} /> {/* File Icon */}
+          <FilePresentIcon sx={{mr: isMobile ? 0 : 0, mb: isMobile ? 0 : 0, fontSize: '4.5em',  }} /> {/* File Icon */}
         </StyledIconContainer>
 
         {/* Main Content Section */}
-        <Box sx={{ padding: { xs: 0, sm: 2 }, flex: 1, ml: 0.5 }}>
+        <Box sx={{ px: { xs: 0, sm: 2 }, flex: 1, ml: 0.5, py: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           {/* Chip */}
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, gap: 0.3, paddingTop: '3px' }}>
-            <StyledChip label={activity.type || 'In-Class Activity'} />
-          </Box>
+
 
           {/* Title */}
           {activity.title && (
@@ -56,37 +57,47 @@ export default function CourseAssignment() {
 
           {/* Description */}
           {activity.description && (
-            <StyledTitle variant="subtitle2" color="textSecondary" gutterBottom>
+            <StyledTitle variant="subtitle2">
               {activity.description}
             </StyledTitle>
           )}
 
           {/* File Submission */}
           {activity.fileSubmission && (
-            <StyledTitle variant="body2" color="textSecondary" sx={{ mt: 0.5 }}>
+            <StyledTitle variant="body2" color="textSecondary" sx={{ mt: 0.8 }}>
               File Submission: {activity.fileSubmission}
             </StyledTitle>
+          )}
+          {activity.duration && (
+            <StyledTitle variant="body2" color="textSecondary" sx={{ mt: 0.8 }}>
+              Duration: {activity.duration}
+            </StyledTitle>
+          )}
+
+          {activity.hasOwnProperty('grade') && (
+            <Rating
+              value={activity.grade !== undefined ? activity.grade : 0}  // Show stars even if grade is 0 or missing
+              readOnly
+              precision={0.5}
+              max={10}
+              sx={{ fontSize: '1.2rem', mt: 1.2 }}
+            />
           )}
         </Box>
 
         {/* Grade, Status, and Chevron (aligned vertically) */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', mr: 2, mt: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', mr: 2, mt: 0.5 }}>
           {/* Render stars even if grade is 0 or undefined */}
-          {activity.hasOwnProperty('grade') && (
-            <Rating 
-              value={activity.grade !== undefined ? activity.grade : 0}  // Show stars even if grade is 0 or missing
-              readOnly 
-              precision={0.5} 
-              max={10} 
-              sx={{ fontSize: '1.2rem', marginBottom: 1 }} 
-            />
-          )}
+
           {activity.status && (
-            <StyledTitle variant="body2" color="textSecondary">
-              Status: {activity.status}
+            <Box sx={{display: 'flex', gap: 1}}>
+            <StyledTitle variant="body2">
+              Status: 
             </StyledTitle>
+            <StyledTitle variant="body2" color="textSecondary">{activity.status}</StyledTitle>
+            </Box>
           )}
-          <ChevronRightIcon sx={{ fontSize: 30, color: '#c4c4c4', marginTop: 2 }} /> {/* Chevron Icon */}
+          <ChevronRightIcon sx={{ fontSize: 30, color: '#c4c4c4', marginTop: 1.5 }} /> {/* Chevron Icon */}
         </Box>
       </StyledCard>
     );
@@ -112,10 +123,10 @@ export default function CourseAssignment() {
         <CardContent>
           {/* Pass the handleTabChange function to TabNavigation */}
           <TabNavigation activeTab={activeTab} setActiveTab={handleTabChange} />
-          <StyledTitle variant="h5" gutterBottom>
+          <StyledTitle variant="h6">
             AI Basics
           </StyledTitle>
-
+          <StyledDivider />
           {/* Conditionally render either the selected activity or the activity list */}
           {selectedActivity ? (
             // Render the appropriate selected activity component

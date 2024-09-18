@@ -27,38 +27,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import { styled } from "@mui/system";
 import axios from "axios";
-
-const RejectedItem = styled(Box)(({ theme }) => ({
-  display: "flex",
-  padding: "15px 16px",
-  margin: "1em 0",
-  borderRadius: "4px",
-  transition: "all 0.3s ease",
-  backgroundColor:"transparent",
-  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-  "&:hover": {
-    backgroundColor: "#0000000a",
-    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-    transform: "translateY(-2px)",
-  },
-}));
-
-const AvatarWrapper = styled(Box)(({ theme }) => ({
-  transition: "transform 0.3s ease-in-out",
-  cursor: "pointer",
-  alignSelf: 'center',
-
-  "&:hover": {
-    transform: "scale(1.1)",
-  },
-}));
-
-// const ReasonBox = styled(Box)(({ theme }) => ({
-//   marginTop: "8px",
-//   flexGrow: 0.45,
-//   flexShrink: 0,
-//   flexBasis: 0,
-// }));
+import { AppointmentItem, AvatarWrapper } from "./Experts/Components/AppointmentStyle";
 
 const TruncatedText = styled(Typography)(({ theme }) => ({
   marginRight: theme.spacing(1),
@@ -75,7 +44,7 @@ const ViewMoreButton = styled(Button)(({ theme }) => ({
 }));
 
 const RejectedItemSkeleton = () => (
-  <RejectedItem>
+  <AppointmentItem>
     <Skeleton
       variant="circular"
       width={56}
@@ -89,7 +58,7 @@ const RejectedItemSkeleton = () => (
       <Skeleton variant="text" width="30%" animation="wave" />
       <Skeleton variant="text" width="50%" animation="wave" />
     </Box>
-  </RejectedItem>
+  </AppointmentItem>
 );
 
 const rejectionReasons = [
@@ -194,7 +163,7 @@ const RejectedRequestComponent = () => {
         <Divider sx={{ width: isMobile ? "90%" : "97%", alignSelf: "center", ml: "24px" }} />
         <Box sx={{ px: isMobile ? 2 : 3, py: 1 }}>
           {rejectedItems.map((item, index) => (
-            <RejectedItem key={item.meet_id} sx={{ flexDirection: isMobile ? "column" : "row" }}>
+            <AppointmentItem key={item.meet_id} sx={{ flexDirection: isMobile ? "column" : "row" }}>
               <AvatarWrapper>
                 <Avatar
                   src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
@@ -253,7 +222,7 @@ const RejectedRequestComponent = () => {
                   </Button>
                 </Box>
               </Box>
-            </RejectedItem>
+            </AppointmentItem>
           ))}
         </Box>
         {loading ? (

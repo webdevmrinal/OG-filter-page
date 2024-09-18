@@ -49,6 +49,28 @@ export const inClassActivities = [
         'Clear and engaging presentation style.'
       ],
     },
+    {
+      id: 3,
+      title: 'Activity 3',
+      description: 'In groups, create and deliver a presentation on the working principles...',
+      status: 'Pending',
+      grade: 4.8,
+      fileSubmission: 'File not found.',
+      type: 'In-Class Activity',
+      header: 'Write a blog article entitled, "The rise of Neural Networks". (1000 words)',
+      image: 'https://academy.opengrowth.com/assets/images/assignment/images/1697172280675.png?1697172280675',  // Path to the image for Activity 2
+      instructions: `
+        In groups, create and deliver a presentation on the working principles and applications 
+        of Popular Search Algorithms, Fuzzy Logic, and Natural Language Processing. 
+        You may use graphics and visuals to support your presentation.
+      `,
+      grading: [
+        'Clear understanding of working principles and applications of search algorithms.',
+        'Effective use of group collaboration.',
+        'Use of appropriate visuals to support arguments.',
+        'Clear and engaging presentation style.'
+      ],
+    },
   ];
   
   
@@ -77,15 +99,15 @@ export const inClassActivities = [
   
   export const quizzes = [
     { id: 1, title: 'Quiz 1',status: 'Completed', type: 'Quizzes', description:
-        'Submit a summary report on the applications of artificial intelligence...', },
+        'Submit a summary report on the applications of artificial intelligence...', duration: '2 Minutes' },
     { id: 2, title: 'Quiz 2',status: 'Completed', type: 'Quizzes', description:
-        'Submit a summary report on the applications of artificial intelligence...',},
+        'Submit a summary report on the applications of artificial intelligence...', duration: '2 Minutes'},
     { id: 3, title: 'Quiz 3',status: 'Completed', type: 'Quizzes', description:
-        'Submit a summary report on the applications of artificial intelligence...',},
+        'Submit a summary report on the applications of artificial intelligence...', duration: '2 Minutes'},
     { id: 4, title: 'Quiz 4',status: 'Completed', type: 'Quizzes', description:
-        'Submit a summary report on the applications of artificial intelligence...',},
+        'Submit a summary report on the applications of artificial intelligence...', duration: '2 Minutes'},
     { id: 5, title: 'Final Assessment',status: 'Completed', type: 'Quizzes',description:
-        'Submit a summary report on the applications of artificial intelligence...',},
+        'Submit a summary report on the applications of artificial intelligence...',duration: '2 Minutes'},
   ];
   
   export const tabLabels = [
@@ -96,26 +118,25 @@ export const inClassActivities = [
 
 // Styled Card Component
 export const StyledCard = styled(Card)(({ theme, isMobile }) => ({
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row", // Responsive layout for mobile
-    padding: "16px", // Responsive padding for mobile
-    margin: "8px 16px 16px 0", // Adjust margin for mobile
-    borderRadius: "4px",
-    transition: "all 0.3s ease",
-    backgroundColor: "transparent",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-    "&:hover": {
-      backgroundColor: "#0000000a",
-      boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-      transform: "translateY(-2px)",
-      cursor: "pointer",
-    },
+  display: "flex",
+  padding: "15px 16px",
+  margin: "1em 0",
+  borderRadius: "4px",
+  transition: "all 0.3s ease",
+  backgroundColor:"transparent",
+  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+  "&:hover": {
+    backgroundColor: "#0000000a",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+    transform: "translateY(-2px)",
+  },
 }));
 
 // Styled Icon Container
 export const StyledIconContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#f1f3f4',
+  width: 'auto',
+  height: 'auto',
   borderRadius: '8px',
   padding: '16px',
   [theme.breakpoints.down('sm')]: {
@@ -140,11 +161,8 @@ export const StyledFileSubmission = styled(Typography)(({ theme }) => ({
 
 // Styled Badge (Chip)
 export const StyledChip = styled(Chip)(({ theme }) => ({
-  backgroundColor: '#FFEFD0',
-  color: '#F6A609',
-  fontWeight: 'bold',
   [theme.breakpoints.down('sm')]: {
-    fontSize: '10px',
+    fontSize: '0.875em',
   },
 }));
 

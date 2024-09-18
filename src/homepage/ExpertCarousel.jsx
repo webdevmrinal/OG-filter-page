@@ -370,7 +370,7 @@ const HowItWorksCard = ({ icon, title, description }) => (
   <Card
     sx={{
       width: 320,
-      height: 280,
+      height: "auto",
       textAlign: "center",
       m: 1,
       boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
@@ -379,6 +379,7 @@ const HowItWorksCard = ({ icon, title, description }) => (
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+      p: 2,
     }}
   >
     <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mb: 2 }}>

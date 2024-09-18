@@ -18,6 +18,7 @@ import AttendedAppointments from "./AttendedAppointments";
 import axios from "axios";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { StyledTabs, StyledTab, StyledDivider } from './Course-Modules/Data';
+import { AppointmentItem, OgAvatar } from "./Experts/Components/AppointmentStyle";
 
 const appointmentsData = [
   { id: 1, name: "Vanshika Yadav", time: "02:29 PM - 02:59 PM" },
@@ -28,52 +29,6 @@ const appointmentsData = [
   { id: 6, name: "Gunjan Sinha", time: "08:00 PM - 08:30 PM" },
   { id: 7, name: "Rahul Kumar", time: "09:15 PM - 09:45 PM" },
 ];
-
-// const StyledTabs = styled(Tabs)(({ theme }) => ({
-//   "& .MuiTab-root": {
-//     textTransform: "none",
-//     minHeight: "48px",
-//     padding: "6px 16px",
-//     fontWeight: "normal",
-//     fontSize: "14px",
-//     color: "#5f6368",
-//     "&:hover": {
-//       color: "#202124",
-//       opacity: 1,
-//     },
-//     "&.Mui-selected": {
-//       color: "#25387c",
-//       fontWeight: "medium",
-//     },
-//   },
-//   "& .MuiTabs-flexContainer": {
-//     flexDirection: { xs: "column", sm: "row" },
-//   }
-// }));
-
-// const StyledTab = styled(Tab)({
-//   "& .MuiSvgIcon-root": {
-//     marginRight: "8px",
-//   },
-// });
-
-const AppointmentItem = styled(Box)(({ theme, isSelected }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: "16px",
-  margin: "8px 0",
-  borderRadius: "4px",
-  transition: "all 0.3s ease",
-  backgroundColor: isSelected ? "#f5f5f5" : "transparent",
-  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-  "&:hover": {
-    backgroundColor: "#0000000a",
-    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-    transform: "translateY(-2px)",
-  },
-  flexDirection: { xs: 'column', sm: 'row' },
-  gap: { xs: 2, sm: 0 },
-}));
 
 const AppointmentDashboard = () => {
   const [value, setValue] = useState(0);
@@ -209,22 +164,8 @@ const AppointmentItemComp = ({
     <AppointmentItem
       isSelected={isSelected}
       onClick={() => setSelectedAppointment(id)}
-      sx={{
-        display: 'flex', 
-        alignItems: 'flex-start', 
-        p: { xs: 2, sm: 2 },
-        boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-        height: { xs: 'auto', sm: '19vh' },
-        flexDirection: { xs: 'column', sm: 'row' },
-        mb: 2,
-        "&:hover": {
-          backgroundColor: "#0000000a",
-          boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
-          transform: "translateY(-2px)",
-        },
-      }}
     >
-      <Avatar
+      <OgAvatar
         src="https://academy.opengrowth.com/assets/images/users/user_39_student_vi.png"
         sx={{  mr: 2, height: { xs: "60px", sm: "90px" }, width: { xs: "60px", sm: "90px" },alignSelf: { xs: 'center', sm: 'center' }, }}
       />
@@ -240,18 +181,7 @@ const AppointmentItemComp = ({
           Requirement: Specific requirement details here, Specific requirement details here, Specific requirement details here, Specific requirement details here,Specific requirement details here
         </Typography>
       </Box>
-      <Button
-        variant="contained"
-        sx={{
-          mt: { xs: 1, sm: 0 },
-          backgroundColor: '#505f96',
-          color: "white",
-          textTransform: "none",
-          "&:hover": { bgcolor: "#303f9f" },
-        }}
-      >
-        Join With Google Meet
-      </Button>
+      
     </AppointmentItem>
   );
 };

@@ -23,12 +23,14 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
-import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate, Link } from 'react-router-dom';
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import bannerImg2 from "./assets/file2.png";
+import { FollowerCard } from "./Experts/Components/FollowerStyle";
+import { MainCard, NameBox } from "./Experts/Components/ExpertStyle";
+import { ExpertPopup } from "./ExpertPopup";
 // import Header from "./Header";
 
 const initialCategories = [
@@ -84,18 +86,18 @@ const HeaderSection = styled(Box)(({ theme }) => {
 
 
 const EngagementCard = styled(ButtonBase)(({ theme }) => ({
-    width: "49%",
-    backgroundColor: "#ffff",
-    padding: theme.spacing(1.7),
-    paddingTop: '8px',
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "flex-Start",
-    gap: theme.spacing(2),
-    boxShadow: "none",
-    borderRadius: "8px",
+  width: "49%",
+  backgroundColor: "#ffff",
+  padding: theme.spacing(1.7),
+  paddingTop: '8px',
+  textAlign: "center",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "flex-Start",
+  gap: theme.spacing(2),
+  boxShadow: "none",
+  borderRadius: "8px",
   "&:hover": {
     backgroundColor: "#0000000a",
     boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
@@ -103,7 +105,7 @@ const EngagementCard = styled(ButtonBase)(({ theme }) => ({
     border: '1px solid #0000000b',
     color: 'black'
   },
-    transition: "background-color 0.3s ease"
+  transition: "background-color 0.3s ease"
 }));
 
 const SidebarSection = styled(Box)(({ theme }) => {
@@ -268,7 +270,7 @@ const DashboardPage = () => {
     }
   }, []);
 
-  const truncateText = (text, maxLength = 70) => {
+  const truncateText = (text, maxLength = 60) => {
     if (text?.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
@@ -302,88 +304,34 @@ const DashboardPage = () => {
     });
   }, []);
   const appointmentCard = (appointment) => (
-    <Card
-      sx={{
-        width: { xs: '100%', sm: 200 },
-        padding: theme.spacing(1),
-        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        borderRadius: theme.shape.borderRadius,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        position: "relative", // Establishing positioning context
-        "&:hover": {
-          boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-          transform: "translateY(-1px)",
-          backgroundColor: "#0000000a",
-        },
-      }}
-    >
-      <Box sx={{ position: "absolute", top: 10, right: 8, zIndex: 1 }}>
-        <Chip
-          label={appointment.status}
-          sx={{
-            color: 'white',
-            backgroundColor: '#81c784',
-            mb: 1,
-            height: '20px',
-            fontSize: '0.7rem',
-            '& .MuiChip-icon': {
-              color: "white",
-              backgroundColor: '#81c784',
-              fontSize: '16px',
-            },
-            '& .MuiChip-label': {
-              color: "white",
-              paddingLeft: '8px',
-              paddingRight: '8px',
-            },
-            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)'
-          }}
-        />
-      </Box>
-      
-      <Box sx={{ display: "flex", alignItems: "center", mb: 2, mt: 3 }}>
-        <Avatar
-          sx={{ bgcolor: "primary.main", width: 70, height: 70, zIndex: 1 }}
-          src="https://academy.opengrowth.com/assets/images/users/user_523_professor_DheerajP.png"
-        />
-       
-      </Box>
-      
-      <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
-        {appointment.name}
-      </Typography>
-      
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        sx={{ textAlign: "center", mt: 0.5,fontWeight: 500,
-          fontSize: '0.8rem', }}
-      >
-        {appointment.startDate}
-      </Typography>
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        sx={{ textAlign: "center", mt: 0.5,fontWeight: 500,
-          fontSize: '0.8rem', }}
-      >
-        {appointment.startTime} - {appointment.endTime}
-      </Typography>
-    </Card>
-  );
-  
+    <FollowerCard sx={{ height: '16vh', width: 'max-content' }}>
+      <Avatar
+        sx={{ bgcolor: "primary.main", width: 80, height: 80, zIndex: 1, mr: 2 }}
+        src="https://academy.opengrowth.com/assets/images/users/user_523_professor_DheerajP.png"
+      />
 
-  const handleCategoryClick = (category) => {
-    if (selectedCategory === category) {
-      setSelectedCategory(null);
-      fetchExperts();
-    } else {
-      setSelectedCategory(category);
-      fetchExperts(category);
-    }
-  };
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+        <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ textAlign: "center" }}>
+          {appointment.name}
+        </Typography>
+
+        <Typography
+          variant={isMobile ? "subtitle2" : "subtitle1"}
+          color="text.secondary"
+          sx={{ textAlign: "center", mt: 0.5, fontWeight: 500, fontSize: { sm: '0.9rem', xs: '0.7rem' }, }}
+        >
+          {appointment.startDate}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center", mt: 0.5, fontWeight: 500, fontSize: { sm: '0.8rem', xs: '0.65rem' }, }}
+        >
+          {appointment.startTime} - {appointment.endTime}
+        </Typography>
+      </Box>
+    </FollowerCard>
+  );
 
   const handleExpertClick = (expert) => {
     setSelectedExpert(expert);
@@ -401,14 +349,13 @@ const DashboardPage = () => {
       el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
     });
   }, []);
-  const navigate  = useNavigate ();
-
-const navigateToAppointmentsPage = () => {
-  navigate('/appointmentpage');
-};
-const navigateToExpertsPage = () => {
-  navigate('/expertpage');
-};
+  const navigate = useNavigate();
+  const navigateToExpertsPage = () => {
+    navigate('/expertpage');
+  };
+  const navigateToAppointmentPage = () => {
+    navigate('/appointmentpage');
+  };
 
   return (
     <>
@@ -420,8 +367,8 @@ const navigateToExpertsPage = () => {
             onChange={handleChange}
             aria-label="basic tabs example"
             sx={{
-              '& .MuiTab-root': { 
-                fontSize: { 
+              '& .MuiTab-root': {
+                fontSize: {
                   xs: '0.7rem',
                   sm: '0.875rem'
                 },
@@ -538,62 +485,15 @@ const navigateToExpertsPage = () => {
               </EngagementCard>
             </Box>
 
-
-            <Box sx={{ marginBottom: 2,  }}>
-              <Tabs
-                value={appointmentTab}
-                onChange={handleAppointmentTabChange}
-                aria-label="appointment tabs"
-                sx={{
-                  '& .MuiTab-root': { 
-                    fontSize: { 
-                      xs: '0.7rem',
-                      sm: '0.875rem'
-                    },
-                    width: {
-                      xs: '11.5em',
-                      sm: 'inherit'
-                    }
-                  }
-                }}
-              >
-                <Tab
-                  iconPosition="start"
-                  label={
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <EventAvailableIcon sx={{ color: "green" }} /> Upcoming
-                      Meetings
-                    </Box>
-                  }
-                />
-                <Tab
-                  iconPosition="start"
-                  label={
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <EventBusyIcon sx={{ color: "red" }} /> Rejected Meetings
-                    </Box>
-                  }
-                />
-                <Tab
-                  iconPosition="start"
-                  label={
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <EventNoteIcon sx={{ color: "blue" }} /> Attended Meetings
-                    </Box>
-                  }
-                />
-              </Tabs>
-            </Box>
             <Box
               sx={{
-                
                 pl: 3,
                 pr: 3,
                 pt: 1,
                 pb: 3,
-                width: { xs: '100%', sm: '66vw' },
-                display: {xs : 'grid', sm: 'inherit'},
-                justifyContent: {xs: 'center', sm: 'inherit'},
+                width: { xs: '100%', sm: 'auto' },
+                display: { sm: 'inherit' },
+                justifyContent: { xs: 'center', sm: 'inherit' },
                 height: "auto",
                 overflow: "auto",
                 borderRadius: "8px",
@@ -601,58 +501,117 @@ const navigateToExpertsPage = () => {
                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
               }}
             >
-              <Box sx={{display: 'flex',
-                justifyContent: 'space-between',
-              alignItems: 'center'}}>
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{ mb: 1, color: "#000" }}
-              >
-                Appointments
-              </Typography>
-              <Button onClick={navigateToAppointmentsPage} sx={{ }}>View All</Button>
+              <Box sx={{ marginBottom: 2 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Tabs
+                    value={appointmentTab}
+                    onChange={handleAppointmentTabChange}
+                    aria-label="appointment tabs"
+                    sx={{
+                      '& .MuiTab-root': {
+                        fontSize: {
+                          xs: '0.7rem',
+                          sm: '0.875rem',
+                        },
+                        width: {
+                          xs: '11.5em',
+                          sm: 'inherit',
+                        },
+                      },
+                    }}
+                  >
+                    <Tab
+                      iconPosition="start"
+                      label={
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <EventAvailableIcon sx={{ color: 'green' }} /> Upcoming Meetings
+                        </Box>
+                      }
+                    />
+                    <Tab
+                      iconPosition="start"
+                      label={
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <EventBusyIcon sx={{ color: 'red' }} /> Rejected Meetings
+                        </Box>
+                      }
+                    />
+                    <Tab
+                      iconPosition="start"
+                      label={
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <EventNoteIcon sx={{ color: 'blue' }} /> Attended Meetings
+                        </Box>
+                      }
+                    />
+                  </Tabs>
+                  <Button onClick={navigateToAppointmentPage} sx={{ mr: 2, mb: 1 }}>View All</Button>
+                </Box>
               </Box>
-              <Divider sx={{ mb: 2 }} />
+
               {appointmentTab === 0 && (
                 <Grid
                   container
-                  spacing={2}
+                  spacing={0.5}
                   sx={{
                     marginTop: 3,
-                    ml: { xs: '8px', sm: 1 },
-                    width: {xs :"190px", sm: '284px'},
-                    "& .MuiGrid-item": {
-                      padding: "0 !important",
+                    ml: { xs: '8px', sm: 0 },
+                    width: { xs: '250px', sm: 'auto' },
+                    '& .MuiGrid-item': {
+                      padding: '0 !important',
                     },
+                    '&::-webkit-scrollbar': {
+                      display: 'none', // Hide scrollbar in Chrome, Safari, and Opera
+                    },
+                    '-ms-overflow-style': 'none',
                   }}
                 >
                   {appointments.map((appointment) => (
-                    <Box sx={{ display: "flex", gap: 4 , flexDirection: { xs: 'column', sm: 'row' }, 
-                    width: { xs: '100%', sm: 'inherit' }, ml: { xs: '0px', sm: 'inherit' },}}>
+                    <Box
+                      key={appointment.id}
+                      sx={{
+                        display: 'flex',
+                        gap: 3,
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        width: { xs: '100%', sm: 'inherit' },
+                        ml: { xs: '0px', sm: 'inherit' },
+                      }}
+                    >
                       <Grid
                         item
-                        key={appointment.id}
                         sx={{
-                          
-                          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                          borderRadius: "8px",
-                          border: "1px solid rgba(0,0,0,0.12)",
-                          backgroundColor: "#fff",
-                          maxWidth: "calc(100% - 0px)",
+                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                          borderRadius: '8px',
+                          backgroundColor: '#fff',
+                          maxWidth: 'calc(100% - 0px)',
                         }}
                       >
                         {appointmentCard(appointment)}
                       </Grid>
                       <Grid
                         item
-                        key={appointment.id}
                         sx={{
-                          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                          borderRadius: "8px",
-                          border: "1px solid rgba(0,0,0,0.12)",
-                          backgroundColor: "#fff",
-                          maxWidth: "calc(100% - 0px)",
+                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                          borderRadius: '8px',
+                          backgroundColor: '#fff',
+                          maxWidth: 'calc(100% - 0px)',
+                        }}
+                      >
+                        {appointmentCard(appointment)}
+                      </Grid>
+                      <Grid
+                        item
+                        sx={{
+                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                          borderRadius: '8px',
+                          backgroundColor: '#fff',
+                          maxWidth: 'calc(100% - 0px)',
                         }}
                       >
                         {appointmentCard(appointment)}
@@ -664,108 +623,79 @@ const navigateToExpertsPage = () => {
             </Box>
 
             <Box
-  sx={{
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
-    mt: 4,
-    pt: 3,
-    borderRadius: "8px",
-    backgroundColor: "#fff",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-  }}
->
-  <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-    <Typography
-      variant="h6"
-      gutterBottom
-      sx={{ pl: 5 }}
-    >
-      Experts you can connect
-    </Typography>
-    <Button onClick={navigateToExpertsPage} sx={{ mr: 5 }}>View All</Button>
-  </Box>
-  
-  <Divider sx={{ width: "96%", mb: 2 }} />
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly",
+                mt: 4,
+                pt: 3,
+                borderRadius: "8px",
+                backgroundColor: "#fff",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+              }}
+            >
+              <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{ pl: 5 }}
+                >
+                  Experts you can connect
+                </Typography>
+                <Button onClick={navigateToExpertsPage} sx={{ mr: 5 }}>View All</Button>
+              </Box>
 
-  {experts.slice(0, 6).map((expert, index) => (
-    <Card
-      key={index}
-      sx={{
-        width: 300,
-        mb: 4,
-        borderRadius: "6px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "auto",
-        boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-        "&:hover": {
-          backgroundColor: "#0000000a",
-          boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-          transform: "translateY(-2px)",
-        },
-      }}
-    >
-      <Box sx={{ width: "100%", position: "relative" }}>
-        <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
-          <CardMedia
-            component="img"
-            image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
-            alt={expert.name}
-            sx={{ width: "100%", height: 250, cursor: "pointer" }}
-          />
-        </Link>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            width: "100%",
-            background: "rgba(0, 0, 0, 0.8)",
-            color: "white",
-            p: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "50px",
-          }}
-        >
-          <Typography variant="subtitle1" align="center">
-            {expert.name}
-          </Typography>
-          <Typography variant="body2" align="center" sx={{ fontSize: '0.75rem' }}>
-            {expert.industry}
-          </Typography>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          width: "100%",
-          p: 1,
-          boxSizing: "border-box",
-          height: "auto",
-        }}
-      >
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ mt: 0.8 }}
-        >
-          {truncateText(expert.about)}
-        </Typography>
-        <Button
-          size="small"
-          onClick={() => handleExpertClick(expert)}
-          sx={{ mt: 1 }}
-        >
-          Know More
-        </Button>
-      </Box>
-    </Card>
-  ))}
-</Box>
+              <Divider sx={{ width: "96%", mb: 2 }} />
+
+              {experts.slice(0, 6).map((expert, index) => (
+                <MainCard
+                  key={index}
+                  sx={{ height: 'auto', width: '18em' }}
+                >
+                  <Box sx={{ width: "100%", position: "relative" }}>
+                    <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+                      <CardMedia
+                        component="img"
+                        image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+                        alt={expert.name}
+                        sx={{ width: "100%", height: 250, cursor: "pointer" }}
+                      />
+                    </Link>
+                    <NameBox>
+                      <Typography variant="subtitle1" align="center">
+                        {expert.name}
+                      </Typography>
+                      <Typography variant="body2" align="center" sx={{ fontSize: '0.75rem' }}>
+                        {expert.industry}
+                      </Typography>
+                    </NameBox>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      p: 1,
+                      boxSizing: "border-box",
+                      height: "auto",
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mt: 0.8 }}
+                    >
+                      {truncateText(expert.about)}
+                    </Typography>
+                    <Button
+                      size="small"
+                      onClick={() => handleExpertClick(expert)}
+                      sx={{ mt: 1 }}
+                    >
+                      Know More
+                    </Button>
+                  </Box>
+                </MainCard>
+              ))}
+            </Box>
 
           </Grid>
 
@@ -774,51 +704,51 @@ const navigateToExpertsPage = () => {
             <Divider sx={{ mb: 2 }} />
             {loading
               ? Array.from({ length: 4 }, (_, index) => (
-                  <Shimmer key={index} height={150} />
-                ))
-              : experts.slice(0, 4).map(
-                  (
-                    expert,
-                    index
-                  ) => (
-                    <Card
-                      key={index}
-                      sx={{ mb: 2, boxShadow: "none", borderRadius: "12px" }}
+                <Shimmer key={index} height={150} />
+              ))
+              : experts.slice(1, 7).map(
+                (
+                  expert,
+                  index
+                ) => (
+                  <Card
+                    key={index}
+                    sx={{ mb: 2, boxShadow: "none", borderRadius: "12px" }}
+                  >
+                    <CardContent
+                      sx={{ display: "flex", alignItems: "center" }}
                     >
-                      <CardContent
-                        sx={{ display: "flex", alignItems: "center" }}
-                      >
-                        <Avatar
-                          src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
-                          alt={expert.name}
-                          sx={{ width: 90, height: 90, mr: 2 }}
-                        />
-                        <Box>
-                          <Typography variant="subtitle1">
-                            {expert.name}
-                          </Typography>
-                          <Typography variant="body2" >
-                            {expert.industry}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ mt: 0.8 }}
-                          >
-                            {truncateText(expert.about)}
-                          </Typography>
-                          <Button
-                            size="small"
-                            onClick={() => handleExpertClick(expert)}
-                            sx={{ mt: 1 }}
-                          >
-                            Know More
-                          </Button>
-                        </Box>
-                      </CardContent>
-                    </Card>
-                  )
-                )}
+                      <Avatar
+                        src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+                        alt={expert.name}
+                        sx={{ width: 90, height: 90, mr: 2 }}
+                      />
+                      <Box>
+                        <Typography variant="subtitle1">
+                          {expert.name}
+                        </Typography>
+                        <Typography variant="body2" >
+                          {expert.industry}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ mt: 0.8 }}
+                        >
+                          {truncateText(expert.about)}
+                        </Typography>
+                        <Button
+                          size="small"
+                          onClick={() => handleExpertClick(expert)}
+                          sx={{ mt: 1 }}
+                        >
+                          Know More
+                        </Button>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                )
+              )}
             <Button sx={{ alignSelf: "flex-end" }} size="small">
               View All
             </Button>
@@ -833,51 +763,5 @@ const navigateToExpertsPage = () => {
   );
 };
 
-const ExpertPopup = ({ expert, onClose }) => {
-  if (!expert) return null;
-
-  return (
-    <Dialog open={!!expert} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle
-        sx={{
-          m: 0,
-          p: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h6">Expert Details</Typography>
-        <IconButton aria-label="close" onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent dividers>
-        <Box sx={{ display: "flex", gap: 3 }}>
-          <Avatar
-            src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
-            alt={expert.name}
-            sx={{ width: 120, height: 120 }}
-          />
-          <Box>
-            <Typography variant="h5" gutterBottom>
-              {expert.name}
-            </Typography>
-            <Typography variant="subtitle1">
-              {expert.industry}
-            </Typography>
-            <Chip label={expert.category} sx={{ mt: 1 }} />
-          </Box>
-        </Box>
-        <Typography variant="body1" sx={{ mt: 3 }}>
-          {expert.about}
-        </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 3 }}>
-          View Profile
-        </Button>
-      </DialogContent>
-    </Dialog>
-  );
-};
 
 export default DashboardPage;

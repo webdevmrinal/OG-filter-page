@@ -15,35 +15,10 @@ import { styled } from "@mui/system";
 import axios from "axios";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-
-const AvatarWrapper = styled(Box)(({ theme }) => ({
-  transition: "transform 0.3s ease-in-out",
-  cursor: "pointer",
-  "&:hover": {
-    transform: "scale(1.1)",
-  },
-}));
-
-const StyledAttendedItem = styled(Box)(({ theme, isMobile }) => ({
-  display: "flex",
-  alignItems: "center",
-  flexDirection: isMobile ? "column" : "row", // Responsive layout for mobile
-  padding: isMobile ? "8px" : "16px", // Responsive padding for mobile
-  margin: isMobile ? "12px 0" : "8px 16px 16px 0", // Adjust margin for mobile
-  borderRadius: "4px",
-  transition: "all 0.3s ease",
-  backgroundColor: "transparent",
-  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-  "&:hover": {
-    backgroundColor: "#0000000a",
-    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-    transform: "translateY(-2px)",
-    cursor: "pointer",
-  },
-}));
+import { AppointmentItem, AvatarWrapper, OgAvatar } from "./Experts/Components/AppointmentStyle";
 
 const AttendedItemSkeleton = ({ isMobile }) => (
-  <StyledAttendedItem isMobile={isMobile}>
+  <AppointmentItem isMobile={isMobile}>
     <Skeleton
       variant="circular"
       width={56}
@@ -57,7 +32,7 @@ const AttendedItemSkeleton = ({ isMobile }) => (
       <Skeleton variant="text" width="30%" animation="wave" />
       <Skeleton variant="text" width="50%" animation="wave" />
     </Box>
-  </StyledAttendedItem>
+  </AppointmentItem>
 );
 
 const AttendedItem = ({ item, isMobile }) => {
@@ -68,11 +43,10 @@ const AttendedItem = ({ item, isMobile }) => {
   };
 
   return (
-    <StyledAttendedItem onClick={handleCardClick} isMobile={isMobile}>
+    <AppointmentItem onClick={handleCardClick} isMobile={isMobile}>
       <AvatarWrapper>
-        <Avatar
+        <OgAvatar
           src={`https://academy.opengrowth.com/assets/images/users/${item.mentee_img}`}
-          sx={{ width: 90, height: 90, mr: isMobile ? 0 : 2, mb: isMobile ? 2 : 0 }}
         />
       </AvatarWrapper>
       <Box>
@@ -96,7 +70,7 @@ const AttendedItem = ({ item, isMobile }) => {
           Requirement: {item.query}
         </Typography>
       </Box>
-    </StyledAttendedItem>
+    </AppointmentItem>
   );
 };
 

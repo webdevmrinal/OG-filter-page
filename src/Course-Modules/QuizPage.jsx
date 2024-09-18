@@ -62,7 +62,7 @@ export default function QuizPage({ handleBackClick }) {
 
   return (
     <StyledCard>
-      <Box sx={{ padding: 3 }}>
+      <Box sx={{ padding: 1 }}>
         {/* Header Section */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           {/* Back Button */}

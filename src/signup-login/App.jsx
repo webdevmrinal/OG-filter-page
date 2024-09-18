@@ -4,60 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Box,
   Button,
-  Container,
   LinearProgress,
-  Typography,
-  styled,
 } from "@mui/material";
 import Page1 from "./Page1";
 import Page2 from "./Page2";
 import Header from "./Header";
 import Footer from "./Footer";
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(2),
-  [theme.breakpoints.up("md")]: {
-    flexDirection: "row",
-    height: "auto", // original desktop styles
-    maxWidth: '100rem',
-    margin: 'auto auto',
-    padding: theme.spacing(2),
-  },
-}));
-
-const ContentBox = styled(Box)(({ theme }) => ({
-  width: "100%",
-  display: "flex",
-  flexDirection: "column",
-  backgroundColor: "white",
-  padding: theme.spacing(2),
-  [theme.breakpoints.up("md")]: {
-    maxWidth: "200rem",
-    height: "auto",
-    borderRadius: theme.shape.borderRadius * 2,
-    boxShadow: theme.shadows[4],
-    border: `1px solid ${theme.palette.divider}`,
-    padding: theme.spacing(3, 7, 0),
-  },
-}));
-
-const ButtonContainer = styled(Box)(({ theme }) => ({
-  width: "100%",
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-  marginTop: "auto",
-  paddingBottom: theme.spacing(2),
-  [theme.breakpoints.up("md")]: {
-    flexDirection: "row",
-    paddingBottom: theme.spacing(3),
-  },
-}));
+import {StyledContainer, ContentBox, ButtonContainer} from "./Components/Box";
 
 function App2() {
   const [step, setStep] = useState(1);

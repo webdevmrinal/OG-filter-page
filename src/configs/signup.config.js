@@ -6,7 +6,7 @@ export const signupConfig = {
     ],
   
     sliderSettings: {
-      dots: true,
+      dots: false,
       infinite: true,
       speed: 500,
       slidesToShow: 1,
@@ -93,9 +93,9 @@ export const signupConfig = {
     ],
   
     socialButtons: [
-      { icon: "LinkedInIcon", color: "#0077B5" },
-      { icon: "GoogleIcon", color: "#DB4437" },
-      { icon: "FacebookIcon", color: "#1877F2" },
+      { icon: "LinkedInIcon", color: "#0077B5", label: "LinkedIn" },
+      { icon: "GoogleIcon", color: "#DB4437", label: "Google" },
+      { icon: "FacebookIcon", color: "#1877F2", label: "Facebook" },
     ],
   
     formValidation: {
@@ -139,7 +139,7 @@ export const signupConfig = {
     },
   
     backButton: {
-      text: "< Back",
+      text: "Back",
       route: "/get-started",
     },
   };

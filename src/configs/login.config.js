@@ -5,7 +5,7 @@ export const loginPageConfig = {
       "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?fit=crop&w=500&h=700",
     ],
     sliderSettings: {
-      dots: true,
+      dots: false,
       infinite: true,
       speed: 500,
       slidesToShow: 1,
@@ -25,9 +25,9 @@ export const loginPageConfig = {
       },
     ],
     socialButtons: [
-      { icon: "LinkedInIcon", color: "#0077B5" },
-      { icon: "GoogleIcon", color: "#DB4437" },
-      { icon: "FacebookIcon", color: "#1877F2" },
+      { icon: "LinkedInIcon", color: "#0077B5", label: "LinkedIn" },
+      { icon: "GoogleIcon", color: "#DB4437", label: "Google" },
+      { icon: "FacebookIcon", color: "#1877F2", label: "Facebook" },
     ],
     formValidation: {
       email: {

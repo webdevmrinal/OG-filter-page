@@ -19,113 +19,8 @@ import Summary from "./Summary";
 import { addDays, format } from "date-fns";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ContactModal from "./ContactModal";
-
-const ScrollableBox = styled(Box)({
-    display: "flex",
-    overflowX: "auto",
-    "&::-webkit-scrollbar": {
-        display: "none",
-    },
-    "-ms-overflow-style": "none",
-    "scrollbar-width": "none",
-});
-
-
-const ConfirmationBox = styled(Paper)({
-    padding: "16px",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-    backgroundColor: "#ffffff",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-});
-
-const SuccessMessage = styled(Typography)({
-    backgroundColor: "#dff0d8",
-    padding: "16px",
-    borderRadius: "8px",
-    color: "#3c763d",
-    fontWeight: "bold",
-});
-const DurationButton = styled(ToggleButton)(({ theme }) => ({
-    border: `2px solid #e0e0e0`,
-    color: theme.palette.primary.main,
-    borderRadius: "4px",
-    padding: theme.spacing(1, 2),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    "&.Mui-selected": {
-        backgroundColor: '#e2e2e2',
-        color: theme.palette.common.black,
-    },
-}));
-
-const DateButton = styled(ToggleButton)(({ theme }) => ({
-    border: `2px solid #e0e0e0`,
-    borderRadius: "8px",
-    height: "40px",
-    width: "max-content",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    [theme.breakpoints.down("sm")]: {
-        width: "auto", // Adjust width for smaller screens
-        padding: theme.spacing(0.5, 1), // Reduce padding on smaller screens
-    },
-}));
-
-const TimeButton = styled(ToggleButton)({
-    border: `2px solid #505f96`,  // Consistent blue border for all
-    color: "#505f96",  // Consistent blue text color for all
-    borderRadius: "8px",
-    height: "40px",
-    width: "100px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-});
-
-const StyledConfirmationBox = styled(Box)(({ theme }) => ({
-    width: '100%', // Ensures the box takes the full width
-    padding: theme.spacing(1),
-    backgroundColor: "#6fbf73", // Green background
-    color: 'white', // White text color for better contrast
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: theme.spacing(1),
-    borderRadius: '6px',
-    boxShadow: theme.shadows[1],
-}));
-
-const StyledSummaryBox = styled(Box)(({ theme }) => ({
-    padding: theme.spacing(3),
-    marginTop: theme.spacing(3),
-    borderRadius: 6,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[2],
-    border: `1px solid ${theme.palette.grey[300]}`,
-}));
-
-const ButtonContainer = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    [theme.breakpoints.down('sm')]: {
-        flexDirection: 'column', // Stack buttons vertically on small screens
-        alignItems: 'stretch',   // Stretch buttons to take full width
-    },
-}));
-const ResponsiveButton = styled(Button)(({ theme }) => ({
-    margin: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '0.8rem',
-        padding: theme.spacing(1, 2),
-    },
-}));
+import { DateButton, DurationButton, ResponsiveButton, ScrollableBox, StyledConfirmationBox, StyledSummaryBox, TimeButton } from "./Experts/Components/TimeStyles";
+import { ButtonContainer } from "./Experts/Components/ProfileStyles";
 
 const SelectTime = ({ setShowGetTime, professorName }) => {
     const [duration, setDuration] = useState("15");
@@ -139,13 +34,13 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const [openContactModal, setOpenContactModal] = useState(false);
 
-  const handleOpenContactModal = () => {
-    setOpenContactModal(true);
-  };
+    const handleOpenContactModal = () => {
+        setOpenContactModal(true);
+    };
 
-  const handleCloseContactModal = () => {
-    setOpenContactModal(false);
-  };
+    const handleCloseContactModal = () => {
+        setOpenContactModal(false);
+    };
 
     const handleDurationChange = (event, newDuration) => {
         if (newDuration !== null) {
@@ -287,16 +182,16 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
 
     const resetAndBookAnotherSlot = () => {
         setSelectedTimes([]);
-        setIsGift(false); 
-        setDate(new Date().toLocaleDateString()); 
-        setDuration("15"); 
-        setView('setTime'); 
+        setIsGift(false);
+        setDate(new Date().toLocaleDateString());
+        setDuration("15");
+        setView('setTime');
     };
-    
+
 
     return (
 
-        <Box sx={{ width: "100%", p: 2 }}>
+        <Box sx={{ width: "100%", p: 2, pt: 0 }}>
 
             {view === "confirmation" ? (
                 <StyledSummaryBox sx={{}}>
@@ -392,19 +287,21 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                 Contact Me
                             </Button>
 
-      <ContactModal
-        open={openContactModal}
-        onClose={handleCloseContactModal}
-        professorName={professorName}
-      />
+                            <ContactModal
+                                open={openContactModal}
+                                onClose={handleCloseContactModal}
+                                professorName={professorName}
+                            />
                         </Box>
                     </Box>
                 </StyledSummaryBox>
             ) : view === "summary" ? (
                 <Summary
+                    open={openContactModal}
                     professorName={professorName}
                     selectedTimes={selectedTimes}
                     duration={duration}
+                    onClose={handleCloseContactModal}
                     isGift={isGift}
                     date={date}
                     onCancel={handleCancel}
@@ -418,7 +315,7 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                             professorName={professorName}
                         />
                     ) : (
-                        <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 2 , boxShadow: '0 4px 10px rgba(0,0,0,0.2)'}}>
+                        <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 2, boxShadow: '0 8px 16px rgba(0,0,0,0.2)' }}>
                             <Typography variant="h5" gutterBottom>
                                 Request a Video Call
                             </Typography>
@@ -448,78 +345,63 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                     <Checkbox
                                         checked={isGift}
                                         onChange={(e) => setIsGift(e.target.checked)}
-                                        sx={{ml: 2, paddingRight: 1, pl: 1}}
+                                        sx={{ ml: 2, paddingRight: 1, pl: 1 }}
                                     />
                                 }
                                 label="Tap to send this as a gift"
-                                sx={{ mt: 2}}
+                                sx={{ mt: 2 }}
                             />
-
-                            {/* <Box>
-                <Typography variant="subtitle2">Wednesday 8/7</Typography>
-                <ScrollableBox>
-                  {times.map((time) => (
-                    <TimeButton
-                      key={time.label}
-                      value={time.label}
-                      available={time.available}
-                      selected={selectedTimes.includes(time.label)}
-                      onChange={() => toggleToggle(time)}
-                      sx={{ mr: 1 }}
-                    >
-                      {time.label}
-                    </TimeButton>
-                  ))}
-                </ScrollableBox>
-              </Box> */}   <Box display={isMobile ? 'block' : 'flex'} sx={{marginTop: 2, width: {xs: '107vw', sm: 'inherit'}, }}>
-    <Box>
-                            {visibleDays.map((day, index) => (
-                                <Box key={index} sx={{ mb: 2 }}>
-                                    <Typography variant="subtitle2">{day.date}</Typography>
-                                    <ScrollableBox>
-                                        {day.times.map((time) => (
-                                            <TimeButton
-                                                key={`${day.date}_${time.label}`}
-                                                value={time.label}
-                                                available={time.available}
-                                                selected={selectedTimes.includes(
-                                                    `${day.date}_${time.label}`
-                                                )}
-                                                onChange={() => handleTimeToggle(day, time)}
-                                                sx={{ mr: 1,mt: 0.7, width: "max-content", fontSize: {xs: '0.8em', sm: 'inherit'},px: {xs: '4px', sm: '11px'} }}
-                                            >
-                                                {time.label}
-                                            </TimeButton>
-                                        ))}
-                                    </ScrollableBox>
-                                </Box>
-                            ))}
-                            </Box>
-                            <Box
-                                sx={{
-                                    width: "100%",
-                                    display: isMobile ? "none" : "flex",
-                                    justifyContent: "flex-end",
-                                    alignItems: "flex-start",
-                                    mb: 2,
-                                }}
-                            >
+                            <Box display={isMobile ? 'block' : 'flex'} sx={{ marginTop: 2, width: { xs: '107vw', sm: 'inherit' }, }}>
                                 <Box>
-                                    <Typography variant="subtitle2">
-                                        Looking for a time not listed?
-                                    </Typography>
-                                    <Button size="small" onClick={() => setShowGetTime1(true)}>
-                                        Tap here to see available slots
-                                    </Button>
+                                    {visibleDays.map((day, index) => (
+                                        <Box key={index} sx={{ mb: 2 }}>
+                                            <Typography variant="subtitle2">{day.date}</Typography>
+                                            <ScrollableBox>
+                                                {day.times.map((time) => (
+                                                    <TimeButton
+                                                        key={`${day.date}_${time.label}`}
+                                                        value={time.label}
+                                                        available={time.available}
+                                                        selected={selectedTimes.includes(
+                                                            `${day.date}_${time.label}`
+                                                        )}
+                                                        onChange={() => handleTimeToggle(day, time)}
+                                                        sx={{ mr: 1, mt: 0.7, width: "max-content", fontSize: { xs: '0.8em', sm: 'inherit' }, px: { xs: '4px', sm: '11px' } }}
+                                                    >
+                                                        {time.label}
+                                                    </TimeButton>
+                                                ))}
+                                            </ScrollableBox>
+                                        </Box>
+                                    ))}
+                                </Box>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        display: isMobile ? "none" : "flex",
+                                        justifyContent: "flex-end",
+                                        alignItems: "flex-start",
+                                        mb: 2,
+                                    }}
+                                >
+                                    <Box>
+                                        <Typography variant="subtitle2">
+                                            Looking for a time not listed?
+                                        </Typography>
+                                        <Button size="small" onClick={() => setShowGetTime1(true)}>
+                                            Tap here to see available slots
+                                        </Button>
+                                    </Box>
                                 </Box>
                             </Box>
-                            </Box>
 
-                            <Box sx={{ display: "flex",
-                                    justifyContent: isMobile ? "space-between" : "flex-start",
-                                    alignItems: "flex-start",
-                                    mt: 2,
-                                    flexDirection: isMobile ? "row" : "column",}}>
+                            <Box sx={{
+                                display: "flex",
+                                justifyContent: isMobile ? "space-between" : "flex-start",
+                                alignItems: "flex-start",
+                                mt: 2,
+                                flexDirection: isMobile ? "row" : "column",
+                            }}>
                                 <Button
                                     variant="text"
                                     onClick={() => setShowAllDays(!showAllDays)}
@@ -556,25 +438,25 @@ const SelectTime = ({ setShowGetTime, professorName }) => {
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-    <ButtonContainer>
-        <ResponsiveButton
-            variant="outlined"
-            color="primary"
-            onClick={() => setShowGetTime(false)}
-            sx={{ flexGrow: 1 }}  // Ensures the button stretches in column layout
-        >
-            Cancel
-        </ResponsiveButton>
-        <ResponsiveButton
-            variant="contained"
-            color="primary"
-            onClick={handleRequest}
-            sx={{ flexGrow: 1 }}  // Ensures the button stretches in column layout
-        >
-            Request
-        </ResponsiveButton>
-    </ButtonContainer>
-</Box>
+                                    <ButtonContainer>
+                                        <ResponsiveButton
+                                            variant="outlined"
+                                            color="primary"
+                                            onClick={() => setShowGetTime(false)}
+                                            sx={{ flexGrow: 1 }}  // Ensures the button stretches in column layout
+                                        >
+                                            Cancel
+                                        </ResponsiveButton>
+                                        <ResponsiveButton
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={handleRequest}
+                                            sx={{ flexGrow: 1 }}  // Ensures the button stretches in column layout
+                                        >
+                                            Request
+                                        </ResponsiveButton>
+                                    </ButtonContainer>
+                                </Box>
                             </Box>
                         </Paper>
                     )}

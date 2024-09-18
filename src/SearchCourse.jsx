@@ -155,34 +155,36 @@ const SearchPage = () => {
       </Typography>
       <Divider sx={{ width: "100%", mb: 2, px: 1, ml: 0 }} />
             {/* Search Bar */}
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, mt: 3 }}>
-                <TextField
-                    variant="outlined"
-                    placeholder="Tags"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    sx={{ flex: 1, mr: 2, height: '45px' }} 
-                    InputProps={{ sx: { height: '45px' } }} 
-                />
-                <Button 
-                    variant="contained" 
-                    color="primary" 
-                    startIcon={<SearchIcon />} 
-                    sx={{ height: '45px' }} 
-                >
-                    Search
-                </Button>
-            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+          <Chip label="Recently added Courses" sx={{ mr: 1, mb: 1 }} />
+          <Chip label="Published Today" sx={{ mr: 1, mb: 1 }} />
+          <Chip label="Published this Week" sx={{ mr: 1, mb: 1 }} />
+          <Chip label="Published this Month" sx={{ mr: 1, mb: 1 }} />
+          <Chip label="Popular Course" sx={{ mr: 1, mb: 1 }} />
+          <Chip label="Most Commented" sx={{ mb: 1 }} />
+        </Box>
 
-            {/* Filter Chips */}
-            <Box sx={{ mb: 4 }}>
-                <Chip label="Recently added Courses" sx={{ mr: 1 }} />
-                <Chip label="Published Today" sx={{ mr: 1 }} />
-                <Chip label="Published this Week" sx={{ mr: 1 }} />
-                <Chip label="Published this Month" sx={{ mr: 1 }} />
-                <Chip label="Popular Course" sx={{ mr: 1 }} />
-                <Chip label="Most Commented" />
-            </Box>
+        {/* Search Bar */}
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+          <TextField
+            variant="outlined"
+            placeholder="Tags"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{ mr: 2, height: '30px' ,}}
+            InputProps={{ sx: { height: '30px',borderRadius: 4 } }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<SearchIcon />}
+            sx={{ height: '30px', borderRadius: 4 }}
+          >
+            Search
+          </Button>
+        </Box>
+      </Box>
 
             {/* Course Cards */}
             <Grid container spacing={3}>
@@ -229,10 +231,10 @@ const SearchPage = () => {
                                             <VisibilityIcon sx={{ fontSize: 18, ml: 1, mr: 0.5 }} />
                                             <Typography variant="body2">{course.views}</Typography>
                                         </Box>
-                                        <Box>
+                                        {/* <Box>
                                             <EnrollButton startIcon={<SchoolIcon />}>Enroll Now</EnrollButton>
                                             <WishlistButton startIcon={<FavoriteBorderIcon />}>Wishlist</WishlistButton>
-                                        </Box>
+                                        </Box> */}
                                     </Box>
                                 </Box>
                             </CardContent>
