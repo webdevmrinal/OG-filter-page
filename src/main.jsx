@@ -82,11 +82,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="homepage" element={<Homepage />} />
         <Route path="allexperts" element={<AllExperts />} />
         <Route path="all-courses" element={<AllCourses />} />
-        <Route path="expertProfile" element={<ExpertProfile />} />
         <Route path="get-started" element={<App2 />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
           <Route path="pricing" element={<PricingPage />} />
+          <Route path="expert-profile/:expertName" element={<ProfilePage />} />
           
       </Routes>
     </Router>

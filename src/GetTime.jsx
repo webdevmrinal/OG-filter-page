@@ -1,3 +1,4 @@
+// GetTime.jsx
 import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
@@ -24,6 +25,10 @@ import { getCountries, getCountryCallingCode } from 'libphonenumber-js';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EventIcon from '@mui/icons-material/Event';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import MobileNumberInput from "./Profile-Slot-Booking/MobileInput";
+import UserDetailsForm from "./Profile-Slot-Booking/UserDetailsForm";
+import PaymentComponent from "./Profile-Slot-Booking/PaymentPage";
+import { StyledConfirmationBox, StyledSummaryBox } from "./Experts/Components/TimeStyles";
 
 const DateButton = styled(ToggleButton)(({ theme }) => ({
   border: `2px solid #e0e0e0`,
@@ -36,7 +41,7 @@ const DateButton = styled(ToggleButton)(({ theme }) => ({
   marginRight: theme.spacing(1),
   marginBottom: theme.spacing(1),
   [theme.breakpoints.down('sm')]: {
-    width: '100%', // Full width on smaller screens
+    width: '100%',
   },
 }));
 
@@ -64,8 +69,8 @@ const TimeButton = styled(ToggleButton)(({ available, theme }) => ({
     textAlign: "center",
   },
   [theme.breakpoints.down('sm')]: {
-    width: '100%', // Full width on smaller screens
-    height: 'auto', // Adjust height on smaller screens
+    width: '100%',
+    height: 'auto',
   },
 }));
 
@@ -77,10 +82,11 @@ const DurationButton = styled(ToggleButton)(({ theme }) => ({
   marginRight: theme.spacing(1),
   marginBottom: theme.spacing(1),
   "&.Mui-selected": {
-      backgroundColor: '#e2e2e2',
-      color: theme.palette.common.black,
+    backgroundColor: '#e2e2e2',
+    color: theme.palette.common.black,
   },
 }));
+
 const ScrollableBox = styled(Box)({
   display: "flex",
   overflowX: "auto",
@@ -91,303 +97,12 @@ const ScrollableBox = styled(Box)({
   "scrollbar-width": "none",
 });
 
-const StyledConfirmationBox = styled(Box)(({ theme }) => ({
-  width: '100%', // Ensures the box takes the full width
-  padding: theme.spacing(1),
-  backgroundColor: "#6fbf73", // Green background
-  color: 'white', // White text color for better contrast
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: theme.spacing(1),
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[1],
-}));
-const StyledSummaryBox = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(3),
-  marginTop: theme.spacing(3),
-  borderRadius: 12,
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: theme.shadows[2],
-  border: `1px solid ${theme.palette.grey[300]}`,
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(2), // Less padding on smaller screens
-  },
-}));
-
-const SuccessMessage = styled(Typography)({
-  backgroundColor: '#dff0d8',
-  padding: '16px',
-  borderRadius: '8px',
-  color: '#3c763d', // Green text color
-  fontWeight: 'bold',
-});
-
-const GetTime = ({ setShowGetTime, professorName }) => {
+const GetTime = ({ setShowGetTime, professorName, profileType }) => {
   const [duration, setDuration] = useState("15");
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [isGift, setIsGift] = useState(false);
   const [view, setView] = useState("selection");
-  const [mobileNumber, setMobileNumber] = useState('');
-
-
-  const MobileNumberInput = () => {
-    const [countries, setCountries] = useState([]);
-    const [countryCode, setCountryCode] = useState('');
-    const [mobileNumber, setMobileNumber] = useState('');
-    const inputRef = useRef(null);
-  
-    useEffect(() => {
-      const loadCountries = () => {
-        const countryList = getCountries().map(code => ({
-          code,
-          name: code,
-          dialCode: getCountryCallingCode(code)
-        }));
-        setCountries(countryList);
-        if (!countryCode && countryList.length > 0) {
-          setCountryCode(countryList[0].dialCode); 
-        }
-      };
-  
-      loadCountries();
-    }, []);
-  
-    useEffect(() => {
-      inputRef.current && inputRef.current.focus();
-    }, []);
-  
-    return (
-      <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          Create an account, or log in
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Start by entering your mobile number. We'll send you a 4-digit code to verify:
-        </Typography>
-        <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-          <TextField
-            select
-            label="Country Code"
-            value={countryCode}
-            onChange={(e) => setCountryCode(e.target.value)}
-            sx={{ width: '200px' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PhoneIphoneOutlined />
-                </InputAdornment>
-              ),
-            }}
-          >
-            {countries.map(option => (
-              <MenuItem key={option.code} value={option.dialCode}>
-                {option.name} ({option.dialCode})
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            inputRef={inputRef}
-            fullWidth
-            variant="outlined"
-            label="Mobile Number"
-            value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
-            placeholder="234 567 8900"
-          />
-        </Box>
-        <Box sx={{ mt: 3, display: "flex", justifyContent: "space-between" }}>
-        <Box>
-          <Typography variant="body1" fontWeight={'bold'} gutterBottom>
-        Why a mobile number?</Typography>
-        <Typography variant="body1" gutterBottom>
-        It's less complicated than remembering an email and password, and to verify that you're a real person</Typography>
-        </Box>
-        <Box>
-          <Button variant="" color="primary" onClick={() => setView('summary')}>
-            Go Back
-          </Button>
-          <Button variant="contained" color="primary" onClick={() => setView('userdetails')}>
-            Confirm Number
-          </Button>
-        </Box>  
-        </Box>
-      </Paper>
-    );
-  };
-
-  const UserDetailsForm = ({ }) => {
-    const [email, setEmail] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [showPromoCode, setShowPromoCode] = useState(false);
-    const [promoCode, setPromoCode] = useState('');
-    const handleApplyPromoCode = () => {
-      console.log('Promo Code Applied:', promoCode);
-    };
-  
-    return (
-      <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          Almost There...
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-        Please enter the information below
-        </Typography>
-        
-        <TextField
-          label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          fullWidth
-          variant="outlined"
-          sx={{ mb: 2 }}
-        />
-        <Box sx={{ display: "flex", justifyContent: "space-between", gap: 3 }}>
-        <TextField
-          label="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          fullWidth
-          variant="outlined"
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          fullWidth
-          variant="outlined"
-          sx={{ mb: 2 }}
-        />
-        </Box>
-        
-        
-        <Box sx={{display: "flex", justifyContent: "space-between"}}>
-        <Box>
-        {!showPromoCode ? (
-        <Button
-          variant="text"
-          onClick={() => setShowPromoCode(true)}
-          sx={{ mb: 2 }}
-        >
-          Apply Promo Code
-        </Button>
-      ) : (
-        <TextField
-          label="Promo Code"
-          value={promoCode}
-          onChange={(e) => setPromoCode(e.target.value)}
-          fullWidth
-          variant="outlined"
-          sx={{ mb: 2, width: '41.8em' }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <Button
-                  onClick={handleApplyPromoCode}
-                  color="primary"
-                  size="small"
-                >
-                  Apply
-                </Button>
-              </InputAdornment>
-            )
-          }}
-        />
-      )}
-      </Box>
-      <Box>
-          <Button variant="" color="primary" onClick={() => setView('mobileInput')}>
-            Go Back
-          </Button>
-          <Button variant="contained" color="primary" onClick={() => setView('payment')}>
-            Confirm your slot
-          </Button>
-        </Box> 
-        </Box>
-      </Paper>
-    );
-  };
-
-  const PaymentComponent = ({ }) => {
-    const [cardNumber, setCardNumber] = useState('');
-    const [expiryDate, setExpiryDate] = useState('');
-    const [cvv, setCvv] = useState('');
-
-    return (
-        <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
-            <Typography variant="h5" gutterBottom>
-                Payment Details
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-                Enter your card information to proceed with payment:
-            </Typography>
-            <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Card Number"
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
-                    placeholder="1234 5678 9012 3456"
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <CreditCardIcon />
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                    <TextField
-                        sx={{ flexGrow: 1 }}
-                        variant="outlined"
-                        label="Expiry Date"
-                        value={expiryDate}
-                        onChange={(e) => setExpiryDate(e.target.value)}
-                        placeholder="MM/YY"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <EventIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <Tooltip title="Last three digits on back of your card" placement="top" arrow>
-                    <TextField
-                        sx={{ flexGrow: 1 }}
-                        variant="outlined"
-                        label="CVV"
-                        value={cvv}
-                        onChange={(e) => setCvv(e.target.value)}
-                        placeholder="123"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <VpnKeyIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    </Tooltip>
-                </Box>
-                <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
-                    <Button color="primary" onClick={() => setView('userdetails')}>
-                        Go Back
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={() => setView('confirmation')}>
-                        Pay Now
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={() => setView('confirmation')}>
-                        Pay Later
-                    </Button>
-                </Box>
-            </Box>
-        </Paper>
-    );
-};
+  const [userData, setUserData] = useState({});
 
   const handleDurationChange = (event, newDuration) => {
     if (newDuration !== null) {
@@ -397,14 +112,14 @@ const GetTime = ({ setShowGetTime, professorName }) => {
 
   const handleTimeToggle = (day, time) => {
     if (time.available) {
-        setSelectedTimes((prev) => {
-            const timeKey = `${day.date}_${time.label}`;
-            return prev.includes(timeKey)
-                ? prev.filter((t) => t !== timeKey)
-                : [...prev, timeKey];
-        });
+      setSelectedTimes((prev) => {
+        const timeKey = `${day.date}_${time.label}`;
+        return prev.includes(timeKey)
+          ? prev.filter((t) => t !== timeKey)
+          : [...prev, timeKey];
+      });
     }
-};
+  };
 
   const handleSelectAll = () => {
     setSelectedTimes(times);
@@ -419,18 +134,69 @@ const GetTime = ({ setShowGetTime, professorName }) => {
   };
 
   const handleConfirm = () => {
+    if (profileType === 'inner') {
+      // Proceed directly to confirmation
+      const appointment = {
+        professorName,
+        duration,
+        selectedTimes,
+        isGift,
+        date: new Date().toLocaleString(),
+      };
+
+      const existingAppointments = JSON.parse(localStorage.getItem('appointments')) || [];
+      localStorage.setItem('appointments', JSON.stringify([...existingAppointments, appointment]));
+
+      setView("confirmation");
+    } else {
+      // For outer profile, proceed to mobile input
+      setView('mobileInput');
+    }
+  };
+
+  // Handler for MobileNumberInput
+  const handleMobileInputSubmit = (mobileData) => {
+    setUserData((prevData) => ({ ...prevData, ...mobileData }));
+    setView('userdetails');
+  };
+
+  // Handler for "Go Back" from MobileNumberInput to Summary
+  const handleMobileInputGoBack = () => {
+    setView('summary');
+  };
+
+  // Handler for UserDetailsForm
+  const handleUserFormSubmit = (formData) => {
+    setUserData((prevData) => ({ ...prevData, ...formData }));
+    setView('payment');
+  };
+
+  // Handler for "Go Back" from UserDetailsForm to MobileNumberInput
+  const handleUserFormGoBack = () => {
+    setView('mobileInput');
+  };
+
+  // Handler for PaymentComponent
+  const handlePaymentSuccess = () => {
+    // Save the appointment data now
     const appointment = {
       professorName,
       duration,
       selectedTimes,
       isGift,
       date: new Date().toLocaleString(),
+      userData,
     };
 
     const existingAppointments = JSON.parse(localStorage.getItem('appointments')) || [];
     localStorage.setItem('appointments', JSON.stringify([...existingAppointments, appointment]));
 
-    setView("mobileInput");
+    setView("confirmation");
+  };
+
+  // Handler for "Go Back" from PaymentComponent to UserDetailsForm
+  const handlePaymentGoBack = () => {
+    setView('userdetails');
   };
 
   const getDateString = (date) => date.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
@@ -451,25 +217,25 @@ const GetTime = ({ setShowGetTime, professorName }) => {
     [formattedDayAfter]: ["7-8p", "8-9p", "9-10p", "10-11p", "11-12a"]
   };
   const [showAllDays, setShowAllDays] = useState(false);
-  
+
   const generateNext10Days = () => {
     const days = [];
     for (let i = 0; i < 10; i++) {
-        const date = addDays(new Date(), i);
-        days.push({
-            date: format(date, "EEEE, MMM d"),
-            times: [
-                { label: "7pm-8pm", available: Math.random() > 0.5 },
-                { label: "8pm-9pm", available: Math.random() > 0.5 },
-                { label: "9pm-10pm", available: Math.random() > 0.5 },
-                { label: "10pm-11pm", available: Math.random() > 0.5 },
-                { label: "11pm-12am", available: Math.random() > 0.5 },
-            ],
-        });
+      const date = addDays(new Date(), i);
+      days.push({
+        date: format(date, "EEEE, MMM d"),
+        times: [
+          { label: "7pm-8pm", available: Math.random() > 0.5 },
+          { label: "8pm-9pm", available: Math.random() > 0.5 },
+          { label: "9pm-10pm", available: Math.random() > 0.5 },
+          { label: "10pm-11pm", available: Math.random() > 0.5 },
+          { label: "11pm-12am", available: Math.random() > 0.5 },
+        ],
+      });
     }
     return days;
-};
-const [days, setDays] = useState(generateNext10Days);
+  };
+  const [days, setDays] = useState(generateNext10Days);
   const visibleDays = showAllDays ? days : days.slice(0, 3);
   const [profileData, setProfileData] = useState(null);
   const expertEmail = location.state?.expertEmail;
@@ -477,146 +243,132 @@ const [days, setDays] = useState(generateNext10Days);
   const formatTimeSlot = (timeSlot) => {
     const [date, time] = timeSlot.split("_");
     return `${date} at ${time}`;
-}
+  }
 
-useEffect(() => {
-  const fetchProfileData = async () => {
+  useEffect(() => {
+    const fetchProfileData = async () => {
       try {
-          const response = await axios.post(
-              "https://academy.opengrowth.com/api/get_user",
-              {
-                  email: expertEmail,
-              }
-          );
-          setProfileData(response.data);
+        const response = await axios.post(
+          "https://academy.opengrowth.com/api/get_user",
+          {
+            email: expertEmail,
+          }
+        );
+        setProfileData(response.data);
       } catch (error) {
-          console.error("Error fetching profile data:", error);
-      } finally {
-          setLoading(false);
+        console.error("Error fetching profile data:", error);
       }
-  };
+    };
 
-  if (expertEmail) {
+    if (expertEmail) {
       fetchProfileData();
-  }
-}, [expertEmail]);
-const getDurationLabel = (duration) => {
-  switch (duration) {
+    }
+  }, [expertEmail]);
+
+  const getDurationLabel = (duration) => {
+    switch (duration) {
       case "15":
-          return "Quick - 15 Min";
+        return "Quick - 15 Min";
       case "30":
-          return "Regular - 30 Min";
+        return "Regular - 30 Min";
       case "45":
-          return "Extra - 45 Min";
+        return "Extra - 45 Min";
       case "60":
-          return "All Access - 60 Min";
+        return "All Access - 60 Min";
       default:
-          return `${duration} Min`;
-  }
-};
+        return `${duration} Min`;
+    }
+  };
 
   return (
     <>
       {view === "confirmation" ? (
-        <StyledSummaryBox sx={{}}>
-        <StyledConfirmationBox>
-                    <CheckCircleOutlineIcon />
-                    <Typography variant="h6">
-                        Your session is confirmed!
-                    </Typography>
-                </StyledConfirmationBox>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 , mt: 2}}>
+        <StyledSummaryBox>
+          <StyledConfirmationBox>
+            <CheckCircleOutlineIcon />
+            <Typography variant="h6">
+              Your session is confirmed!
+            </Typography>
+          </StyledConfirmationBox>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, mt: 2 }}>
             <Avatar
-                src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
-                alt={profileData?.name}
-                sx={{ width: 60, height: 60, mr: 2 }}
+              src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
+              alt={profileData?.name}
+              sx={{ width: 60, height: 60, mr: 2 }}
             />
             <Typography
-                variant="h6"
-                gutterBottom
-                sx={{ fontWeight: 'bold', color: 'primary.main' }}
+              variant="h6"
+              gutterBottom
+              sx={{ fontWeight: 'bold', color: 'primary.main' }}
             >
-                {professorName}
+              {professorName}
             </Typography>
-        </Box>
+          </Box>
 
-        {/* Selected Times */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+          {/* Selected Times */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                Selected Times:
+              Selected Times:
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                {selectedTimes.map((timeSlot, index) => {
-                    const [date, time] = timeSlot.split("_");
-                    return (
-                        <DateButton key={index} value={time} disabled selected>
-                            {formatTimeSlot(timeSlot)}
-                        </DateButton>
-                    );
-                })}
+              {selectedTimes.map((timeSlot, index) => (
+                <DateButton key={index} value={timeSlot} disabled selected>
+                  {formatTimeSlot(timeSlot)}
+                </DateButton>
+              ))}
             </Box>
-        </Box>
+          </Box>
 
-        {/* Duration */}
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          {/* Duration */}
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                Duration:
+              Duration:
             </Typography>
             <ToggleButtonGroup
+              value={duration}
+              exclusive
+              aria-label="call duration"
+            >
+              <DurationButton
                 value={duration}
-                exclusive
-                aria-label="call duration"
-            >
-                <DurationButton
-                    value={duration}
-                    aria-label={`${duration} minutes`}
-                    disabled selected
-                >
-                    {getDurationLabel(duration)}
-                </DurationButton>
+                aria-label={`${duration} minutes`}
+                disabled selected
+              >
+                {getDurationLabel(duration)}
+              </DurationButton>
             </ToggleButtonGroup>
-        </Box>
+          </Box>
 
-        {/* <SelectedDurationButton>
-{duration === "15"
-? "Quick - 15 Min"
-: duration === "30"
-? "Regular - 30 Min"
-: duration === "45"
-? "Extra - 45 Min"
-: "All Access - 60 Min"}
-</SelectedDurationButton> */}
-
-        {isGift && (
+          {isGift && (
             <Typography
-                variant="subtitle1"
-                gutterBottom
-                sx={{ fontWeight: "bold", color: "green" }}
+              variant="subtitle1"
+              gutterBottom
+              sx={{ fontWeight: "bold", color: "green" }}
             >
-                This is a gift.
+              This is a gift.
             </Typography>
-        )}
+          )}
 
-        <Box
+          <Box
             sx={{ mt: 3, display: "flex", justifyContent: "space-between", gap: 2 }}
-        >
+          >
             <Box>
-                <Typography variant="h6" component="span">
-                    ₹4,999 • Session
-                </Typography>
-                <Rating value={5} readOnly size="small" sx={{ ml: 1 }} />
-                <Typography variant="body2" component="span" sx={{ ml: 1 }}>
-                    5.0 (40)
-                </Typography>
+              <Typography variant="h6" component="span">
+                ₹4,999 • Session
+              </Typography>
+              <Rating value={5} readOnly size="small" sx={{ ml: 1 }} />
+              <Typography variant="body2" component="span" sx={{ ml: 1 }}>
+                5.0 (40)
+              </Typography>
             </Box>
             <Box sx={{ gap: 2 }}>
 
-                <Button variant="contained" color="primary" onClick={() => setView('getTime')}>
-                    Book Another Slot
-                </Button>
+              <Button variant="contained" color="primary" onClick={() => setView('getTime')}>
+                Book Another Slot
+              </Button>
             </Box>
-        </Box>
-    </StyledSummaryBox>
+          </Box>
+        </StyledSummaryBox>
       ) : view === "summary" ? (
         <Summary
           professorName={professorName}
@@ -626,21 +378,27 @@ const getDurationLabel = (duration) => {
           onCancel={handleCancel}
           onConfirm={handleConfirm}
         />
-      ) :  view === "mobileInput" ? (
-        <MobileNumberInput />
-      ) : 
-      view === "userdetails" ? (
-        <UserDetailsForm />
-      ) : 
-      view === "payment" ? (
-        <PaymentComponent />
-      ) :
-      (
+      ) : view === "mobileInput" ? (
+        <MobileNumberInput
+          onFormSubmit={handleMobileInputSubmit}
+          onGoBack={handleMobileInputGoBack}
+        />
+      ) : view === "userdetails" ? (
+        <UserDetailsForm
+          onFormSubmit={handleUserFormSubmit}
+          onGoBack={handleUserFormGoBack}
+        />
+      ) : view === "payment" ? (
+        <PaymentComponent
+          onPaymentSuccess={handlePaymentSuccess}
+          onGoBack={handlePaymentGoBack}
+        />
+      ) : (
         <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
           <Typography variant="h5" gutterBottom>
             Select a time
           </Typography>
-          
+
           <ToggleButtonGroup
             value={duration}
             exclusive
@@ -665,7 +423,7 @@ const getDurationLabel = (duration) => {
               <Checkbox
                 checked={isGift}
                 onChange={(e) => setIsGift(e.target.checked)}
-                sx={{pr:1, pl:1, ml: 2}}
+                sx={{ pr: 1, pl: 1, ml: 2 }}
               />
             }
             label="Tap to send this as a gift"
@@ -675,64 +433,62 @@ const getDurationLabel = (duration) => {
             2) Select all of the times you're available for a video session
           </Typography>
           <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "flex-start",
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "flex-start",
             }}
-        >
-         <Box>
-          {visibleDays.map((day, index) => (
-          <Box key={index} sx={{ mb: 2 , mt: 1,}}>
-            <Typography variant="subtitle2">{day.date}</Typography>
-            <ScrollableBox>
-              {day.times.map((time) => (
-                <TimeButton
-                  key={`${day.date}_${time.label}`}
-                  value={time.label}
-                  available={time.available}
-                  selected={selectedTimes?.includes(
-                      `${day.date}_${time.label}`
-                  )}
-                  onChange={() => handleTimeToggle(day, time)}
-                  sx={{ mr: 1, mt: 0.7, width: "max-content" }}
-              >
-                  {time.label}
-                </TimeButton>
+          >
+            <Box>
+              {visibleDays.map((day, index) => (
+                <Box key={index} sx={{ mb: 2, mt: 1 }}>
+                  <Typography variant="subtitle2">{day.date}</Typography>
+                  <ScrollableBox>
+                    {day.times.map((time) => (
+                      <TimeButton
+                        key={`${day.date}_${time.label}`}
+                        value={time.label}
+                        available={time.available}
+                        selected={selectedTimes.includes(`${day.date}_${time.label}`)}
+                        onChange={() => handleTimeToggle(day, time)}
+                        sx={{ mr: 1, mt: 0.7, width: "max-content" }}
+                      >
+                        {time.label}
+                      </TimeButton>
+                    ))}
+                  </ScrollableBox>
+                </Box>
               ))}
-            </ScrollableBox>
-          </Box>
-    ))}
-    </Box>
-          <Box
+            </Box>
+            <Box
               sx={{
                 width: "100%",
                 display: "flex",
                 justifyContent: "flex-end",
                 alignItems: "center",
                 mb: 2,
-            }}
-          >
-            <Box>
+              }}
+            >
+              <Box>
                 <Button size="small" onClick={handleSelectAll}>
-                Select All
+                  Select All
                 </Button>
+              </Box>
             </Box>
-           </Box>
-           </Box>
-    <Box sx={{ mt: 2 }}>
-        <Button
-          variant="text"
-          onClick={() => setShowAllDays(!showAllDays)}
-          sx={{
-            fontSize: ".75em",
-            fontWeight: "500",
-            textDecoration: "underline",
-          }}
-      >
-        {showAllDays ? "Show Less Slots" : "Show More Slots"}
-      </Button>
-  </Box>
+          </Box>
+          <Box sx={{ mt: 2 }}>
+            <Button
+              variant="text"
+              onClick={() => setShowAllDays(!showAllDays)}
+              sx={{
+                fontSize: ".75em",
+                fontWeight: "500",
+                textDecoration: "underline",
+              }}
+            >
+              {showAllDays ? "Show Less Slots" : "Show More Slots"}
+            </Button>
+          </Box>
           <Box
             sx={{
               display: "flex",

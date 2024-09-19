@@ -71,6 +71,9 @@ export const StyledSummaryBox = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
     border: `1px solid ${theme.palette.grey[300]}`,
+    [theme.breakpoints.down('sm')]: {
+        padding: theme.spacing(2),
+      },
 }));
 
 export const ResponsiveButton = styled(Button)(({ theme }) => ({

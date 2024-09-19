@@ -2,18 +2,24 @@ import React, { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import { Typography, Box, RadioGroup, FormControlLabel, Radio, Grid } from "@mui/material";
 
-function Page1({ data, onDataChange }) { // Accept data and onDataChange props
+function Page1({ data, onDataChange, reset }) { // Accept the reset prop
   const theme = useTheme();
-  const [selectedValue, setSelectedValue] = useState(data || "");  // Load data from props if available
+  const [selectedValue, setSelectedValue] = useState(data || "");
 
   const handleChange = (event) => {
     const value = event.target.value;
-    setSelectedValue(value);  // Update the state on change
-    onDataChange(value);  // Pass the selected value to parent (App2) for saving
+    setSelectedValue(value);
+    onDataChange(value); // Send data back to parent
   };
 
   useEffect(() => {
-    setSelectedValue(data); // Update local state if the parent changes the data
+    if (reset) {
+      setSelectedValue(""); // Reset UI when the reset prop is triggered
+    }
+  }, [reset]);
+
+  useEffect(() => {
+    setSelectedValue(data); // Update local state when data changes
   }, [data]);
 
   return (

@@ -37,7 +37,7 @@ const iconComponents = {
   FacebookIcon,
 };
 
-const SignupPage = () => {
+const SignupPage = ({ resetAllData }) => {
   const { images, interests, countries, sliderSettings } = signupConfig;
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -96,33 +96,36 @@ const SignupPage = () => {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
+      console.log("Form submitted:", values); 
       setSubmitting(true);
-      
-      // Store new submission along with locked Page1 and Page2 data
+  
+      // Get existing submissions from localStorage
       const existingSubmissions =
         JSON.parse(localStorage.getItem("signupSubmissions")) || [];
-
+  
+      // Prepare new submission data
       const newSubmission = {
         ...values,
-        page1Data,  // Include locked Page1 data
-        page2Data,  // Include locked Page2 data
+        page1Data,  // Include locked Page1 data if needed
+        page2Data,  // Include locked Page2 data if needed
         submittedAt: new Date().toISOString(),
       };
-
-      // Add the new submission to the existing submissions array
+  
+      // Append the new submission to the existing ones
       existingSubmissions.push(newSubmission);
-
-      // Save the updated submissions array back to localStorage
-      localStorage.setItem(
-        "signupSubmissions",
-        JSON.stringify(existingSubmissions)
-      );
-
-      // After saving, navigate to the dashboard or any other page
+  
+      // Save updated submissions to localStorage
+      localStorage.setItem("signupSubmissions", JSON.stringify(existingSubmissions));
+  
+      // Clear form data after submission
+      formik.resetForm();
+  
+      // Redirect after successful submission
       setSubmitting(false);
       navigate("/dashboardpage");
     },
-  });
+  });  
+  
 
   if (isLoading) {
     return (

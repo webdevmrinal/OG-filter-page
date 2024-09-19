@@ -3,15 +3,13 @@ import {
   AppBar,
   Toolbar,
   IconButton,
+  InputBase,
   Box,
-  Drawer,
+  Drawer, Menu, MenuItem, Avatar,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Avatar,
-  Menu,
-  MenuItem
 } from "@mui/material";
 import {
   ChevronLeft as ChevronLeftIcon,
@@ -34,6 +32,59 @@ import OGLogo from "./assets/OG-Logo.svg";
 // Define the drawer widths
 const drawerWidth = 240;
 const closedDrawerWidth = 64;
+
+const OpenDrawer = styled("div")(({ theme }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...theme.mixins.toolbar,
+  backgroundColor: "#f8f9fa",
+}));
+const ClosedDrawer = styled("div")(({ theme }) => ({
+  width: closedDrawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...theme.mixins.toolbar,
+  backgroundColor: "#f8f9fa",
+}));
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 // Remove the unnecessary state "open" and manage only "drawerOpen"
 const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
@@ -67,12 +118,34 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
     navigate("/get-started");
   };
 
+  // Toggle the drawer
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen); // Sync drawerOpen with parent
     if (drawerOpen) {
       setExpertsMenuOpen(false); // Close experts menu when collapsing sidebar
       setCoursesMenuOpen(false); // Close courses menu when collapsing sidebar
     }
+  };
+
+  const toggleExpertsMenu = () => {
+    setExpertsMenuOpen(!expertsMenuOpen);
+  };
+
+  const toggleCoursesMenu = () => {
+    setCoursesMenuOpen(!coursesMenuOpen);
+  };
+
+  const handleMenuItemClick = (route, isMenu, toggleMenu) => {
+    if (isMenu) {
+      toggleMenu();
+    }
+    if (route) {
+      navigate(route);
+    }
+  };
+
+  const handleSubMenuItemClick = (route) => {
+    navigate(route);
   };
 
   const menuItems = [
@@ -91,8 +164,8 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
     {
       text: "Courses",
       icon: <SchoolIcon />,
-      route: "/coursedashboard",
       isMenu: true,
+      route: '/coursedashboard',
       subMenu: [
         { text: "My Course", route: "/mycourse" },
         { text: "Search Course", route: "/searchcourse" },
@@ -125,6 +198,16 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
           >
             {/* Place the logo here */}
           </Box>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon sx={{ color: "#0000008a" }} />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search Courses"
+              inputProps={{ "aria-label": "search" }}
+              sx={{ color: "#0000008a" }}
+            />
+          </Search>
           <IconButton sx={{ color: "#0000008a" }}>
             <SearchIcon />
           </IconButton>
@@ -134,8 +217,6 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
           <IconButton sx={{ color: "#0000008a" }}>
             <NotificationsIcon />
           </IconButton>
-
-          {/* Avatar Button */}
           {user ? (
             <IconButton onClick={handleAvatarClick}>
               <Avatar
@@ -152,9 +233,9 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
               />
             </IconButton>
           )}
+
         </Toolbar>
       </AppBar>
-
       {/* Drawer (Sidebar) */}
       <Drawer
         variant="permanent"
@@ -163,7 +244,13 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerOpen ? drawerWidth : closedDrawerWidth,
-            transition: "width 0.3s ease", // Smooth transition for the drawer width
+            boxSizing: "border-box",
+            backgroundColor: "#ffffff",
+            transition: (theme) =>
+              theme.transitions.create("width", {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
             position: "fixed", // Sidebar stays fixed on the left
             height: "100vh", // Full height sidebar
           },
@@ -211,14 +298,21 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
                 {drawerOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
               </ListItemIcon>
             </ListItem>
-
             {/* Map menu items */}
-            {menuItems.map((item) => (
+            {menuItems.map((item) =>
               item.isMenu ? (
                 <React.Fragment key={item.text}>
                   <ListItem
                     button
-                    onClick={() => handleMenuItemClick(item.route, item.isMenu, item.text === "Experts on Demand" ? toggleExpertsMenu : toggleCoursesMenu)}
+                    onClick={() =>
+                      handleMenuItemClick(
+                        item.route,
+                        item.isMenu,
+                        item.text === "Experts on Demand"
+                          ? toggleExpertsMenu
+                          : toggleCoursesMenu
+                      )
+                    }
                     sx={{
                       px: 2.5,
                       alignItems: "center",
@@ -243,31 +337,40 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
                         },
                       }}
                     />
-                    {drawerOpen && (item.text === "Experts on Demand" ? (expertsMenuOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />) : (coursesMenuOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />))}
+                    {drawerOpen &&
+                      (item.text === "Experts on Demand"
+                        ? expertsMenuOpen
+                          ? <ExpandLessIcon />
+                          : <ExpandMoreIcon />
+                        : coursesMenuOpen
+                          ? <ExpandLessIcon />
+                          : <ExpandMoreIcon />
+                      )}
                   </ListItem>
-
-                  {/* Submenu */}
-                  {drawerOpen && (item.text === "Experts on Demand" ? expertsMenuOpen : coursesMenuOpen) && (
-                    <Box sx={{ pl: 4 }}>
-                      {item.subMenu.map((subItem) => (
-                        <ListItem
-                          button
-                          key={subItem.text}
-                          onClick={() => handleSubMenuItemClick(subItem.route)}
-                          sx={{ py: 0.5, px: 2.5 }}
-                        >
-                          <ListItemText
-                            primary={subItem.text}
-                            sx={{
-                              "& .MuiListItemText-primary": {
-                                fontSize: "0.75rem",
-                              },
-                            }}
-                          />
-                        </ListItem>
-                      ))}
-                    </Box>
-                  )}
+                  {drawerOpen &&
+                    (item.text === "Experts on Demand"
+                      ? expertsMenuOpen
+                      : coursesMenuOpen) && (
+                      <Box sx={{ pl: 4 }}>
+                        {item.subMenu.map((subItem) => (
+                          <ListItem
+                            button
+                            key={subItem.text}
+                            onClick={() => handleSubMenuItemClick(subItem.route)}
+                            sx={{ py: 0.5, px: 2.5 }}
+                          >
+                            <ListItemText
+                              primary={subItem.text}
+                              sx={{
+                                "& .MuiListItemText-primary": {
+                                  fontSize: "0.75rem",
+                                },
+                              }}
+                            />
+                          </ListItem>
+                        ))}
+                      </Box>
+                    )}
                 </React.Fragment>
               ) : (
                 <Link
@@ -275,7 +378,14 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
                   to={item.route}
                   style={{ color: "initial", textDecoration: "none" }}
                 >
-                  <ListItem button>
+                  <ListItem
+                    button
+                    sx={{
+                      display: "flex",
+                      py: 0.5,
+                      px: 2.5,
+                    }}
+                  >
                     <ListItemIcon
                       sx={{
                         my: 2,
@@ -289,13 +399,17 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
                     <ListItemText
                       primary={item.text}
                       sx={{
+                        minWidth: drawerWidth,
                         opacity: drawerOpen ? 1 : 0,
+                        "& .MuiListItemText-primary": {
+                          fontSize: "0.875rem",
+                        },
                       }}
                     />
                   </ListItem>
                 </Link>
               )
-            ))}
+            )}
           </List>
         </Box>
       </Drawer>
@@ -304,14 +418,16 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
         open={Boolean(anchorEl)}
         onClose={handleAvatarMenuClose}
       >
-        {user && (
-          <>
-            <MenuItem>{user.firstName} {user.lastName}</MenuItem>
-            <MenuItem>{user.email}</MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-          </>
-        )}
+        {user && [
+          <MenuItem key="name">{`${user.firstName} ${user.lastName}`}</MenuItem>,
+          <MenuItem key="email">{user.email}</MenuItem>,
+          <MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
+        ]}
       </Menu>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        {/* <App /> */}
+      </Box>
     </Box>
   );
 };

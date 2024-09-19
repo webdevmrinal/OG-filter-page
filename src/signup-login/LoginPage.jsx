@@ -7,14 +7,12 @@ import {
   IconButton,
   Link,
   Divider,
-  CircularProgress
+  CircularProgress,
+  Snackbar,
+  Alert
 } from "@mui/material";
 import Footer from "./Footer";
-import {
-  Visibility,
-  VisibilityOff,
-  Menu as MenuIcon,
-} from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +28,7 @@ import { FormTextField } from "./Components/TextField";
 import { SliderStyles } from "./Components/SliderStyle";
 import { ShimmerLoading } from "./Components/ShimmerEffect";
 import ShimmerSignup from "./Components/SignupShimmer";
+import users from "./Components/MockUsers"; // Import the mock users from the file
 
 const iconComponents = {
   LinkedInIcon,
@@ -41,17 +40,18 @@ const LoginPage = () => {
   const { images, sliderSettings, navItems, socialButtons, formValidation } =
     loginPageConfig;
   const [showPassword, setShowPassword] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [submitting, setSubmitting] = useState(false); 
+  const [submitting, setSubmitting] = useState(false);
+  const [userNotRegistered, setUserNotRegistered] = useState(false); // To show if user not registered
+  const [showSnackbar, setShowSnackbar] = useState(false); // To show snackbar
   const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-      setTimeout(() => setImagesLoaded(true), 1000); // Delay images loading after form is ready
-    }, 2000); // Simulate fetch or heavy computation
+      setTimeout(() => setImagesLoaded(true), 1000);
+    }, 2000);
   }, []);
 
   const formik = useFormik({
@@ -71,24 +71,31 @@ const LoginPage = () => {
         .required(formValidation.password.required),
     }),
     onSubmit: (values) => {
-      setSubmitting(true);
-      console.log("Form data", values);
-      setTimeout(() => {
-        setSubmitting(false);
-        navigate("/dashboardpage");
-      }, 2000); // Simulate network request
+      setSubmitting(true); // Show loading spinner
+  
+      const user = users.find(
+        (user) =>
+          user.email === values.email && user.password === values.password
+      );
+  
+      if (user) {
+        // Simulate a delay to show the loading spinner
+        setTimeout(() => {
+          console.log("User logged in:", user.name);
+          setSubmitting(false); // Stop the loading spinner
+          navigate("/dashboardpage"); // Redirect after success
+        }, 2000); // 2 seconds delay to show the spinner
+      } else {
+        // If user is not found, show the error message
+        setTimeout(() => {
+          setSubmitting(false); // Stop the loading spinner
+          setUserNotRegistered(true);
+          setShowSnackbar(true); // Show snackbar on failure
+        }, 1000); // 1 second delay for error simulation
+      }
     },
   });
-
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
-  };
+  
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -98,6 +105,10 @@ const LoginPage = () => {
     event.preventDefault();
   };
 
+  const handleCloseSnackbar = () => {
+    setShowSnackbar(false); // Close the snackbar manually
+  };
+
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -105,27 +116,28 @@ const LoginPage = () => {
       </Box>
     );
   }
+
   return (
-    <Box sx={{ flexGrow: 1, px: 1, }}>
+    <Box sx={{ flexGrow: 1, px: 1 }}>
       <Header />
       <FormContainer>
         <FormPaper>
-        <Box
-        sx={{
-          width: { xs: "100%", md: "50%" },
-          flexGrow: 1,
-          position: "relative",
-          display: { xs: "none", md: "block" }, // Hide on xs, show on md and larger
-        }}
-      >
-        {imagesLoaded && (
-          <Slider {...sliderSettings}>
-            {images.map((url, index) => (
-              <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
-            ))}
-          </Slider>
-        )}
-      </Box>
+          <Box
+            sx={{
+              width: { xs: "100%", md: "50%" },
+              flexGrow: 1,
+              position: "relative",
+              display: { xs: "none", md: "block" },
+            }}
+          >
+            {imagesLoaded && (
+              <Slider {...sliderSettings}>
+                {images.map((url, index) => (
+                  <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
+                ))}
+              </Slider>
+            )}
+          </Box>
 
           <Box
             sx={{
@@ -137,26 +149,28 @@ const LoginPage = () => {
               position: "relative",
             }}
           >
-            <Box display={'flex'} sx={{flexDirection: {xs: 'column', sm: 'row'}, justifyContent: {xs: 'center', sm: 'space-between'}, alignItems: 'center'}} >
-            <Typography variant="h6" sx={{ fontWeight: "600", mt: { sm: 2} }}>
+            <Box
+              display={"flex"}
+              sx={{
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent: { xs: "center", sm: "space-between" },
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h6" sx={{ fontWeight: "600", mt: { sm: 2 } }}>
                 Login on OpenGrowth
               </Typography>
 
               {/* Login Link */}
-              <Typography
-                variant="subtitle2"
-                sx={{ mt: 2, }}
-              >Didn't have a account?
+              <Typography variant="subtitle2" sx={{ mt: 2 }}>
+                Didn't have an account?
                 <Link
-                  sx={{ cursor: "pointer", textDecoration: 'none' }}
-                  onClick={() => navigate("/signup")} // Assuming "/login" is your route to the login page
+                  sx={{ cursor: "pointer", textDecoration: "none" }}
+                  onClick={() => navigate("/signup")}
                 >
                   Join now
                 </Link>
-
               </Typography>
-
-
             </Box>
 
             <Divider />
@@ -168,13 +182,13 @@ const LoginPage = () => {
                   return null;
                 }
                 return (
-                  <SocialButtons
-                    key={index}
-                    variant="outlined"
-                    
-                  >
-                    <IconComponent style={{ marginRight: 1, width: 20, height: 20 }} />
-                    <Typography variant={'subtitle2'} sx={{ mt:0.5, ml: 1 }}>{button.label}</Typography>
+                  <SocialButtons key={index} variant="outlined">
+                    <IconComponent
+                      style={{ marginRight: 1, width: 20, height: 20 }}
+                    />
+                    <Typography variant={"subtitle2"} sx={{ mt: 0.5, ml: 1 }}>
+                      {button.label}
+                    </Typography>
                   </SocialButtons>
                 );
               })}
@@ -219,18 +233,29 @@ const LoginPage = () => {
                     </Link>
                   </Grid>
                   <Grid item xs={12}>
-                  <FormButton
+                    <FormButton
                       variant="contained"
                       type="submit"
-                      disabled={submitting}  // Disable the button while submitting
+                      disabled={submitting} // Disable the button while submitting
                     >
-                      {submitting ? <CircularProgress size={24} /> : 'Login Now'}
+                      {submitting ? <CircularProgress size={24} /> : "Login Now"}
                     </FormButton>
                   </Grid>
                 </Grid>
               </form>
-
             </Box>
+
+            {/* Snackbar to show if user is not registered */}
+            <Snackbar
+              open={showSnackbar}
+              onClose={handleCloseSnackbar}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              autoHideDuration={4000}
+            >
+              <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+                You are not registered. <Link onClick={() => navigate("/signup")} sx={{ cursor: 'pointer' }}>Join now</Link>.
+              </Alert>
+            </Snackbar>
           </Box>
         </FormPaper>
       </FormContainer>

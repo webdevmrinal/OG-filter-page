@@ -15,37 +15,44 @@ const experts = [
   { name: "Entrepreneurship", imageLink: null },
 ];
 
-function Page2({ data, onDataChange }) { // Accept data and onDataChange props
-  const [selectedCourses, setSelectedCourses] = useState(data.courses || []);  // Load from props or default to empty array
-  const [selectedExperts, setSelectedExperts] = useState(data.experts || []);  // Load from props or default to empty array
+function Page2({ data, onDataChange, reset }) { // Accept the reset prop
+  const [selectedCourses, setSelectedCourses] = useState(data.courses || []);
+  const [selectedExperts, setSelectedExperts] = useState(data.experts || []);
 
   const handleSelectCourse = (index) => {
     const newSelected = [...selectedCourses];
     const position = newSelected.indexOf(index);
     if (position >= 0) {
-      newSelected.splice(position, 1); // Remove if already selected
+      newSelected.splice(position, 1);
     } else {
-      newSelected.push(index); // Add to selected list if not already
+      newSelected.push(index);
     }
     setSelectedCourses(newSelected);
-    onDataChange({ courses: newSelected, experts: selectedExperts });  // Update the parent with both selected courses and experts
+    onDataChange({ courses: newSelected, experts: selectedExperts });
   };
 
   const handleSelectExpert = (index) => {
     const newSelected = [...selectedExperts];
     const position = newSelected.indexOf(index);
     if (position >= 0) {
-      newSelected.splice(position, 1); // Remove if already selected
+      newSelected.splice(position, 1);
     } else {
-      newSelected.push(index); // Add to selected list if not already
+      newSelected.push(index);
     }
     setSelectedExperts(newSelected);
-    onDataChange({ courses: selectedCourses, experts: newSelected });  // Update the parent with both selected courses and experts
+    onDataChange({ courses: selectedCourses, experts: newSelected });
   };
 
   useEffect(() => {
-    setSelectedCourses(data.courses || []); // Sync state with parent data
-    setSelectedExperts(data.experts || []); // Sync state with parent data
+    if (reset) {
+      setSelectedCourses([]); // Reset courses
+      setSelectedExperts([]); // Reset experts
+    }
+  }, [reset]);
+
+  useEffect(() => {
+    setSelectedCourses(data.courses || []);
+    setSelectedExperts(data.experts || []);
   }, [data]);
 
   return (

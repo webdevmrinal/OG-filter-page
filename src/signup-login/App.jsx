@@ -4,24 +4,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Box, Button, LinearProgress } from "@mui/material";
 import Page1 from "./Page1";
 import Page2 from "./Page2";
+import SignupPage from "./SignupNew"; // Import SignupPage
 import Header from "./Header";
 import Footer from "./Footer";
 import { StyledContainer, ContentBox, ButtonContainer } from "./Components/Box";
 
 function App2() {
   const [step, setStep] = useState(1);
-  const [page1Data, setPage1Data] = useState(
-    JSON.parse(localStorage.getItem("page1Data")) || {} // Load data from localStorage
-  );
-  const [page2Data, setPage2Data] = useState(
-    JSON.parse(localStorage.getItem("page2Data")) || {} // Load data from localStorage
-  );
+  const [page1Data, setPage1Data] = useState({});
+  const [page2Data, setPage2Data] = useState({});
+  const [resetFlag, setResetFlag] = useState(false); // Flag to reset Page1 and Page2
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     if (location.state && location.state.fromSignup) {
-      setStep(100);
+      setStep(100); // Go to the signup page if navigating from the signup page
     }
   }, [location]);
 
@@ -31,14 +29,13 @@ function App2() {
     }
   }, [step, navigate]);
 
-  // Save page1Data and page2Data to localStorage when they change
-  useEffect(() => {
-    localStorage.setItem("page1Data", JSON.stringify(page1Data));
-  }, [page1Data]);
-
-  useEffect(() => {
-    localStorage.setItem("page2Data", JSON.stringify(page2Data));
-  }, [page2Data]);
+  // Function to reset UI state
+  const resetUIState = () => {
+    setPage1Data({});
+    setPage2Data({});
+    setResetFlag(true); // Trigger UI reset
+    setTimeout(() => setResetFlag(false), 0); // Reset the flag after the effect
+  };
 
   const handlePage1Data = (data) => {
     setPage1Data(data); // Update local state with the data from Page1
@@ -48,11 +45,17 @@ function App2() {
     setPage2Data(data); // Update local state with the data from Page2
   };
 
+  const resetAllData = () => {
+    resetUIState(); // Reset the UI state only
+  };
+
   const renderPage = () => {
     if (step < 50) {
-      return <Page1 data={page1Data} onDataChange={handlePage1Data} />;
+      return <Page1 data={page1Data} onDataChange={handlePage1Data} reset={resetFlag} />;
     } else if (step >= 50 && step <= 100) {
-      return <Page2 data={page2Data} onDataChange={handlePage2Data} />;
+      return <Page2 data={page2Data} onDataChange={handlePage2Data} reset={resetFlag} />;
+    } else if (step === 100) {
+      return <SignupPage resetAllData={resetAllData} />;
     }
   };
 
