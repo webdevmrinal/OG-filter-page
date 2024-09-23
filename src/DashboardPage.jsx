@@ -300,7 +300,26 @@ const DashboardPage = () => {
     });
   }, []);
   const appointmentCard = (appointment) => (
-    <FollowerCard sx={{ height: '16vh', width: 'max-content' }}>
+    <FollowerCard
+      key={appointment.id}
+      sx={{
+        height: '16vh',
+        width: 'max-content',
+        cursor: 'pointer', // Indicate that the card is clickable
+        position: 'relative', // Ensure positioning context if needed
+        "&:hover": {
+          backgroundColor: "#f0f0f0", // Optional hover effect
+        },
+      }}
+      onClick={() => navigateToAppointmentPage(appointment)} // Navigate with appointment data
+      role="button" // Accessibility role
+      tabIndex={0} // Make it focusable
+      onKeyPress={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          navigateToAppointmentPage(appointment);
+        }
+      }}
+    >
       <Avatar
         sx={{ bgcolor: "primary.main", width: 80, height: 80, zIndex: 1, mr: 2 }}
         src="https://academy.opengrowth.com/assets/images/users/user_523_professor_DheerajP.png"
@@ -328,6 +347,7 @@ const DashboardPage = () => {
       </Box>
     </FollowerCard>
   );
+
 
   const handleExpertClick = (expert) => {
     setSelectedExpert(expert);
@@ -695,6 +715,19 @@ const DashboardPage = () => {
                     </Box>
                   </MainCard>
                 ))}
+                <Button
+                onClick={navigateToExpertsPage}
+                variant="contained"
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  px: 3,
+                  py: 1,
+                  alignSelf: "center",
+                }}
+              >
+                Load More
+              </Button>
             </Box>
 
           </Grid>

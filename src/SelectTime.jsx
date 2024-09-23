@@ -12,6 +12,7 @@ import {
   Rating,
   useMediaQuery,
   useTheme,
+  Grid,
 } from "@mui/material";
 import { addDays, format } from "date-fns";
 import GetTime from "./GetTime";
@@ -239,8 +240,16 @@ const SelectTime = ({ setShowGetTime, professorName, profileType }) => {
               profileType={profileType}
             />
           ) : (
-            <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 2, boxShadow: '0 8px 16px rgba(0,0,0,0.2)' }}>
-              <Typography variant="h5" gutterBottom>
+            <Paper
+              elevation={3}
+              sx={{
+                p: { xs: 2, sm: 3 },
+                mt: 3,
+                borderRadius: 2,
+                boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+              }}
+            >
+              <Typography variant={isMobile ? "h6" : "h5"} gutterBottom>
                 Request a Video Call
               </Typography>
 
@@ -249,17 +258,38 @@ const SelectTime = ({ setShowGetTime, professorName, profileType }) => {
                 exclusive
                 onChange={handleDurationChange}
                 aria-label="call duration"
+                sx={{
+                  flexWrap: 'wrap',
+                  gap: 1,
+                  mt: 1,
+                }}
               >
-                <ToggleButton value="15" aria-label="15 minutes">
+                <ToggleButton
+                  value="15"
+                  aria-label="15 minutes"
+                  sx={{ flex: isMobile ? '1 1 45%' : 'none' }}
+                >
                   Quick - 15 Min
                 </ToggleButton>
-                <ToggleButton value="30" aria-label="30 minutes">
+                <ToggleButton
+                  value="30"
+                  aria-label="30 minutes"
+                  sx={{ flex: isMobile ? '1 1 45%' : 'none' }}
+                >
                   Regular - 30 Min
                 </ToggleButton>
-                <ToggleButton value="45" aria-label="45 minutes">
+                <ToggleButton
+                  value="45"
+                  aria-label="45 minutes"
+                  sx={{ flex: isMobile ? '1 1 45%' : 'none' }}
+                >
                   Extra - 45 Min
                 </ToggleButton>
-                <ToggleButton value="60" aria-label="60 minutes">
+                <ToggleButton
+                  value="60"
+                  aria-label="60 minutes"
+                  sx={{ flex: isMobile ? '1 1 45%' : 'none' }}
+                >
                   All Access - 60 Min
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -269,14 +299,14 @@ const SelectTime = ({ setShowGetTime, professorName, profileType }) => {
                   <Checkbox
                     checked={isGift}
                     onChange={(e) => setIsGift(e.target.checked)}
-                    sx={{ ml: 2, paddingRight: 1, pl: 1 }}
+                    sx={{ ml: 0, paddingRight: 1, pl: 2 }}
                   />
                 }
                 label="Tap to send this as a gift"
                 sx={{ mt: 2 }}
               />
-              <Box display={isMobile ? 'block' : 'flex'} sx={{ marginTop: 2, width: { xs: '107vw', sm: 'inherit' }, }}>
-                <Box>
+              <Grid container spacing={2} sx={{ marginTop: 2 }}>
+                <Grid item xs={12} md={8}>
                   {visibleDays.map((day, index) => (
                     <Box key={index} sx={{ mb: 2 }}>
                       <Typography variant="subtitle2">{day.date}</Typography>
@@ -290,7 +320,15 @@ const SelectTime = ({ setShowGetTime, professorName, profileType }) => {
                               `${day.date}_${time.label}`
                             )}
                             onChange={() => handleTimeToggle(day, time)}
-                            sx={{ mr: 1, mt: 0.7, width: "max-content", fontSize: { xs: '0.8em', sm: '0.875em' }, px: { xs: '4px', sm: '11px' } }}
+                            sx={{
+                              mr: 1,
+                              mt: 0.7,
+                              width: "max-content",
+                              fontSize: { xs: '0.75em', sm: '0.875em' },
+                              px: { xs: '6px', sm: '11px' },
+                              py: { xs: '4px', sm: '6px' },
+                              whiteSpace: 'nowrap',
+                            }}
                           >
                             {time.label}
                           </TimeButton>
@@ -298,34 +336,93 @@ const SelectTime = ({ setShowGetTime, professorName, profileType }) => {
                       </ScrollableBox>
                     </Box>
                   ))}
-                </Box>
-                <Box
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  md={4}
                   sx={{
-                    width: "100%",
                     display: isMobile ? "none" : "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "flex-start",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-end",
                     mb: 2,
                   }}
                 >
-                  <Box>
-                    <Typography variant="subtitle2">
-                      Looking for a time not listed?
-                    </Typography>
-                    <Button size="small" onClick={() => setShowGetTime1(true)}>
-                      Tap here to see available slots
-                    </Button>
-                  </Box>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Looking for a time not listed?
+                  </Typography>
+                  <Button size="small" onClick={() => setShowGetTime1(true)}>
+                    Tap here to see available slots
+                  </Button>
+                </Grid>
+              </Grid>
+
+              {isMobile && (
+                <Box sx={{ mb: 2 }}>
+                  <Button size="small" onClick={() => setShowGetTime1(true)} fullWidth>
+                    Tap here to see available slots
+                  </Button>
                 </Box>
+              )}
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mt: 3,
+                  flexDirection: isMobile ? "column" : "row",
+                  gap: isMobile ? 2 : 0,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography variant="h6" component="span">
+                    ₹4,999 • Session
+                  </Typography>
+                  <Rating value={5} readOnly size="small" sx={{ ml: 1 }} />
+                  <Typography variant="body2" component="span" sx={{ ml: 1 }}>
+                    5.0 (40)
+                  </Typography>
+                </Box>
+                <ButtonContainer sx={{ width: isMobile ? "100%" : "auto" }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setShowGetTime(false)}
+                    sx={{
+                      flexGrow: 1,
+                      mb: isMobile ? 1 : 0, // Margin bottom for mobile
+                      width: isMobile ? "100%" : "auto",
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleRequest}
+                    sx={{
+                      flexGrow: 1,
+                      width: isMobile ? "100%" : "auto",
+                    }}
+                  >
+                    Request
+                  </Button>
+                </ButtonContainer>
               </Box>
 
-              <Box sx={{
-                display: "flex",
-                justifyContent: isMobile ? "space-between" : "flex-start",
-                alignItems: "flex-start",
-                mt: 2,
-                flexDirection: isMobile ? "row" : "column",
-              }}>
+              {/* Preserve the "Show More Slots" functionality */}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  mt: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                  gap: isMobile ? 1 : 0,
+                }}
+              >
                 <Button
                   variant="text"
                   onClick={() => setShowAllDays(!showAllDays)}
@@ -337,50 +434,6 @@ const SelectTime = ({ setShowGetTime, professorName, profileType }) => {
                 >
                   {showAllDays ? "Show Less Slots" : "Show More Slots"}
                 </Button>
-                {isMobile && (
-                  <Button size="small" onClick={() => setShowGetTime1(true)}>
-                    Tap here to see available slots
-                  </Button>
-                )}
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  mt: 3,
-                }}
-              >
-                <Box>
-                  <Typography variant="h6" component="span">
-                    ₹4,999 • Session
-                  </Typography>
-                  <Rating value={5} readOnly size="small" sx={{ ml: 1 }} />
-                  <Typography variant="body2" component="span" sx={{ ml: 1 }}>
-                    5.0 (40)
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-                  <ButtonContainer>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => setShowGetTime(false)}
-                      sx={{ flexGrow: 1 }}  // Ensures the button stretches in column layout
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleRequest}
-                      sx={{ flexGrow: 1 }}  // Ensures the button stretches in column layout
-                    >
-                      Request
-                    </Button>
-                  </ButtonContainer>
-                </Box>
               </Box>
             </Paper>
           )}

@@ -173,7 +173,7 @@ const ProfilePage = () => {
   return (
     <>
       {isOutsideLayout && <Header />}
-      <Box sx={{ width: { xs: "132vw", sm: "inherit" } }}>
+      <Box sx={{ width: { xs: "100%", sm: "inherit" } }}>
         <Box bgcolor={"#fff"} borderRadius={1.5} overflow={"hidden"}>
           <GradientBox position={"relative"}>
             <GradientContent>
