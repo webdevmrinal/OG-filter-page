@@ -40,7 +40,7 @@ export default function CourseAssignment() {
     // Simulate data loading (replace with your actual data fetching logic)
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 500); // 2 seconds delay
+    }, 500); // 0.5 seconds delay
     return () => clearTimeout(timer);
   }, []);
 
@@ -60,10 +60,22 @@ export default function CourseAssignment() {
   const ActivityCard = ({ activity }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
     return (
-      <StyledCard onClick={() => handleCardClick(activity)}>
+      <StyledCard
+        onClick={() => handleCardClick(activity)}
+        sx={{
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'flex-start' : 'center',
+          padding: isMobile ? 2 : 1, // Adjust padding for better spacing on mobile
+        }}
+      >
         {/* Icon Section */}
-        <StyledIconContainer>
+        <StyledIconContainer
+          sx={{
+            mb: isMobile ? 2 : 0, // Add margin-bottom on mobile
+          }}
+        >
           {loading ? (
             <Skeleton variant="circular" width={64} height={64} />
           ) : (
@@ -72,7 +84,17 @@ export default function CourseAssignment() {
         </StyledIconContainer>
 
         {/* Main Content Section */}
-        <Box sx={{ px: { xs: 0, sm: 2 }, flex: 1, ml: 0.5, py: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <Box
+          sx={{
+            px: { xs: 0, sm: 2 },
+            flex: 1,
+            ml: isMobile ? 0 : 0.5,
+            py: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
           {/* Chip */}
           {loading ? (
             <Skeleton variant="rectangular" width={60} height={20} />
@@ -139,7 +161,16 @@ export default function CourseAssignment() {
         </Box>
 
         {/* Grade, Status, and Chevron (aligned vertically) */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', mr: 2, mt: 0.5 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: isMobile ? 'flex-start' : 'flex-end',
+            justifyContent: 'center',
+            mr: isMobile ? 0 : 2,
+            mt: isMobile ? 2 : 0.5, // Add margin-top on mobile
+          }}
+        >
           {/* Render stars even if grade is 0 or undefined */}
           {loading ? (
             <Skeleton variant="text" width="40%" height={20} />

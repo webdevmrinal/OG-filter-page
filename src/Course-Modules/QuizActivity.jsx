@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { StyledCard, StyledTitle, StyledBackButton } from './Data';
 import QuizPage from './QuizPage';
@@ -11,21 +17,41 @@ export default function QuizActivity({ activity, handleBackClick }) {
     setIsQuizStarted(true);
   };
 
+  // Initialize theme and media query
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detects if the screen is small
+
   if (isQuizStarted) {
     return <QuizPage handleBackClick={handleBackClick} />;
   }
 
   return (
     <StyledCard>
-      <Box sx={{ padding: 1, width: '100%' }}>
+      <Box sx={{ padding: 2, width: '100%' }}>
         {/* Header Section */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: isMobile ? 'center' : 'space-between',
+            alignItems: 'center',
+            mb: 4,
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: isMobile ? 2 : 0, // Add gap between elements on mobile
+          }}
+        >
           {/* Back Button and Activity Title */}
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: isMobile ? 'column' : 'row',
+              textAlign: isMobile ? 'center' : 'left',
+            }}
+          >
             <StyledBackButton onClick={handleBackClick}>
               <ArrowBackIcon />
             </StyledBackButton>
-            <Box sx={{ ml: 2 }}>
+            <Box sx={{ ml: isMobile ? 0 : 2, mt: isMobile ? 1 : 0 }}>
               <StyledTitle variant="h6">{activity.title}</StyledTitle>
               <Typography variant="body2" color="textSecondary">
                 {activity.description}
@@ -34,15 +60,39 @@ export default function QuizActivity({ activity, handleBackClick }) {
           </Box>
 
           {/* Start Button */}
-          <Button variant="contained" color="primary" sx={{ minWidth: 130, height: 40 }} onClick={handleStartQuiz}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              minWidth: 130,
+              height: 40,
+              alignSelf: isMobile ? 'stretch' : 'auto', // Stretch the button on mobile
+            }}
+            onClick={handleStartQuiz}
+          >
             Start Now
           </Button>
         </Box>
 
         {/* Quiz Details Section */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, alignItems: 'flex-start' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: 'space-between',
+            gap: 2,
+            alignItems: isMobile ? 'flex-start' : 'flex-start',
+          }}
+        >
           {/* Left Section with Quiz Details */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              width: isMobile ? '100%' : '48%',
+            }}
+          >
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <StyledTitle variant="subtitle1">Attempts:</StyledTitle>
               <Typography variant="body2" color="textSecondary">
@@ -51,7 +101,7 @@ export default function QuizActivity({ activity, handleBackClick }) {
             </Box>
 
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              <StyledTitle variant="subtitle1">Attempt left:</StyledTitle>
+              <StyledTitle variant="subtitle1">Attempts left:</StyledTitle>
               <Typography variant="body2" color="textSecondary">
                 2
               </Typography>
@@ -66,7 +116,16 @@ export default function QuizActivity({ activity, handleBackClick }) {
           </Box>
 
           {/* Right Section with Duration and Expiration */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: 'right', alignItems: 'flex-end', gap: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              textAlign: isMobile ? 'left' : 'right',
+              alignItems: isMobile ? 'flex-start' : 'flex-end',
+              gap: 1,
+              width: isMobile ? '100%' : '48%',
+            }}
+          >
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <StyledTitle variant="subtitle1">Quiz duration:</StyledTitle>
               <Typography variant="body2" color="textSecondary">

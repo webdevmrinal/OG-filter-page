@@ -36,7 +36,7 @@ export const ExpertCard = ({ expert, handleExpertClick, context }) => {
         <MainCard
             sx={{
                 height: context === "carousel" ? "20em" : "27em", // Adjust height based on context
-                
+
             }}
         >
             <CardMedia
@@ -55,8 +55,8 @@ export const ExpertCard = ({ expert, handleExpertClick, context }) => {
                         context === "myConnection"
                             ? `/detail/${expert?.profile_url}`
                             : context === "allExperts" || context === "carousel"
-                            ? `/expert-profile/${expert?.profile_url}`
-                            : `/profile/${expert?.profile_url}`
+                                ? `/expert-profile/${expert?.profile_url}`
+                                : `/profile/${expert?.profile_url}`
                     }
                     style={{ textDecoration: "none" }}
                     state={{ expertEmail: expert?.email }}

@@ -169,10 +169,6 @@ const TimeButton = styled(Button)(({ theme }) => ({
   fontWeight: "normal",
   backgroundColor: "#f4f7f9",
   color: "#000000",
-  //   boxShadow: active ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
-  //   "&:hover": {
-  //     backgroundColor: active ? "#333333" : "#d5d5d5",
-  //   },
   width: "auto",
   whiteSpace: "nowrap",
 }));
@@ -647,54 +643,58 @@ const DashboardPage = () => {
 
               <Divider sx={{ width: "96%", mb: 2 }} />
 
-              {experts.slice(0, 6).map((expert, index) => (
-                <MainCard
-                  key={index}
-                  sx={{ height: 'auto', width: '22em' }}
-                >
-                  <Box sx={{ width: "100%", position: "relative" }}>
-                    <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
-                      <CardMedia
-                        component="img"
-                        image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
-                        alt={expert.name}
-                        sx={{ width: "100%", height: 250, cursor: "pointer" }}
-                      />
-                    </Link>
-                    <NameBox>
-                      <Typography variant="subtitle1" align="center">
-                        {expert.name}
-                      </Typography>
-                      <Typography variant="body2" align="center" sx={{ fontSize: '0.75rem' }}>
-                        {expert.industry}
-                      </Typography>
-                    </NameBox>
-                  </Box>
-                  <Box
-                    sx={{
-                      width: "100%",
-                      p: 1,
-                      boxSizing: "border-box",
-                      height: "auto",
-                    }}
+              {loading
+                ? Array.from({ length: 6 }, (_, index) => (
+                  <Shimmer key={index} height={250} />
+                ))
+                : experts.slice(0, 6).map((expert, index) => (
+                  <MainCard
+                    key={index}
+                    sx={{ height: 'auto', width: '22em' }}
                   >
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mt: 0.8 }}
+                    <Box sx={{ width: "100%", position: "relative" }}>
+                      <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
+                        <CardMedia
+                          component="img"
+                          image={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
+                          alt={expert.name}
+                          sx={{ width: "100%", height: 250, cursor: "pointer" }}
+                        />
+                      </Link>
+                      <NameBox>
+                        <Typography variant="subtitle1" align="center">
+                          {expert.name}
+                        </Typography>
+                        <Typography variant="body2" align="center" sx={{ fontSize: '0.75rem' }}>
+                          {expert.industry}
+                        </Typography>
+                      </NameBox>
+                    </Box>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        p: 1,
+                        boxSizing: "border-box",
+                        height: "auto",
+                      }}
                     >
-                      {truncateText(expert.about)}
-                    </Typography>
-                    <Button
-                      size="small"
-                      onClick={() => handleExpertClick(expert)}
-                      sx={{ mt: 1 }}
-                    >
-                      Know More
-                    </Button>
-                  </Box>
-                </MainCard>
-              ))}
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mt: 0.8 }}
+                      >
+                        {truncateText(expert.about)}
+                      </Typography>
+                      <Button
+                        size="small"
+                        onClick={() => handleExpertClick(expert)}
+                        sx={{ mt: 1 }}
+                      >
+                        Know More
+                      </Button>
+                    </Box>
+                  </MainCard>
+                ))}
             </Box>
 
           </Grid>
@@ -762,6 +762,5 @@ const DashboardPage = () => {
     </>
   );
 };
-
 
 export default DashboardPage;
