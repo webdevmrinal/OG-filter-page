@@ -650,7 +650,7 @@ const DashboardPage = () => {
               {experts.slice(0, 6).map((expert, index) => (
                 <MainCard
                   key={index}
-                  sx={{ height: 'auto', width: '18em' }}
+                  sx={{ height: 'auto', width: '22em' }}
                 >
                   <Box sx={{ width: "100%", position: "relative" }}>
                     <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>

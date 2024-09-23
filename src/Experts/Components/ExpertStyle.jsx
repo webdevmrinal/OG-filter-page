@@ -15,12 +15,11 @@ export const CategoryButton = styled(Button)(({ theme, active }) => ({
 }));
 export const MainCard = styled(Card)(({ theme }) => ({
   width: "auto",
-  height: "28em",
   flexShrink: 0,
   display: "flex",
   flexDirection: "column",
   borderRadius: "6px",
-  marginBottom: '16px',
+  margin: '0px 6px 12px 6px',
   boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
   "&:hover": {
     boxShadow: "0 8px 16px rgba(0,0,0,0.2)",

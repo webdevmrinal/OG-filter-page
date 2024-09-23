@@ -16,14 +16,20 @@ export const FormContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const SocialBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    justifyContent: "center", // Centers the buttons in the box
-    alignItems: "center",
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(3),
-    gap: theme.spacing(2),
-    width: '100%',
+  display: "flex",
+  justifyContent: "center", // Center the buttons
+  alignItems: "center",
+  marginBottom: theme.spacing(2),
+  marginTop: theme.spacing(3),
+  gap: theme.spacing(2),
+  width: '100%',
+  flexWrap: "wrap", // Allow buttons to wrap on smaller screens
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: "column", // Stack buttons vertically on small screens
+    gap: theme.spacing(1),   // Reduce gap between buttons on small screens
+  },
 }));
+
 
 export const StyledContainer = styled(Container)(({ theme }) => ({
     display: "flex",

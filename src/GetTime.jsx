@@ -29,6 +29,7 @@ import MobileNumberInput from "./Profile-Slot-Booking/MobileInput";
 import UserDetailsForm from "./Profile-Slot-Booking/UserDetailsForm";
 import PaymentComponent from "./Profile-Slot-Booking/PaymentPage";
 import { StyledConfirmationBox, StyledSummaryBox } from "./Experts/Components/TimeStyles";
+import SummaryConfirmationView from "./SummaryConfirmationView";
 
 const DateButton = styled(ToggleButton)(({ theme }) => ({
   border: `2px solid #e0e0e0`,
@@ -236,9 +237,19 @@ const GetTime = ({ setShowGetTime, professorName, profileType }) => {
     return days;
   };
   const [days, setDays] = useState(generateNext10Days);
+  const [date, setDate] = useState(new Date().toLocaleDateString());
   const visibleDays = showAllDays ? days : days.slice(0, 3);
   const [profileData, setProfileData] = useState(null);
   const expertEmail = location.state?.expertEmail;
+  const [openContactModal, setOpenContactModal] = useState(false);
+
+  const handleOpenContactModal = () => {
+    setOpenContactModal(true);
+  };
+
+  const handleCloseContactModal = () => {
+    setOpenContactModal(false);
+  };
 
   const formatTimeSlot = (timeSlot) => {
     const [date, time] = timeSlot.split("_");
@@ -265,116 +276,41 @@ const GetTime = ({ setShowGetTime, professorName, profileType }) => {
     }
   }, [expertEmail]);
 
-  const getDurationLabel = (duration) => {
-    switch (duration) {
-      case "15":
-        return "Quick - 15 Min";
-      case "30":
-        return "Regular - 30 Min";
-      case "45":
-        return "Extra - 45 Min";
-      case "60":
-        return "All Access - 60 Min";
-      default:
-        return `${duration} Min`;
-    }
+  const resetAndBookAnotherSlot = () => {
+    setSelectedTimes([]);
+    setIsGift(false);
+    setDate(new Date().toLocaleDateString());
+    setDuration("15");
+    setView('selection');
   };
 
   return (
     <>
       {view === "confirmation" ? (
-        <StyledSummaryBox>
-          <StyledConfirmationBox>
-            <CheckCircleOutlineIcon />
-            <Typography variant="h6">
-              Your session is confirmed!
-            </Typography>
-          </StyledConfirmationBox>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, mt: 2 }}>
-            <Avatar
-              src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
-              alt={profileData?.name}
-              sx={{ width: 60, height: 60, mr: 2 }}
-            />
-            <Typography
-              variant="h6"
-              gutterBottom
-              sx={{ fontWeight: 'bold', color: 'primary.main' }}
-            >
-              {professorName}
-            </Typography>
-          </Box>
-
-          {/* Selected Times */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-              Selected Times:
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              {selectedTimes.map((timeSlot, index) => (
-                <DateButton key={index} value={timeSlot} disabled selected>
-                  {formatTimeSlot(timeSlot)}
-                </DateButton>
-              ))}
-            </Box>
-          </Box>
-
-          {/* Duration */}
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-              Duration:
-            </Typography>
-            <ToggleButtonGroup
-              value={duration}
-              exclusive
-              aria-label="call duration"
-            >
-              <DurationButton
-                value={duration}
-                aria-label={`${duration} minutes`}
-                disabled selected
-              >
-                {getDurationLabel(duration)}
-              </DurationButton>
-            </ToggleButtonGroup>
-          </Box>
-
-          {isGift && (
-            <Typography
-              variant="subtitle1"
-              gutterBottom
-              sx={{ fontWeight: "bold", color: "green" }}
-            >
-              This is a gift.
-            </Typography>
-          )}
-
-          <Box
-            sx={{ mt: 3, display: "flex", justifyContent: "space-between", gap: 2 }}
-          >
-            <Box>
-              <Typography variant="h6" component="span">
-                ₹4,999 • Session
-              </Typography>
-              <Rating value={5} readOnly size="small" sx={{ ml: 1 }} />
-              <Typography variant="body2" component="span" sx={{ ml: 1 }}>
-                5.0 (40)
-              </Typography>
-            </Box>
-            <Box sx={{ gap: 2 }}>
-
-              <Button variant="contained" color="primary" onClick={() => setView('getTime')}>
-                Book Another Slot
-              </Button>
-            </Box>
-          </Box>
-        </StyledSummaryBox>
+        <SummaryConfirmationView
+        view={view}
+        professorName={professorName}
+        profileData={profileData}
+        selectedTimes={selectedTimes}
+        duration={duration}
+        isGift={isGift}
+        formatTimeSlot={formatTimeSlot}
+        onCancel={handleCancel}
+        onConfirm={handleConfirm}
+        resetAndBookAnotherSlot={resetAndBookAnotherSlot}
+        openContactModal={openContactModal}
+        handleOpenContactModal={handleOpenContactModal}
+        handleCloseContactModal={handleCloseContactModal}
+      />
       ) : view === "summary" ? (
-        <Summary
+        <SummaryConfirmationView
+          view={view}
           professorName={professorName}
+          profileData={profileData}
           selectedTimes={selectedTimes}
           duration={duration}
           isGift={isGift}
+          formatTimeSlot={formatTimeSlot}
           onCancel={handleCancel}
           onConfirm={handleConfirm}
         />

@@ -11,8 +11,15 @@ import { StyledContainer, ContentBox, ButtonContainer } from "./Components/Box";
 
 function App2() {
   const [step, setStep] = useState(1);
-  const [page1Data, setPage1Data] = useState({});
-  const [page2Data, setPage2Data] = useState({});
+  const [page1Data, setPage1Data] = useState(() => {
+    // Initialize from localStorage if available
+    const saved = localStorage.getItem('page1Data');
+    return saved ? JSON.parse(saved) : "";
+  });
+  const [page2Data, setPage2Data] = useState(() => {
+    const saved = localStorage.getItem('page2Data');
+    return saved ? JSON.parse(saved) : { courses: [], experts: [] };
+  });
   const [resetFlag, setResetFlag] = useState(false); // Flag to reset Page1 and Page2
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,11 +36,23 @@ function App2() {
     }
   }, [step, navigate]);
 
+  // Save page1Data to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('page1Data', JSON.stringify(page1Data));
+  }, [page1Data]);
+
+  // Save page2Data to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('page2Data', JSON.stringify(page2Data));
+  }, [page2Data]);
+
   // Function to reset UI state
   const resetUIState = () => {
-    setPage1Data({});
-    setPage2Data({});
+    setPage1Data("");
+    setPage2Data({ courses: [], experts: [] });
     setResetFlag(true); // Trigger UI reset
+    localStorage.removeItem('page1Data'); // Optionally remove from localStorage
+    localStorage.removeItem('page2Data');
     setTimeout(() => setResetFlag(false), 0); // Reset the flag after the effect
   };
 
@@ -78,6 +97,14 @@ function App2() {
   const handleSkipAll = () => {
     navigate("/signup");
   };
+
+  // Determine if the Next button should be disabled
+  const isNextDisabled =
+    (step < 50 && !page1Data) ||
+    (step >= 50 && step <= 100 && 
+      ((!page2Data.courses || page2Data.courses.length === 0) &&
+       (!page2Data.experts || page2Data.experts.length === 0))
+    );
 
   return (
     <>
@@ -145,6 +172,7 @@ function App2() {
                     <Button
                       onClick={handleNext}
                       variant="contained"
+                      disabled={isNextDisabled} // Disable the Next button based on the condition
                       sx={{
                         backgroundColor: "#25387c",
                         color: "white",
@@ -153,6 +181,7 @@ function App2() {
                         "&:hover": {
                           backgroundColor: "#303030",
                         },
+                        opacity: isNextDisabled ? 0.5 : 1, // Optional: visually indicate disabled state
                       }}
                     >
                       Next

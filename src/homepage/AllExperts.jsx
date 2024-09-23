@@ -1,24 +1,26 @@
-import React, { useState} from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import {
   Box,
   Typography,
   Card,
   Grid,
   Avatar,
-  CardMedia,
   Button,
   Chip,
   Divider
 } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles'; // Import useTheme hook
+import { styled, useTheme } from '@mui/material/styles';
 import { useLocation, useNavigate } from "react-router-dom";
 import OrganizationIcon from '@mui/icons-material/AccountTree';
 import WorkLearnIcon from '@mui/icons-material/School';
 import SearchIcon from "@mui/icons-material/Search";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import Header from '../signup-login/Header';
-import { ExpertCard } from '../ExpertCard';
+
+// Lazy load external components
+const Header = lazy(() => import('../signup-login/Header'));
+const Footer = lazy(() => import('../signup-login/Footer'));
+const ExpertCard = lazy(() => import('../ExpertCard'));
 
 // Styled components
 const MainCard = styled(Card)(({ theme }) => ({
@@ -51,7 +53,7 @@ const FeatureCard = styled(Card)(({ theme }) => ({
 }));
 
 const Banner = () => {
-  const theme = useTheme(); // Get the theme using the useTheme hook
+  const theme = useTheme();
 
   return (
     <Box
@@ -61,11 +63,11 @@ const Banner = () => {
         justifyContent: 'space-between',
         backgroundColor: '#2c489b',
         color: '#fff',
-        padding: { xs: '1rem', sm: '2rem 6.3rem 2.1rem 2rem' }, // Adjust padding for small screens
-        height: { xs: 'auto', sm: 'auto' }, // Adjust height for small screens
+        padding: { xs: '1rem', sm: '2rem 6.3rem 2.1rem 2rem' },
+        height: { xs: 'auto', sm: 'auto' },
         borderRadius: 2,
         [theme.breakpoints.down('sm')]: {
-          flexDirection: 'column-reverse', // Stack text on top of image for small screens
+          flexDirection: 'column-reverse',
           justifyContent: 'center',
           alignItems: 'center',
         },
@@ -73,10 +75,10 @@ const Banner = () => {
     >
       <Box
         sx={{
-          width: { xs: '100%', sm: '42%' }, // Full width for small screens
-          textAlign: { xs: 'center', sm: 'left' }, // Center text on small screens
+          width: { xs: '100%', sm: '42%' },
+          textAlign: { xs: 'center', sm: 'left' },
           mr: { sm: 8.85 },
-          mb: { xs: 2, sm: 0 }, // Add margin below text on small screens
+          mb: { xs: 2, sm: 0 },
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
@@ -92,7 +94,7 @@ const Banner = () => {
             '&:hover': { backgroundColor: '#d6a302' },
             borderRadius: '50px',
             color: 'black',
-            fontSize: { xs: '0.7em', sm: '0.8em' }, // Adjust button text size for small screens
+            fontSize: { xs: '0.7em', sm: '0.8em' },
             fontWeight: '600',
             boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
           }}
@@ -103,20 +105,20 @@ const Banner = () => {
 
       <Box
         sx={{
-          width: { xs: '100%', sm: '49%' }, // Full width for small screens
-          mb: { xs: 2, sm: -5 }, // Add margin below image on small screens
+          width: { xs: '100%', sm: '49%' },
+          mb: { xs: 2, sm: -5 },
         }}
       >
         <img
           src="https://www.opengrowth.com/assets/public/opengrowth/images/banner/experts-banner.png"
           alt="Banner Image"
-          style={{ width: '100%', height: {sm: 'auto', xs: '40vh'}, objectFit: 'cover' }}
+          loading="lazy" // Added lazy loading
+          style={{ width: '100%', height: { sm: 'auto', xs: '40vh' }, objectFit: 'cover' }}
         />
       </Box>
     </Box>
   );
 };
-
 
 const CardFeature = ({ IconComponent, title, subtitle }) => (
   <FeatureCard>
@@ -133,7 +135,7 @@ const CardFeature = ({ IconComponent, title, subtitle }) => (
 );
 
 const HowItWorksCard = ({ icon, title, description }) => {
-  const theme = useTheme(); // Get the theme using the useTheme hook
+  const theme = useTheme();
 
   return (
     <Card
@@ -196,11 +198,11 @@ const HowItWorks = () => (
 );
 
 const AllExperts = () => {
-  const theme = useTheme(); // Get the theme using the useTheme hook
+  const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const { experts } = location.state || {};
-  
+
   const [selectedExpert, setSelectedExpert] = useState(null);
   const chipLabels = [
     "Personal Branding",
@@ -218,47 +220,54 @@ const AllExperts = () => {
 
   const handleExpertClick = (expert) => {
     setSelectedExpert(expert);
+    // You can navigate to a detailed page or perform other actions here
   };
 
   return (
     <Box sx={{ p: 1, pt: 0 }}>
-      <Header />
+      {/* Wrap Header in Suspense */}
+      <Suspense fallback={<div>Loading Header...</div>}>
+        <Header />
+      </Suspense>
+
       <Banner />
-      <MainCard sx={{ py: 4, mt: 5,  }}>
-        <Typography variant="h5" gutterBottom fontWeight={'bold'} sx={{ textAlign: 'center', m: {xs: 2, sm: 0} }}>
+
+      <MainCard sx={{ py: 4, mt: 5 }}>
+        <Typography variant="h5" gutterBottom fontWeight={'bold'} sx={{ textAlign: 'center', m: { xs: 2, sm: 0 } }}>
           Grow your startup with On-Demand and Fractional Executives as Your Success Partners
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2, textAlign: 'center',m: {xs: 2, sm: 0} }}>
+        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2, textAlign: 'center', m: { xs: 2, sm: 0 } }}>
           At OpenGrowth, our mission is to connect you with top global experts across diverse domains, including Marketing, HR, Finance, Legal, and Branding to catalyze your startup growth journey empowered by cutting-edge AI technologies.
         </Typography>
         <Grid container spacing={2} justifyContent="space-evenly" >
-          <Grid item xs={12} sm={10} md={5.5} sx={{margin: {xs: 2, sm: 0.5}}}>
+          <Grid item xs={12} sm={10} md={5.5} sx={{ margin: { xs: 2, sm: 0.5 } }}>
             <CardFeature IconComponent={OrganizationIcon} title="Hire Fractional Executives" subtitle="Hire an Expert to solve your startup’s specific problems at a fractional cost." />
           </Grid>
-          <Grid item xs={12} sm={10} md={5.5}sx={{ paddingLeft: '0px !important', ml: {xs: 4, sm: 0}, mr: {xs: 2, sm: 0.5}, my: 0.5 }}>
+          <Grid item xs={12} sm={10} md={5.5} sx={{ paddingLeft: '0px !important', ml: { xs: 4, sm: 0 }, mr: { xs: 2, sm: 0.5 }, my: 0.5 }}>
             <CardFeature IconComponent={WorkLearnIcon} title="On Demand Expert" subtitle="Easily schedule a one-on-one session with an Expert for quick resolution." />
           </Grid>
         </Grid>
       </MainCard>
+
       <HowItWorks />
 
       {/* Top Experts Card */}
-      <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
-        <Typography variant="h5" fontWeight="bold" sx={{ mb: 1, ml:{sm: 4, xs: 0}, textAlign: 'left' }}>
+      <Card sx={{ my: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
+        <Typography variant="h5" fontWeight="bold" sx={{ mb: 1, ml: { sm: 2, xs: 0 }, textAlign: 'left' }}>
           Top Experts
         </Typography>
-        <Divider sx={{ mb: 2, width: '98%', ml: {sm: 2, xs: 0} }} />
+        <Divider sx={{ mb: 2, width: '98%', ml: { sm: 2, xs: 0 } }} />
         <Box sx={{
           mb: 2,
           display: 'flex',
-          flexWrap: 'nowrap', // Ensure the chips don't wrap to the next line
-          ml: {sm: 3, xs: 0},
+          flexWrap: 'nowrap',
+          ml: { sm: 1, xs: 0 },
           gap: 1,
-          overflowX: 'auto', // Allow horizontal scrolling
-          scrollbarWidth: 'none', // For Firefox to hide the scrollbar
-          '&::-webkit-scrollbar': { display: 'none' }, // For Chrome, Edge, and Safari
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
           [theme.breakpoints.down('sm')]: {
-            overflowX: 'auto', // Enable scrolling on small screens
+            overflowX: 'auto',
           },
         }}>
           {chipLabels.map((label, index) => (
@@ -278,32 +287,40 @@ const AllExperts = () => {
         </Box>
         {/* Displaying Experts inside the same card */}
         <Grid
-            container
-            columnSpacing={2}
-            rowSpacing={1}
-            sx={{
-              placeItems: "center",
-              placeContent: "center",
-              mx: "auto",
-              py: "1.5em",
-              px: "8px",
-            }}
-          >
-          {experts.map((expert, index) => (
+          container
+          columnSpacing={2}
+          rowSpacing={1}
+          sx={{
+            placeItems: "center",
+            placeContent: "center",
+            mx: "auto",
+            py: "1.5em",
+            px: "8px",
+          }}
+        >
+          {experts && experts.map((expert) => (
             <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
-            key={expert.id}
-            sx={{ px: "4px !important" }}
-          >
-            <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="allExperts"/>
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              key={expert.id}
+              sx={{ px: "4px !important" }}
+            >
+              {/* Wrap ExpertCard in Suspense */}
+              <Suspense fallback={<div>Loading Expert...</div>}>
+                <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="allExperts" />
+              </Suspense>
             </Grid>
           ))}
         </Grid>
       </Card>
+
+      {/* Wrap Footer in Suspense */}
+      <Suspense fallback={<div>Loading Footer...</div>}>
+        <Footer />
+      </Suspense>
     </Box>
   );
 };

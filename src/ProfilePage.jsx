@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  Button,
   Avatar,
   List,
   ListItem,
@@ -20,7 +19,7 @@ import {
   Divider,
   useMediaQuery,
   useTheme,
-  Chip
+  Chip,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SchoolIcon from "@mui/icons-material/School";
@@ -43,28 +42,27 @@ import {
   TabsContainer,
   ProfileAvatar,
   GradientContent,
-  PaperContent
+  PaperContent,
 } from "./Experts/Components/ProfileStyles";
 import Header from "./signup-login/Header";
 
 const SkillsCard = ({ skills }) => {
-  const skillsArray = typeof skills === 'string' ? skills.split(',').map(skill => skill.trim()) : [];
+  const skillsArray =
+    typeof skills === "string"
+      ? skills.split(",").map((skill) => skill.trim())
+      : [];
 
   return (
-    <Card sx={{ mb: 3, boxShadow: "0 8px 16px rgba(0,0,0,0.2)", borderRadius: 2 }}>
+    <Card
+      sx={{ mb: 3, boxShadow: "0 8px 16px rgba(0,0,0,0.2)", borderRadius: 2 }}
+    >
       <CardContent>
-        <Typography variant="h6">
-          Skills
-        </Typography>
+        <Typography variant="h6">Skills</Typography>
         <Divider sx={{ mb: 2 }} />
         <Grid container spacing={2}>
           {skillsArray.map((skill, index) => (
             <Grid item key={index}>
-              <Chip
-                label={skill}
-                variant="outlined"
-                sx={{}}
-              />
+              <Chip label={skill} variant="outlined" sx={{}} />
             </Grid>
           ))}
         </Grid>
@@ -80,11 +78,11 @@ const ProfilePage = () => {
   const location = useLocation();
   const expertEmail = location.state?.expertEmail;
   const [tabValue, setTabValue] = useState(0);
-  const [expanded, setExpanded] = useState('panel0');
+  const [expanded, setExpanded] = useState("panel0");
   const [isFollowing, setIsFollowing] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isOutsideLayout = location.pathname.startsWith('/expert-profile'); // Determine profile type
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isOutsideLayout = location.pathname.startsWith("/expert-profile"); // Determine profile type
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -108,22 +106,52 @@ const ProfilePage = () => {
     }
   }, [expertEmail]);
 
-  if (isLoading) {
+  // Check if the profile is already followed
+  useEffect(() => {
+    if (profileData) {
+      const followedProfiles =
+        JSON.parse(localStorage.getItem("followedProfiles")) || [];
+      const isProfileFollowed = followedProfiles.some(
+        (profile) => profile.email === profileData.email
+      );
+      setIsFollowing(isProfileFollowed);
+    }
+  }, [profileData]);
+
+  const handleFollowClick = () => {
+    setIsFollowing(!isFollowing);
+
+    let followedProfiles =
+      JSON.parse(localStorage.getItem("followedProfiles")) || [];
+
+    if (!isFollowing) {
+      // Add the current profile to the list of followed profiles
+      followedProfiles.push(profileData);
+    } else {
+      // Remove the current profile from the list
+      followedProfiles = followedProfiles.filter(
+        (profile) => profile.email !== profileData.email
+      );
+    }
+
+    localStorage.setItem("followedProfiles", JSON.stringify(followedProfiles));
+  };
+
+  if (isLoading || !profileData) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
         <ShimmerLoading />
       </Box>
     );
   }
 
-  if (!profileData) return null;
-
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
-  };
-
-  const handleFollowClick = () => {
-    setIsFollowing(!isFollowing);  // Toggle follow status on click
   };
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -145,12 +173,8 @@ const ProfilePage = () => {
   return (
     <>
       {isOutsideLayout && <Header />}
-      <Box sx={{ width: { xs: '132vw', sm: 'inherit' } }}>
-        <Box
-          bgcolor={"#fff"}
-          borderRadius={1.5}
-          overflow={"hidden"}
-        >
+      <Box sx={{ width: { xs: "132vw", sm: "inherit" } }}>
+        <Box bgcolor={"#fff"} borderRadius={1.5} overflow={"hidden"}>
           <GradientBox position={"relative"}>
             <GradientContent>
               <ProfileAvatar
@@ -158,7 +182,11 @@ const ProfilePage = () => {
                 alt={profileData.name}
               />
               <Box ml={2} mb={1}>
-                <Link to={`/profile/${profileData.profile_url}`} state={{ expertEmail: profileData.email }} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link
+                  to={`/profile/${profileData.profile_url}`}
+                  state={{ expertEmail: profileData.email }}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
                   <Typography variant="h5" fontWeight="bold" color="white">
                     {profileData.name}
                   </Typography>
@@ -178,10 +206,19 @@ const ProfilePage = () => {
             <ButtonContainer>
               <StyledButton
                 startIcon={<PersonAddIcon />}
-                variant="outlined"
-                color="primary"
+                variant={isFollowing ? "contained" : "outlined"}
+                color={isFollowing ? "success" : "primary"}
                 onClick={handleFollowClick}
-                sx={{ mr: 1 }}
+                sx={{
+                  mr: 1,
+                  ...(isFollowing && {
+                    backgroundColor: theme.palette.success.light,
+                    borderColor: theme.palette.success.light,
+                    "&:hover": {
+                      backgroundColor: theme.palette.success.main,
+                    },
+                  }),
+                }}
               >
                 {isFollowing ? "Following" : "Follow"}
               </StyledButton>
@@ -195,7 +232,7 @@ const ProfilePage = () => {
               <StyledButton
                 startIcon={<EventNoteIcon />}
                 variant="outlined"
-                onClick={() => setExpanded('panel0')}
+                onClick={() => setExpanded("panel0")}
                 sx={{ mr: 2 }}
               >
                 Request a Time
@@ -204,12 +241,16 @@ const ProfilePage = () => {
           </TabsContainer>
         </Box>
 
-        <Accordion expanded={expanded === 'panel0'} onChange={handleAccordionChange('panel0')} sx={{ boxShadow: "0 1px 1px rgba(0,0,0,0)", }}>
-          <AccordionDetails >
+        <Accordion
+          expanded={expanded === "panel0"}
+          onChange={handleAccordionChange("panel0")}
+          sx={{ boxShadow: "0 1px 1px rgba(0,0,0,0)" }}
+        >
+          <AccordionDetails>
             <SelectTime
               setShowGetTime={setExpanded}
               professorName={profileData.name}
-              profileType={isOutsideLayout ? 'outer' : 'inner'} // Pass profileType
+              profileType={isOutsideLayout ? "outer" : "inner"} // Pass profileType
             />
           </AccordionDetails>
         </Accordion>
@@ -218,8 +259,13 @@ const ProfilePage = () => {
         </Box>
         <Grid container spacing={3} sx={{ my: 3, pl: 4, pr: 4 }}>
           {/* Left side - About section */}
-          <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column' }}>
-            <PaperContent >
+          <Grid
+            item
+            xs={12}
+            sm={4}
+            sx={{ display: "flex", flexDirection: "column" }}
+          >
+            <PaperContent>
               <Typography px={3} pt={0.5} variant="h6" gutterBottom>
                 About
               </Typography>
@@ -268,7 +314,12 @@ const ProfilePage = () => {
           </Grid>
 
           {/* Right side - Accordion section */}
-          <Grid item xs={12} sm={8} sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            sx={{ display: "flex", flexDirection: "column" }}
+          >
             <PaperContent
               elevation={0}
               sx={{
@@ -278,12 +329,22 @@ const ProfilePage = () => {
               }}
             >
               {accordionData.map((item, index) => (
-                <Accordion key={index} expanded={expanded === `panel${index + 1}`} onChange={handleAccordionChange(`panel${index + 1}`)} sx={{ boxShadow: 'none', flexGrow: 1 }}>
+                <Accordion
+                  key={index}
+                  expanded={expanded === `panel${index + 1}`}
+                  onChange={handleAccordionChange(`panel${index + 1}`)}
+                  sx={{ boxShadow: "none", flexGrow: 1 }}
+                >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography sx={{ minHeight: '26.3px' }}>{item.title}</Typography>
+                    <Typography sx={{ minHeight: "26.3px" }}>
+                      {item.title}
+                    </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography sx={{ whiteSpace: 'pre-line' }} color="text.secondary">
+                    <Typography
+                      sx={{ whiteSpace: "pre-line" }}
+                      color="text.secondary"
+                    >
                       {item.content}
                     </Typography>
                   </AccordionDetails>

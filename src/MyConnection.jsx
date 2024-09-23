@@ -115,9 +115,8 @@ function MyConnection() {
             sx={{
               placeItems: "center",
               placeContent: "center",
-              mx: "auto",
               py: "1.5em",
-              px: "8px",
+              pl: {xs: 1, sm: 2},
             }}
           >
             {experts.map((expert, index) => (
@@ -128,7 +127,7 @@ function MyConnection() {
                 md={4}
                 lg={3}
                 key={expert.id}
-                sx={{ px: "4px !important" }}
+                sx={{ pl: "4px !important" }}
               >
                 <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="myConnection" />
               </Grid>

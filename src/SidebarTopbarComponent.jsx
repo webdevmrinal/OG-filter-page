@@ -111,11 +111,9 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
   };
 
   const handleLogout = () => {
-    // Clear user data from localStorage and redirect to signup
-    localStorage.removeItem("signupSubmissions");
     setUser(null);
     handleAvatarMenuClose();
-    navigate("/get-started");
+    navigate("/homepage");
   };
 
   // Toggle the drawer

@@ -1,3 +1,4 @@
+import { Box, Skeleton } from "@mui/material";
 import { styled, keyframes } from "@mui/system";
 
 export const shimmerAnimation = keyframes`
@@ -96,4 +97,27 @@ export const ShimmerLoading = () => (
   </ShimmerEffect>
 );
 
-export default ShimmerLoading;
+export const ShimmerSlider = () => {
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%", // Adjust height based on your design requirements
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "8px",
+        overflow: "hidden",
+      }}
+    >
+      <Skeleton
+        variant="rectangular"
+        width="100%"
+        height="100%"
+        animation="wave"
+        sx={{ borderRadius: "8px" }}
+      />
+    </Box>
+  );
+};
+

@@ -165,9 +165,9 @@ function ExpertPage() {
             sx={{
               placeItems: "center",
               placeContent: "center",
-              mx: "auto",
+              
               py: "1.5em",
-              px: "8px",
+              pl: {xs: 1, sm: 2},
             }}
           >
             {experts.map((expert) => (

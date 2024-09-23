@@ -8,11 +8,13 @@ import {
   ListItemText,
   Typography,
   TextField,
-  Button,
+  IconButton,
   Paper,
   useMediaQuery,
   useTheme
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SendIcon from '@mui/icons-material/Send';
 
 const users = [
   { name: "Aqib Rafiq", role: "Mentor", avatar: "https://randomuser.me/api/portraits/men/1.jpg" },
@@ -41,16 +43,18 @@ const ChatPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [selectedUser, setSelectedUser] = useState(users[2]); // Default selected user as object
+  const [selectedUser, setSelectedUser] = useState(null); // Start with no user selected
   const [messages, setMessages] = useState(initialMessages);
   const [newMessage, setNewMessage] = useState('');
+  const [showMessages, setShowMessages] = useState(!isMobile); // Show messages on desktop by default
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
+    setShowMessages(true);
   };
 
   const handleSendMessage = () => {
-    if (newMessage.trim()) {
+    if (newMessage.trim() && selectedUser) {
       const currentTimestamp = new Date().toLocaleString('en-US', { 
         hour: 'numeric', 
         minute: 'numeric', 
@@ -72,99 +76,157 @@ const ChatPage = () => {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault(); // Prevent newline in TextField
+      handleSendMessage();
+    }
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', height: '91vh' }}>
-      <Box 
-        sx={{
-          width: isMobile ? 'auto' : '300px',
-          borderRight: isMobile ? 'none' : '1px solid #e0e0e0',
-          overflow: 'hidden',
-          m: 2,
-          boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
-        }}
-      >
-        <Typography variant="h6" sx={{ m: 2 }}>
-          Engaged Members
-        </Typography>
-        <List 
+      {(!isMobile || !showMessages) && (
+        <Box 
           sx={{
-            maxHeight: isMobile ? '200px' : 'calc(100vh - 150px)', // Adjust for small screens
-            overflowY: 'auto',
-            '::-webkit-scrollbar': {
-              width: '0px',
-              background: 'transparent'
-            }
+            width: isMobile ? '100%' : '300px',
+            borderRight: isMobile ? 'none' : '1px solid #e0e0e0',
+            overflow: 'hidden',
+            m: 2,
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
           }}
         >
-          {users.map((user) => (
-            <ListItem button key={user.name} onClick={() => handleUserSelect(user)}>
-              <ListItemAvatar>
-                <Avatar src={user.avatar} />
-              </ListItemAvatar>
-              <ListItemText primary={user.name} secondary={user.role} />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', my: 2, mx: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.2)" }}>
-        <Box sx={{ p: 2, backgroundColor: '#f5f5f5', borderBottom: '1px solid #e0e0e0', display: 'flex', alignItems: 'center', flexDirection: isMobile ? 'column' : 'row' }}>
-          <Avatar sx={{ mr: isMobile ? 0 : 2, mb: isMobile ? 1 : 0, height: '60px', width: '60px' }} src={selectedUser.avatar} />
-          <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: isMobile ? 'center' : 'left' }}>
-            <Typography variant="h6">{selectedUser.name}</Typography>
-            <Typography variant="subtitle1">{selectedUser.role}</Typography>
+          <Typography variant="h6" sx={{ m: 2 }}>
+            Engaged Members
+          </Typography>
+          <List 
+            sx={{
+              maxHeight: isMobile ? 'calc(100vh - 150px)' : 'calc(100vh - 150px)',
+              overflowY: 'auto',
+              '::-webkit-scrollbar': {
+                width: '0px',
+                background: 'transparent'
+              }
+            }}
+          >
+            {users.map((user) => (
+              <ListItem button key={user.name} onClick={() => handleUserSelect(user)}>
+                <ListItemAvatar>
+                  <Avatar src={user.avatar} />
+                </ListItemAvatar>
+                <ListItemText primary={user.name} secondary={user.role} />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      )}
+
+      {(!isMobile || showMessages) && selectedUser && (
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', my: 2, mx: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.2)" }}>
+          <Box sx={{ 
+            p: 2, 
+            backgroundColor: '#f5f5f5', 
+            borderBottom: '1px solid #e0e0e0', 
+            display: 'flex', 
+            alignItems: 'center' 
+          }}>
+            {isMobile && (
+              <IconButton onClick={() => setShowMessages(false)} sx={{ mr: 1 }}>
+                <ArrowBackIcon />
+              </IconButton>
+            )}
+            <Avatar sx={{ mr: 2, height: '60px', width: '60px' }} src={selectedUser.avatar} />
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="h6">{selectedUser.name}</Typography>
+              <Typography variant="subtitle1">{selectedUser.role}</Typography>
+            </Box>
+          </Box>
+          <Box 
+            sx={{ 
+              flex: 1, 
+              overflowY: 'auto', 
+              p: 2,
+              backgroundColor: '#fafafa',
+              '::-webkit-scrollbar': {
+                width: '0px',
+                background: 'transparent'
+              }
+            }}
+          >
+            {messages.filter(message => message.user === selectedUser.name).map((message, index) => (
+              <Box key={index}>
+                <Typography variant="caption" sx={{ display: 'block', textAlign: message.sender === 'mentor' ? 'right' : 'left', mb: 1 }}>
+                  {message.timestamp}
+                </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: message.sender === 'mentor' ? 'flex-end' : 'flex-start',
+                    alignItems: 'center',
+                    mb: 2,
+                  }}
+                >
+                  {message.sender === 'learner' && (
+                    <Avatar sx={{ mr: 1 }} src={message.avatar} />
+                  )}
+                  <Paper 
+                    sx={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '10px',
+                      backgroundColor: message.sender === 'mentor' ? '#eeeeee' : '#FFFDE7', // Lighter colors
+                      maxWidth: 'calc(100% - 80px)',
+                      wordWrap: 'break-word',
+                      borderRadius: '12px',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    <Typography variant="body1">{message.text}</Typography>
+                  </Paper>
+                  {message.sender === 'mentor' && (
+                    <Avatar sx={{ ml: 1 }} src={message.avatar} />
+                  )}
+                </Box>
+              </Box>
+            ))}
+          </Box>
+          <Box sx={{ borderTop: '1px solid #e0e0e0', p: 2, display: 'flex', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
+            <TextField
+              fullWidth
+              placeholder="Send messages..."
+              variant="outlined"
+              size="small"
+              multiline={false}
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={handleKeyPress} // Handle Enter key
+              sx={{
+                mr: 1,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    border: 'none',
+                  },
+                  '&:hover fieldset': {
+                    border: 'none',
+                  },
+                  '&.Mui-focused fieldset': {
+                    border: 'none',
+                  },
+                },
+                backgroundColor: '#ffffff', // Optional: Set background to white
+                borderRadius: '8px', // Optional: Rounded corners
+              }}
+            />
+            <IconButton 
+              color="primary" 
+              onClick={handleSendMessage} 
+              disabled={!newMessage.trim()}
+              aria-label="send message"
+            >
+              <SendIcon />
+            </IconButton>
           </Box>
         </Box>
-        <Box sx={{ flex: 1, overflow: 'auto', p: 2, overflowY: 'auto',
-            '::-webkit-scrollbar': {
-              width: '0px',
-              background: 'transparent'
-            } }}>
-          {messages.filter(message => message.user === selectedUser.name).map((message, index) => (
-            <Box key={index}>
-              <Typography variant="caption" sx={{ display: 'block', textAlign: message.sender === 'mentor' ? 'right' : 'left', mb: 1 }}>
-                {message.timestamp}
-              </Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: message.sender === 'mentor' ? 'flex-end' : 'flex-start',
-                  alignItems: 'center',
-                  mb: 2,
-                }}
-              >
-                {message.sender === 'learner' && (
-                  <Avatar sx={{ mr: 1 }} src={message.avatar} />
-                )}
-                <Paper sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  padding: '10px',
-                  backgroundColor: message.sender === 'mentor' ? '#bbdefb' : '#fff9c4',
-                  maxWidth: 'calc(100% - 80px)',
-                  wordWrap: 'break-word'
-                }}>
-                  <Typography variant="body1">{message.text}</Typography>
-                </Paper>
-                {message.sender === 'mentor' && (
-                  <Avatar sx={{ ml: 1 }} src={message.avatar} />
-                )}
-              </Box>
-            </Box>
-          ))}
-        </Box>
-        <Box sx={{ borderTop: '1px solid #e0e0e0', p: 2, display: 'flex' }}>
-          <TextField
-            fullWidth
-            placeholder="Send messages..."
-            variant="outlined"
-            size="small"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            sx={{ mr: 1 }}
-          />
-          <Button variant="contained" sx={{ height: '40px' }} onClick={handleSendMessage}>Send</Button>
-        </Box>
-      </Box>
+      )}
     </Box>
   );
 };

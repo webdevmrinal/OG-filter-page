@@ -50,8 +50,8 @@ const LoginPage = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-      setTimeout(() => setImagesLoaded(true), 1000);
-    }, 2000);
+      setTimeout(() => setImagesLoaded(true), 500);
+    }, 500);
   }, []);
 
   const formik = useFormik({
@@ -84,7 +84,7 @@ const LoginPage = () => {
           console.log("User logged in:", user.name);
           setSubmitting(false); // Stop the loading spinner
           navigate("/dashboardpage"); // Redirect after success
-        }, 2000); // 2 seconds delay to show the spinner
+        }, 1000); // 2 seconds delay to show the spinner
       } else {
         // If user is not found, show the error message
         setTimeout(() => {

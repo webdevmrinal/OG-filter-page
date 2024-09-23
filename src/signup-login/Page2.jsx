@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Checkbox, FormControlLabel } from "@mui/material";
 
 const platforms = [
   { name: "Leadership", imageLink: null },
@@ -19,37 +19,40 @@ function Page2({ data, onDataChange, reset }) { // Accept the reset prop
   const [selectedCourses, setSelectedCourses] = useState(data.courses || []);
   const [selectedExperts, setSelectedExperts] = useState(data.experts || []);
 
-  const handleSelectCourse = (index) => {
-    const newSelected = [...selectedCourses];
-    const position = newSelected.indexOf(index);
-    if (position >= 0) {
-      newSelected.splice(position, 1);
+  // Handler for selecting/deselecting a course by name
+  const handleSelectCourse = (name) => {
+    let newSelected;
+    if (selectedCourses.includes(name)) {
+      newSelected = selectedCourses.filter(course => course !== name);
     } else {
-      newSelected.push(index);
+      newSelected = [...selectedCourses, name];
     }
     setSelectedCourses(newSelected);
     onDataChange({ courses: newSelected, experts: selectedExperts });
   };
 
-  const handleSelectExpert = (index) => {
-    const newSelected = [...selectedExperts];
-    const position = newSelected.indexOf(index);
-    if (position >= 0) {
-      newSelected.splice(position, 1);
+  // Handler for selecting/deselecting an expert by name
+  const handleSelectExpert = (name) => {
+    let newSelected;
+    if (selectedExperts.includes(name)) {
+      newSelected = selectedExperts.filter(expert => expert !== name);
     } else {
-      newSelected.push(index);
+      newSelected = [...selectedExperts, name];
     }
     setSelectedExperts(newSelected);
     onDataChange({ courses: selectedCourses, experts: newSelected });
   };
 
+  // Reset selections when `reset` prop changes to true
   useEffect(() => {
     if (reset) {
       setSelectedCourses([]); // Reset courses
       setSelectedExperts([]); // Reset experts
+      onDataChange({ courses: [], experts: [] }); // Notify parent of reset
     }
-  }, [reset]);
+  }, [reset, onDataChange]);
 
+  // Update selections when `data` prop changes
   useEffect(() => {
     setSelectedCourses(data.courses || []);
     setSelectedExperts(data.experts || []);
@@ -82,25 +85,25 @@ function Page2({ data, onDataChange, reset }) { // Accept the reset prop
             mt: 3,
           }}
         >
-          {platforms.map((platform, index) => (
+          {platforms.map((platform) => (
             <Box
               component="li"
-              key={index}
-              onClick={() => handleSelectCourse(index)}
+              key={platform.name} // Use name as key
+              onClick={() => handleSelectCourse(platform.name)}
               sx={{
                 border: '0.5px solid #e0e0e0',
                 borderRadius: '0.375rem',
                 p: 2,
                 "&:hover": { bgcolor: "#f7f7f7" },
-                bgcolor: selectedCourses.includes(index) ? '#f7f7f7' : '#ffffff',
+                bgcolor: selectedCourses.includes(platform.name) ? '#f7f7f7' : '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
+                cursor: 'pointer', // Change cursor to pointer for better UX
               }}
             >
-              <input
-                type="checkbox"
-                checked={selectedCourses.includes(index)}
-                onChange={() => {}}
+              <Checkbox
+                checked={selectedCourses.includes(platform.name)}
+                onChange={() => handleSelectCourse(platform.name)}
                 sx={{ mr: 2 }}
               />
               <span>{platform.name}</span>
@@ -133,25 +136,25 @@ function Page2({ data, onDataChange, reset }) { // Accept the reset prop
             mt: 3,
           }}
         >
-          {experts.map((expert, index) => (
+          {experts.map((expert) => (
             <Box
               component="li"
-              key={index}
-              onClick={() => handleSelectExpert(index)}
+              key={expert.name} // Use name as key
+              onClick={() => handleSelectExpert(expert.name)}
               sx={{
                 border: '0.5px solid #e0e0e0',
                 borderRadius: '0.375rem',
                 p: 2,
                 "&:hover": { bgcolor: "#f7f7f7" },
-                bgcolor: selectedExperts.includes(index) ? '#f7f7f7' : '#ffffff',
+                bgcolor: selectedExperts.includes(expert.name) ? '#f7f7f7' : '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
+                cursor: 'pointer', // Change cursor to pointer for better UX
               }}
             >
-              <input
-                type="checkbox"
-                checked={selectedExperts.includes(index)}
-                onChange={() => {}}
+              <Checkbox
+                checked={selectedExperts.includes(expert.name)}
+                onChange={() => handleSelectExpert(expert.name)}
                 sx={{ mr: 2 }}
               />
               <span>{expert.name}</span>

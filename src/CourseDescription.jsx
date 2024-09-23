@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { Box, Typography, Button, Card, CardContent, Avatar,ListItemIcon, ListItemText , Grid, Tabs, Tab, List, ListItem, Divider, Chip,Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import { Box, Typography, Button, Card, CardContent, Avatar,ListItemIcon, ListItemText , Grid, Tabs, Tab, List, ListItem, Divider, Chip,Accordion, AccordionSummary, AccordionDetails, Skeleton } from '@mui/material';
 import { styled } from '@mui/system';
 import { useLocation } from 'react-router-dom';
 import ArticleIcon from '@mui/icons-material/Article';  // Example icon
@@ -135,6 +135,16 @@ const CourseDescription = () => {
   const location = useLocation();
   const { title, imageUrl, description } = location.state;
   const [tabIndex, setTabIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate data loading (replace with your actual data fetching logic)
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 300); // 2 seconds delay
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };
@@ -158,69 +168,102 @@ const CourseDescription = () => {
   return (
     <Box sx={{ width: '100%', px: 2, py: 2.5 }}>
       <Grid container spacing={2}>
-      <Grid item xs={12} md={4}>
-        <Card sx={{ height: '100%', overflow: 'auto',boxShadow: "0 4px 6px rgba(0,0,0,0.2)", }}>
-          <CourseAccordion />
-        </Card>
+        <Grid item xs={12} md={4}>
+          <Card sx={{ height: '100%', overflow: 'auto', boxShadow: "0 4px 6px rgba(0,0,0,0.2)" }}>
+            {loading ? (
+              <Box sx={{ p: 2 }}>
+                <Skeleton variant="rectangular" height={300} />
+                <Skeleton variant="text" />
+                <Skeleton variant="text" width="60%" />
+              </Box>
+            ) : (
+              <CourseAccordion />
+            )}
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Card sx={{ height: '100%', overflow: 'auto', boxShadow: "0 4px 6px rgba(0,0,0,0.2)" }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+              {loading ? (
+                <>
+                  <Skeleton variant="rectangular" height={300} />
+                  <Box sx={{ p: 2 }}>
+                    <Skeleton variant="text" width="40%" />
+                    <Skeleton variant="text" />
+                    <Skeleton variant="text" width="80%" />
+                    <Skeleton variant="text" />
+                    <Skeleton variant="text" width="60%" />
+                    <Skeleton variant="circular" width={40} height={40} sx={{ mt: 2 }} />
+                    <Skeleton variant="text" width="80%" />
+                    <Skeleton variant="text" width="40%" />
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <CourseImage
+                    sx={{
+                      backgroundImage: `url(${imageUrl})`,
+                    }}
+                  >
+                    <OverlayText variant="h5">{title}</OverlayText>
+                  </CourseImage>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      Course Description
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary" paragraph>
+                      {description}
+                    </Typography>
+                    <Typography variant="h6" gutterBottom>
+                      Instructors
+                    </Typography>
+                    <Divider sx={{ width: "100%", mb: 2 }} />
+                    <Grid container spacing={2}>
+                      {[
+                        { name: 'John Doe', status: 'Marketing Expert', image: 'https://randomuser.me/api/portraits/men/75.jpg' },
+                        { name: 'Jane Smith', status: 'SEO Specialist', image: 'https://randomuser.me/api/portraits/women/65.jpg' },
+                        { name: 'Priya Nath', status: 'Content Strategist', image: 'https://randomuser.me/api/portraits/women/45.jpg' },
+                      ].map((instructor, index) => (
+                        <Grid item key={index}>
+                          <InstructorCard>
+                            <InstructorAvatar src={instructor.image} />
+                            <InstructorName>{instructor.name}</InstructorName>
+                            <InstructorStatus>{instructor.status}</InstructorStatus>
+                          </InstructorCard>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </CardContent>
+                </>
+              )}
+            </Box>
+          </Card>
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={8}>
-        <Card sx={{ height: '100%', overflow: 'auto',boxShadow: "0 4px 6px rgba(0,0,0,0.2)", }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <CourseImage
-              sx={{
-                backgroundImage: `url(${imageUrl})`,
-              }}
-            >
-              <OverlayText variant="h5">{title}</OverlayText>
-            </CourseImage>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Course Description
-              </Typography>
-              <Typography variant="body1" color="textSecondary" paragraph>
-                {description}
-              </Typography>
-              <Typography variant="h6" gutterBottom>
-                Instructors
-              </Typography>
-              <Divider sx={{ width: "100%", mb: 2 }} />
-              <Grid container spacing={2}>
-                {[
-                  { name: 'John Doe', status: 'Marketing Expert', image: 'https://randomuser.me/api/portraits/men/75.jpg' },
-                  { name: 'Jane Smith', status: 'SEO Specialist', image: 'https://randomuser.me/api/portraits/women/65.jpg' },
-                  { name: 'Priya Nath', status: 'Content Strategist', image: 'https://randomuser.me/api/portraits/women/45.jpg' },
-                ].map((instructor, index) => (
-                  <Grid item key={index}>
-                    <InstructorCard>
-                      <InstructorAvatar src={instructor.image} />
-                      <InstructorName>{instructor.name}</InstructorName>
-                      <InstructorStatus>{instructor.status}</InstructorStatus>
-                    </InstructorCard>
-                  </Grid>
-                ))}
-              </Grid>
-            </CardContent>
-          </Box>
-        </Card>
-      </Grid>
-    </Grid>
 
       {/* Skills Section */}
       <Card
-          variant="outlined"
-          sx={{ mt: 3,boxShadow: "0 4px 12px rgba(0,0,0,0.2)",borderRadius: 2 }}
-        >
-          <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
-            <Tab label="Description" id="tab-0" aria-controls="tabpanel-0" />
-            <Tab label="Key Highlights" id="tab-1" aria-controls="tabpanel-1" />
-            <Tab label="Syllabus" id="tab-2" aria-controls="tabpanel-2" />
-            <Tab label="Instructors" id="tab-3" aria-controls="tabpanel-3" />
-            <Tab label="Advantages" id="tab-4" aria-controls="tabpanel-4" />
-            <Tab label="About University" id="tab-5" aria-controls="tabpanel-5" />
-            <Tab label="Review" id="tab-6" aria-controls="tabpanel-6" />
-          </Tabs>
-          <TabPanel value={tabIndex} index={0}>
-            
+        variant="outlined"
+        sx={{ mt: 3, boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2 }}
+      >
+        <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
+          <Tab label="Description" id="tab-0" aria-controls="tabpanel-0" />
+          <Tab label="Key Highlights" id="tab-1" aria-controls="tabpanel-1" />
+          <Tab label="Syllabus" id="tab-2" aria-controls="tabpanel-2" />
+          <Tab label="Instructors" id="tab-3" aria-controls="tabpanel-3" />
+          <Tab label="Advantages" id="tab-4" aria-controls="tabpanel-4" />
+          <Tab label="About University" id="tab-5" aria-controls="tabpanel-5" />
+          <Tab label="Review" id="tab-6" aria-controls="tabpanel-6" />
+        </Tabs>
+        <TabPanel value={tabIndex} index={0}>
+          {loading ? (
+            <>
+              <Skeleton variant="text" width="30%" />
+              <Skeleton variant="rectangular" height={100} sx={{ mt: 1 }} />
+              <Skeleton variant="text" width="50%" sx={{ mt: 2 }} />
+            </>
+          ) : (
+            <>
               <Card
                 key={0}
                 elevation={3}
@@ -229,9 +272,9 @@ const CourseDescription = () => {
                   borderRadius: 2,
                   boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                   "&:hover": {
-                  backgroundColor: "#0000000a",
-                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                  transform: "translateY(-2px)",
+                    backgroundColor: "#0000000a",
+                    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                    transform: "translateY(-2px)",
                   },
                 }}
               >
@@ -240,12 +283,11 @@ const CourseDescription = () => {
                     Programme Overview
                   </Typography>
                   <Box display={"flex"} sx={{ gap: 0.5 }}>
-                    
                     <Typography variant="body2" color={'text.secondary'} mt={1.3}>
-                    Understand why you need a winning SEO strategy to attract your target audience to your website, increase awareness and traffic, and how you can use your newfound knowledge of keywords and search types to increase your online visibility.
+                      Understand why you need a winning SEO strategy to attract your target audience to your website, increase awareness and traffic, and how you can use your newfound knowledge of keywords and search types to increase your online visibility.
                     </Typography>
                   </Box>
-                  <Typography variant="body2" sx={{ mt: 1 , color: 'text.secondary'}}>
+                  <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
                     {/* {notes} */}
                   </Typography>
                 </Box>
@@ -258,9 +300,9 @@ const CourseDescription = () => {
                   borderRadius: 2,
                   boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                   "&:hover": {
-                  backgroundColor: "#0000000a",
-                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                  transform: "translateY(-2px)",
+                    backgroundColor: "#0000000a",
+                    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                    transform: "translateY(-2px)",
                   },
                 }}
               >
@@ -269,12 +311,11 @@ const CourseDescription = () => {
                     SEO Basics
                   </Typography>
                   <Box display={"flex"} sx={{ gap: 0.5 }}>
-                    
                     <Typography variant="body2" color={'text.secondary'} mt={1.3}>
-                    A step-by-step guide to developing a Search Engine Optimization strategy for your business to increase your online presence and attract traffic to your website by using keywords intelligently, leveraging paid and organic searches, and making your website mobile-friendly.
+                      A step-by-step guide to developing a Search Engine Optimization strategy for your business to increase your online presence and attract traffic to your website by using keywords intelligently, leveraging paid and organic searches, and making your website mobile-friendly.
                     </Typography>
                   </Box>
-                  <Typography variant="body2" sx={{ mt: 1 , color: 'text.secondary'}}>
+                  <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
                     {/* {notes} */}
                   </Typography>
                 </Box>
@@ -287,9 +328,9 @@ const CourseDescription = () => {
                   borderRadius: 2,
                   boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                   "&:hover": {
-                  backgroundColor: "#0000000a",
-                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                  transform: "translateY(-2px)",
+                    backgroundColor: "#0000000a",
+                    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                    transform: "translateY(-2px)",
                   },
                 }}
               >
@@ -299,14 +340,24 @@ const CourseDescription = () => {
                   </Typography>
                   <Box display={"flex"} sx={{ flexWrap: 'wrap', gap: 1, mt: 1.3 }}>
                     {['Digital solutions', 'Finance', 'Marketing', 'Technology', 'Entrepreneurship', 'Innovation'].map((skill, index) => (
-                      <Chip key={index} label={skill} variant="outlined" sx={{backgroundColor: '#f3f3f3', border: 'none'}} />
+                      <Chip key={index} label={skill} variant="outlined" sx={{ backgroundColor: '#f3f3f3', border: 'none' }} />
                     ))}
                   </Box>
                 </Box>
               </Card>
-            
-          </TabPanel>
-          <TabPanel value={tabIndex} index={1}>
+            </>
+          )}
+        </TabPanel>
+        <TabPanel value={tabIndex} index={1}>
+          {loading ? (
+            <Grid container spacing={2}>
+              {[...Array(4)].map((_, index) => (
+                <Grid item xs={12} sm={6} key={index}>
+                  <Skeleton variant="rectangular" height={100} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <Card
@@ -328,7 +379,7 @@ const CourseDescription = () => {
                     </Typography>
                     <Box display={"flex"} sx={{ gap: 0.5 }}>
                       <Typography variant="body2" color={'text.secondary'} mt={1.3}>
-                      Churn through the course material with considerable ease as our lecture notes emulate blogs, with infographics and videos to enhance your learning experience.
+                        Churn through the course material with considerable ease as our lecture notes emulate blogs, with infographics and videos to enhance your learning experience.
                       </Typography>
                     </Box>
                   </Box>
@@ -350,11 +401,11 @@ const CourseDescription = () => {
                 >
                   <Box sx={{ p: 2, height: '7em' }}>
                     <Typography variant="subtitle1">
-                    Instructional benefits
+                      Instructional benefits
                     </Typography>
                     <Box display={"flex"} sx={{ gap: 0.5 }}>
                       <Typography variant="body2" color={'text.secondary'} mt={1.3}>
-                      High standards of instructional design guaranteed to impart knowledge seamlessly and motivate you.
+                        High standards of instructional design guaranteed to impart knowledge seamlessly and motivate you.
                       </Typography>
                     </Box>
                   </Box>
@@ -376,11 +427,11 @@ const CourseDescription = () => {
                 >
                   <Box sx={{ p: 2 }}>
                     <Typography variant="subtitle1">
-                    Immersive live activities
+                      Immersive live activities
                     </Typography>
                     <Box display={"flex"} sx={{ gap: 0.5 }}>
                       <Typography variant="body2" color={'text.secondary'} mt={1.3}>
-                      Group and individual activities that involve you, ensuring a sound grasp of the subject matter being covered.
+                        Group and individual activities that involve you, ensuring a sound grasp of the subject matter being covered.
                       </Typography>
                     </Box>
                   </Box>
@@ -402,19 +453,20 @@ const CourseDescription = () => {
                 >
                   <Box sx={{ p: 2 }}>
                     <Typography variant="subtitle1">
-                    Social and collaborative learning
+                      Social and collaborative learning
                     </Typography>
                     <Box display={"flex"} sx={{ gap: 0.5 }}>
                       <Typography variant="body2" color={'text.secondary'} mt={1.3}>
-                      Social and collaborative learning experiences crafted to ensure retention and absorption of concepts and the ability to apply them for life.
+                        Social and collaborative learning experiences crafted to ensure retention and absorption of concepts and the ability to apply them for life.
                       </Typography>
                     </Box>
                   </Box>
                 </Card>
               </Grid>
             </Grid>
-          </TabPanel>
-        </Card>
+          )}
+        </TabPanel>
+      </Card>
     </Box>
   );
 };

@@ -1,24 +1,48 @@
-import React, { useState } from 'react';
-import { Box, CardContent, Rating,useMediaQuery,
-  useTheme } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  CardContent,
+  Rating,
+  useMediaQuery,
+  useTheme,
+  Skeleton
+} from '@mui/material';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TabNavigation from './TabNav'; // Ensure TabNavigation can update state
 import InClassActivity from './InClassActivity'; // Import the components for each activity type
 import CumulativeActivity from './CumulativeActivity';
 import QuizActivity from './QuizActivity';
-import { inClassActivities, cumulativeActivities, quizzes, StyledDivider } from './Data';
-import { StyledCard, StyledIconContainer, StyledTitle, StyledChip, StyledMainCard } from './Data';
+import {
+  inClassActivities,
+  cumulativeActivities,
+  quizzes,
+  StyledDivider,
+  StyledCard,
+  StyledIconContainer,
+  StyledTitle,
+  StyledChip,
+  StyledMainCard
+} from './Data';
 
 export default function CourseAssignment() {
   const [activeTab, setActiveTab] = useState('In-Class Activities');
   const [selectedActivity, setSelectedActivity] = useState(null); // State to track selected activity
+  const [loading, setLoading] = useState(true); // Loading state
 
   const tabDataMapping = {
     'In-Class Activities': inClassActivities,
     'Cumulative Activities': cumulativeActivities,
     Quizzes: quizzes,
   };
+
+  useEffect(() => {
+    // Simulate data loading (replace with your actual data fetching logic)
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500); // 2 seconds delay
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleCardClick = (activity) => {
     setSelectedActivity(activity); // Set the selected activity when clicked
@@ -40,64 +64,100 @@ export default function CourseAssignment() {
       <StyledCard onClick={() => handleCardClick(activity)}>
         {/* Icon Section */}
         <StyledIconContainer>
-          <FilePresentIcon sx={{mr: isMobile ? 0 : 0, mb: isMobile ? 0 : 0, fontSize: '4.5em',  }} /> {/* File Icon */}
+          {loading ? (
+            <Skeleton variant="circular" width={64} height={64} />
+          ) : (
+            <FilePresentIcon sx={{ fontSize: '4.5em' }} />
+          )}
         </StyledIconContainer>
 
         {/* Main Content Section */}
         <Box sx={{ px: { xs: 0, sm: 2 }, flex: 1, ml: 0.5, py: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           {/* Chip */}
-
+          {loading ? (
+            <Skeleton variant="rectangular" width={60} height={20} />
+          ) : (
+            activity.chip && <StyledChip label={activity.chip} />
+          )}
 
           {/* Title */}
-          {activity.title && (
-            <StyledTitle variant="subtitle1">
-              {activity.title}
-            </StyledTitle>
+          {loading ? (
+            <Skeleton variant="text" width="80%" height={24} />
+          ) : (
+            activity.title && (
+              <StyledTitle variant="subtitle1">
+                {activity.title}
+              </StyledTitle>
+            )
           )}
 
           {/* Description */}
-          {activity.description && (
-            <StyledTitle variant="subtitle2">
-              {activity.description}
-            </StyledTitle>
+          {loading ? (
+            <Skeleton variant="text" width="60%" height={20} />
+          ) : (
+            activity.description && (
+              <StyledTitle variant="subtitle2">
+                {activity.description}
+              </StyledTitle>
+            )
           )}
 
           {/* File Submission */}
-          {activity.fileSubmission && (
-            <StyledTitle variant="body2" color="textSecondary" sx={{ mt: 0.8 }}>
-              File Submission: {activity.fileSubmission}
-            </StyledTitle>
-          )}
-          {activity.duration && (
-            <StyledTitle variant="body2" color="textSecondary" sx={{ mt: 0.8 }}>
-              Duration: {activity.duration}
-            </StyledTitle>
+          {loading ? (
+            <Skeleton variant="text" width="40%" height={20} />
+          ) : (
+            activity.fileSubmission && (
+              <StyledTitle variant="body2" color="textSecondary" sx={{ mt: 0.8 }}>
+                File Submission: {activity.fileSubmission}
+              </StyledTitle>
+            )
           )}
 
-          {activity.hasOwnProperty('grade') && (
-            <Rating
-              value={activity.grade !== undefined ? activity.grade : 0}  // Show stars even if grade is 0 or missing
-              readOnly
-              precision={0.5}
-              max={10}
-              sx={{ fontSize: '1.2rem', mt: 1.2 }}
-            />
+          {loading ? (
+            <Skeleton variant="text" width="50%" height={20} />
+          ) : (
+            activity.duration && (
+              <StyledTitle variant="body2" color="textSecondary" sx={{ mt: 0.8 }}>
+                Duration: {activity.duration}
+              </StyledTitle>
+            )
+          )}
+
+          {loading ? (
+            <Skeleton variant="text" width="30%" height={20} />
+          ) : (
+            activity.hasOwnProperty('grade') && (
+              <Rating
+                value={activity.grade !== undefined ? activity.grade : 0} // Show stars even if grade is 0 or missing
+                readOnly
+                precision={0.5}
+                max={10}
+                sx={{ fontSize: '1.2rem', mt: 1.2 }}
+              />
+            )
           )}
         </Box>
 
         {/* Grade, Status, and Chevron (aligned vertically) */}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', mr: 2, mt: 0.5 }}>
           {/* Render stars even if grade is 0 or undefined */}
-
-          {activity.status && (
-            <Box sx={{display: 'flex', gap: 1}}>
-            <StyledTitle variant="body2">
-              Status: 
-            </StyledTitle>
-            <StyledTitle variant="body2" color="textSecondary">{activity.status}</StyledTitle>
-            </Box>
+          {loading ? (
+            <Skeleton variant="text" width="40%" height={20} />
+          ) : (
+            activity.status && (
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <StyledTitle variant="body2">
+                  Status:
+                </StyledTitle>
+                <StyledTitle variant="body2" color="textSecondary">{activity.status}</StyledTitle>
+              </Box>
+            )
           )}
-          <ChevronRightIcon sx={{ fontSize: 30, color: '#c4c4c4', marginTop: 1.5 }} /> {/* Chevron Icon */}
+          {loading ? (
+            <Skeleton variant="circular" width={30} height={30} sx={{ mt: 1.5 }} />
+          ) : (
+            <ChevronRightIcon sx={{ fontSize: 30, color: '#c4c4c4', marginTop: 1.5 }} />
+          )}
         </Box>
       </StyledCard>
     );
@@ -128,14 +188,33 @@ export default function CourseAssignment() {
           </StyledTitle>
           <StyledDivider />
           {/* Conditionally render either the selected activity or the activity list */}
-          {selectedActivity ? (
-            // Render the appropriate selected activity component
-            renderSelectedActivity()
+          {loading ? (
+            // Render Skeletons while loading
+            <>
+              {[...Array(3)].map((_, index) => (
+                <Box key={index} sx={{ display: 'flex', mb: 2 }}>
+                  <Skeleton variant="circular" width={64} height={64} />
+                  <Box sx={{ flex: 1, ml: 2 }}>
+                    <Skeleton variant="text" width="80%" height={24} />
+                    <Skeleton variant="text" width="60%" height={20} />
+                    <Skeleton variant="text" width="40%" height={20} />
+                    <Skeleton variant="text" width="50%" height={20} />
+                    <Skeleton variant="text" width="30%" height={20} />
+                  </Box>
+                  <Skeleton variant="circular" width={30} height={30} />
+                </Box>
+              ))}
+            </>
           ) : (
-            // Render the list of activities based on the active tab
-            tabDataMapping[activeTab]?.map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
-            ))
+            selectedActivity ? (
+              // Render the appropriate selected activity component
+              renderSelectedActivity()
+            ) : (
+              // Render the list of activities based on the active tab
+              tabDataMapping[activeTab]?.map((activity) => (
+                <ActivityCard key={activity.id} activity={activity} />
+              ))
+            )
           )}
         </CardContent>
       </StyledMainCard>

@@ -290,7 +290,7 @@ const SelectTime = ({ setShowGetTime, professorName, profileType }) => {
                               `${day.date}_${time.label}`
                             )}
                             onChange={() => handleTimeToggle(day, time)}
-                            sx={{ mr: 1, mt: 0.7, width: "max-content", fontSize: { xs: '0.8em', sm: 'inherit' }, px: { xs: '4px', sm: '11px' } }}
+                            sx={{ mr: 1, mt: 0.7, width: "max-content", fontSize: { xs: '0.8em', sm: '0.875em' }, px: { xs: '4px', sm: '11px' } }}
                           >
                             {time.label}
                           </TimeButton>

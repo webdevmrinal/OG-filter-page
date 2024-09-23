@@ -4,6 +4,7 @@ import { Box, CircularProgress, Typography, Button } from "@mui/material";
 import Slider from "react-slick";
 import { styled } from '@mui/system';
 import Header from "../signup-login/Header";
+import Footer from "../signup-login/Footer";
 
 const ExpertCarousel = lazy(() => import("./ExpertCarousel"));
 const TrendingBlogs = lazy(() => import("./TrendingBlogs"));
@@ -415,6 +416,7 @@ function Homepage() {
           <Testimonials />
         </Suspense>
       )}
+      <Footer />
     </Box>
   );
 }

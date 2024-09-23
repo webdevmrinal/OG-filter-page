@@ -197,13 +197,12 @@ const ProgressLabel = styled(Typography)(({ theme }) => ({
   fontSize: "0.9em",
   // fontWeight: 'bold',
 }));
-
 const SidebarSection = styled(Box)(({ theme }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   return {
-    width: isMobile ? "100%" : isTablet ? "100%" : "25%", // Adjust width for small and tablet screens
+    width: isMobile ? "100%" : isTablet ? "100%" : "25%", // Adjust width for tablet
     marginLeft: isMobile ? 0 : isTablet ? 0 : theme.spacing(3),
     marginTop: isMobile ? theme.spacing(2) : '8px',
     display: "flex",
@@ -366,6 +365,65 @@ const Shimmer = ({ width = "100%", height = 100 }) => (
   </ShimmerWrapper>
 );
 
+// Shimmer for the "Course Progress" section
+const ProgressShimmer = () => (
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      width: "100%",
+      bgcolor: "#fff",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+      borderRadius: "8px",
+      p: 1,
+      mb: 2,
+    }}
+  >
+    <Shimmer width={90} height={90} />
+    <Box sx={{ flexGrow: 1, ml: 2 }}>
+      <Shimmer width="50%" height={20} />
+      <Shimmer width="30%" height={20} style={{ marginTop: "8px" }} />
+      <Shimmer width="100%" height={10} style={{ marginTop: "8px" }} />
+    </Box>
+  </Box>
+);
+
+// Shimmer for the "Explore other courses" section
+const CourseCardShimmer = () => (
+  <Grid item xs={12} sm={6} md={4}>
+    <Card
+      sx={{
+        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+        borderRadius: 2,
+        height: "21.5em",
+        display: "flex",
+        flexDirection: "column",
+        width: "auto",
+      }}
+    >
+      <Shimmer width="100%" height="175px" />
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          <Shimmer width="60%" height={20} />
+          <Shimmer width="40%" height={20} />
+          <Shimmer width="80%" height={20} />
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+          <Shimmer width={40} height={20} />
+          <Shimmer width={40} height={20} />
+        </Box>
+      </CardContent>
+    </Card>
+  </Grid>
+);
+
 const CourseDashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [experts, setExperts] = useState([]);
@@ -460,430 +518,335 @@ const CourseDashboard = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: isMobile || isTablet ? "column" : "row", // Stack columns for mobile/tablet
+            flexDirection: isMobile ? "column" : isTablet ? "column" : "row",
           }}
         >
           <Box
             sx={{
               flexGrow: 1,
-              width: isMobile || isTablet ? "100%" : "63vw", // Adjust width for mobile/tablet
-              mb: isMobile ? 3 : 0, // Add margin for mobile
+              width: isMobile ? "100%" : isTablet ? "100%" : "63vw",
+              mb: isMobile ? 3 : 0,
             }}
           >
-            <Box
-              sx={{
-                pl: 2,
-                pr: 2,
-                pt: 1,
-                pb: 2,
-                width: "auto",
-                height: { sm: "43vh", xs: "25vh" },
-                borderRadius: "12px",
-                backgroundColor: "#fff",
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-                mb: 4,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Typography variant="h6">My Learning Curve</Typography>
-              <Divider sx={{ width: "98%", mb: 2 }} />
-              <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: 10,
-                    right: 10,
-                    display: "flex",
-                    gap: 2,
-                  }}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center", py: 2 }}>
-                    <Box
-                      sx={{
-                        width: 12,
-                        height: 12,
-                        borderRadius: "50%",
-                        backgroundColor: "#00FF00",
-                        mr: 1,
-                      }}
-                    />
-                    <Typography variant="caption">Course Completed</Typography>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box
-                      sx={{
-                        width: 12,
-                        height: 12,
-                        borderRadius: "50%",
-                        backgroundColor: "#FFD700",
-                        mr: 1,
-                      }}
-                    />
-                    <Typography variant="caption">Course Enrolled</Typography>
-                  </Box>
+            {/* My Learning Curve */}
+            {loading ? (
+              <Shimmer width="100%" height="43vh" />  // Shimmer while loading
+            ) : (
+              <Box
+                sx={{
+                  pl: 2,
+                  pr: 2,
+                  pt: 1,
+                  pb: 2,
+                  width: "auto",
+                  height: { sm: "43vh", xs: "25vh" },
+                  borderRadius: "12px",
+                  backgroundColor: "#fff",
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                  mb: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Typography variant="h6">My Learning Curve</Typography>
+                <Divider sx={{ width: "98%", mb: 2 }} />
+                <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
+                  <Line data={data} options={options} />
                 </Box>
-                <Line
-                  data={data}
-                  options={options}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                  }}
-                />
               </Box>
-            </Box>
+            )}
 
-            <Box
-              sx={{
-                pl: 2,
-                pr: 2,
-                pt: 1,
-                pb: 2,
-                width: "auto",
-                height: "auto",
-                overflow: "auto",
-                borderRadius: "12px",
-                backgroundColor: "#fff",
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-              }}
-            >
-              <Typography variant="h6">Course Progress</Typography>
-              <Divider sx={{ width: "100%", mb: 2 }} />
-              <Grid container spacing={2} sx={{ overflow: "auto", p: 1 }}>
-                {[
-                  {
-                    link: "/course/seo-basics",
-                    duration: "5 weeks",
-                    imageUrl:
-                      "https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg",
-                    title: "SEO Basics",
-                    progress: 25,
-                  },
-                  {
-                    link: "/course/ai-basic",
-                    duration: "5 weeks",
-                    imageUrl:
-                      "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
-                    title: "AI Basic",
-                    progress: 42,
-                  },
-                  {
-                    link: "/course/identifying-your-target-audience",
-                    duration: "5 weeks",
-                    imageUrl:
-                      "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
-                    title: "Identifying Your Target Audience",
-                    progress: 70,
-                  },
-                ].map((course) => (
-                  <Grid item xs={12} sm={6} md={4} key={course.title}>
-                    <Link
-                      to={course.link}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          width: "100%",
-                          bgcolor: "#fff",
-                          boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                          borderRadius: "8px",
-                          p: 1,
-                        }}
+            {/* Course Progress */}
+            {loading ? (
+              <>
+                <ProgressShimmer />
+                <ProgressShimmer />
+                <ProgressShimmer />
+              </>
+            ) : (
+              <Box
+                sx={{
+                  pl: 2,
+                  pr: 2,
+                  pt: 1,
+                  pb: 2,
+                  width: "auto",
+                  height: "auto",
+                  overflow: "auto",
+                  borderRadius: "12px",
+                  backgroundColor: "#fff",
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                }}
+              >
+                <Typography variant="h6">Course Progress</Typography>
+                <Divider sx={{ width: "100%", mb: 2 }} />
+                <Grid container spacing={2} sx={{ overflow: "auto", p: 1 }}>
+                  {[
+                    {
+                      link: "/course/seo-basics",
+                      duration: "5 weeks",
+                      imageUrl:
+                        "https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg",
+                      title: "SEO Basics",
+                      progress: 25,
+                    },
+                    {
+                      link: "/course/ai-basic",
+                      duration: "5 weeks",
+                      imageUrl:
+                        "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
+                      title: "AI Basic",
+                      progress: 42,
+                    },
+                    {
+                      link: "/course/identifying-your-target-audience",
+                      duration: "5 weeks",
+                      imageUrl:
+                        "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
+                      title: "Identifying Your Target Audience",
+                      progress: 70,
+                    },
+                  ].map((course) => (
+                    <Grid item xs={12} sm={6} md={4} key={course.title}>
+                      <Link
+                        to={course.link}
+                        style={{ textDecoration: "none" }}
                       >
                         <Box
                           sx={{
-                            width: 90,
-                            height: 90,
-                            mr: 2,
-                            backgroundImage: `url(${course.imageUrl})`,
-                            backgroundSize: "cover",
-                            borderRadius: "4px",
-                          }}
-                        ></Box>
-                        <Box sx={{ flexGrow: 1 }}>
-                          <Typography
-                            variant="subtitle2"
-                            sx={{ color: "text.primary" }}
-                          >
-                            {course.title}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            gutterBottom
-                            sx={{ color: "text.secondary" }}
-                          >
-                            {course.duration}
-                          </Typography>
-                          <Box
-                            sx={{
-                              width: "100%",
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
-                            <LinearProgress
-                              variant="determinate"
-                              value={course.progress}
-                              sx={{
-                                width: "100%",
-                                height: 10,
-                                borderRadius: 1,
-                                mr: 1,
-                              }}
-                            />
-                            <Typography variant="body2">
-                              {course.progress}%
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Link>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-evenly",
-                mt: 4,
-                borderRadius: "12px",
-                backgroundColor: "#fff",
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-                 // Set width to auto
-              }}
-            >
-              <Box sx={{ padding: 2, width: "100%", }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="h6">Explore other courses</Typography>
-                  <Button>View All</Button>
-                </Box>
-                <Divider sx={{ width: "100%", mb: 2, px: 1, ml: 0 }} />
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    mb: 2,
-                    width: "100%", // Ensure width is responsive
-                  }}
-                >
-                  <FormControl
-                    variant="outlined"
-                    size="small"
-                    sx={{ m: 0.5, width: "100%" }}
-                  >
-                    <InputLabel>Skill</InputLabel>
-                    <Select
-                      value={skill}
-                      onChange={(e) => setSkill(e.target.value)}
-                      label="Skill"
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value="coding">Coding</MenuItem>
-                      <MenuItem value="design">Design</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <FormControl
-                    variant="outlined"
-                    size="small"
-                    sx={{ m: 0.5, minWidth: "16em" }}
-                  >
-                    <InputLabel>Level</InputLabel>
-                    <Select
-                      value={level}
-                      onChange={(e) => setLevel(e.target.value)}
-                      label="Level"
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value="beginner">Beginner</MenuItem>
-                      <MenuItem value="intermediate">Intermediate</MenuItem>
-                      <MenuItem value="advanced">Advanced</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <FormControl
-                    variant="outlined"
-                    size="small"
-                    sx={{ m: 0.5, minWidth: "16em" }}
-                  >
-                    <InputLabel>Category</InputLabel>
-                    <Select
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      label="Category"
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value="business">Business</MenuItem>
-                      <MenuItem value="technology">Technology</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <Button variant="contained" sx={{ m: 0.5, height: "2.5em" }}>
-                    Search
-                  </Button>
-                </Box>
-                {/* Course Cards */}
-                <Grid container spacing={3} sx={{ width: "auto" }}> {/* Adjust width here */}
-                  {courses.slice(0, 6).map((course, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
-                      <Link
-                        to={`/course/${course.title}`}
-                        style={{ textDecoration: "none" }}
-                        state={{
-                          title: course.title,
-                          imageUrl: course.image,
-                          description: course.description,
-                        }}
-                      >
-                        <Card
-                          sx={{
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-                            borderRadius: 2,
-                            height: "21.5em",
                             display: "flex",
-                            flexDirection: "column",
-                            width: "auto", // Set width to auto
-                            "&:hover": {
-                              transform: "translateY(-3px)",
-                              boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                              backgroundColor: "#0000000a",
-                            },
+                            alignItems: "center",
+                            width: "100%",
+                            bgcolor: "#fff",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                            borderRadius: "8px",
+                            p: 1,
                           }}
                         >
-                          <CourseImage
+                          <Box
                             sx={{
-                              backgroundImage: `url(${course.image ||
-                                "https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg"
-                                })`,
-                              width: "auto", // Set width to auto
+                              width: 90,
+                              height: 90,
+                              mr: 2,
+                              backgroundImage: `url(${course.imageUrl})`,
+                              backgroundSize: "cover",
+                              borderRadius: "4px",
                             }}
-                          >
-                            <OverlayText variant="subtitle2">
+                          ></Box>
+                          <Box sx={{ flexGrow: 1 }}>
+                            <Typography
+                              variant="subtitle2"
+                              sx={{ color: "text.primary" }}
+                            >
                               {course.title}
-                            </OverlayText>
-                            <CategoryChip
-                              label={course.category}
-                              size="small"
-                            />
-                          </CourseImage>
-                          <CardContent
-                            sx={{
-                              flexGrow: 1,
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "space-between",
-                            }}
-                          >
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              gutterBottom
+                              sx={{ color: "text.secondary" }}
+                            >
+                              {course.duration}
+                            </Typography>
                             <Box
                               sx={{
+                                width: "100%",
                                 display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "flex-start",
-                                mb: 1,
-                                mt: 2,
+                                alignItems: "center",
                               }}
                             >
-                              <Box>
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  sx={{ mb: 1 }}
-                                >
-                                  <CalendarTodayIcon
-                                    sx={{ fontSize: 14, mr: 0.5 }}
-                                  />
-                                  {course.date}
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  sx={{
-                                    maxHeight: "40px",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                  }}
-                                >
-                                  {course.description}
-                                </Typography>
-                              </Box>
-                              <Box
-                                sx={{ display: "flex", alignItems: "center" }}
-                              >
-                                {course.avatar.map((src, i) => (
-                                  <Avatar
-                                    key={i}
-                                    src={src}
-                                    sx={{
-                                      width: 35,
-                                      height: 35,
-                                      ml: i === 0 ? 0 : -1,
-                                    }}
-                                  />
-                                ))}
-                              </Box>
-                            </Box>
-                            <Box>
-                              <Divider sx={{ my: 1 }} />
-                              <Box
+                              <LinearProgress
+                                variant="determinate"
+                                value={course.progress}
                                 sx={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
+                                  width: "100%",
+                                  height: 10,
+                                  borderRadius: 1,
+                                  mr: 1,
                                 }}
-                              >
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <CommentIcon
-                                    sx={{ fontSize: 18, mr: 0.5 }}
-                                  />
-                                  <Typography variant="body2">
-                                    {course.comments}
-                                  </Typography>
-                                </Box>
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <VisibilityIcon
-                                    sx={{ fontSize: 18, mr: 0.5 }}
-                                  />
-                                  <Typography variant="body2">
-                                    {course.views}
-                                  </Typography>
-                                </Box>
-                              </Box>
+                              />
+                              <Typography variant="body2">
+                                {course.progress}%
+                              </Typography>
                             </Box>
-                          </CardContent>
-                        </Card>
+                          </Box>
+                        </Box>
                       </Link>
                     </Grid>
                   ))}
                 </Grid>
               </Box>
-            </Box>
+            )}
 
+            {/* Explore Other Courses */}
+            {loading ? (
+              <Grid container spacing={3}>
+                <CourseCardShimmer />
+                <CourseCardShimmer />
+                <CourseCardShimmer />
+                <CourseCardShimmer />
+                <CourseCardShimmer />
+                <CourseCardShimmer />
+              </Grid>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "space-evenly",
+                  mt: 4,
+                  borderRadius: "12px",
+                  backgroundColor: "#fff",
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                  // Set width to auto
+                }}
+              >
+                <Box sx={{ padding: 2, width: "100%" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography variant="h6">Explore other courses</Typography>
+                    <Button>View All</Button>
+                  </Box>
+                  <Divider sx={{ width: "100%", mb: 2, px: 1, ml: 0 }} />
+                  <Grid container spacing={3} sx={{ width: "auto" }}>
+                    {courses.slice(0, 6).map((course, index) => (
+                      <Grid item xs={12} sm={6} md={4} key={index}>
+                        <Link
+                          to={`/course/${course.title}`}
+                          style={{ textDecoration: "none" }}
+                          state={{
+                            title: course.title,
+                            imageUrl: course.image,
+                            description: course.description,
+                          }}
+                        >
+                          <Card
+                            sx={{
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                              borderRadius: 2,
+                              height: "21.5em",
+                              display: "flex",
+                              flexDirection: "column",
+                              width: "auto",
+                              "&:hover": {
+                                transform: "translateY(-3px)",
+                                boxShadow: "0 8px 16px",
+                              },
+                            }}
+                          >
+                            <CourseImage
+                              sx={{
+                                backgroundImage: `url(${course.image ||
+                                  "https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg"
+                                  })`,
+                                width: "auto",
+                              }}
+                            >
+                              <OverlayText variant="subtitle2">
+                                {course.title}
+                              </OverlayText>
+                              <CategoryChip label={course.category} size="small" />
+                            </CourseImage>
+                            <CardContent
+                              sx={{
+                                flexGrow: 1,
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "flex-start",
+                                  mb: 1,
+                                  mt: 2,
+                                }}
+                              >
+                                <Box>
+                                  <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                    sx={{ mb: 1 }}
+                                  >
+                                    <CalendarTodayIcon
+                                      sx={{ fontSize: 14, mr: 0.5 }}
+                                    />
+                                    {course.date}
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      maxHeight: "40px",
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                    }}
+                                  >
+                                    {course.description}
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  sx={{ display: "flex", alignItems: "center" }}
+                                >
+                                  {course.avatar.map((src, i) => (
+                                    <Avatar
+                                      key={i}
+                                      src={src}
+                                      sx={{
+                                        width: 35,
+                                        height: 35,
+                                        ml: i === 0 ? 0 : -1,
+                                      }}
+                                    />
+                                  ))}
+                                </Box>
+                              </Box>
+                              <Box>
+                                <Divider sx={{ my: 1 }} />
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <CommentIcon sx={{ fontSize: 18, mr: 0.5 }} />
+                                    <Typography variant="body2">
+                                      {course.comments}
+                                    </Typography>
+                                  </Box>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <VisibilityIcon sx={{ fontSize: 18, mr: 0.5 }} />
+                                    <Typography variant="body2">
+                                      {course.views}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              </Box>
+            )}
           </Box>
 
           <SidebarSection>

@@ -30,7 +30,8 @@ const TestimonialCard = ({ name, content, image }) => (
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      height: '23em', // Ensure the card takes full height
+      alignItems: 'center',
+      height: '16em', // Ensure the card takes full height
       borderRadius: '8px',
       boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
       padding: '20px',
@@ -58,9 +59,15 @@ const TestimonialCard = ({ name, content, image }) => (
           variant="body2"
           color="text.secondary"
           sx={{
-            mt: 1,
+            mt: 0.5,
             maxWidth: '90%',
-            lineHeight: '1.5'
+            lineHeight: '1.5',
+            display: '-webkit-box', // Needed for line-clamp
+            WebkitLineClamp: 3, // Show only 3 lines
+            WebkitBoxOrient: 'vertical', // Needed for line-clamp
+            overflow: 'hidden', // Hide the overflow
+            textOverflow: 'ellipsis', // Add ellipsis (...) after 3 lines
+            ml: 2,
           }}
         >
           {content}
@@ -70,6 +77,7 @@ const TestimonialCard = ({ name, content, image }) => (
   </Card>
 );
 
+
 const Testimonials = () => {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
@@ -77,10 +85,10 @@ const Testimonials = () => {
   return (
     <Card
       sx={{
-        p: isSmall ? 2 : 4,
+        p: isSmall ? 2 : 2,
         boxShadow: 6,
         borderRadius: '8px',
-        mb: 2
+        mb: 4
       }}
     >
       <Typography

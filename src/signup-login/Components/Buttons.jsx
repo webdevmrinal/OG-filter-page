@@ -23,5 +23,8 @@ export const SocialButtons = styled(Button)(({ theme }) => ({
     '&:hover': {
         border: "1px solid lightgray",
     },
+    [theme.breakpoints.down('sm')]: {
+        width: '100%',
+      },
 }));
 

@@ -1,3 +1,4 @@
+// SignupPage.js
 import React, { useState, useEffect } from "react";
 import {
   Typography,
@@ -6,10 +7,10 @@ import {
   Link,
   MenuItem,
   Divider,
-  CircularProgress,
   Box,
   Grid,
   Autocomplete,
+  CircularProgress,
 } from "@mui/material";
 import Slider from "react-slick";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -28,8 +29,7 @@ import { FormPaper } from "./Components/Cards";
 import { FormContainer, SocialBox } from "./Components/Box";
 import { FormTextField } from "./Components/TextField";
 import { SliderStyles } from "./Components/SliderStyle";
-import { ShimmerLoading } from "./Components/ShimmerEffect";
-import ShimmerSignup from "./Components/SignupShimmer";
+import ShimmerSignup from "./Components/SignupShimmer"; // Initial shimmer component
 
 const iconComponents = {
   LinkedInIcon,
@@ -40,8 +40,8 @@ const iconComponents = {
 const SignupPage = ({ resetAllData }) => {
   const { images, interests, countries, sliderSettings } = signupConfig;
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Controls initial shimmer visibility
+  const [imagesLoaded, setImagesLoaded] = useState(false); // Controls image slider display
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
 
@@ -58,12 +58,25 @@ const SignupPage = ({ resetAllData }) => {
     country: "",
   };
 
+  // useEffect for initial shimmer timing (0.5 seconds)
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-      setTimeout(() => setImagesLoaded(true), 1000);
-    }, 2000);
+    const shimmerTimer = setTimeout(() => {
+      setIsLoading(false); // Hide initial shimmer after 500ms
+    }, 500); // 0.5 seconds
+
+    return () => clearTimeout(shimmerTimer); // Cleanup on unmount
   }, []);
+
+  // useEffect for loading images after form is displayed and 0.5s delay
+  useEffect(() => {
+    if (!isLoading) {
+      const imageLoadTimer = setTimeout(() => {
+        setImagesLoaded(true); // Display image slider after 0.5s
+      }, 500); // 0.5 seconds delay after form is displayed
+
+      return () => clearTimeout(imageLoadTimer); // Cleanup on unmount
+    }
+  }, [isLoading]);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -95,38 +108,51 @@ const SignupPage = ({ resetAllData }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => { // Make the function async
       console.log("Form submitted:", values); 
-      setSubmitting(true);
-  
-      // Get existing submissions from localStorage
-      const existingSubmissions =
-        JSON.parse(localStorage.getItem("signupSubmissions")) || [];
-  
-      // Prepare new submission data
-      const newSubmission = {
-        ...values,
-        page1Data,  // Include locked Page1 data if needed
-        page2Data,  // Include locked Page2 data if needed
-        submittedAt: new Date().toISOString(),
-      };
-  
-      // Append the new submission to the existing ones
-      existingSubmissions.push(newSubmission);
-  
-      // Save updated submissions to localStorage
-      localStorage.setItem("signupSubmissions", JSON.stringify(existingSubmissions));
-  
-      // Clear form data after submission
-      formik.resetForm();
-  
-      // Redirect after successful submission
-      setSubmitting(false);
-      navigate("/dashboardpage");
+      setSubmitting(true); // Start submitting
+
+      try {
+        // Simulate an asynchronous operation (e.g., API call)
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // 2-second delay
+
+        // Get existing submissions from localStorage
+        const existingSubmissions =
+          JSON.parse(localStorage.getItem("signupSubmissions")) || [];
+
+        // Prepare new submission data
+        const newSubmission = {
+          ...values,
+          page1Data,  // Include locked Page1 data if needed
+          page2Data,  // Include locked Page2 data if needed
+          submittedAt: new Date().toISOString(),
+        };
+
+        // Append the new submission to the existing ones
+        existingSubmissions.push(newSubmission);
+
+        // Save updated submissions to localStorage
+        localStorage.setItem("signupSubmissions", JSON.stringify(existingSubmissions));
+
+        // Clear Page1 and Page2 data
+        localStorage.setItem("page1Data", JSON.stringify(""));
+        localStorage.setItem("page2Data", JSON.stringify(""));
+
+        // Clear form data after submission
+        formik.resetForm();
+
+        // Redirect after successful submission
+        navigate("/dashboardpage");
+      } catch (error) {
+        console.error("Error during form submission:", error);
+        // Handle errors as needed (e.g., display a notification)
+      } finally {
+        setSubmitting(false); // End submitting
+      }
     },
   });  
-  
 
+  // If loading, show initial shimmer
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -140,6 +166,7 @@ const SignupPage = ({ resetAllData }) => {
       <Header />
       <FormContainer>
         <FormPaper>
+          {/* Image Slider Section */}
           <Box
             sx={{
               width: { xs: "100%", md: "50%" },
@@ -148,14 +175,18 @@ const SignupPage = ({ resetAllData }) => {
               display: { xs: "none", md: "block" }, // Hide on xs, show on md and larger
             }}
           >
-            {imagesLoaded && (
+            {imagesLoaded ? (
               <Slider {...sliderSettings}>
                 {images.map((url, index) => (
                   <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
                 ))}
               </Slider>
+            ) : (
+              null // Image slider appears after 1 second without any loading indicator
             )}
           </Box>
+
+          {/* Form Section */}
           <Box
             sx={{
               width: { xs: "100%", md: "50%" },
@@ -343,8 +374,18 @@ const SignupPage = ({ resetAllData }) => {
                       variant="contained"
                       type="submit"
                       disabled={submitting} // Disable the button while submitting
+                      sx={{
+                        position: "relative",
+                        minWidth: "150px", // Optional: set a minimum width for consistency
+                      }}
                     >
-                      {submitting ? <CircularProgress size={24} /> : "Register Now"}
+                      {submitting ? (
+                        <CircularProgress
+                          size={24}
+                        />
+                      ) : (
+                        "Register Now"
+                      )}
                     </FormButton>
                   </Grid>
                 </Grid>

@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import { ExpertCard } from "../ExpertCard";
 
 // Styled Button Components
 const StyledButton = styled(Button)(({ theme, variant }) => ({
@@ -95,79 +96,6 @@ const NavigationButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-const ExpertCard = ({ name, industry, img }) => {
-  const theme = useTheme();
-  const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
-  const isMedium = useMediaQuery(theme.breakpoints.between("sm", "lg"));
-  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const getCardHeight = () => {
-    if (isLarge || isSmall) return "250px";
-    if (isMedium) return "200px";
-    return "250px";
-  };
-
-  return (
-    <Card
-      sx={{
-        flexShrink: 0,
-        display: "flex",
-        flexDirection: "column",
-        borderRadius: "0.3em",
-        maxWidth: "100%",
-        transition: "0.3s",
-        position: "relative",
-        margin: "0 10px",
-        height: getCardHeight(),
-        boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-        "&:hover": {
-          backgroundColor: "#0000000a",
-          boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
-          transform: "translateY(-2px)",
-        },
-      }}
-    >
-      <CardMedia
-        component="img"
-        height="100%"
-        image={`https://academy.opengrowth.com/assets/images/users/${img}`}
-        alt={name}
-        sx={{ objectFit: "cover" }}
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          borderRadius: "0px 4px 0px 0px",
-          padding: "4px 8px",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "0.875rem",
-            fontWeight: "bold",
-            color: "white",
-            textAlign: "left",
-          }}
-        >
-          {name}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: "0.75rem",
-            color: "white",
-            textAlign: "left",
-          }}
-        >
-          {industry}
-        </Typography>
-      </Box>
-    </Card>
-  );
-};
-
 const ExpertCarousel = ({ experts }) => {
   const sliderRef = useRef(null);
   const sliderRefFinancial = useRef(null);
@@ -177,6 +105,7 @@ const ExpertCarousel = ({ experts }) => {
   const isMedium = useMediaQuery(theme.breakpoints.between("sm", "lg"));
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
+  const [selectedExpert, setSelectedExpert] = useState(null);
 
   const categories = [
     "Personal Branding",
@@ -236,6 +165,10 @@ const ExpertCarousel = ({ experts }) => {
   };
   console.log(experts);
 
+  const handleExpertClick = (expert) => {
+    setSelectedExpert(expert);
+  };
+
   return (
     <>
       <Box sx={{ mt: 5, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2 }}>
@@ -289,7 +222,7 @@ const ExpertCarousel = ({ experts }) => {
 
           <Slider ref={sliderRef} {...settings}>
             {experts.map((expert, index) => (
-              <ExpertCard key={index} {...expert} />
+              <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="carousel" />
             ))}
           </Slider>
         </Box>
@@ -318,7 +251,7 @@ const ExpertCarousel = ({ experts }) => {
         <Box sx={{ position: "relative", px: 2, pt: 1 }}>
           <Slider ref={sliderRefFinancial} {...settings}>
             {experts.map((expert, index) => (
-              <ExpertCard key={index} {...expert} />
+              <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="carousel" />
             ))}
           </Slider>
         </Box>
@@ -350,7 +283,7 @@ const ExpertCarousel = ({ experts }) => {
         <Box sx={{ position: "relative", px: 2, pt: 1 }}>
           <Slider ref={sliderRefFashion} {...settings}>
             {experts.map((expert, index) => (
-              <ExpertCard key={index} {...expert} />
+              <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="carousel" />
             ))}
           </Slider>
         </Box>

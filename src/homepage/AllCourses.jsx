@@ -13,6 +13,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Header from '../signup-login/Header';
+import Footer from '../signup-login/Footer';
 
 const courses = [
     {
@@ -427,7 +428,7 @@ const AllCourses = () => {
         )}
       </SliderWrapper>
       </Card>
-            <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
+            <Card sx={{ my: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
             <Typography variant="h5" fontWeight={'bold'} gutterBottom>
                 All Courses
             </Typography>
@@ -528,6 +529,7 @@ const AllCourses = () => {
                 ))}
             </Grid>
             </Card>
+            <Footer />
         </Box>
     );
 };
