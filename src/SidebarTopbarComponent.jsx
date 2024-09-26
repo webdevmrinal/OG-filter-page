@@ -1,3 +1,4 @@
+// SidebarTopbarComponent.js
 import React, { useState, useEffect } from "react";
 import {
   AppBar,
@@ -5,7 +6,10 @@ import {
   IconButton,
   InputBase,
   Box,
-  Drawer, Menu, MenuItem, Avatar,
+  Drawer,
+  Menu,
+  MenuItem,
+  Avatar,
   List,
   ListItem,
   ListItemIcon,
@@ -86,7 +90,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-// Remove the unnecessary state "open" and manage only "drawerOpen"
 const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
   const [expertsMenuOpen, setExpertsMenuOpen] = useState(false);
   const [coursesMenuOpen, setCoursesMenuOpen] = useState(false);
@@ -96,9 +99,9 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
 
   // Fetch user data from localStorage when the component mounts
   useEffect(() => {
-    const existingSubmissions = JSON.parse(localStorage.getItem("signupSubmissions"));
-    if (existingSubmissions && existingSubmissions.length > 0) {
-      setUser(existingSubmissions[existingSubmissions.length - 1]); // Get the last added user
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser) {
+      setUser(currentUser);
     }
   }, []);
 
@@ -112,6 +115,7 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem("currentUser"); // Remove current user from localStorage
     handleAvatarMenuClose();
     navigate("/homepage");
   };
@@ -163,7 +167,7 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
       text: "Courses",
       icon: <SchoolIcon />,
       isMenu: true,
-      route: '/coursedashboard',
+      route: "/coursedashboard",
       subMenu: [
         { text: "My Course", route: "/mycourse" },
         { text: "Search Course", route: "/searchcourse" },
@@ -218,7 +222,7 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
           {user ? (
             <IconButton onClick={handleAvatarClick}>
               <Avatar
-                alt={user.firstName}
+                alt={user.firstName || user.name}
                 src="https://academy.opengrowth.com/assets/images/users/user_597_professor_AnmolJamwal.png"
                 style={{ width: 32, height: 32, borderRadius: "50%" }}
               />
@@ -231,7 +235,6 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
               />
             </IconButton>
           )}
-
         </Toolbar>
       </AppBar>
       {/* Drawer (Sidebar) */}
@@ -417,9 +420,11 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
         onClose={handleAvatarMenuClose}
       >
         {user && [
-          <MenuItem key="name">{`${user.firstName} ${user.lastName}`}</MenuItem>,
+          <MenuItem key="name">{`${user.firstName || user.name} ${user.lastName || ""}`}</MenuItem>,
           <MenuItem key="email">{user.email}</MenuItem>,
-          <MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
+          <MenuItem key="logout" onClick={handleLogout}>
+            Logout
+          </MenuItem>,
         ]}
       </Menu>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

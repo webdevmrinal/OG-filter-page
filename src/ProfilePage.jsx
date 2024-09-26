@@ -45,6 +45,37 @@ import {
   PaperContent,
 } from "./Experts/Components/ProfileStyles";
 import Header from "./signup-login/Header";
+import { styled } from "@mui/system";
+
+// Shimmer Components
+const ShimmerWrapper = styled("div")({
+  overflow: "hidden",
+  position: "relative",
+  backgroundColor: "#f6f7f8",
+  borderRadius: 8,
+});
+
+const ShimmerEffect = styled("div")(({ theme }) => ({
+  width: "100%",
+  height: "100%",
+  animation: "shimmer 1.5s infinite linear",
+  background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #e0e0e0 50%, ${theme.palette.background.default} 100%)`,
+  backgroundSize: "200% 100%",
+  "@keyframes shimmer": {
+    "0%": {
+      backgroundPosition: "-100% 0",
+    },
+    "100%": {
+      backgroundPosition: "100% 0",
+    },
+  },
+}));
+
+const Shimmer = ({ width = "100%", height = 100, borderRadius = 8, sx = {} }) => (
+  <ShimmerWrapper style={{ width, height, borderRadius }} sx={sx}>
+    <ShimmerEffect />
+  </ShimmerWrapper>
+);
 
 const SkillsCard = ({ skills }) => {
   const skillsArray =
@@ -137,6 +168,26 @@ const ProfilePage = () => {
     localStorage.setItem("followedProfiles", JSON.stringify(followedProfiles));
   };
 
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  const handleAccordionChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const accordionData = [
+    { title: "About me", content: profileData?.about },
+    { title: "Address", content: `Country: ${profileData?.country}` },
+    {
+      title: "Education",
+      content: `Degree: ${profileData?.edu}\nCollege: ${profileData?.other_college}`,
+    },
+    { title: "Area of Interest", content: profileData?.interest },
+    { title: "Industry", content: profileData?.industry },
+    { title: "Experience", content: profileData?.experience },
+  ];
+
   if (isLoading || !profileData) {
     return (
       <Box
@@ -149,26 +200,6 @@ const ProfilePage = () => {
       </Box>
     );
   }
-
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
-
-  const handleAccordionChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-
-  const accordionData = [
-    { title: "About me", content: profileData.about },
-    { title: "Address", content: `Country: ${profileData.country}` },
-    {
-      title: "Education",
-      content: `Degree: ${profileData.edu}\nCollege: ${profileData.other_college}`,
-    },
-    { title: "Area of Interest", content: profileData.interest },
-    { title: "Industry", content: profileData.industry },
-    { title: "Experience", content: profileData.experience },
-  ];
 
   return (
     <>
@@ -204,31 +235,36 @@ const ProfilePage = () => {
               aria-label="profile tabs"
             ></Tabs>
             <ButtonContainer>
-              <StyledButton
-                startIcon={<PersonAddIcon />}
-                variant={isFollowing ? "contained" : "outlined"}
-                color={isFollowing ? "success" : "primary"}
-                onClick={handleFollowClick}
-                sx={{
-                  mr: 1,
-                  ...(isFollowing && {
-                    backgroundColor: theme.palette.success.light,
-                    borderColor: theme.palette.success.light,
-                    "&:hover": {
-                      backgroundColor: theme.palette.success.main,
-                    },
-                  }),
-                }}
-              >
-                {isFollowing ? "Following" : "Follow"}
-              </StyledButton>
-              <StyledButton
-                startIcon={<SendIcon />}
-                variant="outlined"
-                sx={{ mr: 1 }}
-              >
-                Message
-              </StyledButton>
+              {/* Conditionally render Follow and Message buttons */}
+              {!isOutsideLayout && (
+                <>
+                  <StyledButton
+                    startIcon={<PersonAddIcon />}
+                    variant={isFollowing ? "contained" : "outlined"}
+                    color={isFollowing ? "success" : "primary"}
+                    onClick={handleFollowClick}
+                    sx={{
+                      mr: 1,
+                      ...(isFollowing && {
+                        backgroundColor: theme.palette.success.light,
+                        borderColor: theme.palette.success.light,
+                        "&:hover": {
+                          backgroundColor: theme.palette.success.main,
+                        },
+                      }),
+                    }}
+                  >
+                    {isFollowing ? "Following" : "Follow"}
+                  </StyledButton>
+                  <StyledButton
+                    startIcon={<SendIcon />}
+                    variant="outlined"
+                    sx={{ mr: 1 }}
+                  >
+                    Message
+                  </StyledButton>
+                </>
+              )}
               <StyledButton
                 startIcon={<EventNoteIcon />}
                 variant="outlined"
@@ -251,6 +287,7 @@ const ProfilePage = () => {
               setShowGetTime={setExpanded}
               professorName={profileData.name}
               profileType={isOutsideLayout ? "outer" : "inner"} // Pass profileType
+              expertImage={profileData.img}
             />
           </AccordionDetails>
         </Accordion>

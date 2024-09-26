@@ -422,8 +422,8 @@ const ExpertCarouselCategoryButtons = ({
           </ViewAllButton>
         </Box>
       ) : (
-        <Box sx={{ display: "flex", gap: 3, mx: 2 }}>
-          <ViewAllButton onClick={onViewAll}>
+        <Box sx={{ display: "flex", gap: 3, mx: 2,  }}>
+          <ViewAllButton onClick={onViewAll} sx={{minWidth: '151px'}}>
             View All Experts
           </ViewAllButton>
           <NavigationButton onClick={onPrev}>

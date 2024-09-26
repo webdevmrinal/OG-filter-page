@@ -1,3 +1,4 @@
+// LoginPage.js
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import {
@@ -9,7 +10,7 @@ import {
   Divider,
   CircularProgress,
   Snackbar,
-  Alert
+  Alert,
 } from "@mui/material";
 import Footer from "./Footer";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -26,7 +27,6 @@ import { FormPaper } from "./Components/Cards";
 import { FormContainer, SocialBox } from "./Components/Box";
 import { FormTextField } from "./Components/TextField";
 import { SliderStyles } from "./Components/SliderStyle";
-import { ShimmerLoading } from "./Components/ShimmerEffect";
 import ShimmerSignup from "./Components/SignupShimmer";
 import users from "./Components/MockUsers"; // Import the mock users from the file
 
@@ -72,30 +72,31 @@ const LoginPage = () => {
     }),
     onSubmit: (values) => {
       setSubmitting(true); // Show loading spinner
-  
+
       const user = users.find(
         (user) =>
           user.email === values.email && user.password === values.password
       );
-  
+
       if (user) {
         // Simulate a delay to show the loading spinner
         setTimeout(() => {
           console.log("User logged in:", user.name);
+          // Set the logged-in user as the current user
+          localStorage.setItem("currentUser", JSON.stringify(user));
           setSubmitting(false); // Stop the loading spinner
           navigate("/dashboardpage"); // Redirect after success
-        }, 1000); // 2 seconds delay to show the spinner
+        }, 1000); // 1-second delay to show the spinner
       } else {
         // If user is not found, show the error message
         setTimeout(() => {
           setSubmitting(false); // Stop the loading spinner
           setUserNotRegistered(true);
           setShowSnackbar(true); // Show snackbar on failure
-        }, 1000); // 1 second delay for error simulation
+        }, 1000); // 1-second delay for error simulation
       }
     },
   });
-  
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -111,7 +112,12 @@ const LoginPage = () => {
 
   if (isLoading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
         <ShimmerSignup />
       </Box>
     );
@@ -133,7 +139,10 @@ const LoginPage = () => {
             {imagesLoaded && (
               <Slider {...sliderSettings}>
                 {images.map((url, index) => (
-                  <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
+                  <SliderStyles
+                    key={index}
+                    sx={{ backgroundImage: `url(${url})` }}
+                  />
                 ))}
               </Slider>
             )}
@@ -157,7 +166,10 @@ const LoginPage = () => {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: "600", mt: { sm: 2 } }}>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "600", mt: { sm: 2 } }}
+              >
                 Login on OpenGrowth
               </Typography>
 
@@ -186,7 +198,10 @@ const LoginPage = () => {
                     <IconComponent
                       style={{ marginRight: 1, width: 20, height: 20 }}
                     />
-                    <Typography variant={"subtitle2"} sx={{ mt: 0.5, ml: 1 }}>
+                    <Typography
+                      variant={"subtitle2"}
+                      sx={{ mt: 0.5, ml: 1 }}
+                    >
                       {button.label}
                     </Typography>
                   </SocialButtons>
@@ -202,7 +217,9 @@ const LoginPage = () => {
                       fullWidth
                       label="Email Address"
                       {...formik.getFieldProps("email")}
-                      error={formik.touched.email && Boolean(formik.errors.email)}
+                      error={
+                        formik.touched.email && Boolean(formik.errors.email)
+                      }
                       helperText={formik.touched.email && formik.errors.email}
                     />
                   </Grid>
@@ -212,8 +229,13 @@ const LoginPage = () => {
                       label="Password"
                       type={showPassword ? "text" : "password"}
                       {...formik.getFieldProps("password")}
-                      error={formik.touched.password && Boolean(formik.errors.password)}
-                      helperText={formik.touched.password && formik.errors.password}
+                      error={
+                        formik.touched.password &&
+                        Boolean(formik.errors.password)
+                      }
+                      helperText={
+                        formik.touched.password && formik.errors.password
+                      }
                       InputProps={{
                         endAdornment: (
                           <IconButton
@@ -221,7 +243,11 @@ const LoginPage = () => {
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
                           >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            {showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
                           </IconButton>
                         ),
                       }}
@@ -238,7 +264,11 @@ const LoginPage = () => {
                       type="submit"
                       disabled={submitting} // Disable the button while submitting
                     >
-                      {submitting ? <CircularProgress size={24} /> : "Login Now"}
+                      {submitting ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        "Login Now"
+                      )}
                     </FormButton>
                   </Grid>
                 </Grid>
@@ -252,8 +282,16 @@ const LoginPage = () => {
               anchorOrigin={{ vertical: "top", horizontal: "right" }}
               autoHideDuration={4000}
             >
-              <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
-                You are not registered. <Link onClick={() => navigate("/signup")} sx={{ cursor: 'pointer' }}>Join now</Link>.
+              <Alert
+                onClose={handleCloseSnackbar}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                You are not registered.{" "}
+                <Link onClick={() => navigate("/signup")} sx={{ cursor: "pointer" }}>
+                  Join now
+                </Link>
+                .
               </Alert>
             </Snackbar>
           </Box>

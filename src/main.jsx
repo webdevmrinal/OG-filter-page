@@ -31,6 +31,7 @@ import Projects from "./Projects.jsx";
 import PricingPage from "./Pricing.jsx";
 import ChatPage from "./ChatPage.jsx";
 import CourseAssignment from "./Course-Modules/CourseAssignment.jsx";
+import Admin from "./Admin.jsx";
 
 const theme = createTheme({
   palette: {
@@ -78,6 +79,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="course-intro" element={<CourseIntroduction />} />
           <Route path="messages" element={<ChatPage />} />
           <Route path="course-assignment" element={<CourseAssignment />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
         <Route path="homepage" element={<Homepage />} />
         <Route path="allexperts" element={<AllExperts />} />

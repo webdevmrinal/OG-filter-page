@@ -35,6 +35,7 @@ const SummaryConfirmationView = ({
   openContactModal,
   handleOpenContactModal,
   handleCloseContactModal,
+  expertImage,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -91,7 +92,7 @@ const SummaryConfirmationView = ({
         }}
       >
         <Avatar
-          src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
+          src={`https://academy.opengrowth.com/assets/images/users/${expertImage}`}
           alt={profileData?.name}
           sx={{
             width: isMobile ? 80 : 60,

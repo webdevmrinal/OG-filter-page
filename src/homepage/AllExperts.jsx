@@ -290,7 +290,7 @@ const AllExperts = () => {
               px: "8px",
             }}
           >
-          {experts.map((expert, index) => (
+          {experts?.map((expert, index) => (
             <Grid
             item
             xs={12}

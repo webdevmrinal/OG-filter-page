@@ -474,6 +474,7 @@ const DashboardPage = () => {
                   top: { xs: '8px', sm: 'inherit' },
                   textAlign: 'left',
                 }}
+                onClick={navigateToExpertsPage}
               >
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
                   <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase' }}>

@@ -46,8 +46,8 @@ const SignupPage = ({ resetAllData }) => {
   const [submitting, setSubmitting] = useState(false);
 
   // Load Page1 and Page2 data from localStorage if it exists
-  const page1Data = JSON.parse(localStorage.getItem('page1Data'));
-  const page2Data = JSON.parse(localStorage.getItem('page2Data'));
+  const page1Data = JSON.parse(localStorage.getItem("page1Data"));
+  const page2Data = JSON.parse(localStorage.getItem("page2Data"));
 
   const initialValues = {
     firstName: "",
@@ -97,19 +97,18 @@ const SignupPage = ({ resetAllData }) => {
         signupConfig.formValidation.password.min.message
       )
       .required(signupConfig.formValidation.password.required),
-    interests: Yup.array()
-      .min(
-        signupConfig.formValidation.interests.min.value,
-        signupConfig.formValidation.interests.min.message
-      ),
+    interests: Yup.array().min(
+      signupConfig.formValidation.interests.min.value,
+      signupConfig.formValidation.interests.min.message
+    ),
     country: Yup.string().required(signupConfig.formValidation.country.required),
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: async (values) => { // Make the function async
-      console.log("Form submitted:", values); 
+    onSubmit: async (values) => {
+      console.log("Form submitted:", values);
       setSubmitting(true); // Start submitting
 
       try {
@@ -123,8 +122,8 @@ const SignupPage = ({ resetAllData }) => {
         // Prepare new submission data
         const newSubmission = {
           ...values,
-          page1Data,  // Include locked Page1 data if needed
-          page2Data,  // Include locked Page2 data if needed
+          page1Data, // Include locked Page1 data if needed
+          page2Data, // Include locked Page2 data if needed
           submittedAt: new Date().toISOString(),
         };
 
@@ -132,7 +131,13 @@ const SignupPage = ({ resetAllData }) => {
         existingSubmissions.push(newSubmission);
 
         // Save updated submissions to localStorage
-        localStorage.setItem("signupSubmissions", JSON.stringify(existingSubmissions));
+        localStorage.setItem(
+          "signupSubmissions",
+          JSON.stringify(existingSubmissions)
+        );
+
+        // Set the new user as the current user
+        localStorage.setItem("currentUser", JSON.stringify(newSubmission));
 
         // Clear Page1 and Page2 data
         localStorage.setItem("page1Data", JSON.stringify(""));
@@ -150,12 +155,17 @@ const SignupPage = ({ resetAllData }) => {
         setSubmitting(false); // End submitting
       }
     },
-  });  
+  });
 
   // If loading, show initial shimmer
   if (isLoading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
         <ShimmerSignup />
       </Box>
     );
@@ -178,12 +188,13 @@ const SignupPage = ({ resetAllData }) => {
             {imagesLoaded ? (
               <Slider {...sliderSettings}>
                 {images.map((url, index) => (
-                  <SliderStyles key={index} sx={{ backgroundImage: `url(${url})` }} />
+                  <SliderStyles
+                    key={index}
+                    sx={{ backgroundImage: `url(${url})` }}
+                  />
                 ))}
               </Slider>
-            ) : (
-              null // Image slider appears after 1 second without any loading indicator
-            )}
+            ) : null}
           </Box>
 
           {/* Form Section */}
@@ -247,7 +258,9 @@ const SignupPage = ({ resetAllData }) => {
                 }
                 return (
                   <SocialButtons key={index} variant="outlined">
-                    <IconComponent style={{ marginRight: 1, width: 20, height: 20 }} />
+                    <IconComponent
+                      style={{ marginRight: 1, width: 20, height: 20 }}
+                    />
                     <Typography variant="subtitle2" sx={{ mt: 0.5, ml: 1 }}>
                       {button.label}
                     </Typography>
@@ -293,7 +306,9 @@ const SignupPage = ({ resetAllData }) => {
                       fullWidth
                       label="Email Address"
                       {...formik.getFieldProps("email")}
-                      error={formik.touched.email && Boolean(formik.errors.email)}
+                      error={
+                        formik.touched.email && Boolean(formik.errors.email)
+                      }
                       helperText={formik.touched.email && formik.errors.email}
                     />
                   </Grid>
@@ -317,7 +332,11 @@ const SignupPage = ({ resetAllData }) => {
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
                           >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            {showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
                           </IconButton>
                         ),
                       }}
@@ -380,9 +399,7 @@ const SignupPage = ({ resetAllData }) => {
                       }}
                     >
                       {submitting ? (
-                        <CircularProgress
-                          size={24}
-                        />
+                        <CircularProgress size={24} />
                       ) : (
                         "Register Now"
                       )}
