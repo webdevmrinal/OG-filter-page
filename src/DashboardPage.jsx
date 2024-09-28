@@ -27,7 +27,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import bannerImg2 from "./assets/file2.png";
+// import bannerImg2 from "./assets/file2.png"; // Unused import
 import { FollowerCard } from "./Experts/Components/FollowerStyle";
 import { MainCard, NameBox } from "./Experts/Components/ExpertStyle";
 import { ExpertPopup } from "./ExpertPopup";
@@ -51,20 +51,20 @@ const HeaderSection = styled(Box)(({ theme }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return {
-    position: "relative", // To allow positioning of overlay
+    position: "relative",
     color: "white",
     padding: '12px 0px',
     borderRadius: '8px',
     marginBottom: theme.spacing(3),
     textAlign: "center",
-    height: '180px',  // Adjust the height to your preference
+    height: '180px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundImage: `url(https://academy.opengrowth.com/assets/images/web/banner3.png)`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    overflow: "hidden", // Ensure no overflow is visible
+    overflow: "hidden",
     "&:before": {
       content: '""',
       position: "absolute",
@@ -72,18 +72,17 @@ const HeaderSection = styled(Box)(({ theme }) => {
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: "#3c4a7280", // Semi-transparent white overlay to lighten the image
-      zIndex: 1, // Ensure the overlay is below the content but above the background image
+      backgroundColor: "#3c4a7280",
+      zIndex: 1,
     },
     "& h4": {
-      fontSize: isMobile ? "1.5rem" : "2.125rem", // Adjusted font size for h4
+      fontSize: isMobile ? "1.5rem" : "2.125rem",
     },
     "& h5": {
-      fontSize: isMobile ? "1.125rem" : "1.5rem", // Adjusted font size for h5
+      fontSize: isMobile ? "1.125rem" : "1.5rem",
     },
   };
 });
-
 
 const EngagementCard = styled(ButtonBase)(({ theme }) => ({
   width: "49%",
@@ -94,7 +93,7 @@ const EngagementCard = styled(ButtonBase)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  alignItems: "flex-Start",
+  alignItems: "flex-start",
   gap: theme.spacing(2),
   boxShadow: "none",
   borderRadius: "8px",
@@ -112,7 +111,7 @@ const SidebarSection = styled(Box)(({ theme }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return {
-    width: isMobile ? "95%" : "25%", // Increase width for small screens
+    width: isMobile ? "95%" : "25%",
     marginLeft: isMobile ? 19 : theme.spacing(3),
     display: "flex",
     flexDirection: "column",
@@ -120,6 +119,7 @@ const SidebarSection = styled(Box)(({ theme }) => {
     marginTop: '8px',
   };
 });
+
 const appointments = [
   {
     id: 1,
@@ -160,8 +160,6 @@ const Shimmer = ({ width = "100%", height = 100 }) => (
     <ShimmerEffect />
   </ShimmerWrapper>
 );
-
-
 
 const TimeButton = styled(Button)(({ theme }) => ({
   borderRadius: "1.2em",
@@ -272,6 +270,7 @@ const DashboardPage = () => {
     }
     return text;
   };
+
   useEffect(() => {
     fetchExperts();
   }, [fetchExperts]);
@@ -287,9 +286,11 @@ const DashboardPage = () => {
       setCategories(initialCategories);
     }
   }, [selectedCategory]);
+
   const handleAppointmentTabChange = (event, newValue) => {
     setAppointmentTab(newValue);
   };
+
   useEffect(() => {
     const elements = document.querySelectorAll(".css-ehiffo");
     elements.forEach((el) => {
@@ -299,21 +300,22 @@ const DashboardPage = () => {
       el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
     });
   }, []);
+
   const appointmentCard = (appointment) => (
     <FollowerCard
       key={appointment.id}
       sx={{
         height: '16vh',
         width: 'max-content',
-        cursor: 'pointer', // Indicate that the card is clickable
-        position: 'relative', // Ensure positioning context if needed
+        cursor: 'pointer',
+        position: 'relative',
         "&:hover": {
-          backgroundColor: "#f0f0f0", // Optional hover effect
+          backgroundColor: "#f0f0f0",
         },
       }}
-      onClick={() => navigateToAppointmentPage(appointment)} // Navigate with appointment data
-      role="button" // Accessibility role
-      tabIndex={0} // Make it focusable
+      onClick={() => navigateToAppointmentPage(appointment)}
+      role="button"
+      tabIndex={0}
       onKeyPress={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           navigateToAppointmentPage(appointment);
@@ -348,7 +350,6 @@ const DashboardPage = () => {
     </FollowerCard>
   );
 
-
   const handleExpertClick = (expert) => {
     setSelectedExpert(expert);
   };
@@ -356,6 +357,7 @@ const DashboardPage = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   useEffect(() => {
     const elements = document.querySelectorAll(".css-ehiffo");
     elements.forEach((el) => {
@@ -365,6 +367,7 @@ const DashboardPage = () => {
       el.style.boxShadow = "0 0 8px rgba(0,0,0,0.2)";
     });
   }, []);
+
   const navigate = useNavigate();
   const navigateToExpertsPage = () => {
     navigate('/expertpage');
@@ -377,6 +380,7 @@ const DashboardPage = () => {
     <>
       {/* <Header /> */}
       <Box sx={{ backgroundColor: "#f4f6f6", minHeight: "100vh", p: 3 }}>
+        {/* Tabs Section */}
         <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 1 }}>
           <Tabs
             value={value}
@@ -400,108 +404,126 @@ const DashboardPage = () => {
             <Tab label="My Blogs" />
           </Tabs>
         </Box>
-        <HeaderSection>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-              zIndex: 2,  // Ensure content appears above any potential background overlays
-            }}
-          >
-            <Typography variant="h4" gutterBottom fontWeight="600">
-              Welcome, OpenGrowth
-            </Typography>
-            <Typography variant="h5">
-              Your expertise is the driving force on OpenGrowth - let's
-              continue shaping success together.
-            </Typography>
-          </Box>
-        </HeaderSection>
+
+        {/* Header Section */}
+        {loading ? (
+          <Shimmer width="100%" height="180px" />
+        ) : (
+          <HeaderSection>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                zIndex: 2,
+              }}
+            >
+              <Typography variant="h4" gutterBottom fontWeight="600">
+                Welcome, OpenGrowth
+              </Typography>
+              <Typography variant="h5">
+                Your expertise is the driving force on OpenGrowth - let's
+                continue shaping success together.
+              </Typography>
+            </Box>
+          </HeaderSection>
+        )}
+
         <Grid container spacing={isMobile ? 2 : 3}>
           <Grid item xs={12} md={8.7}>
+            {/* Engagement Cards Section */}
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 mb: 2,
-                flexDirection: { xs: 'column', sm: 'inherit' },
+                flexDirection: { xs: 'column', sm: 'row' },
               }}
             >
-              <EngagementCard
-                sx={{
-                  background: `#ffff`,
-                  color: 'black',
-                  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-                  width: { xs: '100%', sm: '49%' },
-                  textAlign: 'left',
-                  pb: 2,
-                }}
-              >
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
-                  <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase' }}>
-                    Recommended for you
-                  </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar
-                      sx={{ width: 60, height: 60, backgroundColor: '#f0f0f0' }}
-                    >
-                      <Box
-                        component="img"
-                        src="https://academy.opengrowth.com/assets/images/web/fragment.png"
-                        alt="Fractional Engagements Icon"
-                        sx={{ width: 60, height: 60, filter: 'brightness(0)' }}  // Make the icon black
-                      />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="h6">Fractional Engagements</Typography>
-                      <Typography variant="subtitle1" fontSize='1.1em'>
-                        Engage with experts for fractional consulting and advice.
+              {loading ? (
+                <>
+                  <Shimmer width={isMobile ? "100%" : "49%"} height="150px" />
+                  <Shimmer width={isMobile ? "100%" : "49%"} height="150px" sx={{ mt: isMobile ? 2 : 0 }} />
+                </>
+              ) : (
+                <>
+                  <EngagementCard
+                    sx={{
+                      background: `#ffff`,
+                      color: 'black',
+                      boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                      width: { xs: '100%', sm: '49%' },
+                      textAlign: 'left',
+                      pb: 2,
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
+                      <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase' }}>
+                        Recommended for you
                       </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Avatar
+                          sx={{ width: 60, height: 60, backgroundColor: '#f0f0f0' }}
+                        >
+                          <Box
+                            component="img"
+                            src="https://academy.opengrowth.com/assets/images/web/fragment.png"
+                            alt="Fractional Engagements Icon"
+                            sx={{ width: 60, height: 60, filter: 'brightness(0)' }}
+                          />
+                        </Avatar>
+                        <Box>
+                          <Typography variant="h6">Fractional Engagements</Typography>
+                          <Typography variant="subtitle1" fontSize='1.1em'>
+                            Engage with experts for fractional consulting and advice.
+                          </Typography>
+                        </Box>
+                      </Box>
                     </Box>
-                  </Box>
-                </Box>
-              </EngagementCard>
+                  </EngagementCard>
 
-              <EngagementCard
-                sx={{
-                  background: `#ffff`,
-                  color: 'black',
-                  boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-                  width: { xs: '100%', sm: '49%' },
-                  top: { xs: '8px', sm: 'inherit' },
-                  textAlign: 'left',
-                }}
-                onClick={navigateToExpertsPage}
-              >
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
-                  <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase' }}>
-                    Recommended for you
-                  </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar
-                      sx={{ width: 60, height: 60, backgroundColor: '#f0f0f0' }}
-                    >
-                      <Box
-                        component="img"
-                        src="https://academy.opengrowth.com/assets/images/web/engage.png"
-                        alt="On Demand Engagement Icon"
-                        sx={{ width: 60, height: 60, filter: 'brightness(0)' }}  // Make the icon black
-                      />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="h6">On Demand Engagement</Typography>
-                      <Typography variant="subtitle1" fontSize='1.1em'>
-                        Access on-demand expertise for immediate needs.
+                  <EngagementCard
+                    sx={{
+                      background: `#ffff`,
+                      color: 'black',
+                      boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+                      width: { xs: '100%', sm: '49%' },
+                      top: { xs: '8px', sm: 'inherit' },
+                      textAlign: 'left',
+                    }}
+                    onClick={navigateToExpertsPage}
+                  >
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
+                      <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase' }}>
+                        Recommended for you
                       </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Avatar
+                          sx={{ width: 60, height: 60, backgroundColor: '#f0f0f0' }}
+                        >
+                          <Box
+                            component="img"
+                            src="https://academy.opengrowth.com/assets/images/web/engage.png"
+                            alt="On Demand Engagement Icon"
+                            sx={{ width: 60, height: 60, filter: 'brightness(0)' }}
+                          />
+                        </Avatar>
+                        <Box>
+                          <Typography variant="h6">On Demand Engagement</Typography>
+                          <Typography variant="subtitle1" fontSize='1.1em'>
+                            Access on-demand expertise for immediate needs.
+                          </Typography>
+                        </Box>
+                      </Box>
                     </Box>
-                  </Box>
-                </Box>
-              </EngagementCard>
+                  </EngagementCard>
+                </>
+              )}
             </Box>
 
+            {/* Appointments Section */}
             <Box
               sx={{
                 pl: 3,
@@ -572,73 +594,131 @@ const DashboardPage = () => {
                 </Box>
               </Box>
 
-              {appointmentTab === 0 && (
-                <Grid
-                  container
-                  spacing={0.5}
+              {loading ? (
+                <Box
                   sx={{
-                    marginTop: 3,
+                    p: 1,
                     ml: { xs: '8px', sm: 0 },
-                    width: { xs: '250px', sm: 'auto' },
-                    '& .MuiGrid-item': {
-                      padding: '0 !important',
-                    },
+                    width: '100%',
+                    maxHeight: '300px',
+                    overflowX: 'auto',
+                    whiteSpace: 'nowrap',
                     '&::-webkit-scrollbar': {
-                      display: 'none', // Hide scrollbar in Chrome, Safari, and Opera
+                      display: 'none',
                     },
                     '-ms-overflow-style': 'none',
+                    scrollbarWidth: 'none',
                   }}
                 >
-                  {appointments.map((appointment) => (
+                  <Grid
+                    container
+                    spacing={0.5}
+                    sx={{
+                      ml: { xs: '8px', sm: 0 },
+                      width: { xs: '250px', sm: 'auto' },
+                      '& .MuiGrid-item': {
+                        padding: '0 !important',
+                      },
+                      '&::-webkit-scrollbar': {
+                        display: 'none',
+                      },
+                      '-ms-overflow-style': 'none',
+                    }}
+                  >
+                    {Array.from({ length: 3 }, (_, index) => (
+                      <Grid item key={index} sx={{ mr: 2 }}>
+                        <Shimmer width="250px" height="150px" />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              ) : (
+                <>
+                  {appointmentTab === 0 && (
                     <Box
-                      key={appointment.id}
                       sx={{
-                        display: 'flex',
-                        gap: 3,
-                        flexDirection: { xs: 'column', sm: 'row' },
-                        width: { xs: '100%', sm: 'inherit' },
-                        ml: { xs: '0px', sm: 'inherit' },
+                        p: 1,
+                        ml: { xs: '8px', sm: 0 },
+                        width: '100%',
+                        maxHeight: '300px',
+                        overflowX: 'auto',
+                        whiteSpace: 'nowrap',
+                        '&::-webkit-scrollbar': {
+                          display: 'none',
+                        },
+                        '-ms-overflow-style': 'none',
+                        scrollbarWidth: 'none',
                       }}
                     >
                       <Grid
-                        item
+                        container
+                        spacing={0.5}
                         sx={{
-                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                          borderRadius: '8px',
-                          backgroundColor: '#fff',
-                          maxWidth: 'calc(100% - 0px)',
+                          ml: { xs: '8px', sm: 0 },
+                          width: { xs: '250px', sm: 'auto' },
+                          '& .MuiGrid-item': {
+                            padding: '0 !important',
+                          },
+                          '&::-webkit-scrollbar': {
+                            display: 'none',
+                          },
+                          '-ms-overflow-style': 'none',
                         }}
                       >
-                        {appointmentCard(appointment)}
-                      </Grid>
-                      <Grid
-                        item
-                        sx={{
-                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                          borderRadius: '8px',
-                          backgroundColor: '#fff',
-                          maxWidth: 'calc(100% - 0px)',
-                        }}
-                      >
-                        {appointmentCard(appointment)}
-                      </Grid>
-                      <Grid
-                        item
-                        sx={{
-                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                          borderRadius: '8px',
-                          backgroundColor: '#fff',
-                          maxWidth: 'calc(100% - 0px)',
-                        }}
-                      >
-                        {appointmentCard(appointment)}
+                        {appointments.map((appointment) => (
+                          <Box
+                            key={appointment.id}
+                            sx={{
+                              display: 'flex',
+                              gap: 3,
+                              flexDirection: { xs: 'column', sm: 'row' },
+                              width: { xs: '100%', sm: 'inherit' },
+                              ml: { xs: '0px', sm: 'inherit' },
+                            }}
+                          >
+                            <Grid
+                              item
+                              sx={{
+                                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                                borderRadius: '8px',
+                                backgroundColor: '#fff',
+                                maxWidth: 'calc(100% - 0px)',
+                              }}
+                            >
+                              {appointmentCard(appointment)}
+                            </Grid>
+                            <Grid
+                              item
+                              sx={{
+                                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                                borderRadius: '8px',
+                                backgroundColor: '#fff',
+                                maxWidth: 'calc(100% - 0px)',
+                              }}
+                            >
+                              {appointmentCard(appointment)}
+                            </Grid>
+                            <Grid
+                              item
+                              sx={{
+                                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                                borderRadius: '8px',
+                                backgroundColor: '#fff',
+                                maxWidth: 'calc(100% - 0px)',
+                              }}
+                            >
+                              {appointmentCard(appointment)}
+                            </Grid>
+                          </Box>
+                        ))}
                       </Grid>
                     </Box>
-                  ))}
-                </Grid>
+                  )}
+                </>
               )}
             </Box>
 
+            {/* Experts You Can Connect Section */}
             <Box
               sx={{
                 display: "flex",
@@ -666,12 +746,12 @@ const DashboardPage = () => {
 
               {loading
                 ? Array.from({ length: 6 }, (_, index) => (
-                  <Shimmer key={index} height={250} />
+                  <Shimmer key={index} height={250} width="18em" sx={{ mb: 2 }} />
                 ))
                 : experts.slice(0, 6).map((expert, index) => (
                   <MainCard
                     key={index}
-                    sx={{ height: 'auto', width: '22em' }}
+                    sx={{ height: 'auto', width: '18em', mb: 2 }}
                   >
                     <Box sx={{ width: "100%", position: "relative" }}>
                       <Link to={`/profile/${expert.profile_url}`} state={{ expertEmail: expert.email }} style={{ textDecoration: "none" }}>
@@ -716,7 +796,7 @@ const DashboardPage = () => {
                     </Box>
                   </MainCard>
                 ))}
-                <Button
+              <Button
                 onClick={navigateToExpertsPage}
                 variant="contained"
                 sx={{
@@ -733,6 +813,7 @@ const DashboardPage = () => {
 
           </Grid>
 
+          {/* Sidebar Section */}
           <SidebarSection>
             <Typography variant="h6">OpenGrowth Experts</Typography>
             <Divider sx={{ mb: 2 }} />
@@ -788,6 +869,8 @@ const DashboardPage = () => {
             </Button>
           </SidebarSection>
         </Grid>
+
+        {/* Expert Popup */}
         <ExpertPopup
           expert={selectedExpert}
           onClose={() => setSelectedExpert(null)}

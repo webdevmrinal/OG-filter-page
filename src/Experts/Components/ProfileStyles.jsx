@@ -79,3 +79,32 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     minWidth: '64px', // Minimum width to ensure tap target size
   },
 }));
+
+const ShimmerWrapper = styled("div")({
+  overflow: "hidden",
+  position: "relative",
+  backgroundColor: "#f6f7f8",
+  borderRadius: 8,
+});
+
+const ShimmerEffect = styled("div")(({ theme }) => ({
+  width: "100%",
+  height: "100%",
+  animation: "shimmer 1.5s infinite linear",
+  background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #e0e0e0 50%, ${theme.palette.background.default} 100%)`,
+  backgroundSize: "200% 100%",
+  "@keyframes shimmer": {
+    "0%": {
+      backgroundPosition: "-200% 0",
+    },
+    "100%": {
+      backgroundPosition: "200% 0",
+    },
+  },
+}));
+
+export const Shimmer = ({ width = "100%", height = 100, borderRadius = 8, sx = {} }) => (
+  <ShimmerWrapper style={{ width, height, borderRadius }} sx={sx}>
+    <ShimmerEffect />
+  </ShimmerWrapper>
+);

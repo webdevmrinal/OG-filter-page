@@ -1,3 +1,4 @@
+// ExpertCard.jsx
 import React from "react";
 import { useTheme } from "@mui/system";
 import {
@@ -8,15 +9,84 @@ import {
     Rating,
     Typography,
     Chip,
+    Skeleton, // Import Skeleton
 } from "@mui/material";
 import { MainCard, NameBox } from "./Experts/Components/ExpertStyle";
 import { Link } from "react-router-dom";
 
-export const ExpertCard = ({ expert, handleExpertClick, context }) => {
-    console.log(expert);
-
+export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
     const theme = useTheme();
 
+    if (loading) {
+        return (
+            <MainCard
+                sx={{
+                    height: context === "carousel" ? "20em" : "27em",
+                    bgcolor: "#f5f5f5", // Lighter background for the card
+                }}
+            >
+                <CardMedia
+                    component="div"
+                    sx={{
+                        height: context === "carousel" ? "100%" : "65%",
+                        position: "relative",
+                        backgroundColor: "#e0e0e0", // Light gray background
+                    }}
+                >
+                    <Skeleton
+                        variant="rectangular"
+                        width="100%"
+                        height="100%"
+                        animation="wave"
+                        sx={{
+                            backgroundColor: "#e0e0e0", // Lighter skeleton color
+                        }}
+                    />
+                </CardMedia>
+                {context !== "carousel" && (
+                    <CardContent sx={{ padding: '0px', mt: 1.5, ml: 1 }}>
+                        <Skeleton
+                            variant="text"
+                            height={30}
+                            width="60%"
+                            animation="wave"
+                            sx={{ backgroundColor: "#e0e0e0" }}
+                        />
+                        <Skeleton
+                            variant="text"
+                            height={20}
+                            width="40%"
+                            sx={{ mt: 0.5, backgroundColor: "#e0e0e0" }}
+                            animation="wave"
+                        />
+                        <Skeleton
+                            variant="text"
+                            height={20}
+                            width="80%"
+                            sx={{ mt: 1, backgroundColor: "#e0e0e0" }}
+                            animation="wave"
+                        />
+                        <Skeleton
+                            variant="rectangular"
+                            height={30}
+                            width="40%"
+                            sx={{ mt: 1, backgroundColor: "#e0e0e0" }}
+                            animation="wave"
+                        />
+                        <Skeleton
+                            variant="rectangular"
+                            height={20}
+                            width="30%"
+                            sx={{ mt: 1, backgroundColor: "#e0e0e0" }}
+                            animation="wave"
+                        />
+                    </CardContent>
+                )}
+            </MainCard>
+        );
+    }
+
+    // Existing content rendering
     // Separate the industry from other categories for different styling
     const categoriesWithIndustry = expert?.category
         .split(",")
@@ -36,7 +106,6 @@ export const ExpertCard = ({ expert, handleExpertClick, context }) => {
         <MainCard
             sx={{
                 height: context === "carousel" ? "20em" : "27em", // Adjust height based on context
-
             }}
         >
             <CardMedia
@@ -175,5 +244,3 @@ export const ExpertCard = ({ expert, handleExpertClick, context }) => {
         </MainCard>
     );
 };
-
-

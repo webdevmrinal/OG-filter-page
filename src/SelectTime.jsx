@@ -258,7 +258,7 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
           elevation={3}
           sx={{
             p: { xs: 2, sm: 3 },
-            mt: 3,
+            mt: 1,
             borderRadius: 2,
             boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
           }}
@@ -273,21 +273,11 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
           >
             <Typography
               variant="h6"
-              sx={{ fontWeight: "600", mt: { xs: 4, sm: 2 } }}
+              sx={{ mt: { xs: 4, sm: 0 } }}
             >
               Book a Session with {professorName}
             </Typography>
-            <Typography variant="subtitle2" sx={{ mt: { xs: 1, sm: 3 } }}>
-              Already registered?{" "}
-              <Link
-                sx={{ cursor: "pointer", textDecoration: "none" }}
-                onClick={() => navigate("/login")}
-              >
-                Login now
-              </Link>
-            </Typography>
           </Box>
-          <Divider />
           {/* Booking Interface */}
           <Box sx={{ px: 2, py: 1 }}>
             <ToggleButtonGroup

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   List,
@@ -11,7 +11,8 @@ import {
   IconButton,
   Paper,
   useMediaQuery,
-  useTheme
+  useTheme,
+  Skeleton // Import Skeleton
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
@@ -44,9 +45,37 @@ const ChatPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [selectedUser, setSelectedUser] = useState(null); // Start with no user selected
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [showMessages, setShowMessages] = useState(!isMobile); // Show messages on desktop by default
+
+  // Loading states
+  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+
+  useEffect(() => {
+    // Simulate loading users
+    const userLoadTimeout = setTimeout(() => {
+      setLoadingUsers(false);
+    }, 300); // 1.5 seconds delay
+
+    return () => clearTimeout(userLoadTimeout);
+  }, []);
+
+  useEffect(() => {
+    if (selectedUser) {
+      setLoadingMessages(true);
+      // Simulate loading messages
+      const messageLoadTimeout = setTimeout(() => {
+        // Filter messages for the selected user
+        const userMessages = initialMessages.filter(message => message.user === selectedUser.name);
+        setMessages(userMessages);
+        setLoadingMessages(false);
+      }, 1000); // 1 second delay
+
+      return () => clearTimeout(messageLoadTimeout);
+    }
+  }, [selectedUser]);
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
@@ -108,19 +137,36 @@ const ChatPage = () => {
               }
             }}
           >
-            {users.map((user) => (
-              <ListItem button key={user.name} onClick={() => handleUserSelect(user)}>
-                <ListItemAvatar>
-                  <Avatar src={user.avatar} />
-                </ListItemAvatar>
-                <ListItemText primary={user.name} secondary={user.role} />
-              </ListItem>
-            ))}
+            {loadingUsers ? (
+              // Display skeletons while loading users
+              Array.from(new Array(6)).map((_, index) => (
+                <ListItem key={index}>
+                  <ListItemAvatar>
+                    <Skeleton variant="circular">
+                      <Avatar />
+                    </Skeleton>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={<Skeleton width="80%" />}
+                    secondary={<Skeleton width="40%" />}
+                  />
+                </ListItem>
+              ))
+            ) : (
+              users.map((user) => (
+                <ListItem button key={user.name} onClick={() => handleUserSelect(user)}>
+                  <ListItemAvatar>
+                    <Avatar src={user.avatar} />
+                  </ListItemAvatar>
+                  <ListItemText primary={user.name} secondary={user.role} />
+                </ListItem>
+              ))
+            )}
           </List>
         </Box>
       )}
 
-      {(!isMobile || showMessages) && selectedUser && (
+      {(!isMobile || showMessages) && (
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', my: 2, mx: 2, boxShadow: "0 4px 6px rgba(0,0,0,0.2)" }}>
           <Box sx={{ 
             p: 2, 
@@ -134,12 +180,28 @@ const ChatPage = () => {
                 <ArrowBackIcon />
               </IconButton>
             )}
-            <Avatar sx={{ mr: 2, height: '60px', width: '60px' }} src={selectedUser.avatar} />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="h6">{selectedUser.name}</Typography>
-              <Typography variant="subtitle1">{selectedUser.role}</Typography>
-            </Box>
+            {selectedUser ? (
+              <>
+                <Avatar sx={{ mr: 2, height: '60px', width: '60px' }} src={selectedUser.avatar} />
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="h6">{selectedUser.name}</Typography>
+                  <Typography variant="subtitle1">{selectedUser.role}</Typography>
+                </Box>
+              </>
+            ) : (
+              // Display skeletons when no user is selected
+              <>
+                <Skeleton variant="circular" sx={{ mr: 2, height: '60px', width: '60px' }}>
+                  <Avatar />
+                </Skeleton>
+                <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <Skeleton width="60%" />
+                  <Skeleton width="40%" />
+                </Box>
+              </>
+            )}
           </Box>
+          
           <Box 
             sx={{ 
               flex: 1, 
@@ -152,79 +214,92 @@ const ChatPage = () => {
               }
             }}
           >
-            {messages.filter(message => message.user === selectedUser.name).map((message, index) => (
-              <Box key={index}>
-                <Typography variant="caption" sx={{ display: 'block', textAlign: message.sender === 'mentor' ? 'right' : 'left', mb: 1 }}>
-                  {message.timestamp}
-                </Typography>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: message.sender === 'mentor' ? 'flex-end' : 'flex-start',
-                    alignItems: 'center',
-                    mb: 2,
-                  }}
-                >
-                  {message.sender === 'learner' && (
-                    <Avatar sx={{ mr: 1 }} src={message.avatar} />
-                  )}
-                  <Paper 
+            {loadingMessages ? (
+              // Display skeletons while loading messages
+              Array.from(new Array(5)).map((_, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+                  <Skeleton variant="text" width="30%" />
+                  <Skeleton variant="rectangular" height={60} />
+                </Box>
+              ))
+            ) : (
+              selectedUser && messages.map((message, index) => (
+                <Box key={index}>
+                  <Typography variant="caption" sx={{ display: 'block', textAlign: message.sender === 'mentor' ? 'right' : 'left', mb: 1 }}>
+                    {message.timestamp}
+                  </Typography>
+                  <Box
                     sx={{
-                      display: 'inline-flex',
+                      display: 'flex',
+                      justifyContent: message.sender === 'mentor' ? 'flex-end' : 'flex-start',
                       alignItems: 'center',
-                      padding: '10px',
-                      backgroundColor: message.sender === 'mentor' ? '#eeeeee' : '#FFFDE7', // Lighter colors
-                      maxWidth: 'calc(100% - 80px)',
-                      wordWrap: 'break-word',
-                      borderRadius: '12px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                      mb: 2,
                     }}
                   >
-                    <Typography variant="body1">{message.text}</Typography>
-                  </Paper>
-                  {message.sender === 'mentor' && (
-                    <Avatar sx={{ ml: 1 }} src={message.avatar} />
-                  )}
+                    {message.sender === 'learner' && (
+                      <Avatar sx={{ mr: 1 }} src={message.avatar} />
+                    )}
+                    <Paper 
+                      sx={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        padding: '10px',
+                        backgroundColor: message.sender === 'mentor' ? '#eeeeee' : '#FFFDE7', // Lighter colors
+                        maxWidth: 'calc(100% - 80px)',
+                        wordWrap: 'break-word',
+                        borderRadius: '12px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                      }}
+                    >
+                      <Typography variant="body1">{message.text}</Typography>
+                    </Paper>
+                    {message.sender === 'mentor' && (
+                      <Avatar sx={{ ml: 1 }} src={message.avatar} />
+                    )}
+                  </Box>
                 </Box>
-              </Box>
-            ))}
+              ))
+            )}
           </Box>
-          <Box sx={{ borderTop: '1px solid #e0e0e0', p: 2, display: 'flex', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
-            <TextField
-              fullWidth
-              placeholder="Send messages..."
-              variant="outlined"
-              size="small"
-              multiline={false}
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={handleKeyPress} // Handle Enter key
-              sx={{
-                mr: 1,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    border: 'none',
+
+          {selectedUser && (
+            <Box sx={{ borderTop: '1px solid #e0e0e0', p: 2, display: 'flex', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
+              <TextField
+                fullWidth
+                placeholder="Send messages..."
+                variant="outlined"
+                size="small"
+                multiline={false}
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={handleKeyPress} // Handle Enter key
+                sx={{
+                  mr: 1,
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      border: 'none',
+                    },
+                    '&:hover fieldset': {
+                      border: 'none',
+                    },
+                    '&.Mui-focused fieldset': {
+                      border: 'none',
+                    },
                   },
-                  '&:hover fieldset': {
-                    border: 'none',
-                  },
-                  '&.Mui-focused fieldset': {
-                    border: 'none',
-                  },
-                },
-                backgroundColor: '#ffffff', // Optional: Set background to white
-                borderRadius: '8px', // Optional: Rounded corners
-              }}
-            />
-            <IconButton 
-              color="primary" 
-              onClick={handleSendMessage} 
-              disabled={!newMessage.trim()}
-              aria-label="send message"
-            >
-              <SendIcon />
-            </IconButton>
-          </Box>
+                  backgroundColor: '#ffffff', // Optional: Set background to white
+                  borderRadius: '8px', // Optional: Rounded corners
+                }}
+              />
+              <IconButton 
+                color="primary" 
+                onClick={handleSendMessage} 
+                disabled={!newMessage.trim()}
+                aria-label="send message"
+              >
+                <SendIcon />
+              </IconButton>
+            </Box>
+          )}
         </Box>
       )}
     </Box>

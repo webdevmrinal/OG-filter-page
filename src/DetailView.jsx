@@ -17,6 +17,7 @@ import {
   Tooltip,
   useMediaQuery,
   useTheme,
+  Skeleton, // Import Skeleton
 } from "@mui/material";
 import axios from "axios";
 // import Header from "./Header";
@@ -60,7 +61,6 @@ const ClickableBox = styled(Box)({
 });
 
 const getSessionColor = (title) => {
-
   return '#fff';
 };
 
@@ -79,7 +79,6 @@ const GradientBox = styled(Box)({
   padding: "24px",
   borderRadius: "8px",
   border: '1px solid #d7d7d7',
-  
 });
 
 
@@ -118,6 +117,7 @@ const DetailView = () => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const connectionData = [
@@ -383,16 +383,6 @@ const DetailView = () => {
   const notes =
     "Here are all the detailed notes that were discussed during the session. These include key points, action items, and follow-up dates.";
 
-  //   const [profileData, setProfileData] = useState(null);
-  const profileData1 = {
-    name: "John Doe",
-    status: "Expert",
-    img: "avatar.jpg",
-    date: "2023-09-15",
-    time: "9:00pm - 10:00pm",
-    requirement: "Discuss project scope and timeline",
-  };
-
   const location = useLocation();
   const expertEmail = location.state?.expertEmail;
 
@@ -409,14 +399,17 @@ const DetailView = () => {
       } catch (error) {
         console.error("Error fetching profile data:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false after fetch
       }
     };
 
     if (expertEmail) {
       fetchProfileData();
+    } else {
+      setLoading(false); // If no email, stop loading
     }
   }, [expertEmail]);
+
   console.log(profileData);
 
   const handleTabChange = (event, newValue) => {
@@ -437,26 +430,26 @@ const DetailView = () => {
   return (
     <>
       {/* <Header /> */}
-        <Box
-          variant="outlined"
-          sx={{
-            // margin: 2,
-            padding: 2,
-            backgroundColor: "#fff",
-            color: "Black",
-            height: "auto",
-            position: "relative",
-            overflow: "visible",
-            // boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-          }}
+      <Box
+        variant="outlined"
+        sx={{
+          // margin: 2,
+          padding: 2,
+          backgroundColor: "#fff",
+          color: "Black",
+          height: "auto",
+          position: "relative",
+          overflow: "visible",
+          // boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{ width: "100%", padding: "1px 1px 0px 4px" }}
         >
-          <Typography
-            variant="h6"
-            sx={{ width: "100%", padding: "1px 1px 0px 4px" }}
-          >
-            Event Details
-          </Typography>
-          <Divider sx={{ width: "100%", mb: 2 }} />
+          Event Details
+        </Typography>
+        <Divider sx={{ width: "100%", mb: 2 }} />
         <GradientBox position={"relative"} sx={{height: {xs: '200px', sm: '270px'}}}>
           <Box
             sx={{
@@ -471,254 +464,297 @@ const DetailView = () => {
           >
             <Box sx={{ width: { xs: '15em', sm: 'auto' }, ml: {xs: '-20px', sm: 'inherit'}, padding: 2 }}>
               <Box display="flex" alignItems="flex-start">
-                <Box display={"flex"} flexDirection={"column"} sx={{width: {xs: '80px', sm: 'inherit'}, mt: {xs: '55px', sm: 'inherit'}}}>
-                  <ProfileAvatar
-                    src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
-                    alt={profileData?.name}
-                    sx={{width: { xs: 80, sm: 200 }, height: { xs: 80, sm: 200 }}}
-                  />
-                  <Box display={"flex"} sx={{ mt: 0.5, width: {xs: '10px', sm: 'inherit'}, flexDirection: {xs: 'column', sm: 'row'} }}>
-                    <Rating
-                      value={5}
-                      readOnly
-                      size="small"
-                      sx={{ mt: "0px", ml: {xs: 0, sm: "1.5em"}, mr: {xs: 2.5, sm: 'inherit'} }}
+                {/* Profile Section */}
+                {loading ? (
+                  <Box display={"flex"} flexDirection={"column"} sx={{width: {xs: '80px', sm: 'inherit'}, mt: {xs: '55px', sm: 'inherit'}}}>
+                    <Skeleton variant="circular" width={80} height={80} />
+                    <Box display={"flex"} sx={{ mt: 0.5, width: {xs: '10px', sm: 'inherit'}, flexDirection: {xs: 'column', sm: 'row'} }}>
+                      <Skeleton variant="rectangular" width={60} height={20} />
+                      <Skeleton variant="text" width={50} height={20} sx={{ ml: {xs: 0, sm: "1.5em"}, mt: {xs: 1, sm: 0 } }} />
+                    </Box>
+                  </Box>
+                ) : (
+                  <Box display={"flex"} flexDirection={"column"} sx={{width: {xs: '80px', sm: 'inherit'}, mt: {xs: '55px', sm: 'inherit'}}}>
+                    <ProfileAvatar
+                      src={`https://academy.opengrowth.com/assets/images/users/${profileData?.img}`}
+                      alt={profileData?.name}
+                      sx={{width: { xs: 80, sm: 200 }, height: { xs: 80, sm: 200 }}}
                     />
-                    <Typography
-                      variant="body2"
-                      component="span"
-                      sx={{ ml: 1, color: "black", fontSize: {xs: '0.7rem', sm: 'inherit'}, width: {xs: '4em', sm: 'inherit'} }}
-                    >
-                      5.0 (40)
+                    <Box display={"flex"} sx={{ mt: 0.5, width: {xs: '10px', sm: 'inherit'}, flexDirection: {xs: 'column', sm: 'row'} }}>
+                      <Rating
+                        value={5}
+                        readOnly
+                        size="small"
+                        sx={{ mt: "0px", ml: {xs: 0, sm: "1.5em"}, mr: {xs: 2.5, sm: 'inherit'} }}
+                      />
+                      <Typography
+                        variant="body2"
+                        component="span"
+                        sx={{ ml: 1, color: "black", fontSize: {xs: '0.7rem', sm: 'inherit'}, width: {xs: '4em', sm: 'inherit'} }}
+                      >
+                        5.0 (40)
+                      </Typography>
+                    </Box>
+                  </Box>
+                )}
+
+                {/* Profile Details */}
+                {loading ? (
+                  <Box sx={{ ml: {xs: 2, sm: 3}, width: { xs: '200px', sm: "auto" }, mt: {xs: 5.5, sm: 0} }}>
+                    <Skeleton variant="text" width="60%" height={30} />
+                    <Skeleton variant="text" width="40%" height={20} />
+                    <Skeleton variant="text" width="50%" height={20} />
+                    <Skeleton variant="rectangular" width="80%" height={20} sx={{ mt: 2 }} />
+                  </Box>
+                ) : (
+                  <Box sx={{ ml: {xs: 2, sm: 3}, width: { xs: '200px', sm: "auto" }, mt: {xs: 5.5, sm: 0} }}>
+                    <Box display={"flex"} sx={{ gap: 1 }}>
+                      <Typography variant="h6" sx={{fontSize: {xs: '1rem', sm: '1.4em'}}}>{profileData?.name}</Typography>
+                    </Box>
+                    <Typography variant="subtitle1" sx={{fontSize: {xs: '0.8rem', sm: '0.8em'}}}>
+                      {profileData?.experience}
                     </Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ ml: {xs: 2, sm: 3}, width: { xs: '200px', sm: "auto" }, mt: {xs: 5.5, sm: 0} }}>
-                  <Box display={"flex"} sx={{ gap: 1 }}>
-                    <Typography variant="h6" sx={{fontSize: {xs: '1rem', sm: '1.4em'}}}>{profileData?.name}</Typography>
-                  </Box>
-                  <Typography variant="subtitle1" sx={{fontSize: {xs: '0.8rem', sm: '0.8em'}}}>
-                    {profileData?.experience}
-                  </Typography>
-                  <Typography variant="subtitle2" sx={{fontSize: {xs: '0.7rem', sm: 'inherit'}}}>
-                    {profileData?.industry},{" "}
-                    <LocationOnOutlinedIcon
-                      sx={{ width: "0.8em", height: "0.6em" }}
+                    <Typography variant="subtitle2" sx={{fontSize: {xs: '0.7rem', sm: 'inherit'}}}>
+                      {profileData?.industry},{" "}
+                      <LocationOnOutlinedIcon
+                        sx={{ width: "0.8em", height: "0.6em" }}
+                      />
+                      {profileData?.country}
+                    </Typography>
+
+                    {/* About section is hidden on small screens */}
+                    <Box display={{ xs: "none", sm: "flex" }} gap={1} sx={{ mt: {xs: 2, sm: 1} }}>
+                      <Typography variant="caption">
+                        {truncateText(profileData?.about, 150)}
+                        <Button color="primary" sx={{ px: 0, color: "white" }}>
+                          Know More
+                        </Button>
+                      </Typography>
+                    </Box>
+
+                    <Chip
+                      label="Connected: 5 Times"
+                      sx={{ mt: {xs: '20px', sm: -0.5}, fontWeight: "bold", color: {xs: 'black', sm: 'white'} }}
                     />
-                    {profileData?.country}
-                  </Typography>
-
-                  {/* About section is hidden on small screens */}
-                  <Box display={{ xs: "none", sm: "flex" }} gap={1} sx={{ mt: {xs: 2, sm: 1} }}>
-                    <Typography variant="caption">
-                      {truncateText(profileData?.about, 150)}
-                      <Button color="primary" sx={{ px: 0, color: "white" }}>
-                        Know More
-                      </Button>
-                    </Typography>
                   </Box>
-
-                  <Chip
-                    label="Connected: 5 Times"
-                    sx={{ mt: {xs: '20px', sm: -0.5}, fontWeight: "bold", color: {xs: 'black', sm: 'white'} }}
-                  />
-                </Box>
+                )}
               </Box>
             </Box>
           </Box>
         </GradientBox>
-
-        </Box>
-        <Card
-          variant="outlined"
-          sx={{ margin: '0.1em 1em 1em 1.1em', boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}
-        >
-          <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
-            <Tab label="Notes" id="tab-0" aria-controls="tabpanel-0" />
-            <Tab label="Details" id="tab-1" aria-controls="tabpanel-1" />
-          </Tabs>
-          <TabPanel value={tabIndex} index={0}>
-            <Typography variant="h6">
-              Discussed Notes:
-            </Typography>
-            <Divider sx={{ width: "100%", mb: 2, alignSelf: "center" }} />
-            {[...Array(5)].map((_, i) => (
-              <Card
-                key={i}
-                elevation={3}
-                sx={{
-                  mb: 2,
-                  borderRadius: 2,
-                  boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                  "&:hover": {
-                  backgroundColor: "#0000000a",
-                  boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                  transform: "translateY(-2px)",
-                  },
-                }}
-              >
-                <Box sx={{ p: 2 }}>
-                  <Typography variant="subtitle1">
-                    Topics discussed: Discuss project scope and timeline
-                  </Typography>
-                  <Box display={"flex"} sx={{ gap: 0.5 }}>
-                    <CalendarTodayIcon sx={{ width: "0.5em", pb: 0.6, color: 'text.secondary' }} />
-                    <Typography variant="subtitle2" component="h5" color={'text.secondary'}>
-                      Thursday, Sept 9, 2024 | 9:00pm - 10:00pm
-                    </Typography>
-                  </Box>
-                  <Typography variant="body2" sx={{ mt: 1 , color: 'text.secondary'}}>
-                    {notes}
-                  </Typography>
-                </Box>
-              </Card>
-            ))}
-          </TabPanel>
-        <TabPanel value={tabIndex} index={1} >
-          <Typography variant="h6" component="h2">
-            Details:
-          </Typography>
-          <Divider sx={{ width: "100%", mb: 2, px: 1 }} />
-          <Timeline>
-            {connectionData.map((dateData, dateIndex) => (
-              <TimelineItem key={dateIndex}>
-                <TimelineOppositeContent
+      </Box>
+      <Card
+        variant="outlined"
+        sx={{ margin: '0.1em 1em 1em 1.1em', boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}
+      >
+        <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
+          <Tab label="Notes" id="tab-0" aria-controls="tabpanel-0" />
+          <Tab label="Details" id="tab-1" aria-controls="tabpanel-1" />
+        </Tabs>
+        <TabPanel value={tabIndex} index={0}>
+          {loading ? (
+            <Box>
+              <Skeleton variant="text" width="40%" height={30} />
+              <Skeleton variant="rectangular" width="100%" height={118} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" width="100%" height={118} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" width="100%" height={118} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" width="100%" height={118} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" width="100%" height={118} sx={{ mb: 2 }} />
+            </Box>
+          ) : (
+            <>
+              <Typography variant="h6">
+                Discussed Notes:
+              </Typography>
+              <Divider sx={{ width: "100%", mb: 2, alignSelf: "center" }} />
+              {[...Array(5)].map((_, i) => (
+                <Card
+                  key={i}
+                  elevation={3}
                   sx={{
-                    flex: { xs: 0.2, sm: 0.1 }, // Adjust flex on small screens
-                    display: { xs: 'none', sm: 'block' }  // Hide on extra small screens
-                  }}
-                >
-                  <ClickableBox
-                    display="flex"
-                    alignItems="center"
-                    onClick={() => toggleDate(dateData.date)}
-                    sx={{ pt: 0.8 }}
-                  >
-                    <EventIcon sx={{ color: "black", pb: 0.5, ml: 0.5 }} />
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "black", width: { xs: '5em', sm: '7em' } }} // Adjust width for smaller screens
-                    >
-                      {formatDate(dateData.date)}
-                    </Typography>
-                  </ClickableBox>
-                </TimelineOppositeContent>
-
-                <TimelineSeparator sx={{ pt: 0.5 }}>
-                  <TimelineDot sx={{ bgcolor: "text.secondary" }} />
-                  <TimelineConnector sx={{ bgcolor: "text.secondary" }} />
-                </TimelineSeparator>
-
-                <TimelineContent
-                  sx={{
+                    mb: 2,
+                    borderRadius: 2,
+                    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                     "&:hover": {
+                      backgroundColor: "#0000000a",
                       boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
                       transform: "translateY(-2px)",
                     },
-                    gap: 1,
-                    flexDirection: { xs: 'column', sm: 'row' }, // Stack items vertically on smaller screens
-                    width: { xs: '100%', sm: 'auto' }  // Full width for small screens
                   }}
                 >
-                  <ClickableBox
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    onClick={() => toggleDate(dateData.date)}
-                    sx={{ p: 0 }}
-                  >
-                    <Typography
-                      variant="h6"
-                      sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }} // Adjust font size for smaller screens
-                    >
-                      Connected for Entrepreneur Topic
+                  <Box sx={{ p: 2 }}>
+                    <Typography variant="subtitle1">
+                      Topics discussed: Discuss project scope and timeline
                     </Typography>
-                    <Tooltip title="Click to see full details" placement="top">
-                      <IconButton
-                        size="small"
-                        sx={{
-                          "&:hover": {
-                            borderRadius: "50%",
-                          },
-                        }}
-                      >
-                        {expandedDates[dateData.date] ? (
-                          <ExpandLessIcon />
-                        ) : (
-                          <ExpandMoreIcon />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </ClickableBox>
-
-                  <Collapse in={expandedDates[dateData.date]}>
-                    <Box sx={{ ml: { xs: 1, sm: 2 }, mt: 1 }}>
-                      {dateData.sessions.map((session, sessionIndex) => (
-                        <SessionPaper
-                          key={sessionIndex}
-                          elevation={1}
-                          sx={{
-                            bgcolor: getSessionColor(session.title),
-                            p: { xs: 1, sm: 2 } // Adjust padding for smaller screens
-                          }}
-                          onClick={() => toggleDate(dateData.date)}
-                        >
-                          <Box display="flex" alignItems="center">
-                            <AccessTimeIcon
-                              sx={{
-                                mr: 1,
-                                fontSize: { xs: "small", sm: "default" },
-                                color: "#000",
-                              }}
-                            />
-                            <Typography
-                              variant="caption"
-                              sx={{ color: "#000" }}
-                            >
-                              {session.time}
-                            </Typography>
-                          </Box>
-                          <Box sx={{ ml: { xs: 1, sm: 3 } }}>
-                            <Typography
-                              variant="subtitle1"
-                              sx={{ fontSize: { xs: '0.875rem', sm: '1rem' }, color: "#333" }}
-                            >
-                              {session.title}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                            >
-                              Duration: {session.duration} min | Connected: {session.connectionTime} min
-                            </Typography>
-                            <Box display="flex" alignItems="center" mt={1}>
-                              <DescriptionIcon
-                                sx={{
-                                  mr: 1,
-                                  fontSize: { xs: "small", sm: "default" },
-                                  color: "#666",
-                                }}
-                              />
-                              <Typography
-                                variant="body2"
-                                sx={{ color: "#666", fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-                              >
-                                {session.description}
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </SessionPaper>
-                      ))}
+                    <Box display={"flex"} sx={{ gap: 0.5 }}>
+                      <CalendarTodayIcon sx={{ width: "0.5em", pb: 0.6, color: 'text.secondary' }} />
+                      <Typography variant="subtitle2" component="h5" color={'text.secondary'}>
+                        Thursday, Sept 9, 2024 | 9:00pm - 10:00pm
+                      </Typography>
                     </Box>
-                  </Collapse>
-                </TimelineContent>
-              </TimelineItem>
-            ))}
-          </Timeline>
+                    <Typography variant="body2" sx={{ mt: 1 , color: 'text.secondary'}}>
+                      {notes}
+                    </Typography>
+                  </Box>
+                </Card>
+              ))}
+            </>
+          )}
         </TabPanel>
+        <TabPanel value={tabIndex} index={1} >
+          {loading ? (
+            <Box>
+              <Skeleton variant="text" width="60%" height={30} />
+              <Skeleton variant="text" width="40%" height={20} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" width="100%" height={200} />
+            </Box>
+          ) : (
+            <>
+              <Typography variant="h6" component="h2">
+                Details:
+              </Typography>
+              <Divider sx={{ width: "100%", mb: 2, px: 1 }} />
+              <Timeline>
+                {connectionData.map((dateData, dateIndex) => (
+                  <TimelineItem key={dateIndex}>
+                    <TimelineOppositeContent
+                      sx={{
+                        flex: { xs: 0.2, sm: 0.1 }, // Adjust flex on small screens
+                        display: { xs: 'none', sm: 'block' }  // Hide on extra small screens
+                      }}
+                    >
+                      <ClickableBox
+                        display="flex"
+                        alignItems="center"
+                        onClick={() => toggleDate(dateData.date)}
+                        sx={{ pt: 0.8 }}
+                      >
+                        <EventIcon sx={{ color: "black", pb: 0.5, ml: 0.5 }} />
+                        <Typography
+                          variant="body2"
+                          sx={{ color: "black", width: { xs: '5em', sm: '7em' } }} // Adjust width for smaller screens
+                        >
+                          {formatDate(dateData.date)}
+                        </Typography>
+                      </ClickableBox>
+                    </TimelineOppositeContent>
 
-        </Card>
+                    <TimelineSeparator sx={{ pt: 0.5 }}>
+                      <TimelineDot sx={{ bgcolor: "text.secondary" }} />
+                      <TimelineConnector sx={{ bgcolor: "text.secondary" }} />
+                    </TimelineSeparator>
+
+                    <TimelineContent
+                      sx={{
+                        "&:hover": {
+                          boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                          transform: "translateY(-2px)",
+                        },
+                        gap: 1,
+                        flexDirection: { xs: 'column', sm: 'row' }, // Stack items vertically on smaller screens
+                        width: { xs: '100%', sm: 'auto' }  // Full width for small screens
+                      }}
+                    >
+                      <ClickableBox
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        onClick={() => toggleDate(dateData.date)}
+                        sx={{ p: 0 }}
+                      >
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }} // Adjust font size for smaller screens
+                        >
+                          Connected for Entrepreneur Topic
+                        </Typography>
+                        <Tooltip title="Click to see full details" placement="top">
+                          <IconButton
+                            size="small"
+                            sx={{
+                              "&:hover": {
+                                borderRadius: "50%",
+                              },
+                            }}
+                          >
+                            {expandedDates[dateData.date] ? (
+                              <ExpandLessIcon />
+                            ) : (
+                              <ExpandMoreIcon />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                      </ClickableBox>
+
+                      <Collapse in={expandedDates[dateData.date]}>
+                        <Box sx={{ ml: { xs: 1, sm: 2 }, mt: 1 }}>
+                          {dateData.sessions.map((session, sessionIndex) => (
+                            <SessionPaper
+                              key={sessionIndex}
+                              elevation={1}
+                              sx={{
+                                bgcolor: getSessionColor(session.title),
+                                p: { xs: 1, sm: 2 } // Adjust padding for smaller screens
+                              }}
+                              onClick={() => toggleDate(dateData.date)}
+                            >
+                              <Box display="flex" alignItems="center">
+                                <AccessTimeIcon
+                                  sx={{
+                                    mr: 1,
+                                    fontSize: { xs: "small", sm: "default" },
+                                    color: "#000",
+                                  }}
+                                />
+                                <Typography
+                                  variant="caption"
+                                  sx={{ color: "#000" }}
+                                >
+                                  {session.time}
+                                </Typography>
+                              </Box>
+                              <Box sx={{ ml: { xs: 1, sm: 3 } }}>
+                                <Typography
+                                  variant="subtitle1"
+                                  sx={{ fontSize: { xs: '0.875rem', sm: '1rem' }, color: "#333" }}
+                                >
+                                  {session.title}
+                                </Typography>
+                                <Typography
+                                  variant="body2"
+                                  color="textSecondary"
+                                  sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                                >
+                                  Duration: {session.duration} min | Connected: {session.connectionTime} min
+                                </Typography>
+                                <Box display="flex" alignItems="center" mt={1}>
+                                  <DescriptionIcon
+                                    sx={{
+                                      mr: 1,
+                                      fontSize: { xs: "small", sm: "default" },
+                                      color: "#666",
+                                    }}
+                                  />
+                                  <Typography
+                                    variant="body2"
+                                    sx={{ color: "#666", fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                                  >
+                                    {session.description}
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </SessionPaper>
+                          ))}
+                        </Box>
+                      </Collapse>
+                    </TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            </>
+          )}
+        </TabPanel>
+      </Card>
     </>
   );
 };

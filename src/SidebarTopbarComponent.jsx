@@ -420,8 +420,19 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
         onClose={handleAvatarMenuClose}
       >
         {user && [
-          <MenuItem key="name">{`${user.firstName || user.name} ${user.lastName || ""}`}</MenuItem>,
+          <MenuItem key="name">
+            {`${user.firstName || user.name} ${user.lastName || ""}`}
+          </MenuItem>,
           <MenuItem key="email">{user.email}</MenuItem>,
+          <MenuItem
+            key="transaction"
+            onClick={() => {
+              handleAvatarMenuClose();
+              navigate("/transaction");
+            }}
+          >
+            My Transaction
+          </MenuItem>,
           <MenuItem key="logout" onClick={handleLogout}>
             Logout
           </MenuItem>,

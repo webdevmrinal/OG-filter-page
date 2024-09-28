@@ -34,7 +34,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { useParams, useLocation, Link } from "react-router-dom";
 import SelectTime from "./SelectTime";
-import { ShimmerLoading } from "./signup-login/Components/ShimmerEffect";
 import {
   GradientBox,
   ButtonContainer,
@@ -59,7 +58,8 @@ const ShimmerEffect = styled("div")(({ theme }) => ({
   width: "100%",
   height: "100%",
   animation: "shimmer 1.5s infinite linear",
-  background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #e0e0e0 50%, ${theme.palette.background.default} 100%)`,
+  // Updated gradient to be darker
+  background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #bdbdbd 50%, ${theme.palette.background.default} 100%)`,
   backgroundSize: "200% 100%",
   "@keyframes shimmer": {
     "0%": {
@@ -77,11 +77,47 @@ const Shimmer = ({ width = "100%", height = 100, borderRadius = 8, sx = {} }) =>
   </ShimmerWrapper>
 );
 
-const SkillsCard = ({ skills }) => {
+// New Shimmer Overlay for GradientBox
+const ShimmerOverlay = styled("div")({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  borderRadius: 8,
+  overflow: "hidden",
+  backgroundColor: "#f6f7f8",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  padding: "16px",
+});
+
+const SkillsCard = ({ skills, isLoading }) => {
   const skillsArray =
     typeof skills === "string"
       ? skills.split(",").map((skill) => skill.trim())
       : [];
+
+  if (isLoading) {
+    return (
+      <Card
+        sx={{ mb: 3, boxShadow: "0 8px 16px rgba(0,0,0,0.2)", borderRadius: 2 }}
+      >
+        <CardContent>
+          <Shimmer width="30%" height={24} sx={{ mb: 2 }} />
+          <Divider sx={{ mb: 2 }} />
+          <Grid container spacing={2}>
+            {Array.from(new Array(5)).map((_, index) => (
+              <Grid item key={index}>
+                <Shimmer width={60} height={32} borderRadius={16} />
+              </Grid>
+            ))}
+          </Grid>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card
@@ -188,44 +224,46 @@ const ProfilePage = () => {
     { title: "Experience", content: profileData?.experience },
   ];
 
-  if (isLoading || !profileData) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <ShimmerLoading />
-      </Box>
-    );
-  }
-
   return (
     <>
       {isOutsideLayout && <Header />}
-      <Box sx={{ width: { xs: "100%", sm: "inherit" } }}>
+      <Box sx={{ width: { xs: "100%", sm: "inherit" }, position: "relative" }}>
         <Box bgcolor={"#fff"} borderRadius={1.5} overflow={"hidden"}>
           <GradientBox position={"relative"}>
+            {isLoading && (
+              <ShimmerOverlay>
+                {/* Shimmer for Avatar */}
+                <Shimmer width={80} height={80} borderRadius="50%" />
+                {/* Shimmer for Name and Experience */}
+                <Box ml={2} mb={1} sx={{ width: "60%" }}>
+                  <Shimmer width="40%" height={24} sx={{ mb: 1 }} />
+                  <Shimmer width="30%" height={20} />
+                </Box>
+              </ShimmerOverlay>
+            )}
             <GradientContent>
-              <ProfileAvatar
-                src={`https://academy.opengrowth.com/assets/images/users/${profileData.img}`}
-                alt={profileData.name}
-              />
-              <Box ml={2} mb={1}>
-                <Link
-                  to={`/profile/${profileData.profile_url}`}
-                  state={{ expertEmail: profileData.email }}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <Typography variant="h5" fontWeight="bold" color="white">
-                    {profileData.name}
-                  </Typography>
-                </Link>
-                <Typography variant="h6" color="white">
-                  {profileData.experience}
-                </Typography>
-              </Box>
+              {isLoading ? null : (
+                <>
+                  <ProfileAvatar
+                    src={`https://academy.opengrowth.com/assets/images/users/${profileData.img}`}
+                    alt={profileData.name}
+                  />
+                  <Box ml={2} mb={1}>
+                    <Link
+                      to={`/profile/${profileData.profile_url}`}
+                      state={{ expertEmail: profileData.email }}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <Typography variant="h5" fontWeight="bold" color="white">
+                        {profileData.name}
+                      </Typography>
+                    </Link>
+                    <Typography variant="h6" color="white">
+                      {profileData.experience}
+                    </Typography>
+                  </Box>
+                </>
+              )}
             </GradientContent>
           </GradientBox>
           <TabsContainer>
@@ -237,42 +275,53 @@ const ProfilePage = () => {
             <ButtonContainer>
               {/* Conditionally render Follow and Message buttons */}
               {!isOutsideLayout && (
-                <>
-                  <StyledButton
-                    startIcon={<PersonAddIcon />}
-                    variant={isFollowing ? "contained" : "outlined"}
-                    color={isFollowing ? "success" : "primary"}
-                    onClick={handleFollowClick}
-                    sx={{
-                      mr: 1,
-                      ...(isFollowing && {
-                        backgroundColor: theme.palette.success.light,
-                        borderColor: theme.palette.success.light,
-                        "&:hover": {
-                          backgroundColor: theme.palette.success.main,
-                        },
-                      }),
-                    }}
-                  >
-                    {isFollowing ? "Following" : "Follow"}
-                  </StyledButton>
-                  <StyledButton
-                    startIcon={<SendIcon />}
-                    variant="outlined"
-                    sx={{ mr: 1 }}
-                  >
-                    Message
-                  </StyledButton>
-                </>
+                isLoading ? (
+                  <Box display="flex" gap={1}>
+                    <Shimmer width={120} height={36} borderRadius={18} />
+                    <Shimmer width={120} height={36} borderRadius={18} />
+                  </Box>
+                ) : (
+                  <>
+                    <StyledButton
+                      startIcon={<PersonAddIcon />}
+                      variant={isFollowing ? "contained" : "outlined"}
+                      color={isFollowing ? "success" : "primary"}
+                      onClick={handleFollowClick}
+                      sx={{
+                        mr: 1,
+                        ...(isFollowing && {
+                          backgroundColor: theme.palette.success.light,
+                          borderColor: theme.palette.success.light,
+                          "&:hover": {
+                            backgroundColor: theme.palette.success.main,
+                          },
+                        }),
+                      }}
+                    >
+                      {isFollowing ? "Following" : "Follow"}
+                    </StyledButton>
+                    <StyledButton
+                      startIcon={<SendIcon />}
+                      variant="outlined"
+                      sx={{ mr: 1 }}
+                    >
+                      Message
+                    </StyledButton>
+                  </>
+                )
               )}
-              <StyledButton
-                startIcon={<EventNoteIcon />}
-                variant="outlined"
-                onClick={() => setExpanded("panel0")}
-                sx={{ mr: 2 }}
-              >
-                Request a Time
-              </StyledButton>
+              {isLoading ? (
+                <Shimmer width={160} height={36} borderRadius={18} />
+              ) : (
+                <StyledButton
+                  startIcon={<EventNoteIcon />}
+                  variant="outlined"
+                  onClick={() => setExpanded("panel0")}
+                  sx={{ mr: 2 }}
+                >
+                  Request a Time
+                </StyledButton>
+              )}
             </ButtonContainer>
           </TabsContainer>
         </Box>
@@ -283,16 +332,22 @@ const ProfilePage = () => {
           sx={{ boxShadow: "0 1px 1px rgba(0,0,0,0)" }}
         >
           <AccordionDetails>
-            <SelectTime
-              setShowGetTime={setExpanded}
-              professorName={profileData.name}
-              profileType={isOutsideLayout ? "outer" : "inner"} // Pass profileType
-              expertImage={profileData.img}
-            />
+            {isLoading ? (
+              <Box>
+                <Shimmer width="100%" height={200} />
+              </Box>
+            ) : (
+              <SelectTime
+                setShowGetTime={setExpanded}
+                professorName={profileData.name}
+                profileType={isOutsideLayout ? "outer" : "inner"} // Pass profileType
+                expertImage={profileData.img}
+              />
+            )}
           </AccordionDetails>
         </Accordion>
         <Box sx={{ px: 4.2 }}>
-          <SkillsCard skills={profileData.interest} />
+          <SkillsCard skills={profileData?.interest} isLoading={isLoading} />
         </Box>
         <Grid container spacing={3} sx={{ my: 3, pl: 4, pr: 4 }}>
           {/* Left side - About section */}
@@ -308,44 +363,59 @@ const ProfilePage = () => {
               </Typography>
               <Divider />
               <List dense sx={{ padding: "0 .75em", my: 2, flexGrow: 1 }}>
-                <ListItem>
-                  <ListItemIcon>
-                    <LocationOnIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={`Lives in ${profileData.country}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <SchoolIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={`Completed ${profileData.edu}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <BusinessIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={profileData.other_college} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <WorkIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={profileData.interest} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <PersonIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={profileData.industry} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <FolderIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={`Has ${profileData.experience} experience in ${profileData.industry}`}
-                  />
-                </ListItem>
+                {isLoading ? (
+                  Array.from(new Array(6)).map((_, index) => (
+                    <ListItem key={index}>
+                      <ListItemIcon>
+                        <Shimmer width={24} height={24} borderRadius={12} />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Shimmer width="80%" height={20} />
+                      </ListItemText>
+                    </ListItem>
+                  ))
+                ) : (
+                  <>
+                    <ListItem>
+                      <ListItemIcon>
+                        <LocationOnIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={`Lives in ${profileData.country}`} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <SchoolIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={`Completed ${profileData.edu}`} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <BusinessIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={profileData.other_college} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <WorkIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={profileData.interest} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <PersonIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={profileData.industry} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <FolderIcon />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={`Has ${profileData.experience} experience in ${profileData.industry}`}
+                      />
+                    </ListItem>
+                  </>
+                )}
               </List>
             </PaperContent>
           </Grid>
@@ -373,17 +443,25 @@ const ProfilePage = () => {
                   sx={{ boxShadow: "none", flexGrow: 1 }}
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography sx={{ minHeight: "26.3px" }}>
-                      {item.title}
-                    </Typography>
+                    {isLoading ? (
+                      <Shimmer width="40%" height={20} />
+                    ) : (
+                      <Typography sx={{ minHeight: "26.3px" }}>
+                        {item.title}
+                      </Typography>
+                    )}
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography
-                      sx={{ whiteSpace: "pre-line" }}
-                      color="text.secondary"
-                    >
-                      {item.content}
-                    </Typography>
+                    {isLoading ? (
+                      <Shimmer width="80%" height={16} />
+                    ) : (
+                      <Typography
+                        sx={{ whiteSpace: "pre-line" }}
+                        color="text.secondary"
+                      >
+                        {item.content}
+                      </Typography>
+                    )}
                   </AccordionDetails>
                 </Accordion>
               ))}

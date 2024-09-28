@@ -71,11 +71,11 @@ const SummaryConfirmationView = ({
           }}
         >
           <CheckCircleOutlineIcon
-            fontSize={isMobile ? 'large' : 'inherit'}
+            fontSize={isMobile ? 'large' : 'large'}
             color="success"
           />
-          <Typography variant={isMobile ? 'h6' : 'h5'}>
-            Your session is confirmed!
+          <Typography variant={isMobile ? 'h6' : 'h6'}>
+            You have successfully booked a session with {professorName}
           </Typography>
         </StyledConfirmationBox>
       )}
