@@ -1,5 +1,5 @@
 // SelectTime.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -7,13 +7,13 @@ import {
   Checkbox,
   FormControlLabel,
   Paper,
-  ToggleButton,
   ToggleButtonGroup,
   Rating,
   useMediaQuery,
   useTheme,
   Grid,
-  Divider,
+  Tooltip,
+  ToggleButton,
 } from "@mui/material";
 import { addDays, format } from "date-fns";
 import SummaryConfirmationView from "./SummaryConfirmationView";
@@ -26,21 +26,20 @@ import UserDetailsForm from "./Profile-Slot-Booking/UserDetailsForm";
 import { ButtonContainer } from "./Experts/Components/ProfileStyles";
 import MobileNumberInput from "./Profile-Slot-Booking/MobileInput";
 import { v4 as uuidv4 } from 'uuid'; // To generate unique IDs
-import { Link } from "react-router-dom";
 
 const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage }) => {
   const [duration, setDuration] = useState("15");
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [isGift, setIsGift] = useState(false);
-  const [showGetTime1, setShowGetTime1] = useState(false);
   const [view, setView] = useState("selection");
-  const [date, setDate] = useState(new Date().toLocaleDateString());
   const [showAllDays, setShowAllDays] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [openContactModal, setOpenContactModal] = useState(false);
   const [userData, setUserData] = useState({}); // Initialize as an empty object
+  const [showAvailableSlots, setShowAvailableSlots] = useState(false); // New state to track button label
 
+  // Handler functions
   const handleOpenContactModal = () => {
     setOpenContactModal(true);
   };
@@ -165,14 +164,7 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
     setView('userForm');
   };
 
-  const times = [
-    { label: "7pm-8pm", available: true },
-    { label: "8pm-9pm", available: true },
-    { label: "9pm-10pm", available: true },
-    { label: "10pm-11pm", available: true },
-    { label: "11pm-12am", available: true },
-  ];
-
+  // Generate next 90 days with all slots initially available
   const generateNext90Days = () => {
     const days = [];
     for (let i = 0; i < 90; i++) {
@@ -180,11 +172,11 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
       days.push({
         date: format(date, "EEEE, MMM d"),
         times: [
-          { label: "7pm-8pm", available: Math.random() > 0.5 },
-          { label: "8pm-9pm", available: Math.random() > 0.5 },
-          { label: "9pm-10pm", available: Math.random() > 0.5 },
-          { label: "10pm-11pm", available: Math.random() > 0.5 },
-          { label: "11pm-12am", available: Math.random() > 0.5 },
+          { label: "7pm-8pm", available: true },
+          { label: "8pm-9pm", available: true },
+          { label: "9pm-10pm", available: true },
+          { label: "10pm-11pm", available: true },
+          { label: "11pm-12am", available: true },
         ],
       });
     }
@@ -197,9 +189,46 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
   const resetAndBookAnotherSlot = () => {
     setSelectedTimes([]);
     setIsGift(false);
-    setDate(new Date().toLocaleDateString());
     setDuration("15");
     setView('selection');
+    setShowAvailableSlots(false); // Reset the button label
+    setDays(generateNext90Days()); // Re-enable all slots
+  };
+
+  // Function to disable specific slots when button is clicked
+  const disableSomeSlots = () => {
+    setDays((prevDays) =>
+      prevDays.map((day) => {
+        // Example: Disable "8pm-9pm" slot on each day
+        const updatedTimes = day.times.map((time) => {
+          if (time.label === "8pm-9pm") {
+            return { ...time, available: false };
+          }
+          return time;
+        });
+        return { ...day, times: updatedTimes };
+      })
+    );
+  };
+
+  // Function to select all available slots
+  const selectAllAvailableSlots = () => {
+    const allAvailableSlots = days.flatMap(day =>
+      day.times
+        .filter(time => time.available)
+        .map(time => `${day.date}_${time.label}`)
+    );
+    setSelectedTimes(allAvailableSlots);
+  };
+
+  // Handler for button click
+  const handleButtonClick = () => {
+    if (!showAvailableSlots) {
+      disableSomeSlots();
+      setShowAvailableSlots(true);
+    } else {
+      selectAllAvailableSlots();
+    }
   };
 
   return (
@@ -275,7 +304,7 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
               variant="h6"
               sx={{ mt: { xs: 4, sm: 0 } }}
             >
-              Book a Session with {professorName}
+              Book a Sales call
             </Typography>
           </Box>
           {/* Booking Interface */}
@@ -321,18 +350,6 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
               </ToggleButton>
             </ToggleButtonGroup>
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={isGift}
-                  onChange={(e) => setIsGift(e.target.checked)}
-                  sx={{ ml: 0, paddingRight: 1, pl: 2 }}
-                />
-              }
-              label="Tap to send this as a gift"
-              sx={{ mt: 2 }}
-            />
-
             <Grid container spacing={2} sx={{ marginTop: 2 }}>
               <Grid item xs={12} md={8}>
                 {visibleDays.map((day, index) => (
@@ -340,26 +357,32 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
                     <Typography variant="subtitle2">{day.date}</Typography>
                     <ScrollableBox>
                       {day.times.map((time) => (
-                        <TimeButton
+                        <Tooltip
                           key={`${day.date}_${time.label}`}
-                          value={time.label}
-                          available={time.available}
-                          selected={selectedTimes.includes(
-                            `${day.date}_${time.label}`
-                          )}
-                          onChange={() => handleTimeToggle(day, time)}
-                          sx={{
-                            mr: 1,
-                            mt: 0.7,
-                            width: "max-content",
-                            fontSize: { xs: '0.75em', sm: '0.875em' },
-                            px: { xs: '6px', sm: '11px' },
-                            py: { xs: '4px', sm: '6px' },
-                            whiteSpace: 'nowrap',
-                          }}
+                          title={time.available ? "" : "This slot is unavailable"}
+                          arrow
                         >
-                          {time.label}
-                        </TimeButton>
+                          <span>
+                            <TimeButton
+                              value={time.label}
+                              available={time.available}
+                              selected={selectedTimes.includes(`${day.date}_${time.label}`)}
+                              onChange={() => handleTimeToggle(day, time)}
+                              disabled={!time.available}
+                              sx={{
+                                mr: 1,
+                                mt: 0.7,
+                                width: "max-content",
+                                fontSize: { xs: '0.75em', sm: '0.875em' },
+                                px: { xs: '6px', sm: '11px' },
+                                py: { xs: '4px', sm: '6px' },
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {time.label}
+                            </TimeButton>
+                          </span>
+                        </Tooltip>
                       ))}
                     </ScrollableBox>
                   </Box>
@@ -378,18 +401,18 @@ const SelectTime = ({ setShowGetTime, professorName, profileType, expertImage })
                 }}
               >
                 <Typography variant="subtitle2" gutterBottom>
-                  Looking for a time not listed?
+                  Looking for a different time slot? Click here
                 </Typography>
-                <Button size="small" onClick={() => setShowGetTime1(true)}>
-                  Tap here to see available slots
+                <Button size="small" onClick={handleButtonClick}>
+                  {showAvailableSlots ? "Select All" : "Tap here to see available slots"}
                 </Button>
               </Grid>
             </Grid>
 
             {isMobile && (
               <Box sx={{ mb: 2 }}>
-                <Button size="small" onClick={() => setShowGetTime1(true)} fullWidth>
-                  Tap here to see available slots
+                <Button size="small" onClick={handleButtonClick} fullWidth>
+                  {showAvailableSlots ? "Select All" : "Tap here to see available slots"}
                 </Button>
               </Box>
             )}

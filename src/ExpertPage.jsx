@@ -1,5 +1,5 @@
 // ExpertPage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
     Box,
     Typography,
@@ -7,13 +7,16 @@ import {
     Divider,
     Card,
     Grid,
+    Skeleton, // Import Skeleton
 } from "@mui/material";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { ScrollableBox, CategoryButton } from "./Experts/Components/ExpertStyle";
 import { ExpertPopup } from "./ExpertPopup";
 import { ExpertCard } from "./ExpertCard";
+import { useNavigate } from 'react-router-dom';
 
+// Define the initial categories
 const initialCategories = [
     "Expert",
     "Fractional",
@@ -31,15 +34,17 @@ const initialCategories = [
 function ExpertPage() {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [experts, setExperts] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true); // Initialize as true
     const [categories, setCategories] = useState(initialCategories);
     const [selectedExpert, setSelectedExpert] = useState(null);
     const [page, setPage] = useState(0);
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(false); // Initialize as false
 
     const perPage = 8;
 
-    const fetchExperts = async (category = null, pageIndex = 0, reset = false) => {
+    const navigate = useNavigate();
+
+    const fetchExperts = useCallback(async (category = null, pageIndex = 0, reset = false) => {
         setLoading(true);
         const startIndex = pageIndex * perPage;
         const endIndex = startIndex + perPage;
@@ -67,25 +72,26 @@ function ExpertPage() {
             const newExperts = response.data;
             if (reset) {
                 setExperts(newExperts);
-                setHasMore(true);
             } else {
                 setExperts((prevExperts) => [...prevExperts, ...newExperts]);
             }
+            // Update hasMore based on the number of experts fetched
             if (newExperts.length < perPage) {
                 setHasMore(false);
+            } else {
+                setHasMore(true);
             }
         } catch (error) {
             console.error("Error fetching experts:", error);
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         const reset = page === 0;
         fetchExperts(selectedCategory, page, reset);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedCategory, page]);
+    }, [selectedCategory, page, fetchExperts]);
 
     useEffect(() => {
         if (selectedCategory) {
@@ -97,7 +103,7 @@ function ExpertPage() {
         } else {
             setCategories(initialCategories);
         }
-    }, [selectedCategory]);
+    }, [selectedCategory, categories]);
 
     const handleCategoryClick = (category) => {
         if (selectedCategory === category) {
@@ -116,6 +122,14 @@ function ExpertPage() {
         setPage((prevPage) => prevPage + 1);
     };
 
+    const navigateToExpertsPage = () => {
+        navigate('/expertpage');
+    };
+
+    const navigateToAppointmentPage = (appointment) => {
+        navigate('/appointmentpage', { state: { appointment } }); // Pass appointment data if needed
+    };
+
     return (
         <Card
             sx={{
@@ -127,30 +141,68 @@ function ExpertPage() {
                 p: 1,
             }}
         >
-            <Typography variant="h6" gutterBottom sx={{ px: 2, pt: 1 }}>
-                Experts
-            </Typography>
-            <Divider sx={{ width: "98%", ml: 2 }} />
-            <Box sx={{ px: 2, py: 1, overflow: "hidden", pl: 2 }}>
-                <Typography variant="div" fontWeight="semibold" fontSize={17} sx={{ pl: 0.5 }}>
-                    Choose a category:
-                </Typography>
-                <ScrollableBox>
-                    {categories.map((category) => (
-                        <CategoryButton
-                            key={category}
-                            active={selectedCategory === category}
-                            variant="contained"
-                            size="small"
-                            sx={{ flexShrink: 0 }}
-                            onClick={() => handleCategoryClick(category)}
-                            endIcon={selectedCategory === category ? <CloseIcon /> : null}
-                        >
-                            {category}
-                        </CategoryButton>
-                    ))}
-                </ScrollableBox>
+            {/* Title Section */}
+            <Box sx={{ px: 2, pt: 1 }}>
+                {loading ? (
+                    <Skeleton variant="text" width={150} height={30} sx={{ mb: 1 }} aria-hidden="true" />
+                ) : (
+                    <Box display={'flex'} gap={1}>
+                    <Typography variant="h6" >
+                        Growth Experts,
+                    </Typography>
+                    <Typography variant="subtitle1" color={'textSecondary'} sx={{mt: 0.5}}>
+                        Pick your focus area
+                    </Typography>
+                    </Box>
+                )}
             </Box>
+            
+            {/* Conditionally Render Divider */}
+            {!loading && <Divider sx={{ width: "98%", ml: 2 , mb: 2}} />}
+            
+            {/* Category Selection */}
+            <Box sx={{ px: 2, py: 1, overflow: "hidden", pl: 2 }}>
+                {loading ? (
+                    <>
+                        <Skeleton variant="text" width={180} height={20} sx={{ mb: 1 }} aria-hidden="true" />
+                        <ScrollableBox>
+                            {Array.from(new Array(8)).map((_, index) => (
+                                <Skeleton
+                                    key={index}
+                                    variant="rectangular"
+                                    width={120}
+                                    height={40}
+                                    sx={{ flexShrink: 0, mr: 1, borderRadius: '1.5em' }}
+                                    aria-hidden="true"
+                                />
+                            ))}
+                        </ScrollableBox>
+                    </>
+                ) : (
+                    <>
+                        <Typography variant="div" fontWeight="semibold" fontSize={17} sx={{ pl: 0.5, mb: 1 }}>
+                            Choose a category:
+                        </Typography>
+                        <ScrollableBox>
+                            {categories.map((category) => (
+                                <CategoryButton
+                                    key={category}
+                                    active={selectedCategory === category}
+                                    variant="contained"
+                                    size="small"
+                                    sx={{ flexShrink: 0 }}
+                                    onClick={() => handleCategoryClick(category)}
+                                    endIcon={selectedCategory === category ? <CloseIcon /> : null}
+                                >
+                                    {category}
+                                </CategoryButton>
+                            ))}
+                        </ScrollableBox>
+                    </>
+                )}
+            </Box>
+            
+            {/* Experts Grid */}
             <Grid
                 container
                 columnSpacing={2}
@@ -210,6 +262,8 @@ function ExpertPage() {
                     </Grid>
                 ))}
             </Grid>
+            
+            {/* Load More Button */}
             {!loading && hasMore && (
                 <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
                     <Button variant="contained" onClick={handleLoadMore}>
@@ -217,9 +271,15 @@ function ExpertPage() {
                     </Button>
                 </Box>
             )}
-            <ExpertPopup expert={selectedExpert} onClose={() => setSelectedExpert(null)} />
+            
+            {/* Expert Popup */}
+            <ExpertPopup
+                expert={selectedExpert}
+                onClose={() => setSelectedExpert(null)}
+            />
         </Card>
     );
+
 }
 
 export default ExpertPage;

@@ -1,8 +1,20 @@
+// MyCourse.jsx
 import React, { useState, useEffect } from 'react';
-import { Box, Card, CardContent, Typography, Grid, Chip, Divider, LinearProgress, Skeleton } from '@mui/material';
-import { styled } from '@mui/system';
-import { Link } from 'react-router-dom';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Chip,
+  Divider,
+  LinearProgress,
+  Skeleton,
+} from '@mui/material';
+import { styled, useTheme } from '@mui/system';
+import { Link, useNavigate } from 'react-router-dom';
 
+// Styled Components
 const SmallCourseCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -60,8 +72,30 @@ const TagChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
+// Sample Courses Data
+const courses = [
+  {
+    title: "Digital Marketing",
+    category: "Marketing",
+    date: "Aug 9, 2024 | 6:28 AM",
+    description:
+      "This course provides a comprehensive overview of the strategies and tactics used to effectively promote products or…",
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
+    avatar: [
+      "https://randomuser.me/api/portraits/men/75.jpg",
+      "https://randomuser.me/api/portraits/women/65.jpg",
+    ],
+    comments: 0,
+    views: 5,
+  },
+  // ... (Other courses)
+];
+
+// MyCourse Component
 const MyCourse = () => {
   const [loading, setLoading] = useState(true);
+  const theme = useTheme(); // Access the theme palette
+  const navigate = useNavigate(); // To handle navigation on card click
 
   useEffect(() => {
     // Simulate a loading delay
@@ -70,6 +104,19 @@ const MyCourse = () => {
     }, 300); // Adjust the delay as needed
     return () => clearTimeout(timer);
   }, []);
+
+  // Function to truncate text
+  const truncateText = (text, maxLength = 80) => {
+    if (text?.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
+
+  // Handle Card Click (Example)
+  const handleCardClick = () => {
+    navigate("/todo"); // Navigate to the TodoPage when a card is clicked
+  };
 
   return (
     <Box sx={{ padding: 4 }}>
@@ -89,7 +136,18 @@ const MyCourse = () => {
           boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
         }}
       >
-        <Typography variant="h6">Course Progress</Typography>
+        {loading ? (
+          <Skeleton
+            variant="text"
+            width="30%"
+            height={30}
+            sx={{ mb: 2 }}
+            animation="wave"
+            aria-hidden="true"
+          />
+        ) : (
+          <Typography variant="h6">Course Progress</Typography>
+        )}
         <Divider sx={{ width: "100%", mb: 2 }} />
         <Grid container spacing={2} sx={{ overflow: "auto", p: 1 }}>
           {loading ? (
@@ -106,11 +164,38 @@ const MyCourse = () => {
                     p: 1,
                   }}
                 >
-                  <Skeleton variant="rectangular" width={90} height={90} sx={{ mr: 2 }} />
+                  <Skeleton
+                    variant="rectangular"
+                    width={90}
+                    height={90}
+                    sx={{ mr: 2 }}
+                    animation="wave"
+                    aria-hidden="true"
+                  />
                   <Box sx={{ flexGrow: 1 }}>
-                    <Skeleton variant="text" width="80%" />
-                    <Skeleton variant="text" width="60%" />
-                    <Skeleton variant="rectangular" width="100%" height={10} sx={{ mt: 1 }} />
+                    <Skeleton
+                      variant="text"
+                      width="80%"
+                      height={24}
+                      sx={{ mb: 1 }}
+                      animation="wave"
+                      aria-hidden="true"
+                    />
+                    <Skeleton
+                      variant="text"
+                      width="60%"
+                      height={20}
+                      animation="wave"
+                      aria-hidden="true"
+                    />
+                    <Skeleton
+                      variant="rectangular"
+                      width="100%"
+                      height={10}
+                      sx={{ mt: 1 }}
+                      animation="wave"
+                      aria-hidden="true"
+                    />
                   </Box>
                 </Box>
               </Grid>
@@ -218,24 +303,82 @@ const MyCourse = () => {
       </Box>
 
       {/* My Enrolled Courses Section */}
-      <Box sx={{ pl: 3, pt: 2, pb: 0, boxShadow: "0 4px 12px rgba(0,0,0,0.2)", borderRadius: 2, backgroundColor: "#fff" }}>
-        <Typography variant="h6">
-          My Enrolled Courses
-        </Typography>
+      <Box
+        sx={{
+          pl: 3,
+          pt: 2,
+          pb: 0,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          borderRadius: 2,
+          backgroundColor: "#fff",
+        }}
+      >
+        {loading ? (
+          <Skeleton
+            variant="text"
+            width="40%"
+            height={30}
+            sx={{ mb: 2 }}
+            animation="wave"
+            aria-hidden="true"
+          />
+        ) : (
+          <Typography variant="h6">My Enrolled Courses</Typography>
+        )}
         <Divider sx={{ width: "98%", mb: 2 }} />
         <Grid container spacing={2}>
           {loading ? (
             Array.from(new Array(3)).map((_, index) => (
               <Grid item xs={12} key={index}>
                 <LargeCourseCard>
-                  <Skeleton variant="rectangular" width={250} height={160} sx={{ mt: 3, ml: 2 }} />
-                  <CardContent sx={{ flexGrow: 1, width: '25em' }}>
-                    <Skeleton variant="text" width="60%" />
-                    <Skeleton variant="text" width="80%" />
-                    <Skeleton variant="text" width="40%" />
+                  <Skeleton
+                    variant="rectangular"
+                    width={250}
+                    height={160}
+                    sx={{ mt: 3, ml: 2 }}
+                    animation="wave"
+                    aria-hidden="true"
+                  />
+                  <CardContent sx={{ flexGrow: 1, width: "25em" }}>
+                    <Skeleton
+                      variant="text"
+                      width="60%"
+                      height={24}
+                      sx={{ mb: 1 }}
+                      animation="wave"
+                      aria-hidden="true"
+                    />
+                    <Skeleton
+                      variant="text"
+                      width="80%"
+                      height={20}
+                      animation="wave"
+                      aria-hidden="true"
+                    />
+                    <Skeleton
+                      variant="text"
+                      width="40%"
+                      height={20}
+                      animation="wave"
+                      aria-hidden="true"
+                    />
                     <Grid container sx={{ mt: 2 }}>
-                      <Skeleton variant="rectangular" width={80} height={24} sx={{ mr: 1 }} />
-                      <Skeleton variant="rectangular" width={80} height={24} sx={{ mr: 1 }} />
+                      <Skeleton
+                        variant="rectangular"
+                        width={80}
+                        height={24}
+                        sx={{ mr: 1 }}
+                        animation="wave"
+                        aria-hidden="true"
+                      />
+                      <Skeleton
+                        variant="rectangular"
+                        width={80}
+                        height={24}
+                        sx={{ mr: 1 }}
+                        animation="wave"
+                        aria-hidden="true"
+                      />
                     </Grid>
                   </CardContent>
                 </LargeCourseCard>
@@ -246,23 +389,35 @@ const MyCourse = () => {
               {
                 link: `/course/seo-basic`,
                 title: "SEO Basics",
-                imageUrl: "https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg",
-                description: 'A step-by-step guide to developing a Search Engine Optimization strategy for your business to increase your online presence and attract traffic to your website by using keywords intelligently, leveraging paid and organic searches, and making your website mobile-friendly.',
-                tags: ['Finance', 'Marketing', 'Technology', 'Entrepreneurship', 'Innovation']
+                imageUrl:
+                  "https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg",
+                description:
+                  "A step-by-step guide to developing a Search Engine Optimization strategy for your business to increase your online presence and attract traffic to your website by using keywords intelligently, leveraging paid and organic searches, and making your website mobile-friendly.",
+                tags: [
+                  "Finance",
+                  "Marketing",
+                  "Technology",
+                  "Entrepreneurship",
+                  "Innovation",
+                ],
               },
               {
                 link: "/course/ai-basic",
                 title: "AI Basic",
-                imageUrl: "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
-                description: 'A step-by-step guide to incorporating your company, including why you need to incorporate your company, the documentation needed and do\'s and don\'ts. Learn about different types of organizations and how they operate, including taxation and legal aspects.',
-                tags: ['Marketing', 'Business', 'Technology']
+                imageUrl:
+                  "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
+                description:
+                  "A step-by-step guide to incorporating your company, including why you need to incorporate your company, the documentation needed and do's and don'ts. Learn about different types of organizations and how they operate, including taxation and legal aspects.",
+                tags: ["Marketing", "Business", "Technology"],
               },
               {
                 link: "/course/identifying-your-target-audience",
                 title: "Identifying Your Target Audience",
-                imageUrl: "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
-                description: 'This course covers the basics of business analytics, including data analysis techniques, predictive modeling, and data-driven decision making. Perfect for those looking to enhance their analytical skills.',
-                tags: ['Analytics', 'Data Science', 'Business']
+                imageUrl:
+                  "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
+                description:
+                  "This course covers the basics of business analytics, including data analysis techniques, predictive modeling, and data-driven decision making. Perfect for those looking to enhance their analytical skills.",
+                tags: ["Analytics", "Data Science", "Business"],
               },
             ].map((course) => (
               <Grid item xs={12} key={course.title}>
@@ -275,20 +430,26 @@ const MyCourse = () => {
                     description: course.description,
                   }}
                 >
-                  <LargeCourseCard>
+                  <LargeCourseCard onClick={handleCardClick}>
                     <LargeCourseMedia
                       sx={{
                         backgroundImage: `url(${course.imageUrl})`,
-                        mt: 3, ml: 2, height: 150, width: 180
+                        mt: 3,
+                        ml: 2,
+                        height: 150,
+                        width: 180,
                       }}
                     />
-                    <CardContent sx={{ flexGrow: 1, width: '25em' }}>
+                    <CardContent sx={{ flexGrow: 1, width: "25em" }}>
                       <Typography variant="h6">{course.title}</Typography>
-                      <Typography variant="subtitle1" color="textSecondary">
+                      <Typography
+                        variant="subtitle1"
+                        color="text.secondary"
+                      >
                         {course.description}
                       </Typography>
                       <Grid container sx={{ mt: 2 }}>
-                        {course.tags.map(tag => (
+                        {course.tags.map((tag) => (
                           <TagChip label={tag} key={tag} />
                         ))}
                       </Grid>
@@ -302,9 +463,16 @@ const MyCourse = () => {
       </Box>
 
       {/* Footer Text */}
-      <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 4 }}>
-        You have seen it all
-      </Typography>
+      {!loading && (
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          align="center"
+          sx={{ mt: 4 }}
+        >
+          You have seen it all
+        </Typography>
+      )}
     </Box>
   );
 };

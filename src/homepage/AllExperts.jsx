@@ -8,7 +8,10 @@ import {
   CardMedia,
   Button,
   Chip,
-  Divider
+  Divider,
+  ListItem,
+  ListItemText,
+  List
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles'; // Import useTheme hook
 import { useLocation, useNavigate } from "react-router-dom";
@@ -20,6 +23,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import Header from '../signup-login/Header';
 import Footer from '../signup-login/Footer';
 import { ExpertCard } from '../ExpertCard';
+import { Groups, Handshake, TrendingUp } from '@mui/icons-material';
 
 // Styled components
 const MainCard = styled(Card)(({ theme }) => ({
@@ -74,17 +78,17 @@ const Banner = () => {
     >
       <Box
         sx={{
-          width: { xs: '100%', sm: '42%' }, // Full width for small screens
+          width: { xs: '100%', sm: '44%' }, // Full width for small screens
           textAlign: { xs: 'center', sm: 'left' }, // Center text on small screens
           mr: { sm: 8.85 },
           mb: { xs: 2, sm: 0 }, // Add margin below text on small screens
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
-          Unlock Expert Insights and Propel your Business Growth
+        Stop the Guesswork—Scale Your AI Startup with Targeted Expertise
         </Typography>
-        <Typography variant="h5" sx={{ mt: 2, mb: 3, fontSize: { xs: '1rem', sm: '1.5rem' } }}>
-          Hire, network, and collaborate with global industry experts
+        <Typography variant="h6" sx={{ mt: 3, mb: 3,  }}>
+        Connect, network, and collaborate with the best growth experts and associates to scale your AI startup’s growth.
         </Typography>
         <Button
           variant="contained"
@@ -98,7 +102,7 @@ const Banner = () => {
             boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
           }}
         >
-          Find An Expert
+          Connect with a Growth Expert
         </Button>
       </Box>
 
@@ -196,6 +200,67 @@ const HowItWorks = () => (
   </Box>
 );
 
+const GrowthBenefitsCard = () => (
+    <Card
+      sx={{
+        mt: 5,
+        p: 5,
+        textAlign: 'left',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        borderRadius: 2,
+        background: 'linear-gradient(to bottom, #2c489b, #2a468d)',
+        color: '#ffffff',
+      }}
+    >
+      <Box sx={{ textAlign: "center"}}>
+    <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ mb: 3 }}>
+      Growth Experts and Associates bring the following benefits to drive your AI startup’s growth
+    </Typography>
+    </Box>
+      <Grid container spacing={10}>
+        <Grid item xs={12} md={6}>
+          <Box>
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              Growth Experts
+            </Typography>
+            <Box component="ul" sx={{ pl: 2 }}>
+              <Box component="li" sx={{ listStyleType: 'disc', pl: 0 }}>
+                <Typography variant="subtitle1" paragraph sx={{ display: 'inline', ml: 0 }}>
+                  Bring a Fresh Perspective with Expert-led Growth, particularly <b>Growth Marketing</b>, which follows a process of using data gained through marketing campaigns and experimentation to drive growth.
+                </Typography>
+              </Box>
+              <Box component="li" sx={{ listStyleType: 'disc', pl: 0 }}>
+                <Typography variant="subtitle1" paragraph sx={{ display: 'inline', ml: 0 }}>
+                  Leverage <b>Growth Selling</b>, a top-down sales growth model that brings Purposeful Connections, Thought Leadership Conversations, Coaching, Growth Network of fractional Experts to identify opportunities and test the growth hypothesis that can scale.
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Box>
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              Growth Associates
+            </Typography>
+            <Box component="ul" sx={{ pl: 2 }}>
+              <Box component="li" sx={{ listStyleType: 'disc', pl: 0 }}>
+                <Typography variant="subtitle1" paragraph sx={{ display: 'inline', ml: 0 }}>
+                  Drive <b>user acquisition, engagement, and scaling</b> of various aspects of the business at a fraction of the cost of a full-time executive by letting a Growth Associate focus on business development using data-driven experimentation and strategic marketing.
+                </Typography>
+              </Box>
+              <Box component="li" sx={{ listStyleType: 'disc', pl: 0 }}>
+                <Typography variant="subtitle1" paragraph sx={{ display: 'inline', ml: 0 }}>
+                  Benefit from <b>seamless collaboration</b> made possible by a Growth Associate working closely with various departments such as marketing, product, and sales, implementing growth strategies aimed at <b>expanding your customer base and increasing revenue</b>.
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </Card>
+
+);
+
 const AllExperts = () => {
   const theme = useTheme(); // Get the theme using the useTheme hook
   const navigate = useNavigate();
@@ -227,21 +292,22 @@ const AllExperts = () => {
       <Banner />
       <MainCard sx={{ py: 4, mt: 5,  }}>
         <Typography variant="h5" gutterBottom fontWeight={'bold'} sx={{ textAlign: 'center', m: {xs: 2, sm: 0} }}>
-          Grow your startup with On-Demand and Fractional Executives as Your Success Partners
+        Tailored Expert Support to Drive Your AI Startup’s Growth
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2, textAlign: 'center',m: {xs: 2, sm: 0} }}>
-          At OpenGrowth, our mission is to connect you with top global experts across diverse domains, including Marketing, HR, Finance, Legal, and Branding to catalyze your startup growth journey empowered by cutting-edge AI technologies.
+        At OpenGrowth, our mission is to connect you with the world’s leading experts in Marketing, HR, Finance, Legal, and Branding—equipping your startup with the AI-driven insights needed to accelerate your growth journey.
         </Typography>
         <Grid container spacing={2} justifyContent="space-evenly" >
           <Grid item xs={12} sm={10} md={5.5} sx={{margin: {xs: 2, sm: 0.5}}}>
-            <CardFeature IconComponent={OrganizationIcon} title="Hire Fractional Executives" subtitle="Hire an Expert to solve your startup’s specific problems at a fractional cost." />
+            <CardFeature IconComponent={TrendingUp} title="Hire a Growth Expert" subtitle="Hire a Growth Expert to help you scale your AI startup without full-time commitment." />
           </Grid>
           <Grid item xs={12} sm={10} md={5.5}sx={{ paddingLeft: '0px !important', ml: {xs: 4, sm: 0}, mr: {xs: 2, sm: 0.5}, my: 0.5 }}>
-            <CardFeature IconComponent={WorkLearnIcon} title="On Demand Expert" subtitle="Easily schedule a one-on-one session with an Expert for quick resolution." />
+            <CardFeature IconComponent={Handshake} title="Hire a Growth Associate" subtitle="Hire a Growth Associate to help you with business development on a part-time basis." />
           </Grid>
         </Grid>
       </MainCard>
       <HowItWorks />
+      <GrowthBenefitsCard />
 
       {/* Top Experts Card */}
       <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>

@@ -37,7 +37,7 @@ const UserDetailsForm = ({ onFormSubmit, onGoBack }) => {
         Almost There...
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Please enter the information below
+      Please provide the following details.
       </Typography>
 
       <TextField

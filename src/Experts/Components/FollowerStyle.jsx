@@ -5,7 +5,7 @@ export const FollowerCard = styled(Card)(({ theme, active }) => ({
     alignItems: 'flex-start',
     padding: '16px',
     boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-    height: 'auto',
+    height: '100%',
     width: "100%",
     [theme.breakpoints.down('sm')]: {
         height: 'fit-content' // Wrap buttons if space is insufficient

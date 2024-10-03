@@ -1,3 +1,4 @@
+// Projects.jsx
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
@@ -20,6 +21,7 @@ import {
   Grid,
   useMediaQuery,
   useTheme,
+  Skeleton, // Import Skeleton
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
@@ -29,6 +31,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
 import { Link } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 
 const initialCategories = [
   "Expert",
@@ -115,10 +118,6 @@ const data = {
       pointHoverRadius: 0,
       borderWidth: 5,
       tension: 0.4,
-      shadowColor: "rgba(0, 0, 0, 0.3)",
-      shadowBlur: 10,
-      shadowOffsetX: 0,
-      shadowOffsetY: 4,
     },
     {
       label: "Course Enrolled",
@@ -130,10 +129,6 @@ const data = {
       pointHoverRadius: 7,
       borderWidth: 5,
       tension: 0.4,
-      shadowColor: "rgba(0, 0, 0, 0.3)",
-      shadowBlur: 10,
-      shadowOffsetX: 0,
-      shadowOffsetY: 4,
     },
   ],
 };
@@ -195,16 +190,16 @@ const options = {
 const ProgressLabel = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(1),
   fontSize: "0.9em",
-  // fontWeight: 'bold',
 }));
+
 const SidebarSection = styled(Box)(({ theme }) => {
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   return {
     width: isMobile ? "100%" : isTablet ? "100%" : "25%", // Adjust width for tablet
     marginLeft: isMobile ? 0 : isTablet ? 0 : theme.spacing(3),
-    marginTop: isMobile ? theme.spacing(2) : '8px',
+    marginTop: isMobile ? theme.spacing(2) : "8px",
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1),
@@ -240,8 +235,7 @@ const courses = [
     date: "Aug 9, 2024 | 6:28 AM",
     description:
       "This course provides a comprehensive overview of the strategies and tactics used to effectively promote products or…",
-    image:
-      "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
     avatar: [
       "https://randomuser.me/api/portraits/men/75.jpg",
       "https://randomuser.me/api/portraits/women/65.jpg",
@@ -255,11 +249,8 @@ const courses = [
     date: "Jun 7, 2024 | 3:48 AM",
     description:
       "A short course on transitioning from a 9 to 5 job to a Fractional Executive, a cornerstone of the gig economy. Find out…",
-    image:
-      "https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg",
-    avatar: [
-      "https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg",
-    ],
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg",
+    avatar: ["https://academy.opengrowth.com/assets/images/courses/thumb_abc.jpeg"],
     comments: 0,
     views: 70,
   },
@@ -268,32 +259,29 @@ const courses = [
     category: "HR",
     date: "Apr 24, 2024 | 9:40 AM",
     description: "testing testing testing",
-    image:
-      "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
     avatar: ["https://randomuser.me/api/portraits/women/66.jpg"],
     comments: 0,
     views: 48,
   },
   {
     title: "StartUp Fundamentals",
-    category: "LeaderShip",
+    category: "Leadership",
     date: "Apr 19, 2024 | 5:24 AM",
     description:
       "A step-by-step guide to incorporating your company, including why you need...",
-    image:
-      "https://academy.opengrowth.com/assets/images/courses/thumb__90082e05-8020-4bd8-8246-af0ef0853187.jpeg",
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb__90082e05-8020-4bd8-8246-af0ef0853187.jpeg",
     avatar: ["https://randomuser.me/api/portraits/women/67.jpg"],
     comments: 0,
     views: 134,
   },
   {
     title: "Make You Pitch Investor Ready",
-    category: "LeaderShip",
+    category: "Leadership",
     date: "Apr 19, 2024 | 5:24 AM",
     description:
       "A step-by-step guide to incorporating your company, including why you need...",
-    image:
-      "https://academy.opengrowth.com/assets/images/courses/thumb_s2mypir.jpg",
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb_s2mypir.jpg",
     avatar: ["https://randomuser.me/api/portraits/women/67.jpg"],
     comments: 0,
     views: 134,
@@ -304,20 +292,18 @@ const courses = [
     date: "Apr 19, 2024 | 5:24 AM",
     description:
       "This course will give you a complete overview of developing and designing...",
-    image:
-      "https://academy.opengrowth.com/assets/images/courses/thumb_Strategy-and-Analysis.jpg",
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb_Strategy-and-Analysis.jpg",
     avatar: ["https://randomuser.me/api/portraits/women/67.jpg"],
     comments: 0,
     views: 134,
   },
   {
     title: "MVP Fundamentals",
-    category: "LeaderShip",
+    category: "Leadership",
     date: "Apr 19, 2024 | 5:24 AM",
     description:
       "A step-by-step guide to incorporating your company, including why you need...",
-    image:
-      "https://academy.opengrowth.com/assets/images/courses/thumb_10HowtomeasurePMF.jpg",
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb_10HowtomeasurePMF.jpg",
     avatar: ["https://randomuser.me/api/portraits/women/67.jpg"],
     comments: 0,
     views: 134,
@@ -328,44 +314,302 @@ const courses = [
     date: "Apr 19, 2024 | 5:24 AM",
     description:
       "A bulletproof Human Resource Development and Human Resource Management...",
-    image:
-      "https://academy.opengrowth.com/assets/images/courses/thumb_hrnew.jpg",
+    image: "https://academy.opengrowth.com/assets/images/courses/thumb_hrnew.jpg",
     avatar: ["https://randomuser.me/api/portraits/women/67.jpg"],
     comments: 0,
     views: 134,
   },
 ];
 
-const ShimmerWrapper = styled("div")({
-  overflow: "hidden",
-  position: "relative",
-  backgroundColor: "#f6f7f8",
-  borderRadius: 8,
-});
+// Removed Custom Shimmer Components
 
-const ShimmerEffect = styled("div")(({ theme }) => ({
-  width: "100%",
-  height: "100%",
-  animation: "shimmer 1.5s infinite linear",
-  background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #e0e0e0 50%, ${theme.palette.background.default} 100%)`,
-  backgroundSize: "200% 100%",
-  "@keyframes shimmer": {
-    "0%": {
-      backgroundPosition: "-100% 0",
-    },
-    "100%": {
-      backgroundPosition: "100% 0",
-    },
-  },
-}));
+// Function to render project cards or skeletons
+const renderProjects = (filteredProjects, loading, theme) => {
+  if (loading) {
+    // Display Skeletons while loading
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 2,
+        }}
+      >
+        {filteredProjects.map((_, index) => (
+          <Card
+            key={index}
+            sx={{
+              width: { xs: "100%", sm: 400, md: 280 },
+              height: 280,
+              display: "flex",
+              flexDirection: "column",
+              p: 2,
+              boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+              position: "relative",
+              borderRadius: 1, // Added borderRadius
+            }}
+          >
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Skeleton variant="text" width="60%" height={30} aria-hidden="true" />
+              <Box sx={{ display: "flex" }}>
+                <Skeleton variant="circular" width={24} height={24} aria-hidden="true" />
+                <Skeleton variant="circular" width={24} height={24} sx={{ ml: 1 }} aria-hidden="true" />
+              </Box>
+            </Box>
+            <Skeleton variant="text" width="80%" height={20} sx={{ mt: 1 }} aria-hidden="true" />
+            <Skeleton variant="rectangular" width="100%" height={60} sx={{ mt: 1 }} aria-hidden="true" />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                mt: "auto",
+                alignItems: "center",
+              }}
+            >
+              <Skeleton variant="text" width="40%" height={20} aria-hidden="true" />
+              <Skeleton variant="rectangular" width={80} height={24} aria-hidden="true" />
+            </Box>
+          </Card>
+        ))}
+      </Box>
+    );
+  }
 
-const Shimmer = ({ width = "100%", height = 100 }) => (
-  <ShimmerWrapper style={{ width, height }}>
-    <ShimmerEffect />
-  </ShimmerWrapper>
-);
+  // Display actual project cards when not loading
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 2,
+      }}
+    >
+      {filteredProjects.map((project) => (
+        <Card
+          key={project.id}
+          sx={{
+            width: { xs: "100%", sm: 400, md: 280 }, // Responsive widths
+            height: 280,
+            display: "flex",
+            flexDirection: "column",
+            py: 2,
+            pl: 2,
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+            position: "relative",
+            borderRadius: 1, // Ensuring consistent borderRadius
+            "&:hover": {
+              backgroundColor: "#0000000a",
+              boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+              transform: "translateY(-2px)",
+            },
+            cursor: "pointer",
+          }}
+          onClick={handleCardClick}
+        >
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="h6">{project.name}</Typography>
+            <Box>
+              <IconButton onClick={(e) => handleToggleFavourite(project.id, e)}>
+                {project.favourite ? <StarIcon sx={{ color: "gold" }} /> : <StarBorderIcon />}
+              </IconButton>
+              <IconButton>
+                <MoreVertIcon />
+              </IconButton>
+            </Box>
+          </Box>
+          <Typography variant="body2" color="text.secondary">
+            For:{" "}
+            <Typography component="span" variant="body2" color="primary">
+              {project.company}
+            </Typography>
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            {project.description}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mt: "auto",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="body2" color="text.secondary">
+              Active: {project.active}
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={(e) => handleMenuOpen(e, project.id)}
+              sx={{
+                height: 24,
+                backgroundColor: statuses.find((status) => status.id === project.id)?.color || "#e0e0e0",
+                color: "black",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                px: 2,
+                borderRadius: "12px 0 0 12px", // Rounded left border
+                fontSize: "10px",
+                "&:hover": {
+                  backgroundColor: darken(
+                    statuses.find((status) => status.id === project.id)?.color || "#e0e0e0",
+                    0.2
+                  ), // Darkens the color by 20% on hover
+                },
+              }}
+            >
+              {statuses.find((status) => status.id === project.id)?.label || "+"}
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={menuOpenProjectId === project.id}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={(e) =>
+                  handleStatusChange("In Progress", "#aed581", project.id, e)
+                }
+                sx={{ fontSize: "10px" }}
+              >
+                <ListItemIcon>
+                  <FiberManualRecordIcon sx={{ color: "#aed581", fontSize: 20 }} />
+                </ListItemIcon>
+                <ListItemText primary="In Progress" sx={{ color: "#616161" }} />
+              </MenuItem>
+              <MenuItem
+                onClick={(e) => handleStatusChange("New", "#fff176", project.id, e)}
+                sx={{ fontSize: "10px" }}
+              >
+                <ListItemIcon>
+                  <FiberManualRecordIcon sx={{ color: "#fff176", fontSize: 20 }} />
+                </ListItemIcon>
+                <ListItemText primary="New" sx={{ color: "#616161" }} />
+              </MenuItem>
+              <MenuItem
+                onClick={(e) =>
+                  handleStatusChange("Cancelled", "#e57373", project.id, e)
+                }
+                sx={{ fontSize: "10px" }}
+              >
+                <ListItemIcon>
+                  <FiberManualRecordIcon sx={{ color: "#e57373", fontSize: 20 }} />
+                </ListItemIcon>
+                <ListItemText primary="Cancelled" sx={{ color: "#616161" }} />
+              </MenuItem>
+              <MenuItem
+                onClick={(e) =>
+                  handleStatusChange("Paused", "#7986cb", project.id, e)
+                }
+                sx={{ fontSize: "10px" }}
+              >
+                <ListItemIcon>
+                  <FiberManualRecordIcon sx={{ color: "#7986cb", fontSize: 20 }} />
+                </ListItemIcon>
+                <ListItemText primary="Paused" sx={{ color: "#616161" }} />
+              </MenuItem>
+            </Menu>
+          </Box>
+        </Card>
+      ))}
+    </Box>
+  );
+};
 
-// Shimmer for the "Course Progress" section
+// Function to render tabs or skeletons
+const renderTabs = (loading, theme, tabIndex, handleTabChange) => {
+  if (loading) {
+    // Display Skeletons for tabs while loading
+    return (
+      <Box sx={{ display: "flex", gap: 2, ml: 2 }}>
+        <Skeleton
+          variant="rectangular"
+          width={80}
+          height={32}
+          animation="wave"
+          sx={{
+            borderRadius: 1,
+            backgroundColor: theme.palette.background.default,
+          }}
+          aria-hidden="true"
+        />
+        <Skeleton
+          variant="rectangular"
+          width={100}
+          height={32}
+          animation="wave"
+          sx={{
+            borderRadius: 1,
+            backgroundColor: theme.palette.background.default,
+          }}
+          aria-hidden="true"
+        />
+        <Skeleton
+          variant="rectangular"
+          width={90}
+          height={32}
+          animation="wave"
+          sx={{
+            borderRadius: 1,
+            backgroundColor: theme.palette.background.default,
+          }}
+          aria-hidden="true"
+        />
+      </Box>
+    );
+  }
+
+  // Display actual Tabs when not loading
+  return (
+    <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
+      <Tab
+        label="Active"
+        id="tab-0"
+        aria-controls="tabpanel-0"
+        sx={{ fontSize: { xs: "0.78rem", sm: "inherit" } }}
+      />
+      <Tab
+        label="Completed"
+        id="tab-1"
+        aria-controls="tabpanel-1"
+        sx={{ fontSize: { xs: "0.78rem", sm: "inherit" } }}
+      />
+      <Tab
+        label="Templates"
+        id="tab-2"
+        aria-controls="tabpanel-2"
+        sx={{ fontSize: { xs: "0.78rem", sm: "inherit" } }}
+      />
+    </Tabs>
+  );
+};
+
+// Function to render headers or skeletons within TabPanels
+const renderTabHeaders = (headerText, loading, theme) => {
+  if (loading) {
+    return (
+      <Skeleton
+        variant="text"
+        width="30%"
+        height={30}
+        animation="wave"
+        sx={{
+          backgroundColor: theme.palette.background.default,
+        }}
+        aria-hidden="true"
+      />
+    );
+  }
+
+  return (
+    <Typography variant="h6" sx={{ mb: 2 }}>
+      {headerText}
+    </Typography>
+  );
+};
+
+// Shimmer for the "Course Progress" section (Replaced with Skeleton)
 const ProgressShimmer = () => (
   <Box
     sx={{
@@ -377,18 +621,19 @@ const ProgressShimmer = () => (
       borderRadius: "8px",
       p: 1,
       mb: 2,
+      mt: 2,
     }}
   >
-    <Shimmer width={90} height={90} />
+    <Skeleton variant="circular" width={90} height={90} aria-hidden="true" />
     <Box sx={{ flexGrow: 1, ml: 2 }}>
-      <Shimmer width="50%" height={20} />
-      <Shimmer width="30%" height={20} style={{ marginTop: "8px" }} />
-      <Shimmer width="100%" height={10} style={{ marginTop: "8px" }} />
+      <Skeleton variant="text" width="50%" height={20} aria-hidden="true" />
+      <Skeleton variant="text" width="30%" height={20} sx={{ mt: 1 }} aria-hidden="true" />
+      <Skeleton variant="text" width="100%" height={10} sx={{ mt: 1 }} aria-hidden="true" />
     </Box>
   </Box>
 );
 
-// Shimmer for the "Explore other courses" section
+// Shimmer for the "Explore other courses" section (Replaced with Skeleton)
 const CourseCardShimmer = () => (
   <Grid item xs={12} sm={6} md={4}>
     <Card
@@ -401,7 +646,7 @@ const CourseCardShimmer = () => (
         width: "auto",
       }}
     >
-      <Shimmer width="100%" height="175px" />
+      <Skeleton variant="rectangular" width="100%" height="175px" aria-hidden="true" />
       <CardContent
         sx={{
           flexGrow: 1,
@@ -411,13 +656,13 @@ const CourseCardShimmer = () => (
         }}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          <Shimmer width="60%" height={20} />
-          <Shimmer width="40%" height={20} />
-          <Shimmer width="80%" height={20} />
+          <Skeleton variant="text" width="60%" height={20} aria-hidden="true" />
+          <Skeleton variant="text" width="40%" height={20} aria-hidden="true" />
+          <Skeleton variant="text" width="80%" height={20} aria-hidden="true" />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-          <Shimmer width={40} height={20} />
-          <Shimmer width={40} height={20} />
+          <Skeleton variant="text" width={40} height={20} aria-hidden="true" />
+          <Skeleton variant="text" width={40} height={20} aria-hidden="true" />
         </Box>
       </CardContent>
     </Card>
@@ -436,36 +681,30 @@ const CourseDashboard = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   const fetchExperts = useCallback(async (category = null) => {
     setLoading(true);
     try {
       let response;
       if (category) {
-        response = await axios.post(
-          "https://academy.opengrowth.com/api/search_mentor",
-          {
-            email: "akriti@opengrowth.com",
-            start: 0,
-            end: 10,
-            key: `0_popular_tags_${category}`,
-            search: category,
-            search_with: "tags",
-            action: "",
-            token: "kKRyYp5DebEw0fP",
-          }
-        );
+        response = await axios.post("https://academy.opengrowth.com/api/search_mentor", {
+          email: "akriti@opengrowth.com",
+          start: 0,
+          end: 10,
+          key: `0_popular_tags_${category}`,
+          search: category,
+          search_with: "tags",
+          action: "",
+          token: "kKRyYp5DebEw0fP",
+        });
       } else {
-        response = await axios.post(
-          "https://academy.opengrowth.com/api/get_all_mentors",
-          {
-            id: "akriti@opengrowth.com",
-            start: 0,
-            end: 10,
-            key: "0_all_mentors_0_to_10",
-          }
-        );
+        response = await axios.post("https://academy.opengrowth.com/api/get_all_mentors", {
+          id: "akriti@opengrowth.com",
+          start: 0,
+          end: 10,
+          key: "0_all_mentors_0_to_10",
+        });
       }
       console.log("API Response:", response.data);
       setExperts(response.data);
@@ -482,6 +721,7 @@ const CourseDashboard = () => {
     }
     return text;
   };
+
   useEffect(() => {
     fetchExperts();
   }, [fetchExperts]);
@@ -512,6 +752,59 @@ const CourseDashboard = () => {
     setSelectedExpert(expert);
   };
 
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
+  };
+
+  // Array of projects (Assumed to be part of this component or imported)
+  const [projects, setProjects] = useState([
+    { id: 1, name: "Project 1", company: "Owner Company", description: "This is a demo Project", active: "Just now", favourite: false },
+    { id: 2, name: "Project 2", company: "Another Company", description: "This is another demo project", active: "5 minutes ago", favourite: false },
+    { id: 3, name: "Project 3", company: "Sample Company", description: "This is a sample project", active: "10 minutes ago", favourite: false },
+  ]);
+
+  // Array of status states corresponding to each project
+  const [statuses, setStatuses] = useState([
+    { id: 1, label: "+", color: "#e0e0e0" },
+    { id: 2, label: "+", color: "#e0e0e0" },
+    { id: 3, label: "+", color: "#e0e0e0" },
+  ]);
+
+  const handleMenuOpen = (event, projectId) => {
+    event.stopPropagation(); // Prevent navigation on card click
+    setAnchorEl(event.currentTarget);
+    setMenuOpenProjectId(projectId); // Track which project’s menu is open
+  };
+
+  const handleMenuClose = (event) => {
+    event.stopPropagation(); // Prevent navigation on card click
+    setAnchorEl(null);
+    setMenuOpenProjectId(null); // Close the menu for the project
+  };
+
+  const handleStatusChange = (label, color, projectId, event) => {
+    event.stopPropagation(); // Prevent navigation on card click
+    setStatuses((prevStatuses) =>
+      prevStatuses.map((status) =>
+        status.id === projectId ? { ...status, label, color } : status
+      )
+    );
+    handleMenuClose(event);
+  };
+
+  const handleToggleFavourite = (projectId, event) => {
+    event.stopPropagation(); // Prevent navigation on card click
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.id === projectId ? { ...project, favourite: !project.favourite } : project
+      )
+    );
+  };
+
+  const handleCardClick = () => {
+    navigate("/todo"); // Navigate to the TodoPage when a card is clicked
+  };
+
   return (
     <>
       <Box sx={{ backgroundColor: "#f4f6f8", minHeight: "100vh", p: 3 }}>
@@ -530,7 +823,7 @@ const CourseDashboard = () => {
           >
             {/* My Learning Curve */}
             {loading ? (
-              <Shimmer width="100%" height="43vh" />  // Shimmer while loading
+              <Skeleton variant="rectangular" width="100%" height="43vh" aria-hidden="true" />
             ) : (
               <Box
                 sx={{
@@ -585,32 +878,34 @@ const CourseDashboard = () => {
                     {
                       link: "/course/seo-basics",
                       duration: "5 weeks",
-                      imageUrl:
-                        "https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg",
+                      imageUrl: "https://academy.opengrowth.com/assets/images/courses/thumb_s6seo.jpg",
                       title: "SEO Basics",
                       progress: 25,
                     },
                     {
                       link: "/course/ai-basic",
                       duration: "5 weeks",
-                      imageUrl:
-                        "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
+                      imageUrl: "https://academy.opengrowth.com/assets/images/courses/thumb_s7aib.jpg",
                       title: "AI Basic",
                       progress: 42,
                     },
                     {
                       link: "/course/identifying-your-target-audience",
                       duration: "5 weeks",
-                      imageUrl:
-                        "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
+                      imageUrl: "https://academy.opengrowth.com/assets/images/courses/thumb_s8iyta.jpg",
                       title: "Identifying Your Target Audience",
                       progress: 70,
                     },
                   ].map((course) => (
                     <Grid item xs={12} sm={6} md={4} key={course.title}>
                       <Link
-                        to={course.link}
+                        to={`/course/${course.title}`}
                         style={{ textDecoration: "none" }}
+                        state={{
+                          title: course.title,
+                          imageUrl: course.imageUrl,
+                          description: course.description,
+                        }}
                       >
                         <Box
                           sx={{
@@ -634,17 +929,10 @@ const CourseDashboard = () => {
                             }}
                           ></Box>
                           <Box sx={{ flexGrow: 1 }}>
-                            <Typography
-                              variant="subtitle2"
-                              sx={{ color: "text.primary" }}
-                            >
+                            <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
                               {course.title}
                             </Typography>
-                            <Typography
-                              variant="body2"
-                              gutterBottom
-                              sx={{ color: "text.secondary" }}
-                            >
+                            <Typography variant="body2" color="text.secondary">
                               {course.duration}
                             </Typography>
                             <Box
@@ -664,9 +952,7 @@ const CourseDashboard = () => {
                                   mr: 1,
                                 }}
                               />
-                              <Typography variant="body2">
-                                {course.progress}%
-                              </Typography>
+                              <Typography variant="body2">{course.progress}%</Typography>
                             </Box>
                           </Box>
                         </Box>
@@ -697,7 +983,6 @@ const CourseDashboard = () => {
                   borderRadius: "12px",
                   backgroundColor: "#fff",
                   boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
-                  // Set width to auto
                 }}
               >
                 <Box sx={{ padding: 2, width: "100%" }}>
@@ -734,7 +1019,7 @@ const CourseDashboard = () => {
                               width: "auto",
                               "&:hover": {
                                 transform: "translateY(-3px)",
-                                boxShadow: "0 8px 16px",
+                                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
                               },
                             }}
                           >
@@ -746,9 +1031,7 @@ const CourseDashboard = () => {
                                 width: "auto",
                               }}
                             >
-                              <OverlayText variant="subtitle2">
-                                {course.title}
-                              </OverlayText>
+                              <OverlayText variant="subtitle2">{course.title}</OverlayText>
                               <CategoryChip label={course.category} size="small" />
                             </CourseImage>
                             <CardContent
@@ -769,14 +1052,8 @@ const CourseDashboard = () => {
                                 }}
                               >
                                 <Box>
-                                  <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    sx={{ mb: 1 }}
-                                  >
-                                    <CalendarTodayIcon
-                                      sx={{ fontSize: 14, mr: 0.5 }}
-                                    />
+                                  <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                                    <CalendarTodayIcon sx={{ fontSize: 14, mr: 0.5 }} />
                                     {course.date}
                                   </Typography>
                                   <Typography
@@ -790,9 +1067,7 @@ const CourseDashboard = () => {
                                     {course.description}
                                   </Typography>
                                 </Box>
-                                <Box
-                                  sx={{ display: "flex", alignItems: "center" }}
-                                >
+                                <Box sx={{ display: "flex", alignItems: "center" }}>
                                   {course.avatar.map((src, i) => (
                                     <Avatar
                                       key={i}
@@ -808,33 +1083,14 @@ const CourseDashboard = () => {
                               </Box>
                               <Box>
                                 <Divider sx={{ my: 1 }} />
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                  }}
-                                >
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                    }}
-                                  >
+                                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                  <Box sx={{ display: "flex", alignItems: "center" }}>
                                     <CommentIcon sx={{ fontSize: 18, mr: 0.5 }} />
-                                    <Typography variant="body2">
-                                      {course.comments}
-                                    </Typography>
+                                    <Typography variant="body2">{course.comments}</Typography>
                                   </Box>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                    }}
-                                  >
+                                  <Box sx={{ display: "flex", alignItems: "center" }}>
                                     <VisibilityIcon sx={{ fontSize: 18, mr: 0.5 }} />
-                                    <Typography variant="body2">
-                                      {course.views}
-                                    </Typography>
+                                    <Typography variant="body2">{course.views}</Typography>
                                   </Box>
                                 </Box>
                               </Box>
@@ -849,45 +1105,29 @@ const CourseDashboard = () => {
             )}
           </Box>
 
+          {/* Sidebar Section */}
           <SidebarSection>
             <Typography variant="h6">Handpicked Experts for you</Typography>
             <Divider sx={{ mb: 2 }} />
             {loading
               ? Array.from({ length: 4 }, (_, index) => (
-                <Shimmer key={index} height={150} />
+                <Skeleton key={index} variant="rectangular" width="100%" height={150} sx={{ borderRadius: 2 }} aria-hidden="true" />
               ))
               : experts.slice(0, 6).map((expert, index) => (
-                <Card
-                  key={index}
-                  sx={{ mb: 2, boxShadow: "none", borderRadius: "12px" }}
-                >
-                  <CardContent
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
+                <Card key={index} sx={{ mb: 2, boxShadow: "none", borderRadius: "12px" }}>
+                  <CardContent sx={{ display: "flex", alignItems: "center" }}>
                     <Avatar
                       src={`https://academy.opengrowth.com/assets/images/users/${expert.img}`}
                       alt={expert.name}
                       sx={{ width: 90, height: 90, mr: 2 }}
                     />
                     <Box>
-                      <Typography variant="subtitle1">
-                        {expert.name}
-                      </Typography>
-                      <Typography variant="body2">
-                        {expert.industry}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ mt: 0.8 }}
-                      >
+                      <Typography variant="subtitle1">{expert.name}</Typography>
+                      <Typography variant="body2">{expert.industry}</Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.8 }}>
                         {truncateText(expert.about)}
                       </Typography>
-                      <Button
-                        size="small"
-                        onClick={() => handleExpertClick(expert)}
-                        sx={{ mt: 1 }}
-                      >
+                      <Button size="small" onClick={() => handleExpertClick(expert)} sx={{ mt: 1 }}>
                         Know More
                       </Button>
                     </Box>
@@ -899,10 +1139,7 @@ const CourseDashboard = () => {
             </Button>
           </SidebarSection>
         </Box>
-        <ExpertPopup
-          expert={selectedExpert}
-          onClose={() => setSelectedExpert(null)}
-        />
+        <ExpertPopup expert={selectedExpert} onClose={() => setSelectedExpert(null)} />
       </Box>
     </>
   );

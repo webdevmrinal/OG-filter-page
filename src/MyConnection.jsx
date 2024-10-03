@@ -109,7 +109,7 @@ function MyConnection() {
       }}
     >
       <Typography variant="h6" gutterBottom sx={{ px: 2, pt: 1 }}>
-        My Connection
+        My Network
       </Typography>
       <Divider sx={{ width: "98%", ml: 2 }} />
       

@@ -21,7 +21,7 @@ const ContactModal = ({ open, onClose, professorName }) => {
       <DialogTitle>Message {professorName}</DialogTitle>
       <DialogContent>
         <Typography variant="subtitle1" gutterBottom>
-          Ask {professorName} a question or share your project details (requirements, timeline, budget, etc.)
+          Ask a question or share your project details (requirements, timeline, budget, etc.).
         </Typography>
 
         {/* Message Input Field */}

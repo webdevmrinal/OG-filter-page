@@ -125,7 +125,7 @@ const ChatPage = () => {
           }}
         >
           <Typography variant="h6" sx={{ m: 2 }}>
-            Engaged Members
+            Connected Members
           </Typography>
           <List 
             sx={{

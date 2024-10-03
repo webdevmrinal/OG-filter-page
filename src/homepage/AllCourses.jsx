@@ -295,9 +295,12 @@ const SliderWrapper = styled(Box)({
       style={{ width: '100%', height: '100%', objectFit: 'cover', borderTopLeftRadius: 4, borderBottomLeftRadius: 4 }}
     />
   </Box>
-  <Box sx={{ width: { xs: '100%', sm: '20%' }, textAlign: 'left', mr: { sm: 8.85 }, ml: { sm: 4 }, p: { xs: 2, sm: 0 } }}>
+  <Box sx={{ width: { xs: '100%', sm: '40%' }, textAlign: 'left', mr: { sm: 8.85 }, ml: { sm: 4 }, p: { xs: 2, sm: 0 } }}>
     <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'black', fontSize: { xs: '1.5rem', sm: '2rem' } }}>
-      Courses Curated by our experts for startups
+    Unlock Your Startup Team’s Potential with Advanced Continuous Learning Options.
+    </Typography>
+    <Typography variant="h6" sx={{ color: 'black', mt: 2 }}>
+    Accelerate your AI startup with our expert-curated, self-paced courses: Bridge skill gaps, gain hands-on experience, and achieve your business goals with ease.
     </Typography>
 
     <Button

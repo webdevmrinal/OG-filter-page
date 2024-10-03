@@ -27,7 +27,7 @@ export const MainCard = styled(Card)(({ theme }) => ({
     backgroundColor: '#0000000a',
   },
   [theme.breakpoints.down('sm')]: {
-    width: '100%',
+    width: '95%',
     minHeight: '250px', // Set a minimum height that fits your design needs
   },  
   [theme.breakpoints.down('xs')]: {

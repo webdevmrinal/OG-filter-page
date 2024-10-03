@@ -286,11 +286,11 @@ const BannerContainer = styled(Box)(({ theme, bgImage }) => ({
   },
 }));
 const ContentBox = styled(Box)(({ theme }) => ({
-  marginTop: '45px',
+  marginTop: '24px',
   marginLeft: '35px',
   position: 'relative',
   zIndex: 3,
-  maxWidth: '520px',
+  maxWidth: '620px',
   textAlign: 'left',
   padding: theme.spacing(3),
   color: 'white',
@@ -313,7 +313,7 @@ const BannerButton = styled(Button)(({ theme }) => ({
   borderRadius: '50px',
   backgroundColor: '#f9bb02',
   color: 'black',
-  fontWeight: 540,
+  fontWeight: 600,
   "&:hover": {
     boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
     backgroundColor: '#f9bb02',
@@ -347,9 +347,9 @@ const BannerCarousel = () => {
       {images.map((image, index) => (
         <BannerContainer key={index} bgImage={image}>
           <ContentBox>
-            <BannerText variant="h4" fontWeight={'bold'}>Hire from us to accelerate your Growth Journey in the age of AI</BannerText>
-            <BannerText variant="h5" mt={3}>Discover the benefits of hiring On-demand and Fractional Experts & Executives for your Startup</BannerText>
-            <BannerButton variant="contained">Book A Consultation</BannerButton>
+            <BannerText variant="h4" fontWeight={'bold'}>Want to Connect with Experts Who Understand Your AI Startup’s Unique Needs?</BannerText>
+            <BannerText variant="h6" mt={3}>Fuel your AI startup’s success by partnering with industry leaders who offer customized insights and specialized expertise, ensuring you reach your unique goals precisely when you need it most.</BannerText>
+            <BannerButton variant="contained">Book Your Free Consultation</BannerButton>
             <BannerText variant="subtitle2" mt={1.5}>Our Team Will Help Your startUp Grow</BannerText>
           </ContentBox>
         </BannerContainer>

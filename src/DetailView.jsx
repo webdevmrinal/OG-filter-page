@@ -447,7 +447,7 @@ const DetailView = () => {
           variant="h6"
           sx={{ width: "100%", padding: "1px 1px 0px 4px" }}
         >
-          Event Details
+          Meeting Notes
         </Typography>
         <Divider sx={{ width: "100%", mb: 2 }} />
         <GradientBox position={"relative"} sx={{height: {xs: '200px', sm: '270px'}}}>

@@ -35,17 +35,19 @@ const StyledButton = styled(Button)(({ theme, variant }) => ({
 }));
 
 const OnDemandButton = styled(StyledButton)({
-  color: "#2E3B55",
-  borderColor: "#2E3B55",
+  backgroundColor: "#f9bb02",
+  color: 'black',
+  borderColor: "#f9bb02",
   "&:hover": {
-    borderColor: "#2E3B55",
+    borderColor: "#F0A500",
     backgroundColor: "rgba(46, 59, 85, 0.04)",
   },
 });
 
 const FractionalHireButton = styled(StyledButton)({
-  color: "#F0A500",
-  borderColor: "#F0A500",
+  backgroundColor: "#f9bb02",
+  color: 'black',
+  borderColor: "#f9bb02",
   "&:hover": {
     borderColor: "#F0A500",
     backgroundColor: "rgba(240, 165, 0, 0.04)",
@@ -174,10 +176,10 @@ const ExpertCarousel = ({ experts }) => {
       <Box sx={{ mt: 5, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2 }}>
         <Box sx={{ mb: 2, px: isSmall ? 1 : 3.6 }}>
           <Typography variant="h6" gutterBottom fontWeight={"bold"} textAlign={isSmall ? "center" : "left"}>
-            Leverage our Expert Community: Hire Seasoned Executives
+          Access C-Suite expertise without full-time commitment
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" textAlign={isSmall ? "center" : "left"}>
-            We have the right fit of global experts to complement your current team and solve your specific problems.
+          Connect with the best growth experts, growth associates, and AI technologies experts to grow and scale your startups at a fraction of the cost.
           </Typography>
         </Box>
 
@@ -193,12 +195,15 @@ const ExpertCarousel = ({ experts }) => {
         >
           {/* Wrap the first two buttons together */}
           <Box sx={{ display: "flex", flexDirection: isSmall ? "row" : "row", gap: isSmall ? 1 : 2, }}>
-            <OnDemandButton variant="outlined" sx={{ mr: isSmall ? 0 : 1 }}>
-              On Demand Experts
+            <OnDemandButton variant="outlined" sx={{ mr: isSmall ? 0 : 0 }}>
+              Growth Experts
             </OnDemandButton>
 
             <FractionalHireButton variant="outlined" sx={{ mt: isSmall ? 0 : 0 }}>
-              Fractional Hire
+              Growth Associates
+            </FractionalHireButton>
+            <FractionalHireButton variant="outlined" sx={{ mt: isSmall ? 0 : 0 }}>
+              AI Experts
             </FractionalHireButton>
           </Box>
 

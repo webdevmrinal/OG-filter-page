@@ -35,7 +35,7 @@ const PaymentComponent = ({ onPaymentSuccess, onGoBack }) => {
         Payment Details
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Enter your card information to proceed with payment:
+      Enter your card details to complete the payment
       </Typography>
       <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
         <TextField

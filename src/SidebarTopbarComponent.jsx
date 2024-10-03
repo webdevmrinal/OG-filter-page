@@ -156,6 +156,7 @@ const SidebarTopbarComponent = ({ drawerOpen, setDrawerOpen }) => {
       text: "Experts on Demand",
       icon: <PersonIcon />,
       isMenu: true,
+      route: "/expertPage",
       subMenu: [
         { text: "Search Experts", route: "/expertpage" },
         { text: "My Followers", route: "/followers" },

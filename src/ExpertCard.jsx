@@ -38,9 +38,8 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
                         width="100%"
                         height="100%"
                         animation="wave"
-                        sx={{
-                            backgroundColor: "#e0e0e0", // Lighter skeleton color
-                        }}
+                        sx={{ bgcolor: "#e0e0e0" }}
+                        aria-hidden="true"
                     />
                 </CardMedia>
                 {context !== "carousel" && (
@@ -50,35 +49,40 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
                             height={30}
                             width="60%"
                             animation="wave"
-                            sx={{ backgroundColor: "#e0e0e0" }}
+                            sx={{ bgcolor: "#e0e0e0" }}
+                            aria-hidden="true"
                         />
                         <Skeleton
                             variant="text"
                             height={20}
                             width="40%"
-                            sx={{ mt: 0.5, backgroundColor: "#e0e0e0" }}
+                            sx={{ mt: 0.5, bgcolor: "#e0e0e0" }}
                             animation="wave"
+                            aria-hidden="true"
                         />
                         <Skeleton
                             variant="text"
                             height={20}
                             width="80%"
-                            sx={{ mt: 1, backgroundColor: "#e0e0e0" }}
+                            sx={{ mt: 1, bgcolor: "#e0e0e0" }}
                             animation="wave"
+                            aria-hidden="true"
                         />
                         <Skeleton
                             variant="rectangular"
                             height={30}
                             width="40%"
-                            sx={{ mt: 1, backgroundColor: "#e0e0e0" }}
+                            sx={{ mt: 1, bgcolor: "#e0e0e0" }}
                             animation="wave"
+                            aria-hidden="true"
                         />
                         <Skeleton
                             variant="rectangular"
                             height={20}
                             width="30%"
-                            sx={{ mt: 1, backgroundColor: "#e0e0e0" }}
+                            sx={{ mt: 1, bgcolor: "#e0e0e0" }}
                             animation="wave"
+                            aria-hidden="true"
                         />
                     </CardContent>
                 )}
@@ -146,7 +150,8 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
             </CardMedia>
 
             {context !== "carousel" && (
-                <CardContent sx={{ padding: '0px', mt: 1.5, ml: 1 }}>
+                <CardContent sx={{ padding: '0px', mt: 2, ml: 1, 
+                    height: {sm: '35%', xs: 'auto'} }}>
                     {/* Show about section and chips for other contexts */}
                     <Typography
                         variant="body2"

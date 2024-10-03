@@ -20,6 +20,7 @@ import {
   useMediaQuery,
   useTheme,
   Chip,
+  Skeleton, // Import Skeleton
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SchoolIcon from "@mui/icons-material/School";
@@ -46,52 +47,37 @@ import {
 import Header from "./signup-login/Header";
 import { styled } from "@mui/system";
 
-// Shimmer Components
-const ShimmerWrapper = styled("div")({
-  overflow: "hidden",
-  position: "relative",
-  backgroundColor: "#f6f7f8",
-  borderRadius: 8,
-});
+// Removed Custom Shimmer Components
+// const ShimmerWrapper = styled("div")({
+//   overflow: "hidden",
+//   position: "relative",
+//   backgroundColor: "#f6f7f8",
+//   borderRadius: 8,
+// });
 
-const ShimmerEffect = styled("div")(({ theme }) => ({
-  width: "100%",
-  height: "100%",
-  animation: "shimmer 1.5s infinite linear",
-  // Updated gradient to be darker
-  background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #bdbdbd 50%, ${theme.palette.background.default} 100%)`,
-  backgroundSize: "200% 100%",
-  "@keyframes shimmer": {
-    "0%": {
-      backgroundPosition: "-100% 0",
-    },
-    "100%": {
-      backgroundPosition: "100% 0",
-    },
-  },
-}));
+// const ShimmerEffect = styled("div")(({ theme }) => ({
+//   width: "100%",
+//   height: "100%",
+//   animation: "shimmer 1.5s infinite linear",
+//   background: `linear-gradient(to right, ${theme.palette.background.default} 0%, #bdbdbd 50%, ${theme.palette.background.default} 100%)`,
+//   backgroundSize: "200% 100%",
+//   "@keyframes shimmer": {
+//     "0%": {
+//       backgroundPosition: "-100% 0",
+//     },
+//     "100%": {
+//       backgroundPosition: "100% 0",
+//     },
+//   },
+// }));
 
-const Shimmer = ({ width = "100%", height = 100, borderRadius = 8, sx = {} }) => (
-  <ShimmerWrapper style={{ width, height, borderRadius }} sx={sx}>
-    <ShimmerEffect />
-  </ShimmerWrapper>
-);
+// const Shimmer = ({ width = "100%", height = 100, borderRadius = 8, sx = {} }) => (
+//   <ShimmerWrapper style={{ width, height, borderRadius }} sx={sx}>
+//     <ShimmerEffect />
+//   </ShimmerWrapper>
+// );
 
-// New Shimmer Overlay for GradientBox
-const ShimmerOverlay = styled("div")({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  borderRadius: 8,
-  overflow: "hidden",
-  backgroundColor: "#f6f7f8",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  padding: "16px",
-});
+// Removed ShimmerOverlay as it's no longer needed
 
 const SkillsCard = ({ skills, isLoading }) => {
   const skillsArray =
@@ -105,12 +91,12 @@ const SkillsCard = ({ skills, isLoading }) => {
         sx={{ mb: 3, boxShadow: "0 8px 16px rgba(0,0,0,0.2)", borderRadius: 2 }}
       >
         <CardContent>
-          <Shimmer width="30%" height={24} sx={{ mb: 2 }} />
+          <Skeleton variant="text" width="30%" height={24} sx={{ mb: 2 , borderRadius: 1}} aria-hidden="true" />
           <Divider sx={{ mb: 2 }} />
           <Grid container spacing={2}>
             {Array.from(new Array(5)).map((_, index) => (
               <Grid item key={index}>
-                <Shimmer width={60} height={32} borderRadius={16} />
+                <Skeleton variant="circular" width={32} height={32} aria-hidden="true" />
               </Grid>
             ))}
           </Grid>
@@ -231,15 +217,29 @@ const ProfilePage = () => {
         <Box bgcolor={"#fff"} borderRadius={1.5} overflow={"hidden"}>
           <GradientBox position={"relative"}>
             {isLoading && (
-              <ShimmerOverlay>
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: 1,
+                  backgroundColor: "rgba(246, 247, 248, 1.0)",
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "16px",
+                }}
+                aria-hidden="true"
+              >
                 {/* Shimmer for Avatar */}
-                <Shimmer width={80} height={80} borderRadius="50%" />
+                <Skeleton variant="circular" width={80} height={80} aria-hidden="true" />
                 {/* Shimmer for Name and Experience */}
                 <Box ml={2} mb={1} sx={{ width: "60%" }}>
-                  <Shimmer width="40%" height={24} sx={{ mb: 1 }} />
-                  <Shimmer width="30%" height={20} />
+                  <Skeleton variant="text" width="40%" height={24} sx={{ mb: 1, borderRadius: 1, }} aria-hidden="true" />
+                  <Skeleton variant="text" width="30%" height={20} sx={{borderRadius: 1,}} aria-hidden="true" />
                 </Box>
-              </ShimmerOverlay>
+              </Box>
             )}
             <GradientContent>
               {isLoading ? null : (
@@ -277,8 +277,8 @@ const ProfilePage = () => {
               {!isOutsideLayout && (
                 isLoading ? (
                   <Box display="flex" gap={1}>
-                    <Shimmer width={120} height={36} borderRadius={18} />
-                    <Shimmer width={120} height={36} borderRadius={18} />
+                    <Skeleton variant="rectangular" width={120} height={36} sx={{borderRadius: 1,}} borderRadius={18} aria-hidden="true" />
+                    <Skeleton variant="rectangular" width={120} height={36} sx={{borderRadius: 1,}} borderRadius={18} aria-hidden="true" />
                   </Box>
                 ) : (
                   <>
@@ -311,7 +311,7 @@ const ProfilePage = () => {
                 )
               )}
               {isLoading ? (
-                <Shimmer width={160} height={36} borderRadius={18} />
+                <Skeleton variant="rectangular" width={160} height={36} sx={{borderRadius: 1,}} borderRadius={18} aria-hidden="true" />
               ) : (
                 <StyledButton
                   startIcon={<EventNoteIcon />}
@@ -334,7 +334,7 @@ const ProfilePage = () => {
           <AccordionDetails>
             {isLoading ? (
               <Box>
-                <Shimmer width="100%" height={200} />
+                <Skeleton variant="rectangular" width="100%" height={200} aria-hidden="true" />
               </Box>
             ) : (
               <SelectTime
@@ -367,10 +367,10 @@ const ProfilePage = () => {
                   Array.from(new Array(6)).map((_, index) => (
                     <ListItem key={index}>
                       <ListItemIcon>
-                        <Shimmer width={24} height={24} borderRadius={12} />
+                        <Skeleton variant="circular" width={24} height={24} aria-hidden="true" />
                       </ListItemIcon>
                       <ListItemText>
-                        <Shimmer width="80%" height={20} />
+                        <Skeleton variant="text" width="80%" height={20} aria-hidden="true" />
                       </ListItemText>
                     </ListItem>
                   ))
@@ -444,7 +444,7 @@ const ProfilePage = () => {
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     {isLoading ? (
-                      <Shimmer width="40%" height={20} />
+                      <Skeleton variant="text" width="40%" height={20} aria-hidden="true" />
                     ) : (
                       <Typography sx={{ minHeight: "26.3px" }}>
                         {item.title}
@@ -453,7 +453,7 @@ const ProfilePage = () => {
                   </AccordionSummary>
                   <AccordionDetails>
                     {isLoading ? (
-                      <Shimmer width="80%" height={16} />
+                      <Skeleton variant="text" width="80%" height={16} aria-hidden="true" />
                     ) : (
                       <Typography
                         sx={{ whiteSpace: "pre-line" }}

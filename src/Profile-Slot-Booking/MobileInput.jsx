@@ -46,10 +46,10 @@ const MobileNumberInput = ({ onFormSubmit, onGoBack }) => {
   return (
     <Paper elevation={3} sx={{ p: 3, mt: 3, borderRadius: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Create an account, or log in
+      Create an account or log in by entering your mobile number. 
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Start by entering your mobile number. We'll send you a 4-digit code to verify:
+      We’ll send a 4-digit verification code.
       </Typography>
       <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
         <TextField
@@ -88,8 +88,8 @@ const MobileNumberInput = ({ onFormSubmit, onGoBack }) => {
             Why a mobile number?
           </Typography>
           <Typography variant="body1" gutterBottom>
-            It's less complicated than remembering an email and password, and to verify that
-            you're a real person.
+            It’s simpler than using an email and password and ensures you’re a real person.
+
           </Typography>
         </Box>
         <Box>

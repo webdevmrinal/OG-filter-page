@@ -1,3 +1,4 @@
+// Projects.jsx
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -22,6 +23,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { darken } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles'; // Import useTheme
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,6 +42,7 @@ function TabPanel(props) {
 }
 
 const Projects = () => {
+  const theme = useTheme(); // Access the theme
   const [tabIndex, setTabIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuOpenProjectId, setMenuOpenProjectId] = useState(null);
@@ -50,7 +53,7 @@ const Projects = () => {
 
   // Simulate data fetching with a timeout
   useEffect(() => {
-    // Simulate a 2-second loading time
+    // Simulate a 300ms loading time
     const timer = setTimeout(() => {
       setLoading(false);
     }, 300);
@@ -129,14 +132,21 @@ const Projects = () => {
                 p: 2,
                 boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
                 position: 'relative',
+                borderRadius: 1, // Added borderRadius
               }}
             >
-              <Skeleton variant="text" height={30} width="60%" />
-              <Skeleton variant="text" height={20} width="40%" sx={{ mt: 1 }} />
-              <Skeleton variant="rectangular" height={80} sx={{ mt: 2 }} />
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 'auto' }}>
-                <Skeleton variant="text" height={20} width="50%" />
-                <Skeleton variant="rectangular" height={24} width={60} />
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Skeleton variant="text" width="60%" height={30} aria-hidden="true" />
+                <Box sx={{ display: 'flex' }}>
+                  <Skeleton variant="circular" width={24} height={24} aria-hidden="true" />
+                  <Skeleton variant="circular" width={24} height={24} sx={{ ml: 1 }} aria-hidden="true" />
+                </Box>
+              </Box>
+              <Skeleton variant="text" width="80%" height={20} sx={{ mt: 1 }} aria-hidden="true" />
+              <Skeleton variant="rectangular" width="100%" height={60} sx={{ mt: 1 }} aria-hidden="true" />
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 'auto', alignItems: 'center' }}>
+                <Skeleton variant="text" width="40%" height={20} aria-hidden="true" />
+                <Skeleton variant="rectangular" width={80} height={24} aria-hidden="true" />
               </Box>
             </Card>
           ))}
@@ -159,12 +169,14 @@ const Projects = () => {
               pl: 2, 
               boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
               position: 'relative',
+              borderRadius: 1, // Ensuring consistent borderRadius
               "&:hover": {
                 backgroundColor: "#0000000a",
                 boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
                 transform: "translateY(-2px)",
                 borderRadius: 2,
               },
+              cursor: 'pointer',
             }}
             onClick={handleCardClick}
           >
@@ -241,48 +253,224 @@ const Projects = () => {
           </Card>
         ))}
       </Box>
+    )
+    };
+
+    // Function to render tabs or skeletons
+    const renderTabs = () => {
+      if (loading) {
+        // Display skeletons for tabs while loading
+        return (
+          <Box sx={{ display: 'flex', gap: 2, ml: 2 }}>
+            <Skeleton
+              variant="rectangular"
+              width={80}
+              height={32}
+              animation="wave"
+              sx={{
+                borderRadius: 1,
+                backgroundColor: theme.palette.background.default,
+              }}
+            />
+            <Skeleton
+              variant="rectangular"
+              width={100}
+              height={32}
+              animation="wave"
+              sx={{
+                borderRadius: 1,
+                backgroundColor: theme.palette.background.default,
+              }}
+            />
+            <Skeleton
+              variant="rectangular"
+              width={90}
+              height={32}
+              animation="wave"
+              sx={{
+                borderRadius: 1,
+                backgroundColor: theme.palette.background.default,
+              }}
+            />
+          </Box>
+        );
+      }
+
+      // Display actual Tabs when not loading
+      return (
+        <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
+          <Tab label="My Projects" id="tab-0" aria-controls="tabpanel-0" sx={{ fontSize: { xs: '0.78rem', sm: 'inherit' } }} />
+          <Tab label="Completed" id="tab-1" aria-controls="tabpanel-1" sx={{ fontSize: { xs: '0.78rem', sm: 'inherit' } }} />
+          <Tab label="On-Going" id="tab-2" aria-controls="tabpanel-2" sx={{ fontSize: { xs: '0.78rem', sm: 'inherit' } }} />
+        </Tabs>
+      );
+    };
+
+    // Function to render headers or skeletons within TabPanels
+    const renderTabHeaders = (headerText) => {
+      if (loading) {
+        return (
+          <Skeleton
+            variant="text"
+            width="30%"
+            height={30}
+            animation="wave"
+            sx={{
+              backgroundColor: theme.palette.background.default,
+            }}
+            aria-hidden="true"
+          />
+        );
+      }
+
+      return (
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          {headerText}
+        </Typography>
+      );
+    };
+
+    return (
+      <Container sx={{ maxWidth: '1810px !important', px: 0, mx: 0 }}>
+        {!loading && (
+          <Typography variant="h5" sx={{ mt: 3 }}>
+            Projects
+          </Typography>
+        )}
+        {loading && (
+          <Skeleton
+            variant="text"
+            width="20%"
+            height={40}
+            animation="wave"
+            sx={{
+              mt: 1,
+              ml: 0,
+              backgroundColor: theme.palette.background.default,
+            }}
+            aria-hidden="true"
+          />
+        )}
+        <Divider sx={{ mb: 2 }} />
+        <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Paper elevation={3} sx={{ padding: { xs: 3, sm: 2 }, width: '100%' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {/* Render Tabs or Skeletons */}
+              {renderTabs()}
+
+              {/* Active Tab Panel */}
+              <TabPanel value={tabIndex} index={0}>
+                {loading ? (
+                  // Skeletons for headers and project cards
+                  <>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      {/* FAVOURITES Header Skeleton */}
+                      <Skeleton
+                        variant="text"
+                        width="30%"
+                        height={30}
+                        animation="wave"
+                        sx={{
+                          backgroundColor: theme.palette.background.default,
+                        }}
+                        aria-hidden="true"
+                      />
+                      <Divider />
+                      {renderProjects(projects.filter(project => project.favourite))}
+                    </Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+                      {/* OTHER Header Skeleton */}
+                      <Skeleton
+                        variant="text"
+                        width="30%"
+                        height={30}
+                        animation="wave"
+                        sx={{
+                          backgroundColor: theme.palette.background.default,
+                        }}
+                        aria-hidden="true"
+                      />
+                      <Divider />
+                      {renderProjects(projects.filter(project => !project.favourite))}
+                    </Box>
+                  </>
+                ) : (
+                  // Actual content when not loading
+                  <>
+                    {projects.some(project => project.favourite) && (
+                      <>
+                        {renderTabHeaders("FAVOURITES")}
+                        <Divider sx={{ mb: 2 }} />
+                        {renderProjects(projects.filter(project => project.favourite))}
+                      </>
+                    )}
+
+                    <Box sx={{ mt: projects.some(project => project.favourite) ? 4 : 0 }}>
+                      {renderTabHeaders("OTHER")}
+                      <Divider sx={{ mb: 2 }} />
+                      {renderProjects(projects.filter(project => !project.favourite))}
+                    </Box>
+                  </>
+                )}
+              </TabPanel>
+
+              {/* Completed Tab Panel */}
+              <TabPanel value={tabIndex} index={1}>
+                {loading ? (
+                  // Skeletons for headers and project cards
+                  <>
+                    {/* Completed Header Skeleton */}
+                    <Skeleton
+                      variant="text"
+                      width="30%"
+                      height={30}
+                      animation="wave"
+                      sx={{
+                        mb: 2,
+                        backgroundColor: theme.palette.background.default,
+                      }}
+                      aria-hidden="true"
+                    />
+                    <Divider />
+                    {renderProjects(projects)} {/* Assuming Completed projects are similar */}
+                  </>
+                ) : (
+                  // Actual content when not loading
+                  <Typography variant="body1">Completed Projects will be displayed here.</Typography>
+                )}
+              </TabPanel>
+
+              {/* Templates Tab Panel */}
+              <TabPanel value={tabIndex} index={2}>
+                {loading ? (
+                  // Skeletons for headers and project cards
+                  <>
+                    {/* Templates Header Skeleton */}
+                    <Skeleton
+                      variant="text"
+                      width="30%"
+                      height={30}
+                      animation="wave"
+                      sx={{
+                        mb: 2,
+                        backgroundColor: theme.palette.background.default,
+                      }}
+                      aria-hidden="true"
+                    />
+                    <Divider />
+                    {renderProjects(projects)} {/* Assuming Templates projects are similar */}
+                  </>
+                ) : (
+                  // Actual content when not loading
+                  <Typography variant="body1">Templates will be displayed here.</Typography>
+                )}
+              </TabPanel>
+            </Box>
+          </Paper>
+        </Box>
+      </Container>
     );
   };
 
-  return (
-    <Container sx={{ maxWidth: '1810px !important', px: 0, mx: 0 }}>
-      <Typography variant="h5" sx={{ mt: 3 }}>
-        Projects
-      </Typography>
-      <Divider sx={{ mb: 2 }} />
-      <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Paper elevation={3} sx={{ padding: { xs: 3, sm: 2 }, width: '100%', }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Tabs value={tabIndex} onChange={handleTabChange} sx={{ ml: 2 }}>
-              <Tab label="Active" id="tab-0" aria-controls="tabpanel-0" sx={{ fontSize: { xs: '0.78rem', sm: 'inherit' } }} />
-              <Tab label="Completed" id="tab-1" aria-controls="tabpanel-1" sx={{ fontSize: { xs: '0.78rem', sm: 'inherit' } }} />
-              <Tab label="Templates" id="tab-2" aria-controls="tabpanel-2" sx={{ fontSize: { xs: '0.78rem', sm: 'inherit' } }} />
-            </Tabs>
-
-            <TabPanel value={tabIndex} index={0}>
-              {projects.some(project => project.favourite) && (
-                <>
-                  <Typography variant="h6" sx={{ mb: 2 }}>
-                    FAVOURITES
-                  </Typography>
-                  <Divider sx={{ mb: 2 }} />
-                  {renderProjects(projects.filter(project => project.favourite))}
-                </>
-              )}
-
-              <Typography variant="h6" sx={{ mt: projects.some(project => project.favourite) ? 4 : 0, mb: 2 }}>
-                OTHER
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-              {renderProjects(projects.filter(project => !project.favourite))}
-            </TabPanel>
-
-            {/* Repeat TabPanel for Completed and Templates tabs as needed */}
-          </Box>
-        </Paper>
-      </Box>
-    </Container>
-  );
-};
-
-export default Projects;
+  export default Projects;

@@ -75,7 +75,7 @@ export const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: '8px',
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(0.5), // Reduce padding
-    fontSize: "0.6rem", // Smaller font size for text in buttons
+    fontSize: "0.5rem", // Smaller font size for text in buttons
     minWidth: '64px', // Minimum width to ensure tap target size
   },
 }));
