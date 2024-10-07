@@ -11,7 +11,9 @@ import {
   Divider,
   ListItem,
   ListItemText,
-  List
+  List,
+  TextField,
+  InputAdornment
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles'; // Import useTheme hook
 import { useLocation, useNavigate } from "react-router-dom";
@@ -102,7 +104,7 @@ const Banner = () => {
             boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
           }}
         >
-          Connect with a Growth Expert
+          Book a Call with Our Team
         </Button>
       </Box>
 
@@ -214,7 +216,7 @@ const GrowthBenefitsCard = () => (
     >
       <Box sx={{ textAlign: "center"}}>
     <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ mb: 3 }}>
-      Growth Experts and Associates bring the following benefits to drive your AI startup’s growth
+    Why Growth Experts and Associates for your AI startup’s growth?
     </Typography>
     </Box>
       <Grid container spacing={10}>
@@ -260,6 +262,67 @@ const GrowthBenefitsCard = () => (
     </Card>
 
 );
+const BannerSection = () => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        mt: 5,
+        p: 5,
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        borderRadius: 2,
+        background: 'linear-gradient(to bottom, #2c489b, #2a468d)',
+        color: '#ffffff',
+      }}
+    >
+      <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+        Skip the trial-and-error. Hire an Expert.
+      </Typography>
+      <Typography variant="Subtitle1" sx={{ mb: 4 }}>
+        Meet 1-on-1 with Global Industry Experts and Hire them for Solutions that’s 100% tailored for your Startup.
+      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <TextField
+          variant="outlined"
+          placeholder="Find an expert in a specific domain"
+          sx={{
+            bgcolor: '#fff',
+            borderRadius: '50px',
+            width: { xs: '100%', sm: '500px' },
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '50px',
+              paddingRight: 0,
+            },
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end" sx={{height: 'auto', mr: 1,}}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    right: 1,
+                    bgcolor: '#f9bb02',
+                    color: '#000',
+                    height: '100%',
+                    fontWeight: 'bold',
+                    borderRadius: '50px',
+                    '&:hover': { bgcolor: '#d6a302' },
+                  }}
+                >
+                  Search
+                </Button>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+    </Box>
+  );
+};
 
 const AllExperts = () => {
   const theme = useTheme(); // Get the theme using the useTheme hook
@@ -306,8 +369,9 @@ const AllExperts = () => {
           </Grid>
         </Grid>
       </MainCard>
-      <HowItWorks />
+      {/* <HowItWorks /> */}
       <GrowthBenefitsCard />
+      <BannerSection />
 
       {/* Top Experts Card */}
       <Card sx={{ mt: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>

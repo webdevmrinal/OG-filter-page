@@ -209,7 +209,7 @@ const ExpertCarousel = ({ experts }) => {
 
           {/* Third button below the first two on small screens */}
           <JoinCommunityButton variant="contained" sx={{ mt: isSmall ? 2 : 0 }}>
-            Join Our Expert Community
+          Not sure where to start? Our team can help you.
           </JoinCommunityButton>
         </Box>
 
@@ -270,7 +270,7 @@ const ExpertCarousel = ({ experts }) => {
       </Box>
 
       {/* How it works section */}
-      <HowItWorks />
+      {/* <HowItWorks /> */}
 
       {/* Fashion Experts section */}
       <Box sx={{ mt: 6, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 3, borderRadius: 2, pt: "18px" }}>

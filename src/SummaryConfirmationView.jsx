@@ -75,9 +75,23 @@ const SummaryConfirmationView = ({
             color="success"
           />
           <Typography variant={isMobile ? 'h6' : 'h6'}>
-            You have successfully booked a session with {professorName}
+            Your Session is Booked
           </Typography>
         </StyledConfirmationBox>
+      )}
+      {view === 'summary' && (
+        <Box
+          sx={{
+            flexDirection: isMobile ? 'column' : 'row', // Stack icon and text vertically on mobile
+            alignItems: isMobile ? 'center' : 'center', // Center items on mobile
+            textAlign: isMobile ? 'center' : 'left', // Center text on mobile
+            gap: isMobile ? 1 : 2, // Add spacing between icon and text on mobile
+          }}
+        >
+          <Typography variant={isMobile ? 'h6' : 'h6'} fontWeight={'bold'}>
+            Confirm Your Time Slot
+          </Typography>
+        </Box>
       )}
       
       {/* Avatar and Professor Name */}
@@ -177,17 +191,6 @@ const SummaryConfirmationView = ({
           </DurationButton>
         </ToggleButtonGroup>
       </Box>
-
-      {/* Gift Message */}
-      {isGift && (
-        <Typography
-          variant="subtitle1"
-          gutterBottom
-          sx={{ fontWeight: 'bold', color: 'green', textAlign: isMobile ? 'center' : 'left' }}
-        >
-          This is a gift.
-        </Typography>
-      )}
 
       {/* Price and Rating with Action Buttons */}
       <Box

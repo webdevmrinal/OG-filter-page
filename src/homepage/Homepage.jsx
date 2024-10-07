@@ -349,7 +349,7 @@ const BannerCarousel = () => {
           <ContentBox>
             <BannerText variant="h4" fontWeight={'bold'}>Want to Connect with Experts Who Understand Your AI Startup’s Unique Needs?</BannerText>
             <BannerText variant="h6" mt={3}>Fuel your AI startup’s success by partnering with industry leaders who offer customized insights and specialized expertise, ensuring you reach your unique goals precisely when you need it most.</BannerText>
-            <BannerButton variant="contained">Book Your Free Consultation</BannerButton>
+            <BannerButton variant="contained">Book a discovery call</BannerButton>
             <BannerText variant="subtitle2" mt={1.5}>Our Team Will Help Your startUp Grow</BannerText>
           </ContentBox>
         </BannerContainer>

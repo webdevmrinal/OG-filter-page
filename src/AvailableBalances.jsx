@@ -26,14 +26,14 @@ const AvailableBalances = () => {
           }}
         >
           <Typography variant="subtitle1" fontWeight="bold">
-            Your Balance
+            Your Available Balance
           </Typography>
           <Typography
             variant="body2"
             color="textSecondary"
             sx={{ marginTop: 1 }}
           >
-            From canceled orders
+            Balance from Canceled Orders
           </Typography>
           <Typography variant="h4" sx={{ marginTop: 1 }}>
             ₹0.00
@@ -49,14 +49,14 @@ const AvailableBalances = () => {
           }}
         >
           <Typography variant="subtitle1" fontWeight="bold">
-            Your Credits
+          Your Available Credits
           </Typography>
           <Typography
             variant="body2"
             color="textSecondary"
             sx={{ marginTop: 1 }}
           >
-            Credits
+            Use your credits to save more!
           </Typography>
           <Typography variant="h4" sx={{ marginTop: 1 }}>
             ₹0.00
@@ -79,14 +79,14 @@ const AvailableBalances = () => {
           }}
         >
           <Typography variant="subtitle1" fontWeight="bold">
-            Like to earn some credits?
+          Earn Rewards!
           </Typography>
           <Typography
             variant="body2"
             color="textSecondary"
             sx={{ marginTop: 1 }}
           >
-            Refer people you know and everyone benefits!
+            Refer friends and enjoy benefits together!
           </Typography>
           <Button
             variant="contained"
