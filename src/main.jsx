@@ -82,7 +82,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="admin" element={<Admin />} />
         </Route>
         <Route path="homepage" element={<Homepage />} />
-        <Route path="allexperts" element={<AllExperts />} />
+        <Route path="allExperts" element={<AllExperts />} />
         <Route path="all-courses" element={<AllCourses />} />
         <Route path="get-started" element={<App2 />} />
           <Route path="login" element={<LoginPage />} />

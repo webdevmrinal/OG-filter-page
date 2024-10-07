@@ -294,6 +294,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
   textAlign: 'left',
   padding: theme.spacing(3),
   color: 'white',
+  overflowX: 'hidden',
   [theme.breakpoints.down('sm')]: { // Smaller font on small screens
     fontSize: '0.8rem',
     padding: theme.spacing(2),
@@ -314,6 +315,7 @@ const BannerButton = styled(Button)(({ theme }) => ({
   backgroundColor: '#f9bb02',
   color: 'black',
   fontWeight: 600,
+  textTransform: 'none',
   "&:hover": {
     boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
     backgroundColor: '#f9bb02',
@@ -347,10 +349,10 @@ const BannerCarousel = () => {
       {images.map((image, index) => (
         <BannerContainer key={index} bgImage={image}>
           <ContentBox>
-            <BannerText variant="h4" fontWeight={'bold'}>Want to Connect with Experts Who Understand Your AI Startup’s Unique Needs?</BannerText>
+            <BannerText variant="h4" fontWeight={'bold'}>Want to connect with experts who understand your AI startup’s unique needs?</BannerText>
             <BannerText variant="h6" mt={3}>Fuel your AI startup’s success by partnering with industry leaders who offer customized insights and specialized expertise, ensuring you reach your unique goals precisely when you need it most.</BannerText>
             <BannerButton variant="contained">Book a discovery call</BannerButton>
-            <BannerText variant="subtitle2" mt={1.5}>Our Team Will Help Your startUp Grow</BannerText>
+            <BannerText variant="subtitle2" mt={1.5}>Connect with our team to help you find the right expert</BannerText>
           </ContentBox>
         </BannerContainer>
       ))}
@@ -404,7 +406,7 @@ function Homepage() {
   }, [fetchExperts]);
 
   return (
-    <Box sx={{px: {xs: 1, sm: 1}}}>
+    <Box sx={{px: {xs: 1, sm: 1}, overflowX: 'hidden'}}>
       <Header />
       <BannerCarousel />
       {!loading && (

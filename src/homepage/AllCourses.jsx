@@ -55,7 +55,7 @@ const courses = [
     },
     {
         title: 'StartUp Fundamentals',
-        category: 'LeaderShip',
+        category: 'Leadership',
         duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
         imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb__90082e05-8020-4bd8-8246-af0ef0853187.jpeg',
@@ -67,7 +67,7 @@ const courses = [
     },
     {
         title: 'Make You Pitch Investor Ready',
-        category: 'LeaderShip',
+        category: 'Leadership',
         duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
         imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_s2mypir.jpg',
@@ -91,7 +91,7 @@ const courses = [
     },
     {
         title: 'MVP Fundamentals',
-        category: 'LeaderShip',
+        category: 'Leadership',
         duration: '5 Weeks',
         description: 'A step-by-step guide to incorporating your company, including why you need...',
         imageUrl: 'https://academy.opengrowth.com/assets/images/courses/thumb_10HowtomeasurePMF.jpg',
@@ -446,7 +446,7 @@ const AllCourses = () => {
             scrollbarWidth: 'none', // Hide scrollbar for Firefox
             '&::-webkit-scrollbar': { display: 'none' }, // Hide scrollbar for Chrome, Safari, and Edge
           }}>
-                <Chip label="LeaderShip" sx={{ mr: 1 }} />
+                <Chip label="Leadership" sx={{ mr: 1 }} />
                 <Chip label="Product" sx={{ mr: 1 }} />
                 <Chip label="Marketing" sx={{ mr: 1 }} />
                 <Chip label="Strategy" sx={{ mr: 1 }} />

@@ -196,14 +196,14 @@ const ExpertCarousel = ({ experts }) => {
           {/* Wrap the first two buttons together */}
           <Box sx={{ display: "flex", flexDirection: isSmall ? "row" : "row", gap: isSmall ? 1 : 2, }}>
             <OnDemandButton variant="outlined" sx={{ mr: isSmall ? 0 : 0 }}>
-              Growth Experts
+              Growth experts
             </OnDemandButton>
 
             <FractionalHireButton variant="outlined" sx={{ mt: isSmall ? 0 : 0 }}>
-              Growth Associates
+              Growth associates
             </FractionalHireButton>
             <FractionalHireButton variant="outlined" sx={{ mt: isSmall ? 0 : 0 }}>
-              AI Experts
+              AI experts
             </FractionalHireButton>
           </Box>
 
@@ -253,10 +253,15 @@ const ExpertCarousel = ({ experts }) => {
           </Box>
           <Divider sx={{ mb: 2, width: "96%", ml: 3 }} />
         </Box>
-        <Box sx={{ position: "relative", px: 2, pt: 1 }}>
+        <Box sx={{ position: "relative", px: 2, pt: 1,overflowX: 'hidden' }}>
           <Slider ref={sliderRefFinancial} {...settings}>
             {experts.map((expert, index) => (
-              <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="carousel" />
+              <ExpertCard
+              expert={expert}
+              handleExpertClick={handleExpertClick}
+              context="carousel"
+              sx={{ width: '100%', maxWidth: '300px', height: 'auto' }}
+            />
             ))}
           </Slider>
         </Box>
@@ -423,13 +428,13 @@ const ExpertCarouselCategoryButtons = ({
           }}
         >
           <ViewAllButton onClick={onViewAll}>
-            View All Experts
+            View all experts
           </ViewAllButton>
         </Box>
       ) : (
         <Box sx={{ display: "flex", gap: 3, mx: 2,  }}>
           <ViewAllButton onClick={onViewAll} sx={{minWidth: '151px'}}>
-            View All Experts
+            View all experts
           </ViewAllButton>
           <NavigationButton onClick={onPrev}>
             <NavigateBeforeIcon />

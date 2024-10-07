@@ -10,16 +10,30 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import {
-  ArrowDropDown,
-  Menu as MenuIcon,
-} from "@mui/icons-material";
+import { useNavigate, useLocation } from "react-router-dom";
+import { ArrowDropDown, Menu as MenuIcon } from "@mui/icons-material";
 import OGLogo from "./assets/OG-Logo.svg";
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Define nav items for different pages
+  const navItemsDefault = [
+    { title: "Hire", items: ["Find Talent", "Post a Job", "Hiring Solutions"] },
+    { title: "Enable", items: ["Training Programs", "Certifications", "Resources"] },
+    { title: "Grow", items: ["Business Solutions", "Marketing Services", "Consulting"] },
+  ];
+
+  const navItemsModified = [
+    { title: "Experts" },
+    { title: "Resources", items: ["Courses", "Blogs"] },
+  ];
+
+  // Determine which nav items to use based on the current path
+  const isHomePageOrExpertOrCourse = ["/homepage", "/allExperts", "/all-courses"].includes(location.pathname);
+  const navItems = isHomePageOrExpertOrCourse ? navItemsModified : navItemsDefault;
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
@@ -27,12 +41,6 @@ const Header = () => {
     }
     setDrawerOpen(open);
   };
-
-  const navItems = [
-    { title: "Hire", items: ["Find Talent", "Post a Job", "Hiring Solutions"] },
-    { title: "Enable", items: ["Training Programs", "Certifications", "Resources"] },
-    { title: "Grow", items: ["Business Solutions", "Marketing Services", "Consulting"] },
-  ];
 
   return (
     <AppBar position="sticky" color="default" elevation={0}>
@@ -76,20 +84,43 @@ const Header = () => {
         </Link>
 
         <Box sx={{ display: { xs: "none", md: "block" } }}>
-          {navItems.map((item, index) => (
-            <NavMenuItem key={index} title={item.title} items={item.items} />
-          ))}
+          {navItems.map((item, index) =>
+            item.items ? (
+              <NavMenuItem key={index} title={item.title} items={item.items} />
+            ) : (
+              <Button
+                key={index}
+                color="primary"
+                onClick={() => navigate("/allExperts")}
+                sx={{
+                  marginRight: 3,
+                  fontWeight: "600",
+                  fontSize: "1em",
+                  textTransform: "capitalize",
+                  padding: "8px 15px",
+                  borderRadius: "40px",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.1)",
+                    borderRadius: "40px",
+                  },
+                }}
+                TouchRippleProps={{ style: { color: "transparent" } }}
+              >
+                {item.title}
+              </Button>
+            )
+          )}
           <Button
             sx={{
               marginRight: 3,
               fontWeight: "600",
               fontSize: "1em",
               textTransform: "capitalize",
-              padding: "8px 15px", // Add padding to make the button size uniform
-              borderRadius: "40px", // Make it circular
+              padding: "8px 15px",
+              borderRadius: "40px",
               "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
-                borderRadius: "40px", // Keep it circular on hover
+                backgroundColor: "rgba(0, 0, 0, 0.1)",
+                borderRadius: "40px",
               },
             }}
             color="inherit"
@@ -103,11 +134,11 @@ const Header = () => {
               fontWeight: "600",
               fontSize: "1em",
               textTransform: "capitalize",
-              padding: "8px 15px", // Add padding to make the button size uniform
-              borderRadius: "40px", // Make it circular
+              padding: "8px 15px",
+              borderRadius: "40px",
               "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
-                borderRadius: "40px", // Keep it circular on hover
+                backgroundColor: "rgba(0, 0, 0, 0.1)",
+                borderRadius: "40px",
               },
             }}
             color="inherit"
@@ -147,9 +178,32 @@ const Header = () => {
           onKeyDown={toggleDrawer(false)}
         >
           <Box sx={{ padding: "2.5em 1em", display: "flex", flexDirection: "column", gap: "1.5em" }}>
-            {navItems.map((item, index) => (
-              <NavMenuItem key={index} title={item.title} items={item.items} />
-            ))}
+            {navItems.map((item, index) =>
+              item.items ? (
+                <NavMenuItem key={index} title={item.title} items={item.items} />
+              ) : (
+                <Button
+                  key={index}
+                  color="primary"
+                  onClick={() => navigate("/all-experts")}
+                  sx={{
+                    marginRight: 3,
+                    fontWeight: "600",
+                    fontSize: "1em",
+                    textTransform: "capitalize",
+                    padding: "8px 15px",
+                    borderRadius: "40px",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)",
+                      borderRadius: "40px",
+                    },
+                  }}
+                  TouchRippleProps={{ style: { color: "transparent" } }}
+                >
+                  {item.title}
+                </Button>
+              )
+            )}
             <Button
               sx={{
                 marginRight: 3,
@@ -157,10 +211,10 @@ const Header = () => {
                 fontSize: "1em",
                 textTransform: "capitalize",
                 padding: "10px 15px",
-                borderRadius: "40px", // Make it circular
+                borderRadius: "40px",
                 "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
-                  borderRadius: "40px", // Keep it circular on hover
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                  borderRadius: "40px",
                 },
               }}
               color="inherit"
@@ -175,10 +229,10 @@ const Header = () => {
                 fontSize: "1em",
                 textTransform: "capitalize",
                 padding: "10px 15px",
-                borderRadius: "40px", // Make it circular
+                borderRadius: "40px",
                 "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
-                  borderRadius: "40px", // Keep it circular on hover
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                  borderRadius: "40px",
                 },
               }}
               color="inherit"
@@ -213,6 +267,7 @@ export default Header;
 
 const NavMenuItem = ({ title, items }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -234,11 +289,11 @@ const NavMenuItem = ({ title, items }) => {
           fontWeight: "600",
           fontSize: "1em",
           textTransform: "capitalize",
-          padding: "8px 15px", // Add padding to make the button size uniform
-          borderRadius: "40px", // Make it circular
+          padding: "8px 15px",
+          borderRadius: "40px",
           "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.1)", // Circular background on hover
-            borderRadius: "40px", // Keep it circular on hover
+            backgroundColor: "rgba(0, 0, 0, 0.1)",
+            borderRadius: "40px",
           },
         }}
         TouchRippleProps={{ style: { color: "transparent" } }}
@@ -252,7 +307,17 @@ const NavMenuItem = ({ title, items }) => {
         onClose={handleClose}
       >
         {items.map((item, index) => (
-          <MenuItem key={index} onClick={handleClose}>
+          <MenuItem
+            key={index}
+            onClick={() => {
+              handleClose();
+              if (item === "Courses") {
+                navigate("/all-courses");
+              } else if (item === "Blogs") {
+                navigate("/blogs");
+              }
+            }}
+          >
             {item}
           </MenuItem>
         ))}
