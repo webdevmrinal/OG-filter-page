@@ -1,3 +1,4 @@
+// Header.jsx
 import React, { useState } from "react";
 import {
   AppBar,
@@ -5,7 +6,7 @@ import {
   Button,
   Box,
   IconButton,
-  Link,
+  Link as MuiLink,
   Drawer,
   Menu,
   MenuItem,
@@ -36,7 +37,10 @@ const Header = () => {
   const navItems = isHomePageOrExpertOrCourse ? navItemsModified : navItemsDefault;
 
   const toggleDrawer = (open) => (event) => {
-    if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
       return;
     }
     setDrawerOpen(open);
@@ -53,6 +57,7 @@ const Header = () => {
           boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
         }}
       >
+        {/* Mobile Menu Icon */}
         <IconButton
           edge="start"
           color="inherit"
@@ -62,28 +67,27 @@ const Header = () => {
         >
           <MenuIcon />
         </IconButton>
-        <Link
-          href="#"
-          flexGrow={0}
-          py={1}
+
+        {/* Logo */}
+        <MuiLink
+          component="button"
+          onClick={() => navigate("/homepage")}
           sx={{
-            display: { xs: "flex", md: "block" },
-            justifyContent: { xs: "center" },
-            alignItems: { xs: "center" },
-            width: { xs: "100%", md: "fit-content" },
+            display: "flex",
+            alignItems: "center",
+            textDecoration: "none",
+            color: "inherit",
           }}
         >
           <img
             src={OGLogo}
             alt="OpenGrowth Logo"
             style={{ height: "3.5em" }}
-            onClick={() => {
-              navigate("/homepage");
-            }}
           />
-        </Link>
+        </MuiLink>
 
-        <Box sx={{ display: { xs: "none", md: "block" } }}>
+        {/* Desktop Navigation */}
+        <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
           {navItems.map((item, index) =>
             item.items ? (
               <NavMenuItem key={index} title={item.title} items={item.items} />
@@ -91,7 +95,11 @@ const Header = () => {
               <Button
                 key={index}
                 color="primary"
-                onClick={() => navigate("/allExperts")}
+                onClick={() => {
+                  if (item.title === "Experts") {
+                    navigate("/allExperts");
+                  }
+                }}
                 sx={{
                   marginRight: 3,
                   fontWeight: "600",
@@ -104,7 +112,6 @@ const Header = () => {
                     borderRadius: "40px",
                   },
                 }}
-                TouchRippleProps={{ style: { color: "transparent" } }}
               >
                 {item.title}
               </Button>
@@ -124,7 +131,7 @@ const Header = () => {
               },
             }}
             color="inherit"
-            TouchRippleProps={{ style: { color: "transparent" } }}
+            onClick={() => navigate("/about-us")}
           >
             About Us
           </Button>
@@ -142,7 +149,7 @@ const Header = () => {
               },
             }}
             color="inherit"
-            TouchRippleProps={{ style: { color: "transparent" } }}
+            onClick={() => navigate("/contact")}
           >
             Contact
           </Button>
@@ -160,11 +167,12 @@ const Header = () => {
             sx={{ ml: 2, borderRadius: "2em" }}
             onClick={() => navigate("/get-started")}
           >
-            SignUp
+            Sign Up
           </Button>
         </Box>
       </Toolbar>
 
+      {/* Mobile Drawer */}
       <Drawer
         anchor="left"
         open={drawerOpen}
@@ -177,15 +185,26 @@ const Header = () => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          <Box sx={{ padding: "2.5em 1em", display: "flex", flexDirection: "column", gap: "1.5em" }}>
+          <Box
+            sx={{
+              padding: "2.5em 1em",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.5em",
+            }}
+          >
             {navItems.map((item, index) =>
               item.items ? (
-                <NavMenuItem key={index} title={item.title} items={item.items} />
+                <NavMenuItem key={index} title={item.title} items={item.items} isMobile />
               ) : (
                 <Button
                   key={index}
                   color="primary"
-                  onClick={() => navigate("/all-experts")}
+                  onClick={() => {
+                    if (item.title === "Experts") {
+                      navigate("/allExperts");
+                    }
+                  }}
                   sx={{
                     marginRight: 3,
                     fontWeight: "600",
@@ -198,7 +217,6 @@ const Header = () => {
                       borderRadius: "40px",
                     },
                   }}
-                  TouchRippleProps={{ style: { color: "transparent" } }}
                 >
                   {item.title}
                 </Button>
@@ -218,7 +236,7 @@ const Header = () => {
                 },
               }}
               color="inherit"
-              TouchRippleProps={{ style: { color: "transparent" } }}
+              onClick={() => navigate("/about-us")}
             >
               About Us
             </Button>
@@ -236,7 +254,7 @@ const Header = () => {
                 },
               }}
               color="inherit"
-              TouchRippleProps={{ style: { color: "transparent" } }}
+              onClick={() => navigate("/contact")}
             >
               Contact
             </Button>
@@ -254,7 +272,7 @@ const Header = () => {
               sx={{ borderRadius: "2em" }}
               onClick={() => navigate("/get-started")}
             >
-              SignUp
+              Sign Up
             </Button>
           </Box>
         </Box>
@@ -265,13 +283,15 @@ const Header = () => {
 
 export default Header;
 
-const NavMenuItem = ({ title, items }) => {
+const NavMenuItem = ({ title, items, isMobile }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (!isMobile) {
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleClose = () => {
@@ -282,8 +302,15 @@ const NavMenuItem = ({ title, items }) => {
     <>
       <Button
         color="primary"
-        onClick={handleClick}
-        endIcon={<ArrowDropDown />}
+        onClick={(event) => {
+          if (isMobile) {
+            // Handle navigation for mobile drawer
+            handleMenuItemClick(title, navigate);
+          } else {
+            handleClick(event);
+          }
+        }}
+        endIcon={!isMobile && <ArrowDropDown />}
         sx={{
           marginRight: 3,
           fontWeight: "600",
@@ -296,32 +323,72 @@ const NavMenuItem = ({ title, items }) => {
             borderRadius: "40px",
           },
         }}
-        TouchRippleProps={{ style: { color: "transparent" } }}
       >
         {title}
       </Button>
-      <Menu
-        sx={{ borderRadius: "2em" }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        {items.map((item, index) => (
-          <MenuItem
-            key={index}
-            onClick={() => {
-              handleClose();
-              if (item === "Courses") {
-                navigate("/all-courses");
-              } else if (item === "Blogs") {
-                navigate("/blogs");
-              }
-            }}
-          >
-            {item}
-          </MenuItem>
-        ))}
-      </Menu>
+      {!isMobile && (
+        <Menu
+          sx={{ borderRadius: "2em" }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          {items.map((item, index) => (
+            <MenuItem
+              key={index}
+              onClick={() => {
+                handleClose();
+                handleMenuItemClick(item, navigate);
+              }}
+            >
+              {item}
+            </MenuItem>
+          ))}
+        </Menu>
+      )}
     </>
   );
+};
+
+const handleMenuItemClick = (item, navigate) => {
+  switch (item) {
+    case "Experts":
+      navigate("/allExperts");
+      break;
+    case "Courses":
+      navigate("/all-courses");
+      break;
+    case "Blogs":
+      navigate("/blogs");
+      break;
+    case "Find Talent":
+      navigate("/find-talent");
+      break;
+    case "Post a Job":
+      navigate("/post-job");
+      break;
+    case "Hiring Solutions":
+      navigate("/hiring-solutions");
+      break;
+    case "Training Programs":
+      navigate("/training-programs");
+      break;
+    case "Certifications":
+      navigate("/certifications");
+      break;
+    case "Resources":
+      navigate("/resources");
+      break;
+    case "Business Solutions":
+      navigate("/business-solutions");
+      break;
+    case "Marketing Services":
+      navigate("/marketing-services");
+      break;
+    case "Consulting":
+      navigate("/consulting");
+      break;
+    default:
+      break;
+  }
 };
