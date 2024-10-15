@@ -92,11 +92,12 @@ const Testimonials = () => {
       }}
     >
       <Typography
-        variant="h6"
+      gutterBottom
+        variant="h5"
         fontWeight={'bold'}
-        sx={{ textAlign: 'center', fontSize: isSmall ? '1.2rem' : '1.5rem' }}
+        sx={{ textAlign: 'center', fontSize: isSmall ? '1.2rem' : '1.65rem' }}
       >
-        What our Clients Say
+        What our clients say
       </Typography>
       <Typography
         variant="subtitle1"

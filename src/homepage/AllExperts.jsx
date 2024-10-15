@@ -1,32 +1,40 @@
 // AllExperts.jsx
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useMemo } from 'react';
 import {
   Box,
   Typography,
   Card,
   Grid,
-  Avatar,
   Button,
   Chip,
   Divider,
   TextField,
   InputAdornment,
+  IconButton, // Import IconButton
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from '../signup-login/Header';
 import Footer from '../signup-login/Footer';
 import { ExpertCard } from '../ExpertCard';
-import { Handshake, TrendingUp } from '@mui/icons-material';
-import axios from 'axios'; // Import axios for data fetching
+import GrowthServiceCard from './GrowthServiceCard';
+import SearchIcon from '@mui/icons-material/Search'; // Importing Search Icon
+import ClearIcon from '@mui/icons-material/Clear'; // Import Clear Icon
 
-// Styled components
+// Import manual experts data
+import { manualExperts } from './ManualExperts'; // Adjust the path as necessary
+import GrowthBenefitsCard from './GrowthBenefitsCard';
+// or, if using JSON:
+// import manualExperts from '../data/manualexperts.json';
+
 const MainCard = styled(Card)(({ theme }) => ({
   boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
   borderRadius: "8px",
   overflow: "hidden",
   margin: 'auto',
-  padding: '0px',
+  padding: theme.spacing(4),
+  textAlign: 'center',
 }));
 
 const FeatureCard = styled(Card)(({ theme }) => ({
@@ -34,7 +42,7 @@ const FeatureCard = styled(Card)(({ theme }) => ({
   alignItems: 'center',
   textAlign: 'center',
   padding: theme.spacing(3),
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
   borderRadius: '8px',
   backgroundColor: '#ffffff',
   transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
@@ -50,7 +58,6 @@ const FeatureCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-// Banner component
 const Banner = () => {
   const theme = useTheme();
 
@@ -80,10 +87,16 @@ const Banner = () => {
           mb: { xs: 2, sm: 0 },
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', sm: '2.6rem' } }}
+        >
           Stop the guesswork—scale your AI startup with targeted expertise
         </Typography>
-        <Typography variant="h6" sx={{ mt: 3, mb: 3 }}>
+        <Typography
+          variant="h6"
+          sx={{ mt: 3, mb: 3 }}
+        >
           Connect, network, and collaborate with the best growth experts and associates to scale your AI startup’s growth.
         </Typography>
         <Button
@@ -119,280 +132,254 @@ const Banner = () => {
   );
 };
 
-const CardFeature = ({ IconComponent, title, subtitle }) => (
-  <FeatureCard>
-    <Avatar sx={{ bgcolor: '#f9bb02', width: 60, height: 60, marginRight: 2 }}>
-      <IconComponent fontSize="large" />
-    </Avatar>
-    <Box>
-      <Typography variant="h6" gutterBottom>{title}</Typography>
-      <Typography variant="subtitle1" color={'text.secondary'} gutterBottom>
-        {subtitle}
-      </Typography>
-    </Box>
-  </FeatureCard>
-);
-
-// Additional components like GrowthBenefitsCard and BannerSection
-const GrowthBenefitsCard = () => (
-  <Card
-    sx={{
-      mt: 5,
-      p: 5,
-      textAlign: 'left',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-      borderRadius: 2,
-      background: 'linear-gradient(to bottom, #2c489b, #2a468d)',
-      color: '#ffffff',
-    }}
-  >
-    <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ mb: 3 }}>
-        Why growth experts and associates for your AI startup’s growth?
-      </Typography>
-    </Box>
-    <Grid container spacing={10}>
-      <Grid item xs={12} md={6}>
-        <Box>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            Growth experts
-          </Typography>
-          <Box component="ul" sx={{ pl: 2 }}>
-            <Box component="li" sx={{ listStyleType: 'disc', pl: 0 }}>
-              <Typography variant="subtitle1" paragraph sx={{ display: 'inline', ml: 0 }}>
-                Bring a fresh perspective with expert-led growth, particularly <b>Growth Marketing</b>, which follows a process of using data gained through marketing campaigns and experimentation to drive growth.
-              </Typography>
-            </Box>
-            <Box component="li" sx={{ listStyleType: 'disc', pl: 0 }}>
-              <Typography variant="subtitle1" paragraph sx={{ display: 'inline', ml: 0 }}>
-                Leverage <b>Growth Selling</b>, a top-down sales growth model that brings Purposeful Connections, Thought Leadership Conversations, Coaching, Growth Network of fractional Experts to identify opportunities and test the growth hypothesis that can scale.
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Box>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            Growth associates
-          </Typography>
-          <Box component="ul" sx={{ pl: 2 }}>
-            <Box component="li" sx={{ listStyleType: 'disc', pl: 0 }}>
-              <Typography variant="subtitle1" paragraph sx={{ display: 'inline', ml: 0 }}>
-                Drive <b>user acquisition, engagement, and scaling</b> of various aspects of the business at a fraction of the cost of a full-time executive by letting a Growth Associate focus on business development using data-driven experimentation and strategic marketing.
-              </Typography>
-            </Box>
-            <Box component="li" sx={{ listStyleType: 'disc', pl: 0 }}>
-              <Typography variant="subtitle1" paragraph sx={{ display: 'inline', ml: 0 }}>
-                Benefit from <b>seamless collaboration</b> made possible by a Growth Associate working closely with various departments such as marketing, product, and sales, implementing growth strategies aimed at <b>expanding your customer base and increasing revenue</b>.
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-      </Grid>
-    </Grid>
-  </Card>
-);
-
-const BannerSection = () => {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        mt: 5,
-        p: 5,
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-        borderRadius: 2,
-        background: 'linear-gradient(to bottom, #2c489b, #2a468d)',
-        color: '#ffffff',
-      }}
-    >
-      <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
-        Skip the trial-and-error. Hire an expert.
-      </Typography>
-      <Typography variant="subtitle1" sx={{ mb: 4 }}>
-        Meet 1-on-1 with global industry experts and hire them for solutions that’s 100% tailored for your startup.
-      </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <TextField
-          variant="outlined"
-          placeholder="Find an expert in a specific domain"
-          sx={{
-            bgcolor: '#fff',
-            borderRadius: '50px',
-            width: { xs: '100%', sm: '500px' },
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '50px',
-              paddingRight: 0,
-            },
-          }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end" sx={{ height: 'auto', mr: 1 }}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    right: 1,
-                    bgcolor: '#f9bb02',
-                    color: '#000',
-                    height: '100%',
-                    fontWeight: 'bold',
-                    borderRadius: '50px',
-                    '&:hover': { bgcolor: '#d6a302' },
-                  }}
-                >
-                  Search
-                </Button>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
-    </Box>
-  );
-};
-
 const AllExperts = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const location = useLocation();
-  const passedExperts = location.state?.experts;
 
-  const [experts, setExperts] = useState(passedExperts || []);
+  // Initialize experts with manual experts data
+  const [experts, setExperts] = useState(manualExperts); // For JS import
+  // If using JSON:
+  // const [experts, setExperts] = useState(manualExperts);
+
   const [selectedExpert, setSelectedExpert] = useState(null);
+
+  // Manage selected category state
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  // Manage search query state
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Define chip labels with corresponding filter criteria
   const chipLabels = [
-    "Personal Branding",
-    "Entrepreneurship",
-    "Marketing",
-    "Mentorship",
-    "Demand Generation",
-    "Legal Solutions",
-    "Fundraising",
-    "Brand Development",
-    "HR Strategy",
-    "Business Consulting",
-    "Talent Acquisition",
+    { label: "All", filter: "All" },
+    { label: "Growth experts", filter: "Growth" },
+    { label: "AI experts", filter: "AI" },
+    { label: "Fractional experts", filter: "Fractional" },
   ];
 
-  // Fetch experts data if not available
-  useEffect(() => {
-    if (!passedExperts || passedExperts.length === 0) {
-      fetchExpertsData();
-    }
-  }, [passedExperts]);
-
-  const fetchExpertsData = async () => {
-    try {
-      const response = await axios.post(
-        "https://academy.opengrowth.com/api/get_all_mentors",
-        {
-          id: "akriti@opengrowth.com",
-          start: 0,
-          end: 16,
-          key: "0_all_mentors_0_to_10",
-        }
-      );
-      setExperts(response.data);
-    } catch (error) {
-      console.error("Error fetching experts:", error);
-    }
-  };
-
+  // Handle expert click
   const handleExpertClick = (expert) => {
     setSelectedExpert(expert);
+    // Optionally, navigate to expert's detail page
+    // navigate(`/expert/${expert.id}`, { state: { expert } });
   };
+
+  // Handle chip click
+  const handleChipClick = (label) => {
+    setSelectedCategory(label);
+  };
+
+  // Handle search input change
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  // Filter experts based on selected category and search query
+  const filteredExperts = useMemo(() => {
+    let filtered = [];
+
+    if (selectedCategory === "All") {
+      filtered = experts;
+    } else if (selectedCategory === "Growth experts") {
+      filtered = experts.filter((expert) =>
+        expert.industry.toLowerCase().includes("growth")
+      );
+    } else if (selectedCategory === "AI experts") {
+      filtered = experts.filter((expert) =>
+        expert.industry.toLowerCase().includes("ai")
+      );
+    } else if (selectedCategory === "Fractional experts") {
+      filtered = experts.filter((expert) =>
+        expert.category.toLowerCase().startsWith("fractional")
+      );
+    }
+
+    // Apply search filter
+    if (searchQuery.trim() !== "") {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((expert) =>
+        expert.name.toLowerCase().includes(query) ||
+        expert.about.toLowerCase().includes(query) ||
+        expert.industry.toLowerCase().includes(query) ||
+        expert.category.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
+  }, [experts, selectedCategory, searchQuery]);
 
   return (
     <Box sx={{ p: 1, pt: 0 }}>
       <Header />
       <Banner />
-      <MainCard sx={{ py: 4, mt: 5 }}>
-        <Typography variant="h5" gutterBottom fontWeight={'bold'} sx={{ textAlign: 'center', m: { xs: 2, sm: 0 } }}>
-          Tailored expert support to drive your AI startup’s growth
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2, textAlign: 'center', m: { xs: 2, sm: 0 } }}>
-          At OpenGrowth, our mission is to connect you with the world’s leading experts in Marketing, HR, Finance, Legal, and Branding—equipping your startup with the AI-driven insights needed to accelerate your growth journey.
-        </Typography>
-        <Grid container spacing={2} justifyContent="space-evenly">
-          <Grid item xs={12} sm={10} md={5.5} sx={{ margin: { xs: 2, sm: 0.5 } }}>
-            <CardFeature IconComponent={TrendingUp} title="Hire a Growth Expert" subtitle="Hire a growth expert to help you scale your AI startup without full-time commitment." />
-          </Grid>
-          <Grid item xs={12} sm={10} md={5.5} sx={{ paddingLeft: '0px !important', ml: { xs: 4, sm: 0 }, mr: { xs: 2, sm: 0.5 }, my: 0.5 }}>
-            <CardFeature IconComponent={Handshake} title="Hire a Growth Associate" subtitle="Hire a Growth Associate to help you with business development on a part-time basis." />
-          </Grid>
-        </Grid>
-      </MainCard>
-
-      {/* Other sections like GrowthBenefitsCard and BannerSection */}
-      <GrowthBenefitsCard />
-      <BannerSection />
-
-      {/* Top Experts Card */}
-      <Card sx={{ mt: 4, mb: 4, p: 3, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", borderRadius: "12px" }}>
-        <Typography variant="h5" fontWeight="bold" sx={{ mb: 1, ml: { sm: 4, xs: 0 }, textAlign: 'left' }}>
-          Top Experts
+      <Card
+        sx={{
+          mt: 4,
+          mb: 4,
+          p: 3,
+          boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+          borderRadius: "12px",
+        }}
+      >
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          sx={{ mb: 1, ml: { sm: 2, xs: 0 }, textAlign: 'left', fontSize:"1.65rem" }}
+        >
+          All Experts
         </Typography>
         <Divider sx={{ mb: 2, width: '98%', ml: { sm: 2, xs: 0 } }} />
-        <Box sx={{
-          mb: 2,
-          display: 'flex',
-          flexWrap: 'nowrap',
-          ml: { sm: 3, xs: 0 },
-          gap: 1,
-          overflowX: 'auto',
-          scrollbarWidth: 'none',
-          '&::-webkit-scrollbar': { display: 'none' },
-          [theme.breakpoints.down('sm')]: {
-            overflowX: 'auto',
-          },
-        }}>
-          {chipLabels.map((label, index) => (
-            <Chip
-              key={index}
-              label={label}
-              variant="contained"
-              sx={{
-                height: '35px',
-                width: '155px',
-                fontSize: '0.9rem',
-                borderRadius: '20px',
-                whiteSpace: 'nowrap',
-              }}
-            />
-          ))}
-        </Box>
-        {/* Displaying Experts inside the same card */}
-        <Grid
-          container
-          columnSpacing={2}
-          rowSpacing={1}
+
+        {/* Chips and Search Bar */}
+        <Box
           sx={{
-            placeItems: "center",
-            placeContent: "center",
-            mx: "auto",
-            py: "1.5em",
-            px: "8px",
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'stretch', sm: 'center' },
+            justifyContent: 'space-between',
+            mb: 2,
+            px: { sm: 2, xs: 0 },
           }}
         >
-          {experts?.map((expert, index) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              key={expert.id || index}
-              sx={{ px: "4px !important" }}
+          {/* Chips */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 1,
+            }}
+          >
+            {chipLabels.map((chip, index) => (
+              <Chip
+                key={index}
+                label={chip.label}
+                variant={selectedCategory === chip.label ? "filled" : "contained"}
+                color={selectedCategory === chip.label ? "primary" : "default"}
+                onClick={() => handleChipClick(chip.label)}
+                sx={{
+                  height: '35px',
+                  fontSize: '0.9rem',
+                  borderRadius: '20px',
+                  cursor: 'pointer',
+                }}
+              />
+            ))}
+          </Box>
+
+          {/* Updated Search Bar */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mt: { xs: 2, sm: 0 }, // Adds margin-top on small screens for spacing
+            }}
+          >
+            <TextField
+              variant="outlined"
+              placeholder="Find an expert in a specific domain"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              sx={{
+                bgcolor: '#fff',
+                borderRadius: '50px',
+                width: { xs: '100%', sm: '400px' },
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '50px',
+                  height: '2.1em', // Set the desired height here
+                  padding: '0 14px', // Adjust padding to control the inner spacing
+                },
+                '& .MuiInputBase-input': {
+                  padding: 0, // Remove default padding
+                  height: '100%', // Ensure the input takes the full height
+                  fontSize: '0.9rem', // Adjust font size as needed
+                },
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="action" />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  searchQuery && (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="clear search"
+                        onClick={() => setSearchQuery('')}
+                        edge="end"
+                        size="small"
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                ),
+              }}
+            />
+            <Button
+              variant="contained"
+              onClick={() => { /* Optional: Add any additional search functionality here */ }}
+              sx={{
+                ml: 1, // Adds space between TextField and Button
+                bgcolor: '#f9bb02',
+                color: '#000',
+                height: '2.4em',
+                fontWeight: 'bold',
+                borderRadius: '50px',
+                '&:hover': { bgcolor: '#d6a302' },
+                whiteSpace: 'nowrap', // Prevents text from wrapping
+              }}
             >
-              <ExpertCard expert={expert} handleExpertClick={handleExpertClick} context="allExperts" />
-            </Grid>
-          ))}
-        </Grid>
+              Search
+            </Button>
+          </Box>
+        </Box>
+
+        {/* Displaying Experts inside the same card */}
+        {filteredExperts.length > 0 ? (
+          <Grid
+            container
+            columnSpacing={2}
+            rowSpacing={1}
+            sx={{
+              placeItems: "center",
+              placeContent: "center",
+              mx: "auto",
+              ml: -1,
+              py: "1.5em",
+              px: "8px",
+            }}
+          >
+            {filteredExperts.map((expert, index) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                key={expert.id || index}
+                sx={{ px: "4px !important" }}
+              >
+                <ExpertCard
+                  expert={expert}
+                  handleExpertClick={handleExpertClick}
+                  context="allExperts"
+                />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography variant="h6" color="text.secondary" sx={{ textAlign: 'center', py: 4 }}>
+            No experts found matching your criteria.
+          </Typography>
+        )}
       </Card>
+      <GrowthServiceCard context={'allExperts'} />
+
+      {/* Existing GrowthBenefitsCard */}
+      <GrowthBenefitsCard />
+
       <Footer />
     </Box>
   );

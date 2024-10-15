@@ -193,12 +193,12 @@ const TrendingBlogs = ({ blogs }) => {
       >
         <Box sx={{ textAlign: isSmall ? "center" : "left" }}>
           <Typography
-            variant="h6"
+            variant="h5"
             gutterBottom
             fontWeight={"bold"}
-            sx={{ fontSize: isSmall ? "1.2rem" : "1.5rem" }}
+            sx={{ fontSize: isSmall ? "1.2rem" : "1.65rem" }}
           >
-            Trending blogs by our experts
+            Trending blogs by experts
           </Typography>
 
           <Typography
@@ -211,7 +211,7 @@ const TrendingBlogs = ({ blogs }) => {
         </Box>
 
         {!isSmall && (
-          <AllBlogsButton variant="contained">View All Blogs</AllBlogsButton>
+          <AllBlogsButton variant="contained">View all blogs</AllBlogsButton>
         )}
       </Box>
 

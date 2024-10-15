@@ -263,8 +263,8 @@ const Courses = ({ course }) => {
     <Box sx={{ my: 6, overflow: "hidden", px: 2.5, boxShadow: "0 4px 6px rgba(0,0,0,0.2)", py: 2.5, borderRadius: 2 }}>
       <Box sx={{ display: "flex", flexDirection: "column", mb: 2, px: 2 }}>
         <Box>
-          <Typography variant="h6" gutterBottom fontWeight={"bold"}>
-            Learn from our experts
+          <Typography variant="h5" gutterBottom fontWeight={"bold"} fontSize={'1.65rem'}>
+          Upskill from courses handpicked by our experts
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" gutterBottom>
             Join the OpenGrowth Courses for experiential learning and growth
@@ -305,7 +305,7 @@ const Courses = ({ course }) => {
           {/* "View All Courses" button for large screens */}
           {!isSmall && (
             <AllBlogsButton onClick={handleViewAllCourses}>
-              View All Courses
+              View all courses
             </AllBlogsButton>
           )}
         </Box>

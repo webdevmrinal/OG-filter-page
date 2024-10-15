@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import ReactDOM from "react-dom/client";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { HashRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import ProfilePage from "./ProfilePage.jsx";
 import Appointments from "./Appointments.jsx";
 import ExpertPage from "./ExpertPage.jsx";
@@ -54,41 +54,41 @@ const ScrollToTop = () => {
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
     <ScrollToTop />
-      <Routes>
+      <Routes >
         <Route index element={<Homepage />} />
         <Route path="/" element={<Layout />}>
           
-          <Route path="profile/:expertName" element={<ProfilePage />} />
-          <Route path="appointments" element={<Appointments />} />
-          <Route path="dashboardpage" element={<DashboardPage />} />
-          <Route path="expertPage" element={<ExpertPage />} />
-          <Route path="expertPage2" element={<ExpertPage2 />} />
-          <Route path="connections" element={<MyConnections />} />
-          <Route path="appointmentpage" element={<AppointmentDashboard />} />
-          <Route path="detail/:expertName" element={<DetailPage />} />
-          <Route path="transaction" element={<TransactionHistory />} />
-          <Route path="followers" element={<MyFollowers />} />
-          <Route path="mycourse" element={<MyCourse />} />
-          <Route path="searchcourse" element={<SearchCourse />} />
-          <Route path="coursedashboard" element={<CourseDashboard />} />
-          <Route path="todo" element={<TodoTask />} />
-          <Route path="projects" element={<Projects />} />
-          <Route path="course/:courseId" element={<CourseDescription />} />
-          <Route path="course-intro" element={<CourseIntroduction />} />
-          <Route path="messages" element={<ChatPage />} />
-          <Route path="course-assignment" element={<CourseAssignment />} />
-          <Route path="admin" element={<Admin />} />
+          <Route path="/profile/:expertName" element={<ProfilePage />} />
+          <Route path="/appointments" element={<Appointments />} />
+          <Route path="/dashboardpage" element={<DashboardPage />} />
+          <Route path="/expertPage" element={<ExpertPage />} />
+          <Route path="/expertPage2" element={<ExpertPage2 />} />
+          <Route path="/connections" element={<MyConnections />} />
+          <Route path="/appointmentpage" element={<AppointmentDashboard />} />
+          <Route path="/detail/:expertName" element={<DetailPage />} />
+          <Route path="/transaction" element={<TransactionHistory />} />
+          <Route path="/followers" element={<MyFollowers />} />
+          <Route path="/mycourse" element={<MyCourse />} />
+          <Route path="/searchcourse" element={<SearchCourse />} />
+          <Route path="/coursedashboard" element={<CourseDashboard />} />
+          <Route path="/todo" element={<TodoTask />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/course/:courseId" element={<CourseDescription />} />
+          <Route path="/course-intro" element={<CourseIntroduction />} />
+          <Route path="/messages" element={<ChatPage />} />
+          <Route path="/course-assignment" element={<CourseAssignment />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
-        <Route path="homepage" element={<Homepage />} />
-        <Route path="allExperts" element={<AllExperts />} />
-        <Route path="all-courses" element={<AllCourses />} />
-        <Route path="get-started" element={<App2 />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignupPage />} />
-          <Route path="pricing" element={<PricingPage />} />
-          <Route path="expert-profile/:expertName" element={<ProfilePage />} />
+        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/allExperts" element={<AllExperts />} />
+        <Route path="/all-courses" element={<AllCourses />} />
+        <Route path="/get-started" element={<App2 />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/expert-profile/:profile_url" element={<ExpertProfile />} />
           
       </Routes>
     </Router>

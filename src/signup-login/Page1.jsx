@@ -25,11 +25,9 @@ function Page1({ data, onDataChange, reset }) { // Accept the reset prop
   return (
     <Box sx={{ pt: 2, pb: 5 }}>
       <Typography variant="h5" component="h1" sx={{ pt: 1, fontWeight: 'bold', color: '#303030' }}>
-        Let's get started. Which of these best describes you?
+      Ready to grow your business? Choose an option, and we’ll tailor the perfect solution based on your needs.
       </Typography>
-      <Typography variant="subtitle1" sx={{ color: 'text.secondary', pt: 1.2 }}>
-        We'll help you get set up based on your business needs.
-      </Typography>
+      
       <RadioGroup
         aria-labelledby="user-type-question"
         value={selectedValue}
@@ -50,7 +48,7 @@ function Page1({ data, onDataChange, reset }) { // Accept the reset prop
             <FormControlLabel
               value="user"
               control={<Radio />}
-              label="I'm a user"
+              label="Looking for an expert"
               sx={{
                 height: '4em',
                 p: 3,

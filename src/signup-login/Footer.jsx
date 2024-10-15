@@ -22,7 +22,7 @@ const Footer = () => {
     },
     {
       title: "Products",
-      items: ["Mentorship", "Startup Services", "OpenGrowth Hub"],
+      items: ["Experts On Demand", "Startup Services", "OpenGrowth Hub"],
     },
     {
       title: "Resources",

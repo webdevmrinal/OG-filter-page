@@ -279,14 +279,14 @@ const BannerContainer = styled(Box)(({ theme, bgImage }) => ({
     flexDirection: 'row', // Side by side layout for large screens
   },
   [theme.breakpoints.down('sm')]: { // Small screens
-    height: '300px', // Adjust height for small screens
+    height: '100%', // Adjust height for small screens
     flexDirection: 'column', // Stack image and text in column
     backgroundPosition: 'center', // Ensure the image is centered
     backgroundSize: 'contain', // Contain image to avoid cut-off
   },
 }));
 const ContentBox = styled(Box)(({ theme }) => ({
-  marginTop: '24px',
+  marginTop: '32px',
   marginLeft: '35px',
   position: 'relative',
   zIndex: 3,
@@ -321,7 +321,7 @@ const BannerButton = styled(Button)(({ theme }) => ({
     backgroundColor: '#f9bb02',
   },
   [theme.breakpoints.down('sm')]: { // Adjust button size for small screens
-    fontSize: '0.7rem',
+    fontSize: '0.8rem',
     padding: '6px 12px',
   }
 }));
@@ -340,8 +340,6 @@ const BannerCarousel = () => {
   const images = [
     'https://www.opengrowth.com/assets/public/opengrowth/images/banner/banner-1-new.png',
     'https://www.opengrowth.com/assets/public/opengrowth/images/banner/banner-5.png',
-    'https://www.opengrowth.com/assets/public/opengrowth/images/banner/04-new.jpg',
-    'https://www.opengrowth.com/assets/public/opengrowth/images/banner/banner-6.png',
   ];
 
   return (
@@ -349,8 +347,8 @@ const BannerCarousel = () => {
       {images.map((image, index) => (
         <BannerContainer key={index} bgImage={image}>
           <ContentBox>
-            <BannerText variant="h4" fontWeight={'bold'}>Want to connect with experts who understand your AI startup’s unique needs?</BannerText>
-            <BannerText variant="h6" mt={3}>Fuel your AI startup’s success by partnering with industry leaders who offer customized insights and specialized expertise, ensuring you reach your unique goals precisely when you need it most.</BannerText>
+            <BannerText variant="h4" fontWeight={'bold'} fontSize={'2.6rem'}>Want to connect with experts who understand your AI startup’s unique needs?</BannerText>
+            <BannerText variant="h6" mt={3}>Fuel your AI startup’s success with industry leader’s insights and expertise to help you reach your business goals</BannerText>
             <BannerButton variant="contained">Book a discovery call</BannerButton>
             <BannerText variant="subtitle2" mt={1.5}>Connect with our team to help you find the right expert</BannerText>
           </ContentBox>

@@ -69,6 +69,6 @@ export const NameBox = styled(Box)(({ theme, active }) => ({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  height: "50px",
+  height: "72px",
 }));
 

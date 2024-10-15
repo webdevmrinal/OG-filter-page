@@ -11,15 +11,19 @@ import {
   Chip,
   Skeleton,
 } from "@mui/material";
-import { MainCard, NameBox } from "./Experts/Components/ExpertStyle";
+import { MainCard, NameBox } from "./Experts/Components/ExpertStyle"; // Ensure the correct path
 import { Link } from "react-router-dom";
 
-export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
+export const ExpertCard = ({ expert, handleExpertClick, context, loading, role }) => {
   const theme = useTheme();
+  console.log(expert);
+
+  // Helper function to check if a URL is absolute
+  const isAbsoluteURL = (url) => /^https?:\/\//i.test(url);
 
   // Guard for empty `expert` prop to prevent rendering empty components
   if (!expert && !loading) {
-    return null; // Prevent rendering if `expert` is null and it's not in the loading state
+    return null;
   }
 
   // Loading Skeleton
@@ -96,26 +100,16 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
     );
   }
 
-  // Split and format categories and industry
-  const categoriesWithIndustry = expert?.category
-    ? expert.category.split(",").concat(expert.industry)
-    : [expert.industry];
-  const uniqueCategories = Array.from(
-    new Set(categoriesWithIndustry?.map((cat) => cat.trim().toLowerCase()))
-  ).map((cat) => cat.charAt(0).toUpperCase() + cat.slice(1));
-
-  // Find industry and categories
-  const industryChip = uniqueCategories.find(
-    (cat) => cat.toLowerCase() === expert.industry.toLowerCase()
-  );
-  const categoryChips = uniqueCategories
-    .filter((cat) => cat.toLowerCase() !== expert.industry.toLowerCase())
-    .slice(0, 1); // Show only 1 category
+  // Determine the correct image URL
+  const imageUrl = isAbsoluteURL(expert.img)
+    ? expert.img
+    : `https://academy.opengrowth.com/assets/images/users/${expert.img}`;
 
   return (
     <MainCard
       sx={{
         height: context === "carousel" ? "20em" : "27em",
+        margin: context === "carousel" ? 0 : '0px 6px 12px 6px',
       }}
     >
       <CardMedia
@@ -123,20 +117,20 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
         sx={{
           height: context === "carousel" ? "100%" : "65%",
           position: "relative",
-          backgroundImage: `url(https://academy.opengrowth.com/assets/images/users/${expert?.img})`,
+          backgroundImage: `url(${imageUrl})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }}
       >
         <Link
-          to={
-            context === "myConnection"
+           to={
+            context === "expertPage"
+              ? `/profile/${expert?.profile_url}`
+              : context === "myConnection"
               ? `/detail/${expert?.profile_url}`
-              : context === "allExperts" || context === "carousel"
-              ? `/expert-profile/${expert?.profile_url}`
-              : `/profile/${expert?.profile_url}`
-          }
+              : `/expert-profile/${expert?.profile_url}`
+          } // Updated Link Path
           style={{ textDecoration: "none" }}
           state={{ expertEmail: expert?.email }}
         >
@@ -144,19 +138,22 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
             <NameBox
               sx={
                 context === "allExperts"
-                  ? { position: "relative", top: "220px" }
+                  ? { position: "relative", top: { sm: "220px", xs: "232px" }, py: 2, height: '50px' }
+                  : context === "carousel"
+                  ? { position: "relative", top: "250px", pb: 0.5 }
                   : {}
               }
             >
               <Typography variant="subtitle1" align="center">
                 {expert.name}
               </Typography>
+              {/* Display category instead of industry */}
               <Typography
                 variant="body2"
                 align="center"
                 sx={{ fontSize: "0.75rem" }}
               >
-                {expert.industry}
+                {expert.category}
               </Typography>
             </NameBox>
           )}
@@ -202,9 +199,9 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ color: "white" }}
+                  sx={{ color: "white", textTransform: 'none' }}
                 >
-                  Request a Call
+                  Book a discovery call
                 </Typography>
               </Button>
             </Box>
@@ -227,7 +224,7 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
               <Rating name="read-only" value={3.5} readOnly />
             </Box>
           ) : (
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{ mt: 1 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -235,21 +232,42 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
                   flexWrap: "wrap",
                 }}
               >
-                {categoryChips.map((category, index) => (
+                {/* If role is provided, display it as a Chip; else, display categories and industry */}
+                {role ? (
                   <Chip
-                    key={index}
-                    label={category}
+                    label={role}
                     variant="outlined"
-                    color="primary"
+                    color={
+                      role === "AI Expert"
+                        ? "primary"
+                        : role === "Growth Expert"
+                        ? "success"
+                        : "secondary"
+                    }
                     size="small"
                   />
-                ))}
-                <Chip
-                  label={industryChip}
-                  variant="outlined"
-                  color="secondary"
-                  size="small"
-                />
+                ) : (
+                  <>
+                    {expert.category &&
+                      expert.category.split(",").map((cat, index) => (
+                        <Chip
+                          key={index}
+                          label={cat.trim()}
+                          variant="outlined"
+                          color="primary"
+                          size="small"
+                        />
+                      ))}
+                    {expert.industry && (
+                      <Chip
+                        label={expert.industry}
+                        variant="outlined"
+                        color="secondary"
+                        size="small"
+                      />
+                    )}
+                  </>
+                )}
               </Box>
             </Box>
           )}
@@ -258,3 +276,5 @@ export const ExpertCard = ({ expert, handleExpertClick, context, loading }) => {
     </MainCard>
   );
 };
+
+export default ExpertCard;
